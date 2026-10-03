@@ -4,6 +4,7 @@ import { plainWords } from '../mixing.ts';
 import { nthAdjective, nthAdverb, nthNoun } from '../neighbours.ts';
 import { pronounce, PHONETICS_LOADING } from '../phonetics/lookup.ts';
 import { phonemesOf, type Phoneme } from '../phonetics/phoneme.ts';
+import { requiredEnding, rhymeOf, type Richness } from '../phonetics/rhyme.ts';
 import type { PluginResources, PluginResult, WordMark, WordScope } from '../plugin.ts';
 import { fixElision } from '../s7/adjective-shift.ts';
 import { elides } from '../s7/elision.ts';
@@ -35,6 +36,8 @@ export interface Sounds {
    * candidates d'un filtre qui veut une rime donnée. Le même ensemble est rendu d'un passage à l'autre.
    */
   rhyming(rhyme: string | readonly string[], category: Category): ReadonlySet<string>;
+  /** Les formes d'une catégorie qui finissent par ces phonèmes (un à trois) ; le même ensemble d'un passage à l'autre. */
+  ending(phonemes: readonly Phoneme[], category: Category): ReadonlySet<string>;
 }
 
 // Les candidates d'une rime, en ensemble, gardées d'un passage à l'autre : la textbank rend toujours
@@ -73,6 +76,7 @@ function soundsOf(phonetics: PhoneticsRepository): Sounds {
     homophones: (phonemes, category) => asSet(phonetics.homophones(phonemes.join(''), category)),
     rhyming: (rhyme, category) =>
       typeof rhyme === 'string' ? asSet(phonetics.rhyming(rhyme, category)) : rhyme.length === 1 ? asSet(phonetics.rhyming(rhyme[0]!, category)) : rhymingAll(phonetics, rhyme, category),
+    ending: (phonemes, category) => asSet(phonetics.ending(phonemes.join(''), category)),
   };
 }
 
@@ -104,6 +108,19 @@ export function probe(word: string, category: Category, decision: Decision, reso
     return 'form' in shift ? shift.form : undefined;
   }
   return undefined;
+}
+
+const NO_CANDIDATE: ReadonlySet<string> = new Set();
+
+/**
+ * Les candidates d'une forme qui doit rimer avec `reference` à cette richesse : celles qui partagent
+ * sa finale exigée (`requiredEnding`), ou aucune si elle est trop courte pour rimer ainsi. Au-delà de
+ * trois phonèmes, la finale est la rime entière : l'index des rimes la sert.
+ */
+export function candidatesFor(sounds: Sounds, reference: readonly Phoneme[], richness: Richness, category: Category): ReadonlySet<string> {
+  const ending = requiredEnding(reference, richness);
+  if (!ending) return NO_CANDIDATE;
+  return ending.length <= 3 ? sounds.ending(ending, category) : sounds.rhyming(rhymeOf(reference), category);
 }
 
 /** Les prononciations du passage, ou rien si elles ne sont pas encore chargées. */

@@ -27,6 +27,19 @@ function sharedSuffix(a: readonly Phoneme[], b: readonly Phoneme[]): number {
   return shared;
 }
 
+/**
+ * Les derniers phonèmes qu'une forme doit partager avec ce mot pour rimer avec lui à cette richesse :
+ * autant que la plus longue de sa rime et des phonèmes communs exigés. Toute forme qui rime avec lui
+ * finit ainsi, et toute forme qui finit ainsi a sa rime. Rien si le mot est trop court pour rimer à
+ * cette richesse (« ans », /ɑ̃/, en rime suffisante).
+ */
+export function requiredEnding(phonemes: readonly Phoneme[], richness: Richness): readonly Phoneme[] | undefined {
+  let last = phonemes.length - 1;
+  while (last > 0 && !isVowel(phonemes[last]!)) last--;
+  const length = Math.max(phonemes.length - last, SHARED[richness]);
+  return length > phonemes.length ? undefined : phonemes.slice(phonemes.length - length);
+}
+
 /** Les deux mots riment-ils à cette richesse ? Même rime, et assez de phonèmes communs. */
 export function rhymes(a: readonly Phoneme[], b: readonly Phoneme[], richness: Richness): boolean {
   return rhymeOf(a) === rhymeOf(b) && sharedSuffix(a, b) >= SHARED[richness];

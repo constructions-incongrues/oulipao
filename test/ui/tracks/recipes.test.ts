@@ -10,8 +10,8 @@ const add = (recipe: string, choice?: string, state = initialState) =>
   MixerStateSchema.parse(reduce(state, { type: 'add-recipe', recipe, choice, today: TODAY } as MixerAction));
 const summary = (state: ReturnType<typeof add>) => state.instances.map((i) => `${i.id} ${JSON.stringify(i.params)} ${i.targets.join(',')}`);
 
-test('les dix recettes tiennent toutes, par ordre alphabétique', () => {
-  assert.equal(recipes.length, 10);
+test('les onze recettes tiennent toutes, par ordre alphabétique', () => {
+  assert.equal(recipes.length, 11);
   assert.deepEqual(recipes, RECIPES);
   const names = recipes.map((recipe) => recipe.name);
   assert.deepEqual(names, [...names].sort((a, b) => a.localeCompare(b, 'fr')));
@@ -20,20 +20,31 @@ test('les dix recettes tiennent toutes, par ordre alphabétique', () => {
 
 test('une recette invalide est écartée', () => {
   const unknown: Recipe = { ...RECIPES[0]!, id: 'x', build: () => [{ type: 'inconnu', params: {}, targets: ['noun'] }] };
-  const badParams: Recipe = { ...RECIPES[0]!, id: 'y', build: () => [{ type: 'lipogram', params: { letter: 'é' }, targets: ['noun'] }] };
+  const badParams: Recipe = { ...RECIPES[0]!, id: 'y', build: () => [{ type: 'lipogram', params: { letters: 'x'.repeat(41) }, targets: ['noun'] }] };
   const badTrack: Recipe = { ...RECIPES[0]!, id: 'z', choice: undefined, build: () => [{ type: 's7', params: {}, targets: ['adverb'] }] };
   const badUrl: Recipe = { ...RECIPES[0]!, id: 'u', url: 'ailleurs' };
-  assert.deepEqual(validRecipes([unknown, badParams, badTrack, badUrl, RECIPES[1]!], installedPlugins).map((r) => r.id), ['prisonnier']);
+  assert.deepEqual(validRecipes([unknown, badParams, badTrack, badUrl, recipeById('prisonnier')], installedPlugins).map((r) => r.id), ['prisonnier']);
   assert.throws(() => recipeById('inconnue'), /recette inconnue/);
 });
 
-test('Monovocalisme en a : cinq lipogrammes en fin de chaîne, après ce qui y est', () => {
+test('Monovocalisme en a : un lipogramme sur les cinq autres voyelles, en fin de chaîne', () => {
   const state = add('monovocalisme', 'a', seededState);
-  assert.deepEqual(state.instances.map((i) => i.id), ['s7-1', 'lipogram-1', 'lipogram-2', 'lipogram-3', 'lipogram-4', 'lipogram-5', 'lipogram-6']);
-  assert.deepEqual(state.instances.slice(2).map((i) => i.params['letter']), ['e', 'i', 'o', 'u', 'y']);
-  assert.ok(state.instances.slice(2).every((i) => i.enabled && i.targets.length === 5));
-  assert.deepEqual(add('bivocalisme', 'ou').instances.map((i) => i.params['letter']), ['a', 'e', 'i', 'y']);
-  assert.deepEqual(add('prisonnier').instances.map((i) => i.params['letter']).join(''), 'bdfghjklpqty');
+  assert.deepEqual(state.instances.map((i) => i.id), ['s7-1', 'lipogram-1', 'lipogram-2']);
+  assert.deepEqual(state.instances[2]!.params, { letters: 'eiouy', mode: 'forbidden' });
+  assert.ok(state.instances[2]!.enabled && state.instances[2]!.targets.length === 5);
+  assert.deepEqual(add('bivocalisme', 'ou').instances.map((i) => i.params), [{ letters: 'aeiy', mode: 'forbidden' }]);
+});
+
+test('Contrainte du prisonnier : une instance au lieu de douze', () => {
+  assert.deepEqual(add('prisonnier').instances.map((i) => i.params), [{ letters: 'bdfghjklpqty', mode: 'forbidden' }]);
+});
+
+test('Beau présent : un lipogramme en lettres permises, sans lettre tant que le nom n’est pas tapé', () => {
+  const state = add('beau-present');
+  assert.deepEqual(state.instances.map((i) => i.params), [{ letters: '', mode: 'allowed' }]);
+  assert.match(recipeById('beau-present').rule, /tapez ce nom/);
+  const named = MixerStateSchema.parse(reduce(state, { type: 'set-param', id: state.instances[0]!.id, key: 'letters', value: 'Lucie' }));
+  assert.deepEqual(named.instances[0]!.params, { letters: 'Lucie', mode: 'allowed' });
 });
 
 test('Liponymie, Inventaire, La rien que la toute la : un tri par piste', () => {

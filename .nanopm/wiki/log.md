@@ -39,3 +39,4 @@
 ## [2026-10-03] ingest | pm-strategy: wrote docs/strategy.md
 ## [2026-10-03] ingest | pm-roadmap: wrote docs/roadmap.md
 ## [2026-10-03] ingest | pm-prd: wrote docs/prds/carnet-de-textes-gardes.md
+## [2026-10-03] ingest | pm-prd: wrote docs/prds/parametre-texte-libre.md

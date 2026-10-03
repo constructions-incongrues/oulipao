@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { aroundAmong, nthAdjective, nthAdverb, nthNoun } from '../../src/domain/neighbours.ts';
+import { aroundAmong, nthAdjective, nthAdverb, nthNoun, before } from '../../src/domain/neighbours.ts';
 import { nthVerb } from '../../src/domain/verb.ts';
 import { RHYME_NOUNS, rhymeMorphology, rhymeVerbs } from '../support/phonetics.ts';
 
@@ -51,6 +51,14 @@ test('adjectifs, adverbes et verbes : mêmes voisins avec ou sans les candidates
   }
 });
 
+test('before : la place d’où partir pour rencontrer d’abord la première entrée qui ne précède pas l’ancre', () => {
+  const list = ['aire', 'chat', 'école', 'ferme'];
+  assert.equal(before(list, 'eerme'), 2); // « école » précède « eerme » : on part d'elle, « ferme » vient d'abord
+  assert.equal(before(list, 'chat'), 0);
+  assert.equal(before(list, 'a'), -1);
+  assert.equal(before(list, 'zzz'), 3);
+});
+
 test('Sounds.rhyming : une rime ou plusieurs, le même ensemble d’un passage à l’autre', async () => {
   const { soundsFor } = await import('../../src/domain/rhyme/engine.ts');
   const { rhymeResources } = await import('../support/phonetics.ts');
@@ -63,4 +71,20 @@ test('Sounds.rhyming : une rime ou plusieurs, le même ensemble d’un passage �
   const both = first.rhyming(['ɔ̃', 'ɛz'], 'noun');
   assert.deepEqual([...both].sort(), [...new Set([...ez, ...first.rhyming('ɔ̃', 'noun')])].sort());
   assert.equal(second.rhyming(['ɛz', 'ɔ̃', 'ɛz'], 'noun'), both); // même réunion, quel que soit l'ordre
+});
+
+test('candidatesFor : la finale exigée ; un mot trop court n’a aucune candidate, et rien n’est essayé', async () => {
+  const { candidatesFor, soundsFor } = await import('../../src/domain/rhyme/engine.ts');
+  const { rhymeResources } = await import('../support/phonetics.ts');
+  const { splitPhonemes } = await import('../../src/domain/phonetics/phoneme.ts');
+  const sounds = soundsFor(rhymeResources())!;
+  const chaise = splitPhonemes('ʃɛz')!;
+  assert.ok(candidatesFor(sounds, chaise, 'sufficient', 'noun').has('chaise'));
+  assert.equal(candidatesFor(sounds, chaise, 'sufficient', 'noun'), sounds.ending(splitPhonemes('ɛz')!, 'noun'));
+  const ans = candidatesFor(sounds, splitPhonemes('ɑ̃')!, 'sufficient', 'noun');
+  assert.equal(ans.size, 0);
+  let tried = 0;
+  const choice = nthNoun('chaise', {}, 7, () => (tried++, true), morphology, ans);
+  assert.equal(choice.status, 'missing-form');
+  assert.equal(tried, 0); // l'échec est constaté sans parcours
 });
