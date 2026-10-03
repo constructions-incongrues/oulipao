@@ -4,9 +4,22 @@
   "type": "module",
   "description": "Potentialité Assistée par Ordinateur — essai technique : étiquetage grammatical du français dans le navigateur",
   "scripts": {
-    "test": "node --test"
+    "typecheck": "tsc --noEmit",
+    "build": "esbuild src/ui/page.ts --bundle --format=esm --target=es2022 --outdir=dist --sourcemap",
+    "test": "node --test --experimental-test-coverage --test-coverage-lines=90 --test-coverage-branches=90 --test-coverage-functions=90 --test-coverage-exclude='test/**' --test-coverage-exclude='vendor/**' 'test/**/*.test.ts'",
+    "measure": "node scripts/measure.ts",
+    "build:references": "node scripts/build-references.ts",
+    "build:lexicon": "node scripts/build-lexicon.ts",
+    "build:morphology": "node scripts/build-morphology.ts",
+    "transform:references": "node scripts/transform-references.ts"
   },
   "devDependencies": {
-    "@huggingface/transformers": "^4.3.0"
+    "@huggingface/transformers": "^4.3.0",
+    "@types/node": "^26.6.4",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "zod": "^4.6.5"
   }
 }

@@ -1,32 +1,25 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  Potao (« Potentialité Assistée par Ordinateur ») : outil web qui applique des contraintes
+  oulipiennes à un texte français, entièrement dans le navigateur.
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+  Contraintes du projet (fixées par le fondateur le 2026-10-03) :
+  - Langage : TypeScript, mode strict.
+  - Architecture hexagonale : le domaine (src/domain) est pur et ne dépend de rien ; il
+    s'adresse à l'extérieur par des ports (src/ports) ; les adaptateurs (src/adapters)
+    implémentent les ports (lexique, étiqueteurs, fichiers) ; l'interface (src/ui) et les
+    scripts assemblent le tout. Le domaine se teste avec des ports factices.
+  - Couverture de tests supérieure à 90 %, vérifiée par la commande de test.
+  - Entités validées par des schémas (zod) : chaque entité du domaine est définie par un
+    schéma dont le type TypeScript est déduit ; toute donnée qui entre par un adaptateur
+    (fichier, lexique, sortie d'étiqueteur, saisie) est validée par ce schéma.
+  - Symboles (identifiants, noms de fichiers de code) en anglais ; commentaires,
+    documentation et descriptions de PR en français.
 
-# Per-operation guidance (optional)
-# Add advisory guidance for how apply and archive work should be conducted.
-# This is separate from artifact rules above.
-# Example:
-#   operations:
-#     apply:
-#       guidance:
-#         - Keep test summaries concise
-#     archive:
-#       guidance:
-#         - Summarize the archive outcome before finishing
+rules:
+  tasks:
+    - Chaque tâche de code nomme la couche hexagonale qu'elle touche (domain, ports, adapters, ui).
+    - Les tests font partie de la tâche ; une tâche n'est terminée que si la couverture reste au-dessus de 90 %.
+  design:
+    - Préciser pour chaque nouveau module sa couche et les ports dont il dépend.

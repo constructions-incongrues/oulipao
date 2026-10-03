@@ -3,7 +3,7 @@
 Étiquetage grammatical du français dans le navigateur et lexique libre.
 Mesures du 2026-10-03. Échéance de la décision : 18 octobre 2026.
 
-Pour refaire les mesures : `node scripts/mesurer.js --erreurs`.
+Pour refaire les mesures : `npm run measure -- --errors`.
 
 ## Lexiques
 
@@ -102,3 +102,68 @@ Validée par le fondateur le 2026-10-03, sur la proposition de l'assistant et en
 l'annotation de référence telle quelle, sans relecture :
 
 **On continue avec une réserve : l'étiquetage dans le navigateur tient le seuil (96,5 %) et un lexique libre existe (Grammalecte, MPL 2.0), mais seulement avec un modèle de 141 Mo dont la licence est à clarifier.**
+
+---
+
+# Moteur S+7
+
+Mesures du 2026-10-03, décalage 7, sur les trois textes de référence. Pour les refaire :
+`npm run transform:references` (écrit les grilles de relecture dans `resultats/s7/`).
+
+## Ce que le moteur a fait
+
+Avec les étiquettes de référence :
+
+| Texte | Mode | Noms | Remplacés | Inconnus du dictionnaire | Sans forme au nombre voulu |
+|---|---|---|---|---|---|
+| 1 | même genre | 33 | 33 | 0 | 0 |
+| 1 | réaccord | 33 | 32 | 0 | 1 |
+| 2 | même genre | 41 | 38 | 0 | 3 |
+| 2 | réaccord | 41 | 41 | 0 | 0 |
+| 3 | même genre | 39 | 39 | 0 | 0 |
+| 3 | réaccord | 39 | 39 | 0 | 0 |
+
+De bout en bout, avec les étiquettes du modèle neuronal : même nombre de remplacements à un
+près pour les textes 1 et 2 ; pour le texte 3, 40 remplacés et 5 mots pris à tort pour des
+noms, que le dictionnaire ne connaît pas et que le moteur laisse donc intacts.
+
+## Substitutions correctes
+
+Critère du PRD : au moins 90 % de substitutions correctes sur chacun des trois textes, dans
+chaque mode, **à la lecture du fondateur**. Une substitution est correcte si le groupe nominal
+se lit sans faute.
+
+| Texte | Mode | Lecture préliminaire de l'assistant | Décompte du fondateur |
+|---|---|---|---|
+| 1 | même genre | 33 sur 33 | à faire |
+| 1 | réaccord | 31 sur 32 | à faire |
+| 2 | même genre | 37 sur 38 | à faire |
+| 2 | réaccord | 40 sur 41 | à faire |
+| 3 | même genre | 37 sur 39 | à faire |
+| 3 | réaccord | 39 sur 39 | à faire |
+
+La lecture préliminaire est celle de l'assistant qui a écrit le moteur ; elle ne vaut pas
+décompte. Elle donne les deux modes au-dessus du seuil sur les trois textes.
+
+Fautes relevées à cette lecture :
+
+- **Bruit du dictionnaire** (4 cas) : « Les BiC₆H₅O₇ » (une formule chimique rangée parmi les
+  noms), « le ln » et « un ln » (une abréviation), « des Tasmanie » (un nom propre). Le lexique
+  compte 1 649 formes de noms contenant un chiffre.
+- **Déterminant hors table** (1 cas) : « Certaines choses » devient « Certaines chouans » ; le
+  moteur ne connaît pas « certains ».
+
+## Ce que le critère ne voit pas
+
+- **Hors du groupe nominal**, rien n'est réaccordé en mode « réaccord » : « le maitre
+  paraissait plus grande », « Mon tantra est triste […] elle a été heureuse ». Le critère du PRD
+  porte sur le groupe nominal ; à la lecture du texte entier, ces phrases sont fautives.
+- **Mots rares.** Le septième nom suivant est très souvent un mot inconnu du lecteur
+  (« mériédrie », « panlogisme », « viscoréduction »). Le dictionnaire par défaut contient les
+  54 233 noms du lexique, sans filtre.
+- **Mots grossiers.** Le dictionnaire en contient et ils sortent (« le mercredi » devient
+  « la merde », « du salon » devient « de la saloperie »).
+
+## Mode par défaut
+
+À décider par le fondateur après son décompte.

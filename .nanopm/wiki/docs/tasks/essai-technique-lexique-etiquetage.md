@@ -131,7 +131,7 @@ Lancer les deux étiqueteurs sur les trois textes avec l'outil de comparaison et
 - Total effort: 6 jours (4 S à une demi-journée, 4 M à une journée)
 - Waves: 4 (Wave 0 foundation + 3 parallel waves; max parallel width 4)
 - Handoff target: openspec
-- Handoff path: openspec/changes/essai-technique-lexique-etiquetage
+- Handoff path: openspec/changes/archive/2026-10-03-essai-technique-lexique-etiquetage
 
 ---
 

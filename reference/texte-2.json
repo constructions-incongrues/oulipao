@@ -1,808 +1,808 @@
 {
-  "titre": "Les bibliothèques (article au présent)",
+  "title": "Les bibliothèques (article au présent)",
   "source": "écrit pour l'essai par l'assistant IA, 2026-10-03 ; aucun droit de tiers",
-  "annotateur": "assistant IA (Claude), 2026-10-03, avant tout essai d'étiqueteur — à relire par le fondateur",
-  "texte": "Depuis quelques années, les bibliothèques municipales changent profondément de visage. On y vient encore pour emprunter des romans, naturellement, mais aussi pour réparer un vélo, apprendre à coudre ou suivre un atelier numérique. Cette évolution répond à une demande réelle : beaucoup d'habitants cherchent un lieu gratuit, chauffé et ouvert tard, où personne ne leur demande de consommer. Les bibliothécaires décrivent un métier devenu plus social que documentaire. Ils accueillent des étudiants pressés, des retraités bavards, des familles entières le mercredi. Certains regrettent le silence ancien et craignent que le livre devienne secondaire. D'autres estiment au contraire que la lecture progresse quand les gens se sentent chez eux. Les chiffres restent fragiles, car peu de communes mesurent sérieusement la fréquentation. Une étude récente montre pourtant que les prêts augmentent légèrement dans les établissements rénovés. Le financement demeure la question principale : agrandir les horaires coûte cher, et les budgets culturels baissent souvent avant les autres. Plusieurs maires défendent néanmoins ces dépenses, qu'ils jugent utiles à toute la ville. Reste une inquiétude sourde : ces nouveaux services reposent largement sur des bénévoles et sur des contrats courts. Si les équipes s'épuisent, l'élan actuel retombera vite, préviennent déjà plusieurs directrices.",
-  "mots": [
+  "annotator": "assistant IA (Claude), 2026-10-03, avant tout essai d'étiqueteur — acceptée telle quelle par le fondateur",
+  "text": "Depuis quelques années, les bibliothèques municipales changent profondément de visage. On y vient encore pour emprunter des romans, naturellement, mais aussi pour réparer un vélo, apprendre à coudre ou suivre un atelier numérique. Cette évolution répond à une demande réelle : beaucoup d'habitants cherchent un lieu gratuit, chauffé et ouvert tard, où personne ne leur demande de consommer. Les bibliothécaires décrivent un métier devenu plus social que documentaire. Ils accueillent des étudiants pressés, des retraités bavards, des familles entières le mercredi. Certains regrettent le silence ancien et craignent que le livre devienne secondaire. D'autres estiment au contraire que la lecture progresse quand les gens se sentent chez eux. Les chiffres restent fragiles, car peu de communes mesurent sérieusement la fréquentation. Une étude récente montre pourtant que les prêts augmentent légèrement dans les établissements rénovés. Le financement demeure la question principale : agrandir les horaires coûte cher, et les budgets culturels baissent souvent avant les autres. Plusieurs maires défendent néanmoins ces dépenses, qu'ils jugent utiles à toute la ville. Reste une inquiétude sourde : ces nouveaux services reposent largement sur des bénévoles et sur des contrats courts. Si les équipes s'épuisent, l'élan actuel retombera vite, préviennent déjà plusieurs directrices.",
+  "words": [
     {
-      "mot": "Depuis",
-      "categorie": "autre"
+      "word": "Depuis",
+      "category": "other"
     },
     {
-      "mot": "quelques",
-      "categorie": "autre"
+      "word": "quelques",
+      "category": "other"
     },
     {
-      "mot": "années",
-      "categorie": "nom"
+      "word": "années",
+      "category": "noun"
     },
     {
-      "mot": "les",
-      "categorie": "autre"
+      "word": "les",
+      "category": "other"
     },
     {
-      "mot": "bibliothèques",
-      "categorie": "nom"
+      "word": "bibliothèques",
+      "category": "noun"
     },
     {
-      "mot": "municipales",
-      "categorie": "adjectif"
+      "word": "municipales",
+      "category": "adjective"
     },
     {
-      "mot": "changent",
-      "categorie": "verbe"
+      "word": "changent",
+      "category": "verb"
     },
     {
-      "mot": "profondément",
-      "categorie": "adverbe"
+      "word": "profondément",
+      "category": "adverb"
     },
     {
-      "mot": "de",
-      "categorie": "autre"
+      "word": "de",
+      "category": "other"
     },
     {
-      "mot": "visage",
-      "categorie": "nom"
+      "word": "visage",
+      "category": "noun"
     },
     {
-      "mot": "On",
-      "categorie": "autre"
+      "word": "On",
+      "category": "other"
     },
     {
-      "mot": "y",
-      "categorie": "autre"
+      "word": "y",
+      "category": "other"
     },
     {
-      "mot": "vient",
-      "categorie": "verbe"
+      "word": "vient",
+      "category": "verb"
     },
     {
-      "mot": "encore",
-      "categorie": "adverbe"
+      "word": "encore",
+      "category": "adverb"
     },
     {
-      "mot": "pour",
-      "categorie": "autre"
+      "word": "pour",
+      "category": "other"
     },
     {
-      "mot": "emprunter",
-      "categorie": "verbe"
+      "word": "emprunter",
+      "category": "verb"
     },
     {
-      "mot": "des",
-      "categorie": "autre"
+      "word": "des",
+      "category": "other"
     },
     {
-      "mot": "romans",
-      "categorie": "nom"
+      "word": "romans",
+      "category": "noun"
     },
     {
-      "mot": "naturellement",
-      "categorie": "adverbe"
+      "word": "naturellement",
+      "category": "adverb"
     },
     {
-      "mot": "mais",
-      "categorie": "autre"
+      "word": "mais",
+      "category": "other"
     },
     {
-      "mot": "aussi",
-      "categorie": "adverbe"
+      "word": "aussi",
+      "category": "adverb"
     },
     {
-      "mot": "pour",
-      "categorie": "autre"
+      "word": "pour",
+      "category": "other"
     },
     {
-      "mot": "réparer",
-      "categorie": "verbe"
+      "word": "réparer",
+      "category": "verb"
     },
     {
-      "mot": "un",
-      "categorie": "autre"
+      "word": "un",
+      "category": "other"
     },
     {
-      "mot": "vélo",
-      "categorie": "nom"
+      "word": "vélo",
+      "category": "noun"
     },
     {
-      "mot": "apprendre",
-      "categorie": "verbe"
+      "word": "apprendre",
+      "category": "verb"
     },
     {
-      "mot": "à",
-      "categorie": "autre"
+      "word": "à",
+      "category": "other"
     },
     {
-      "mot": "coudre",
-      "categorie": "verbe"
+      "word": "coudre",
+      "category": "verb"
     },
     {
-      "mot": "ou",
-      "categorie": "autre"
+      "word": "ou",
+      "category": "other"
     },
     {
-      "mot": "suivre",
-      "categorie": "verbe"
+      "word": "suivre",
+      "category": "verb"
     },
     {
-      "mot": "un",
-      "categorie": "autre"
+      "word": "un",
+      "category": "other"
     },
     {
-      "mot": "atelier",
-      "categorie": "nom"
+      "word": "atelier",
+      "category": "noun"
     },
     {
-      "mot": "numérique",
-      "categorie": "adjectif"
+      "word": "numérique",
+      "category": "adjective"
     },
     {
-      "mot": "Cette",
-      "categorie": "autre"
+      "word": "Cette",
+      "category": "other"
     },
     {
-      "mot": "évolution",
-      "categorie": "nom"
+      "word": "évolution",
+      "category": "noun"
     },
     {
-      "mot": "répond",
-      "categorie": "verbe"
+      "word": "répond",
+      "category": "verb"
     },
     {
-      "mot": "à",
-      "categorie": "autre"
+      "word": "à",
+      "category": "other"
     },
     {
-      "mot": "une",
-      "categorie": "autre"
+      "word": "une",
+      "category": "other"
     },
     {
-      "mot": "demande",
-      "categorie": "nom"
+      "word": "demande",
+      "category": "noun"
     },
     {
-      "mot": "réelle",
-      "categorie": "adjectif"
+      "word": "réelle",
+      "category": "adjective"
     },
     {
-      "mot": "beaucoup",
-      "categorie": "adverbe"
+      "word": "beaucoup",
+      "category": "adverb"
     },
     {
-      "mot": "d'",
-      "categorie": "autre"
+      "word": "d'",
+      "category": "other"
     },
     {
-      "mot": "habitants",
-      "categorie": "nom"
+      "word": "habitants",
+      "category": "noun"
     },
     {
-      "mot": "cherchent",
-      "categorie": "verbe"
+      "word": "cherchent",
+      "category": "verb"
     },
     {
-      "mot": "un",
-      "categorie": "autre"
+      "word": "un",
+      "category": "other"
     },
     {
-      "mot": "lieu",
-      "categorie": "nom"
+      "word": "lieu",
+      "category": "noun"
     },
     {
-      "mot": "gratuit",
-      "categorie": "adjectif"
+      "word": "gratuit",
+      "category": "adjective"
     },
     {
-      "mot": "chauffé",
-      "categorie": "adjectif"
+      "word": "chauffé",
+      "category": "adjective"
     },
     {
-      "mot": "et",
-      "categorie": "autre"
+      "word": "et",
+      "category": "other"
     },
     {
-      "mot": "ouvert",
-      "categorie": "adjectif"
+      "word": "ouvert",
+      "category": "adjective"
     },
     {
-      "mot": "tard",
-      "categorie": "adverbe"
+      "word": "tard",
+      "category": "adverb"
     },
     {
-      "mot": "où",
-      "categorie": "autre"
+      "word": "où",
+      "category": "other"
     },
     {
-      "mot": "personne",
-      "categorie": "autre"
+      "word": "personne",
+      "category": "other"
     },
     {
-      "mot": "ne",
-      "categorie": "adverbe"
+      "word": "ne",
+      "category": "adverb"
     },
     {
-      "mot": "leur",
-      "categorie": "autre"
+      "word": "leur",
+      "category": "other"
     },
     {
-      "mot": "demande",
-      "categorie": "verbe"
+      "word": "demande",
+      "category": "verb"
     },
     {
-      "mot": "de",
-      "categorie": "autre"
+      "word": "de",
+      "category": "other"
     },
     {
-      "mot": "consommer",
-      "categorie": "verbe"
+      "word": "consommer",
+      "category": "verb"
     },
     {
-      "mot": "Les",
-      "categorie": "autre"
+      "word": "Les",
+      "category": "other"
     },
     {
-      "mot": "bibliothécaires",
-      "categorie": "nom"
+      "word": "bibliothécaires",
+      "category": "noun"
     },
     {
-      "mot": "décrivent",
-      "categorie": "verbe"
+      "word": "décrivent",
+      "category": "verb"
     },
     {
-      "mot": "un",
-      "categorie": "autre"
+      "word": "un",
+      "category": "other"
     },
     {
-      "mot": "métier",
-      "categorie": "nom"
+      "word": "métier",
+      "category": "noun"
     },
     {
-      "mot": "devenu",
-      "categorie": "adjectif"
+      "word": "devenu",
+      "category": "adjective"
     },
     {
-      "mot": "plus",
-      "categorie": "adverbe"
+      "word": "plus",
+      "category": "adverb"
     },
     {
-      "mot": "social",
-      "categorie": "adjectif"
+      "word": "social",
+      "category": "adjective"
     },
     {
-      "mot": "que",
-      "categorie": "autre"
+      "word": "que",
+      "category": "other"
     },
     {
-      "mot": "documentaire",
-      "categorie": "adjectif"
+      "word": "documentaire",
+      "category": "adjective"
     },
     {
-      "mot": "Ils",
-      "categorie": "autre"
+      "word": "Ils",
+      "category": "other"
     },
     {
-      "mot": "accueillent",
-      "categorie": "verbe"
+      "word": "accueillent",
+      "category": "verb"
     },
     {
-      "mot": "des",
-      "categorie": "autre"
+      "word": "des",
+      "category": "other"
     },
     {
-      "mot": "étudiants",
-      "categorie": "nom"
+      "word": "étudiants",
+      "category": "noun"
     },
     {
-      "mot": "pressés",
-      "categorie": "adjectif"
+      "word": "pressés",
+      "category": "adjective"
     },
     {
-      "mot": "des",
-      "categorie": "autre"
+      "word": "des",
+      "category": "other"
     },
     {
-      "mot": "retraités",
-      "categorie": "nom"
+      "word": "retraités",
+      "category": "noun"
     },
     {
-      "mot": "bavards",
-      "categorie": "adjectif"
+      "word": "bavards",
+      "category": "adjective"
     },
     {
-      "mot": "des",
-      "categorie": "autre"
+      "word": "des",
+      "category": "other"
     },
     {
-      "mot": "familles",
-      "categorie": "nom"
+      "word": "familles",
+      "category": "noun"
     },
     {
-      "mot": "entières",
-      "categorie": "adjectif"
+      "word": "entières",
+      "category": "adjective"
     },
     {
-      "mot": "le",
-      "categorie": "autre"
+      "word": "le",
+      "category": "other"
     },
     {
-      "mot": "mercredi",
-      "categorie": "nom"
+      "word": "mercredi",
+      "category": "noun"
     },
     {
-      "mot": "Certains",
-      "categorie": "autre"
+      "word": "Certains",
+      "category": "other"
     },
     {
-      "mot": "regrettent",
-      "categorie": "verbe"
+      "word": "regrettent",
+      "category": "verb"
     },
     {
-      "mot": "le",
-      "categorie": "autre"
+      "word": "le",
+      "category": "other"
     },
     {
-      "mot": "silence",
-      "categorie": "nom"
+      "word": "silence",
+      "category": "noun"
     },
     {
-      "mot": "ancien",
-      "categorie": "adjectif"
+      "word": "ancien",
+      "category": "adjective"
     },
     {
-      "mot": "et",
-      "categorie": "autre"
+      "word": "et",
+      "category": "other"
     },
     {
-      "mot": "craignent",
-      "categorie": "verbe"
+      "word": "craignent",
+      "category": "verb"
     },
     {
-      "mot": "que",
-      "categorie": "autre"
+      "word": "que",
+      "category": "other"
     },
     {
-      "mot": "le",
-      "categorie": "autre"
+      "word": "le",
+      "category": "other"
     },
     {
-      "mot": "livre",
-      "categorie": "nom"
+      "word": "livre",
+      "category": "noun"
     },
     {
-      "mot": "devienne",
-      "categorie": "verbe"
+      "word": "devienne",
+      "category": "verb"
     },
     {
-      "mot": "secondaire",
-      "categorie": "adjectif"
+      "word": "secondaire",
+      "category": "adjective"
     },
     {
-      "mot": "D'",
-      "categorie": "autre"
+      "word": "D'",
+      "category": "other"
     },
     {
-      "mot": "autres",
-      "categorie": "autre"
+      "word": "autres",
+      "category": "other"
     },
     {
-      "mot": "estiment",
-      "categorie": "verbe"
+      "word": "estiment",
+      "category": "verb"
     },
     {
-      "mot": "au",
-      "categorie": "autre"
+      "word": "au",
+      "category": "other"
     },
     {
-      "mot": "contraire",
-      "categorie": "nom"
+      "word": "contraire",
+      "category": "noun"
     },
     {
-      "mot": "que",
-      "categorie": "autre"
+      "word": "que",
+      "category": "other"
     },
     {
-      "mot": "la",
-      "categorie": "autre"
+      "word": "la",
+      "category": "other"
     },
     {
-      "mot": "lecture",
-      "categorie": "nom"
+      "word": "lecture",
+      "category": "noun"
     },
     {
-      "mot": "progresse",
-      "categorie": "verbe"
+      "word": "progresse",
+      "category": "verb"
     },
     {
-      "mot": "quand",
-      "categorie": "autre"
+      "word": "quand",
+      "category": "other"
     },
     {
-      "mot": "les",
-      "categorie": "autre"
+      "word": "les",
+      "category": "other"
     },
     {
-      "mot": "gens",
-      "categorie": "nom"
+      "word": "gens",
+      "category": "noun"
     },
     {
-      "mot": "se",
-      "categorie": "autre"
+      "word": "se",
+      "category": "other"
     },
     {
-      "mot": "sentent",
-      "categorie": "verbe"
+      "word": "sentent",
+      "category": "verb"
     },
     {
-      "mot": "chez",
-      "categorie": "autre"
+      "word": "chez",
+      "category": "other"
     },
     {
-      "mot": "eux",
-      "categorie": "autre"
+      "word": "eux",
+      "category": "other"
     },
     {
-      "mot": "Les",
-      "categorie": "autre"
+      "word": "Les",
+      "category": "other"
     },
     {
-      "mot": "chiffres",
-      "categorie": "nom"
+      "word": "chiffres",
+      "category": "noun"
     },
     {
-      "mot": "restent",
-      "categorie": "verbe"
+      "word": "restent",
+      "category": "verb"
     },
     {
-      "mot": "fragiles",
-      "categorie": "adjectif"
+      "word": "fragiles",
+      "category": "adjective"
     },
     {
-      "mot": "car",
-      "categorie": "autre"
+      "word": "car",
+      "category": "other"
     },
     {
-      "mot": "peu",
-      "categorie": "adverbe"
+      "word": "peu",
+      "category": "adverb"
     },
     {
-      "mot": "de",
-      "categorie": "autre"
+      "word": "de",
+      "category": "other"
     },
     {
-      "mot": "communes",
-      "categorie": "nom"
+      "word": "communes",
+      "category": "noun"
     },
     {
-      "mot": "mesurent",
-      "categorie": "verbe"
+      "word": "mesurent",
+      "category": "verb"
     },
     {
-      "mot": "sérieusement",
-      "categorie": "adverbe"
+      "word": "sérieusement",
+      "category": "adverb"
     },
     {
-      "mot": "la",
-      "categorie": "autre"
+      "word": "la",
+      "category": "other"
     },
     {
-      "mot": "fréquentation",
-      "categorie": "nom"
+      "word": "fréquentation",
+      "category": "noun"
     },
     {
-      "mot": "Une",
-      "categorie": "autre"
+      "word": "Une",
+      "category": "other"
     },
     {
-      "mot": "étude",
-      "categorie": "nom"
+      "word": "étude",
+      "category": "noun"
     },
     {
-      "mot": "récente",
-      "categorie": "adjectif"
+      "word": "récente",
+      "category": "adjective"
     },
     {
-      "mot": "montre",
-      "categorie": "verbe"
+      "word": "montre",
+      "category": "verb"
     },
     {
-      "mot": "pourtant",
-      "categorie": "adverbe"
+      "word": "pourtant",
+      "category": "adverb"
     },
     {
-      "mot": "que",
-      "categorie": "autre"
+      "word": "que",
+      "category": "other"
     },
     {
-      "mot": "les",
-      "categorie": "autre"
+      "word": "les",
+      "category": "other"
     },
     {
-      "mot": "prêts",
-      "categorie": "nom"
+      "word": "prêts",
+      "category": "noun"
     },
     {
-      "mot": "augmentent",
-      "categorie": "verbe"
+      "word": "augmentent",
+      "category": "verb"
     },
     {
-      "mot": "légèrement",
-      "categorie": "adverbe"
+      "word": "légèrement",
+      "category": "adverb"
     },
     {
-      "mot": "dans",
-      "categorie": "autre"
+      "word": "dans",
+      "category": "other"
     },
     {
-      "mot": "les",
-      "categorie": "autre"
+      "word": "les",
+      "category": "other"
     },
     {
-      "mot": "établissements",
-      "categorie": "nom"
+      "word": "établissements",
+      "category": "noun"
     },
     {
-      "mot": "rénovés",
-      "categorie": "adjectif"
+      "word": "rénovés",
+      "category": "adjective"
     },
     {
-      "mot": "Le",
-      "categorie": "autre"
+      "word": "Le",
+      "category": "other"
     },
     {
-      "mot": "financement",
-      "categorie": "nom"
+      "word": "financement",
+      "category": "noun"
     },
     {
-      "mot": "demeure",
-      "categorie": "verbe"
+      "word": "demeure",
+      "category": "verb"
     },
     {
-      "mot": "la",
-      "categorie": "autre"
+      "word": "la",
+      "category": "other"
     },
     {
-      "mot": "question",
-      "categorie": "nom"
+      "word": "question",
+      "category": "noun"
     },
     {
-      "mot": "principale",
-      "categorie": "adjectif"
+      "word": "principale",
+      "category": "adjective"
     },
     {
-      "mot": "agrandir",
-      "categorie": "verbe"
+      "word": "agrandir",
+      "category": "verb"
     },
     {
-      "mot": "les",
-      "categorie": "autre"
+      "word": "les",
+      "category": "other"
     },
     {
-      "mot": "horaires",
-      "categorie": "nom"
+      "word": "horaires",
+      "category": "noun"
     },
     {
-      "mot": "coûte",
-      "categorie": "verbe"
+      "word": "coûte",
+      "category": "verb"
     },
     {
-      "mot": "cher",
-      "categorie": "adverbe"
+      "word": "cher",
+      "category": "adverb"
     },
     {
-      "mot": "et",
-      "categorie": "autre"
+      "word": "et",
+      "category": "other"
     },
     {
-      "mot": "les",
-      "categorie": "autre"
+      "word": "les",
+      "category": "other"
     },
     {
-      "mot": "budgets",
-      "categorie": "nom"
+      "word": "budgets",
+      "category": "noun"
     },
     {
-      "mot": "culturels",
-      "categorie": "adjectif"
+      "word": "culturels",
+      "category": "adjective"
     },
     {
-      "mot": "baissent",
-      "categorie": "verbe"
+      "word": "baissent",
+      "category": "verb"
     },
     {
-      "mot": "souvent",
-      "categorie": "adverbe"
+      "word": "souvent",
+      "category": "adverb"
     },
     {
-      "mot": "avant",
-      "categorie": "autre"
+      "word": "avant",
+      "category": "other"
     },
     {
-      "mot": "les",
-      "categorie": "autre"
+      "word": "les",
+      "category": "other"
     },
     {
-      "mot": "autres",
-      "categorie": "autre"
+      "word": "autres",
+      "category": "other"
     },
     {
-      "mot": "Plusieurs",
-      "categorie": "autre"
+      "word": "Plusieurs",
+      "category": "other"
     },
     {
-      "mot": "maires",
-      "categorie": "nom"
+      "word": "maires",
+      "category": "noun"
     },
     {
-      "mot": "défendent",
-      "categorie": "verbe"
+      "word": "défendent",
+      "category": "verb"
     },
     {
-      "mot": "néanmoins",
-      "categorie": "adverbe"
+      "word": "néanmoins",
+      "category": "adverb"
     },
     {
-      "mot": "ces",
-      "categorie": "autre"
+      "word": "ces",
+      "category": "other"
     },
     {
-      "mot": "dépenses",
-      "categorie": "nom"
+      "word": "dépenses",
+      "category": "noun"
     },
     {
-      "mot": "qu'",
-      "categorie": "autre"
+      "word": "qu'",
+      "category": "other"
     },
     {
-      "mot": "ils",
-      "categorie": "autre"
+      "word": "ils",
+      "category": "other"
     },
     {
-      "mot": "jugent",
-      "categorie": "verbe"
+      "word": "jugent",
+      "category": "verb"
     },
     {
-      "mot": "utiles",
-      "categorie": "adjectif"
+      "word": "utiles",
+      "category": "adjective"
     },
     {
-      "mot": "à",
-      "categorie": "autre"
+      "word": "à",
+      "category": "other"
     },
     {
-      "mot": "toute",
-      "categorie": "autre"
+      "word": "toute",
+      "category": "other"
     },
     {
-      "mot": "la",
-      "categorie": "autre"
+      "word": "la",
+      "category": "other"
     },
     {
-      "mot": "ville",
-      "categorie": "nom"
+      "word": "ville",
+      "category": "noun"
     },
     {
-      "mot": "Reste",
-      "categorie": "verbe"
+      "word": "Reste",
+      "category": "verb"
     },
     {
-      "mot": "une",
-      "categorie": "autre"
+      "word": "une",
+      "category": "other"
     },
     {
-      "mot": "inquiétude",
-      "categorie": "nom"
+      "word": "inquiétude",
+      "category": "noun"
     },
     {
-      "mot": "sourde",
-      "categorie": "adjectif"
+      "word": "sourde",
+      "category": "adjective"
     },
     {
-      "mot": "ces",
-      "categorie": "autre"
+      "word": "ces",
+      "category": "other"
     },
     {
-      "mot": "nouveaux",
-      "categorie": "adjectif"
+      "word": "nouveaux",
+      "category": "adjective"
     },
     {
-      "mot": "services",
-      "categorie": "nom"
+      "word": "services",
+      "category": "noun"
     },
     {
-      "mot": "reposent",
-      "categorie": "verbe"
+      "word": "reposent",
+      "category": "verb"
     },
     {
-      "mot": "largement",
-      "categorie": "adverbe"
+      "word": "largement",
+      "category": "adverb"
     },
     {
-      "mot": "sur",
-      "categorie": "autre"
+      "word": "sur",
+      "category": "other"
     },
     {
-      "mot": "des",
-      "categorie": "autre"
+      "word": "des",
+      "category": "other"
     },
     {
-      "mot": "bénévoles",
-      "categorie": "nom"
+      "word": "bénévoles",
+      "category": "noun"
     },
     {
-      "mot": "et",
-      "categorie": "autre"
+      "word": "et",
+      "category": "other"
     },
     {
-      "mot": "sur",
-      "categorie": "autre"
+      "word": "sur",
+      "category": "other"
     },
     {
-      "mot": "des",
-      "categorie": "autre"
+      "word": "des",
+      "category": "other"
     },
     {
-      "mot": "contrats",
-      "categorie": "nom"
+      "word": "contrats",
+      "category": "noun"
     },
     {
-      "mot": "courts",
-      "categorie": "adjectif"
+      "word": "courts",
+      "category": "adjective"
     },
     {
-      "mot": "Si",
-      "categorie": "autre"
+      "word": "Si",
+      "category": "other"
     },
     {
-      "mot": "les",
-      "categorie": "autre"
+      "word": "les",
+      "category": "other"
     },
     {
-      "mot": "équipes",
-      "categorie": "nom"
+      "word": "équipes",
+      "category": "noun"
     },
     {
-      "mot": "s'",
-      "categorie": "autre"
+      "word": "s'",
+      "category": "other"
     },
     {
-      "mot": "épuisent",
-      "categorie": "verbe"
+      "word": "épuisent",
+      "category": "verb"
     },
     {
-      "mot": "l'",
-      "categorie": "autre"
+      "word": "l'",
+      "category": "other"
     },
     {
-      "mot": "élan",
-      "categorie": "nom"
+      "word": "élan",
+      "category": "noun"
     },
     {
-      "mot": "actuel",
-      "categorie": "adjectif"
+      "word": "actuel",
+      "category": "adjective"
     },
     {
-      "mot": "retombera",
-      "categorie": "verbe"
+      "word": "retombera",
+      "category": "verb"
     },
     {
-      "mot": "vite",
-      "categorie": "adverbe"
+      "word": "vite",
+      "category": "adverb"
     },
     {
-      "mot": "préviennent",
-      "categorie": "verbe"
+      "word": "préviennent",
+      "category": "verb"
     },
     {
-      "mot": "déjà",
-      "categorie": "adverbe"
+      "word": "déjà",
+      "category": "adverb"
     },
     {
-      "mot": "plusieurs",
-      "categorie": "autre"
+      "word": "plusieurs",
+      "category": "other"
     },
     {
-      "mot": "directrices",
-      "categorie": "nom"
+      "word": "directrices",
+      "category": "noun"
     }
   ]
 }
