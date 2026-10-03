@@ -144,10 +144,10 @@ observée dans l'onglet réseau ».
 | **Propriété** | `#efficient`, sobriété |
 | **Priorité** | Moyenne |
 | **Source** | Le lecteur, à sa première visite |
-| **Stimulus** | Il ouvre la page et met un texte en pistes sans viser les verbes. Ou son navigateur demande d'économiser les données. |
+| **Stimulus** | Il ouvre la page, attend sans cliquer, puis met un texte en pistes sans viser les verbes. |
 | **Environnement** | Marche normale, cache vide |
-| **Réponse du système** | Le modèle et la morphologie arrivent, avec une barre de progression. Les verbes attendent qu'une contrainte active les vise. En économie de données, le modèle attend un clic. |
-| **Mesure** | `verbes-oulipao.tsv` n'est jamais demandé tant qu'aucune instance active ne vise les verbes. En économie de données, aucune requête vers jsDelivr ni Hugging Face avant le clic. Les dictionnaires sont transférés compressés : 2,8 Mo pour 18,7 Mo de verbes. |
+| **Réponse du système** | Le modèle et la morphologie arrivent, avec une barre de progression. Les verbes attendent qu'une contrainte active les vise. Avant le premier clic, rien ne part vers un tiers. |
+| **Mesure** | `verbes-oulipao.tsv` n'est jamais demandé tant qu'aucune instance active ne vise les verbes. Aucune requête vers jsDelivr ni Hugging Face avant le premier clic, à chaque visite (vérifié le 2026-10-03 : première requête vers `cdn.jsdelivr.net` au moment du clic, 20 s après l'ouverture). Les dictionnaires sont transférés compressés : 2,8 Mo pour 18,7 Mo de verbes. |
 
 **Références :** ADR-006 ; sections 6.1 et 6.3 ; spec `morphologie-des-verbes`.
 

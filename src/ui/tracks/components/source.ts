@@ -28,7 +28,7 @@ function Loading({ model, onLoad }: Pick<SourceProps, 'model' | 'onLoad'>): VNod
     case 'waiting':
       return html`<p class="loading">
         <button type="button" class="load" onClick=${onLoad}>Charger le modèle (141 Mo)</button>
-        Votre navigateur demande d'économiser les données : le modèle attend votre accord.
+        Le modèle se télécharge une fois depuis jsDelivr et Hugging Face, qui voient alors votre adresse. Votre texte, lui, reste dans ce navigateur.
       </p>` as VNode;
     case 'loading':
       return html`<p class="loading">
@@ -59,7 +59,7 @@ export function Source(props: SourceProps): VNode {
       <textarea id="input" placeholder="Collez un texte en français…" value=${input}
         onInput=${(event: Event) => props.onInput((event.currentTarget as HTMLTextAreaElement).value)}></textarea>
       <div class="controls">
-        <button type="button" class="run" disabled=${model.status !== 'ready' || tagging} onClick=${props.onRun}>Mettre en pistes</button>
+        <button type="button" class="run" disabled=${model.status === 'loading' || tagging} onClick=${props.onRun}>Mettre en pistes</button>
         ${!started && html`<button type="button" class="example" disabled=${tagging} onClick=${props.onExample}>Essayer avec un exemple</button>`}
         <span class="input-message" role="status" aria-live="polite">${tagging ? 'Étiquetage du texte…' : message}</span>
       </div>

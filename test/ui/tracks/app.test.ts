@@ -42,8 +42,6 @@ test('avant l’étiquetage : saisie, chaîne, cinq pistes vides, pas de texte r
 
 test('mise en pistes : saisie repliée, texte résultant, inspecteur fermé, résumé annoncé', async () => {
   const { controller, app } = setup();
-  controller.start();
-  await tick();
   (find(app(), (e) => e.type === 'textarea').props['onInput'] as (event: Event) => void)(inputEvent('La vieille ferme du village dort.'));
   assert.equal(controller.state.input, 'La vieille ferme du village dort.');
   click(app(), byClass('run'));
@@ -126,9 +124,7 @@ test('premier contact : l’exemple et le chargement du modèle passent par le c
     loadMorphology: async () => morphology(),
     preload: async () => {},
     copy: async () => {},
-    saveData: true,
   });
-  waiting.start();
   click(html`<${App} state=${waiting.state} controller=${waiting} />`, byClass('load'));
   await tick();
   assert.equal(waiting.state.model.status, 'ready');
