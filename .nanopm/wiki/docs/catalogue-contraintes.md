@@ -3,6 +3,7 @@ type: doc
 skill: recherche
 provenance: assistant-researched
 generated: 2026-10-03
+updated: 2026-10-04
 sources: [oulipo.net/contraintes (153 fiches), src/domain/plugin.ts, src/domain/plugin-chain.ts, src/ports, src/adapters]
 ---
 # Catalogue des contraintes oulipiennes, vu comme des filtres
@@ -32,23 +33,47 @@ Deux réserves valent pour tout le niveau A :
 
 « Faisable » veut donc dire « implémentable », pas « parfait ».
 
-## Couverture dans Oulipao (2026-10-03)
+## Couverture dans Oulipao (2026-10-04)
 
-| Contrainte | Comment |
-|---|---|
-| S+7, V+7 | moteur S+n, sur les noms, adjectifs et verbes |
-| Lipogramme | moteur Lipogramme, sur une liste de lettres interdites ou permises (paramètre texte, E1) |
-| Liponymie, La rien que la toute la, Inventaire | moteur Tri par piste, et une recette chacune |
-| Haï-kaïsation, Intérieur de poème | moteur Bord, et une recette chacune |
-| Poème de bandit, Juliennes | moteur Mise en vers, et une recette chacune (Juliennes prend la date julienne du jour) |
-| Monovocalisme, Bivocalisme | recettes : un lipogramme sur les autres voyelles, voyelle(s) gardée(s) au choix ; une voyelle accentuée compte pour sa voyelle nue |
-| Contrainte du prisonnier | recette : un lipogramme sur les douze lettres à hampe ou à jambage (E1) |
-| Beau présent, Épithalame oulipien | recette Beau présent : un lipogramme en lettres permises, où l'on tape le nom (E1) |
-| Monoconsonnantisme | lipogramme en lettres permises sur les voyelles et la consonne gardée (E1) ; les mots qui survivent sont rares tant que E7 manque |
-| Tautogramme progressif | moteur Tautogramme progressif : les initiales suivent une liste de lettres en boucle ; chaque mot part du dictionnaire à son initiale changée (E1) |
-| Éclipse | pas de recette : le S+7 donne la seconde partie, mais juxtaposer les deux demande E3 |
+**32 contraintes sur 153 sont gérées, soit 21 %.** Sur les 61 que ce catalogue juge réalisables comme filtres (A et B), 30 le sont, soit 49 %. Une contrainte compte comme gérée quand un moteur ou une recette la produit.
 
-Familles suivantes, dans l'ordre : voisin à initiale imposée (Tautogramme, Abécédaire, Acrostiche universel, Delmas, Lipossible : le moteur du Tautogramme progressif en fait déjà l'essentiel ; l'Acrostiche brivadois reste à faire), variantes du S+n (adverbes, S+dé, Poème carré, Propre-Commun ; Homosyntaxisme et Aphorisme n'attendent plus que les adverbes), recherche par forme (Anagramme, Homovocalisme, avec un index construit à la demande).
+| Niveau | Gérées | Total | Part |
+|---|---|---|---|
+| A | 16 | 25 | 64 % |
+| B | 14 | 36 | 39 % |
+| C | 2 | 91 | 2 % |
+| ? | 0 | 1 | — |
+| **Total** | **32** | **153** | **21 %** |
+
+| Contrainte | Niveau | Comment |
+|---|---|---|
+| S+7, V+7 | A | moteur S+n, sur les noms, adjectifs et verbes |
+| S+dé | A | moteur S+n, tirage « au dé » : un décalage de 1 à 6 par mot, déduit d'une graine ; la recette prend la date julienne du jour |
+| Éclipse | A | recette : un S+7 sur les noms et la forme éclipse, qui met le texte d'origine devant le texte résultant |
+| Lipogramme | A | moteur Lipogramme, sur une liste de lettres interdites ou permises (paramètre texte, E1) |
+| Liponymie, La rien que la toute la, Inventaire | A | moteur Tri par piste, et une recette chacune |
+| Haï-kaïsation, Intérieur de poème | A | moteur Bord, et une recette chacune |
+| Poème de bandit, Juliennes | A | moteur Mise en vers, et une recette chacune (Juliennes prend la date julienne du jour) |
+| Monovocalisme, Bivocalisme | A | recettes : un lipogramme sur les autres voyelles, voyelle(s) gardée(s) au choix ; une voyelle accentuée compte pour sa voyelle nue |
+| Contrainte du prisonnier | B | recette : un lipogramme sur les douze lettres à hampe ou à jambage (E1) |
+| Beau présent, Épithalame oulipien | B | recette Beau présent : un lipogramme en lettres permises, où l'on tape le nom (E1) |
+| Monoconsonnantisme | B | lipogramme en lettres permises sur les voyelles et la consonne gardée (E1) ; les mots qui survivent sont rares tant que E7 manque |
+| Tautogramme, Abécédaire | A | moteur Tautogramme progressif, et une recette chacune : la lettre choisie, ou les lettres de a à z ; les mots-outils ne comptent pas |
+| Tautogramme progressif | B | moteur Tautogramme progressif : les initiales suivent une liste de lettres en boucle ; chaque mot part du dictionnaire à son initiale changée (E1) |
+| Poème monorime, Sonnet monorime (les deux fiches) | B | moteur Monorime, sur la textbank phonétique (E2) ; le genre peut alterner masculin et féminin |
+| Antirime | B | moteur Antirime (E2) |
+| Antérime | B | moteur Antérime : la rime imposée en début de vers (E2) |
+| Rime berrychonne | B | moteur Rime berrychonne (E2) |
+| Homophonies | B | moteur Homophonies (E2) |
+| Étreinte, Rime bisexuelle | B | moteur Schéma de rimes, schémas « étreinte » et « rime bisexuelle » (E2) |
+| Rondel, Villanelle | C | forme à refrain posée après la chaîne, avec le schéma de rimes du même nom : le fondateur écrit les vers neufs, les refrains sont recopiés (E2, E3 en partie) |
+
+**Hors catalogue.** Le moteur R+n (remplacer un mot par le n-ième mot qui rime avec lui) ne correspond à aucune fiche. Il prépare Aphorime et Locurime, qui attendent encore E5.
+
+Familles suivantes, dans l'ordre :
+- **Voisin à initiale imposée :** Acrostiche universel, Delmas, Lipossible. Le moteur du Tautogramme progressif en fait déjà l'essentiel ; l'Acrostiche brivadois reste à faire.
+- **Variantes du S+n :** adverbes, Poème carré, Propre-Commun. Homosyntaxisme et Aphorisme n'attendent plus que les adverbes.
+- **Recherche par forme :** Anagramme, Homovocalisme, avec un index construit à la demande.
 
 ## Récapitulatif
 

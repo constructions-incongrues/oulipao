@@ -1,11 +1,13 @@
 import { z } from 'zod';
 import { CATEGORIES, CategorySchema, type Category } from '../../domain/categories.ts';
+import { FormSchema } from '../../domain/forms/form.ts';
 import { ParameterValuesSchema, type ConstraintPlugin } from '../../domain/plugin.ts';
 import { TRACK_NAMES } from './types.ts';
 
 /**
  * Une recette : une contrainte de l'Oulipo par son nom, qui se réduit à une ou plusieurs instances
- * des contraintes installées. Elle peut demander un seul réglage, à choix, quand on la branche.
+ * des contraintes installées. Elle peut demander un seul réglage, à choix, quand on la branche, et
+ * poser une forme sur le texte résultant.
  */
 export const RecipeSchema = z.object({
   id: z.string().min(1),
@@ -14,6 +16,8 @@ export const RecipeSchema = z.object({
   rule: z.string().min(1),
   /** La fiche de la contrainte sur oulipo.net. */
   url: z.string().url(),
+  /** La forme posée au branchement ; absente : la forme courante reste. */
+  form: FormSchema.optional(),
   choice: z
     .object({
       label: z.string().min(1),
@@ -39,10 +43,21 @@ const ACCENTS = 'Une lettre accentuée compte pour sa lettre nue, comme chez Per
 /** La date julienne d'un jour, à midi : le 3 octobre 2026 donne 2461317. */
 export const julianDay = (date: Date) => Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 86_400_000 + 2_440_588;
 
+const ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
+const tautogram = (letters: string): RecipeStep[] => [{ type: 'tautogram', params: { letters }, targets: ['noun', 'adjective', 'verb', 'adverb'] }];
+const INITIALS = 'Les mots-outils ne comptent pas ; « être » et « avoir » restent.';
+
 const PAIRS = VOWELS.flatMap((a, i) => VOWELS.slice(i + 1).map((b) => `${a}${b}`));
 
 /** Les recettes fournies, par ordre alphabétique. */
 export const RECIPES: Recipe[] = [
+  {
+    id: 'abecedaire',
+    name: 'Abécédaire',
+    rule: `Les initiales des mots successifs suivent l'alphabet, de a à z, en boucle. ${INITIALS}`,
+    url: 'https://oulipo.net/contraintes/abecedaire',
+    build: () => tautogram(ALPHABET),
+  },
   {
     id: 'beau-present',
     name: 'Beau présent',
@@ -64,6 +79,14 @@ export const RECIPES: Recipe[] = [
     rule: `N'écrire qu'avec les lettres sans hampe ni jambage. ${ACCENTS}`,
     url: 'https://oulipo.net/contraintes/contrainte-du-prisonnier',
     build: () => lipogram('bdfghjklpqty'),
+  },
+  {
+    id: 'eclipse',
+    name: 'Éclipse',
+    rule: 'Votre texte, suivi de son S+7 : le texte d’origine passe devant le texte résultant, séparé par une ligne vide.',
+    url: 'https://oulipo.net/contraintes/eclipse',
+    form: 'eclipse',
+    build: () => [{ type: 's7', params: { offset: 7 }, targets: ['noun'] }],
   },
   {
     id: 'hai-kaisation',
@@ -123,6 +146,21 @@ export const RECIPES: Recipe[] = [
     rule: 'Voler un poème à une prose : seule la disposition change.',
     url: 'https://oulipo.net/contraintes/poeme-de-bandit',
     build: () => [{ type: 'lineation', params: { cut: 'every', n: 6 }, targets: [...CATEGORIES] }],
+  },
+  {
+    id: 's-de',
+    name: 'S+dé',
+    rule: 'Comme le S+7, mais chaque nom avance d’un nombre de places tiré au dé, de 1 à 6. La graine part de la date du jour : changez-la pour relancer le dé.',
+    url: 'https://oulipo.net/contraintes/sde',
+    build: (_choice, today) => [{ type: 's7', params: { draw: 'dice', seed: julianDay(today) }, targets: ['noun'] }],
+  },
+  {
+    id: 'tautogramme',
+    name: 'Tautogramme',
+    rule: `Tous les mots commencent par la même lettre. ${INITIALS}`,
+    url: 'https://oulipo.net/contraintes/tautogramme',
+    choice: { label: 'Lettre', options: [...ALPHABET].map((letter) => ({ value: letter, label: letter })) },
+    build: (letter) => tautogram(letter!),
   },
 ];
 

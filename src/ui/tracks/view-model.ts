@@ -190,8 +190,9 @@ export function buildView(
     CATEGORIES.map((category) => [category, tagged.filter((word) => word.category === category).length]),
   ) as Record<Category, number>;
   const audible = audibleCategories(mixer.tracks);
-  // La forme à refrain se pose après la chaîne et le mixage : la chaîne reste alignée mot à mot.
-  const formed = layoutForm(mixSegments(chain.words, tagged, audible, chain.tail, chain.steps.some((step) => step.removed > 0)), mixer.form ?? 'none');
+  // La forme se pose après la chaîne et le mixage : la chaîne reste alignée mot à mot. Éclipse
+  // reçoit le texte d'origine, qu'elle met devant.
+  const formed = layoutForm(mixSegments(chain.words, tagged, audible, chain.tail, chain.steps.some((step) => step.removed > 0)), mixer.form ?? 'none', text);
   const segments = formed.segments;
   // La lettre de chaque fin de vers sous le dernier schéma de rimes actif.
   // ponytail: lue sur la sortie finale, pas sur le texte qui entre dans le schéma ; une mise en vers

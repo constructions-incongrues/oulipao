@@ -461,3 +461,10 @@ test('StepGrid : le pas que dit l’écoute porte la marque et est annoncé comm
   assert.equal(playing.match(/aria-current/g)?.length, 1);
   assert.equal(renderToString(html`<${StepGrid} ...${gridProps().props} />`).match(/aria-current|playing/g), null);
 });
+
+test('Chain : un S+n au dé s’appelle « S+dé », un S+n fixe « S+7 »', () => {
+  const s7 = (id: string, draw: string) => ({ id, type: 's7', enabled: true, params: { ...s7Plugin.defaults, draw, seed: 2461318 }, targets: ['noun'] });
+  const out = renderToString(html`<${Chain} instances=${[s7('s7-1', 'dice'), s7('s7-2', 'fixed')]} plugins=${[s7Plugin]} lookup=${() => s7Plugin} dispatch=${() => {}} />`);
+  assert.match(out, /aria-label="Contrainte 1 : S\+dé".*<span class="name">S\+dé<\/span>/s);
+  assert.match(out, /aria-label="Contrainte 2 : S\+7".*<span class="name">S\+7<\/span>/s);
+});
