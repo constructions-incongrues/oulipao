@@ -12,6 +12,7 @@ Page : `tracks.html` (script assemblé `dist/tracks.js`, par `npm run build`). L
 - **Plugin** : une contrainte branchée sur une piste. Un seul existe, le S+7, ouvert sous la
   ligne des noms, avec deux paramètres : « Décalage » (de −99 à +99) et « Parmi » (« tous les
   noms », ou « les noms du même genre »). Une ligne dit que d'autres contraintes viendront.
+  La page dessine ces réglages d'après la déclaration du plugin : voir `docs/plugins.md`.
 - **Partition** : le texte d'origine disposé en systèmes.
 - **Système** : une ligne du texte d'origine (la règle) et, dessous, les pistes qui y ont des
   mots (les pistes vides du système sont masquées). La partition revient à la ligne comme une
@@ -26,8 +27,9 @@ Page : `tracks.html` (script assemblé `dist/tracks.js`, par `npm run build`). L
 
 L'étiquetage a lieu une fois par texte. Ensuite chaque geste rejoue trois fonctions pures :
 
-1. **Moteur** (`src/domain/s7/engine.ts`) : si le plugin est actif, le S+7, dont la sortie est
-   rendue mot par mot (`S7Result.words`) ; sinon les mots d'origine (`plainWords`).
+1. **Plugin** (`installedPlugin.apply`, aujourd'hui le S+7 de `src/domain/s7/plugin.ts`) : si
+   le plugin est en marche et que son réglage change le texte, sa sortie mot par mot ; sinon les
+   mots d'origine (`plainWords`).
 2. **Mixage** (`src/domain/mixing.ts`) : `audibleCategories` dit quelles pistes s'entendent
    (sans solo, celles qui ne sont pas muettes ; sinon les seules pistes en solo) ; `mixText`
    retire les mots des autres, resserre le texte et garde la ponctuation.

@@ -8,6 +8,7 @@ import { EmptyScore, Score } from './components/score.ts';
 import { Source } from './components/source.ts';
 import { Strip } from './components/strip.ts';
 import type { TracksController, TracksState } from './controller.ts';
+import { installedPlugin } from './mixer-state.ts';
 import { summarize } from './view-model.ts';
 
 export interface AppProps {
@@ -50,12 +51,12 @@ export function App({ state, controller }: AppProps): VNode {
                 onMute=${() => controller.dispatch({ type: 'toggle-mute', category })}
                 onSolo=${() => controller.dispatch({ type: 'toggle-solo', category })}
               >
-                ${category === 'noun' &&
+                ${category === installedPlugin.track &&
                 html`<${PluginSlot}
-                  plugin=${mixer.plugin}
+                  plugin=${installedPlugin}
+                  state=${mixer.plugin}
                   onToggle=${() => controller.dispatch({ type: 'toggle-plugin' })}
-                  onOffset=${(offset: number) => controller.dispatch({ type: 'set-offset', offset })}
-                  onMode=${(mode: 'reagree' | 'same-gender') => controller.dispatch({ type: 'set-mode', mode })}
+                  onParam=${(key: string, value: number | string) => controller.dispatch({ type: 'set-param', key, value })}
                 />`}
               <//>
             `,

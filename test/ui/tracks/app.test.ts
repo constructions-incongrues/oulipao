@@ -76,8 +76,8 @@ test('chaque réglage de la page passe par le contrôleur', async () => {
     { type: 'toggle-mute', category: 'adjective' },
     { type: 'toggle-solo', category: 'verb' },
     { type: 'toggle-plugin' },
-    { type: 'set-offset', offset: 3 },
-    { type: 'set-mode', mode: 'same-gender' },
+    { type: 'set-param', key: 'offset', value: 3 },
+    { type: 'set-param', key: 'mode', value: 'same-gender' },
   ]);
   click(app(), byClass('copy'));
   await tick();

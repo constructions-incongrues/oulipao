@@ -1,11 +1,10 @@
 import { CATEGORIES, type Category } from '../../domain/categories.ts';
 import { audibleCategories, mixSegments, plainWords, type MixedSegment } from '../../domain/mixing.ts';
-import { applyS7 } from '../../domain/s7/engine.ts';
-import type { SubstitutionStatus } from '../../domain/s7/types.ts';
 import type { TaggedWord } from '../../domain/tagged-word.ts';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
+import { installedPlugin } from './mixer-state.ts';
 import { layoutScore } from './score-layout.ts';
-import { TRACK_NAMES, type MixerState, type PluginState, type ScoreLayout } from './types.ts';
+import { TRACK_NAMES, TRACK_UNITS, type MixerState, type PluginState, type ScoreLayout } from './types.ts';
 
 /** Un texte collé et étiqueté : on ne l'étiquette qu'une fois, puis chaque geste rejoue la suite. */
 export interface Session {
@@ -13,11 +12,11 @@ export interface Session {
   tagged: TaggedWord[];
 }
 
-/** Ce que le plugin a fait d'un nom : remplacé, ou laissé tel quel, et pourquoi. */
-export interface NounMark {
+/** Ce que le plugin a fait d'un mot de sa piste : remplacé, ou laissé tel quel, et pourquoi. */
+export interface Mark {
   state: 'replaced' | 'kept';
   original: string;
-  /** Pour un nom laissé tel quel : la raison, en clair. */
+  /** Pour un mot laissé tel quel : la raison, en clair. */
   reason?: string;
 }
 
@@ -32,38 +31,33 @@ export interface TracksView {
   empty: boolean;
   /** Nombre de mots par piste. */
   counts: Record<Category, number>;
-  /** Noms remplacés par le plugin, sur le nombre de noms. */
+  /** Mots remplacés par le plugin, sur le nombre de mots de sa piste. */
   replaced: number;
-  nouns: number;
-  /** Les noms touchés par le plugin, par position ; vide quand il n'agit pas. */
-  marks: ReadonlyMap<number, NounMark>;
+  targets: number;
+  /** Les mots touchés par le plugin, par position ; vide quand il n'agit pas. */
+  marks: ReadonlyMap<number, Mark>;
   audible: ReadonlySet<Category>;
 }
 
-const REASONS: Record<Exclude<SubstitutionStatus, 'replaced'>, string> = {
-  'unknown-noun': 'absent du dictionnaire',
-  'missing-form': 'aucun nom au bon genre et au bon nombre',
-};
+/** Le plugin change-t-il quelque chose ? Coupé, ou réglé pour ne rien faire (S+0), non. */
+export const pluginActs = (plugin: PluginState) => plugin.enabled && installedPlugin.acts(plugin.params);
 
-/** Le plugin change-t-il quelque chose ? Coupé ou à S+0, non. */
-export const pluginActs = (plugin: PluginState) => plugin.enabled && plugin.offset !== 0;
-
-/** Rejoue la chaîne moteur → mixage → disposition, sans réétiqueter. */
+/** Rejoue la chaîne plugin → mixage → disposition, sans réétiqueter. */
 export function buildView(session: Session, mixer: MixerState, morphology: MorphologyRepository, width?: number): TracksView {
   const { text, tagged } = session;
   const labels = new Map<number, string>();
-  const marks = new Map<number, NounMark>();
+  const marks = new Map<number, Mark>();
   let words;
   let tail;
   if (pluginActs(mixer.plugin)) {
-    const s7 = applyS7(text, tagged, { offset: mixer.plugin.offset, mode: mixer.plugin.mode }, morphology);
-    ({ words, tail } = s7);
-    for (const { index, original, replacement, status } of s7.substitutions) {
-      if (status === 'replaced') {
+    const result = installedPlugin.apply(text, tagged, mixer.plugin.params, { morphology });
+    ({ words, tail } = result);
+    for (const { index, original, replacement, reason } of result.marks) {
+      if (replacement !== undefined) {
         labels.set(index, replacement);
         marks.set(index, { state: 'replaced', original });
       } else {
-        marks.set(index, { state: 'kept', original, reason: REASONS[status] });
+        marks.set(index, { state: 'kept', original, reason });
       }
     }
   } else {
@@ -81,16 +75,11 @@ export function buildView(session: Session, mixer: MixerState, morphology: Morph
     empty: !segments.some((segment) => segment.index !== undefined),
     counts,
     replaced: labels.size,
-    nouns: counts.noun,
+    targets: counts[installedPlugin.track],
     marks,
     audible,
   };
 }
-
-/** « S+7 », « S−3 » : le nom du réglage, avec un vrai signe moins. */
-export const ruleName = (offset: number) => `S${offset < 0 ? '−' : '+'}${Math.abs(offset)}`;
-
-const AMONG: Record<PluginState['mode'], string> = { reagree: 'parmi tous les noms', 'same-gender': 'parmi les noms du même genre' };
 
 /** Les pistes qu'on n'entend pas, par leur nom en minuscules. */
 const cutTracks = (audible: ReadonlySet<Category>) =>
@@ -98,23 +87,24 @@ const cutTracks = (audible: ReadonlySet<Category>) =>
 
 /** La phrase qui résume l'état du texte, affichée et annoncée après chaque geste. */
 export function summarize(mixer: MixerState, view: TracksView): string {
-  const plugin = mixer.plugin;
-  const rule = !plugin.enabled
+  const { enabled, params } = mixer.plugin;
+  const [one, many] = TRACK_UNITS[installedPlugin.track];
+  const rule = !enabled
     ? 'Plugin coupé : texte d’origine.'
-    : plugin.offset === 0
-      ? 'S+0 : aucun changement.'
-      : `${ruleName(plugin.offset)}, ${AMONG[plugin.mode]} : ${view.replaced} ${view.replaced > 1 ? 'noms remplacés' : 'nom remplacé'} sur ${view.nouns}.`;
+    : !installedPlugin.acts(params)
+      ? installedPlugin.help(params)
+      : `${installedPlugin.label(params)} : ${view.replaced} ${view.replaced > 1 ? `${many} remplacés` : `${one} remplacé`} sur ${view.targets}.`;
   const cut = cutTracks(view.audible);
   return cut.length ? `${rule} Pistes coupées : ${cut.join(', ')}.` : rule;
 }
 
 /**
  * La mention ajoutée au texte copié : ce qui a changé le texte, et d'où il vient. Rien quand le
- * texte copié est le texte d'origine (plugin coupé ou S+0, toutes les pistes entendues).
+ * texte copié est le texte d'origine (plugin coupé ou sans effet, toutes les pistes entendues).
  */
 export function ruleMention(mixer: MixerState, audible: ReadonlySet<Category>): string {
   const parts: string[] = [];
-  if (pluginActs(mixer.plugin)) parts.push(`${ruleName(mixer.plugin.offset)}, ${AMONG[mixer.plugin.mode]}`);
+  if (pluginActs(mixer.plugin)) parts.push(installedPlugin.label(mixer.plugin.params));
   const cut = cutTracks(audible);
   if (cut.length) parts.push(`pistes coupées : ${cut.join(', ')}`);
   return parts.length ? `\n\n— ${parts.join(' · ')} (Potao)` : '';

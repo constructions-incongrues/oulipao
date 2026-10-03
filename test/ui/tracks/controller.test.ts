@@ -103,7 +103,7 @@ test('chaque geste met la vue à jour sans réétiqueter ; les mots changés s�
   const results = [controller.state.view!.result];
   const generation = controller.state.generation;
   for (const offset of [1, 2, 3, -1]) {
-    controller.dispatch({ type: 'set-offset', offset });
+    controller.dispatch({ type: 'set-param', key: 'offset', value: offset });
     results.push(controller.state.view!.result);
   }
   assert.equal(new Set(results).size, 5);
@@ -230,7 +230,7 @@ test('copier : le texte résultant et sa mention (D11) ; message à côté du bo
   await controller.copy();
   assert.deepEqual(copied, ["L'oncle.\n\n— S+7, parmi tous les noms (Potao)"]);
   assert.equal(controller.state.copyMessage, 'Copié.');
-  controller.dispatch({ type: 'set-offset', offset: 2 });
+  controller.dispatch({ type: 'set-param', key: 'offset', value: 2 });
   assert.equal(controller.state.copyMessage, ''); // le texte a changé depuis la copie
   controller.dispatch({ type: 'toggle-plugin' });
   await controller.copy();

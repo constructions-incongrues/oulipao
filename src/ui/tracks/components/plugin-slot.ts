@@ -1,60 +1,53 @@
 import { html } from 'htm/preact';
 import type { VNode } from 'preact';
-import type { S7Mode } from '../../../domain/s7/types.ts';
-import { MAX_OFFSET, MIN_OFFSET, type PluginState } from '../types.ts';
-import { ruleName } from '../view-model.ts';
+import type { ConstraintPlugin, Parameter } from '../../../domain/plugin.ts';
+import { TRACK_UNITS, type PluginState } from '../types.ts';
 
 export interface PluginSlotProps {
-  plugin: PluginState;
+  plugin: ConstraintPlugin;
+  state: PluginState;
   onToggle?: () => void;
-  onOffset?: (offset: number) => void;
-  onMode?: (mode: S7Mode) => void;
+  onParam?: (key: string, value: number | string) => void;
 }
 
-/** Les deux valeurs du paramètre « Parmi ». */
-const AMONG: [S7Mode, string][] = [['reagree', 'tous les noms'], ['same-gender', 'les noms du même genre']];
-
-/** Ce que fait le réglage en cours, en une phrase. */
-function help({ enabled, offset, mode }: PluginState): string {
-  if (!enabled) return 'Plugin coupé : les noms restent ceux du texte.';
-  if (offset === 0) return 'S+0 : aucun changement.';
-  const rank = `${Math.abs(offset)}${Math.abs(offset) === 1 ? 'er' : 'e'}`;
-  const direction = offset > 0 ? 'suit' : 'précède';
-  return mode === 'reagree'
-    ? `Chaque nom devient le ${rank} nom qui le ${direction} dans le dictionnaire ; la phrase est réaccordée.`
-    : `Chaque nom devient le ${rank} nom de même genre qui le ${direction} dans le dictionnaire.`;
+/** Un paramètre, tel que le plugin le déclare : un champ numérique borné, ou une liste. */
+function Control({ parameter, value, onParam }: { parameter: Parameter; value: number | string | undefined; onParam?: PluginSlotProps['onParam'] }): VNode {
+  if (parameter.kind === 'integer') {
+    const { key, min, max } = parameter;
+    return html`<input
+      type="number"
+      step="1"
+      min=${min}
+      max=${max}
+      value=${value}
+      onInput=${(event: Event) => {
+        const raw = (event.currentTarget as HTMLInputElement).value;
+        const number = Number(raw);
+        // Champ vide, nombre à virgule ou hors bornes : on attend une saisie valable.
+        if (raw.trim() !== '' && Number.isInteger(number) && number >= min && number <= max) onParam?.(key, number);
+      }}
+    />` as VNode;
+  }
+  return html`<select value=${value} onChange=${(event: Event) => onParam?.(parameter.key, (event.currentTarget as HTMLSelectElement).value)}>
+    ${parameter.options.map((option) => html`<option value=${option.value} selected=${option.value === value}>${option.label}</option>`)}
+  </select>` as VNode;
 }
 
-/** Le plugin S+7, ouvert sous la ligne des noms : marche, Décalage, Parmi, et l'effet en clair. */
-export function PluginSlot({ plugin, onToggle, onOffset, onMode }: PluginSlotProps): VNode {
+/**
+ * Le plugin, ouvert sous la ligne de sa piste : marche, un réglage par paramètre déclaré, et
+ * l'effet en clair. La page ne connaît aucun plugin en particulier.
+ */
+export function PluginSlot({ plugin, state, onToggle, onParam }: PluginSlotProps): VNode {
+  const { enabled, params } = state;
   return html`
-    <div class=${`plugin ${plugin.enabled ? 'on' : 'off'}`}>
-      <button type="button" class="power" aria-pressed=${plugin.enabled} aria-label="Plugin S+7 actif" onClick=${onToggle}>
-        ${ruleName(plugin.offset)} ${plugin.enabled ? 'actif' : 'coupé'}
+    <div class=${`plugin ${enabled ? 'on' : 'off'}`}>
+      <button type="button" class="power" aria-pressed=${enabled} aria-label=${`Plugin ${plugin.name} actif`} onClick=${onToggle}>
+        ${plugin.title(params)} ${enabled ? 'actif' : 'coupé'}
       </button>
-      <label>
-        Décalage
-        <input
-          type="number"
-          step="1"
-          min=${MIN_OFFSET}
-          max=${MAX_OFFSET}
-          value=${plugin.offset}
-          onInput=${(event: Event) => {
-            const raw = (event.currentTarget as HTMLInputElement).value;
-            const offset = Number(raw);
-            // Champ vide, nombre à virgule ou hors bornes : on attend une saisie valable.
-            if (raw.trim() !== '' && Number.isInteger(offset) && offset >= MIN_OFFSET && offset <= MAX_OFFSET) onOffset?.(offset);
-          }}
-        />
-      </label>
-      <label>
-        Parmi
-        <select value=${plugin.mode} onChange=${(event: Event) => onMode?.((event.currentTarget as HTMLSelectElement).value as S7Mode)}>
-          ${AMONG.map(([mode, label]) => html`<option value=${mode} selected=${mode === plugin.mode}>${label}</option>`)}
-        </select>
-      </label>
-      <p class="help">${help(plugin)}</p>
+      ${plugin.parameters.map(
+        (parameter) => html`<label>${parameter.label}<${Control} parameter=${parameter} value=${params[parameter.key]} onParam=${onParam} /></label>`,
+      )}
+      <p class="help">${enabled ? plugin.help(params) : `Plugin coupé : les ${TRACK_UNITS[plugin.track][1]} restent ceux du texte.`}</p>
     </div>
   ` as VNode;
 }

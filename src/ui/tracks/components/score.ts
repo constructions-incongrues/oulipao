@@ -2,25 +2,25 @@ import { html } from 'htm/preact';
 import type { VNode } from 'preact';
 import { CATEGORIES, type Category } from '../../../domain/categories.ts';
 import { TRACK_NAMES, type Block, type ScoreLayout } from '../types.ts';
-import type { NounMark } from '../view-model.ts';
+import type { Mark } from '../view-model.ts';
 
 export interface ScoreProps {
   layout: ScoreLayout;
   /** Pistes qu'on entend : les autres sont affichées estompées. */
   audible: ReadonlySet<Category>;
   /** Ce que le plugin a fait des noms, par position. */
-  marks?: ReadonlyMap<number, NounMark>;
+  marks?: ReadonlyMap<number, Mark>;
 }
 
 /** L'infobulle d'un bloc : le mot, ou ce que le plugin en a fait. */
-function blockTitle(block: Block, mark: NounMark | undefined): string {
+function blockTitle(block: Block, mark: Mark | undefined): string {
   if (!mark) return block.label;
   if (mark.state === 'replaced') return `${mark.original} → ${block.label}`;
   return `${mark.original} : laissé tel quel, ${mark.reason}`;
 }
 
 /** Un mot de la liste lue à la place de la partition. */
-function spoken(block: Block, mark: NounMark | undefined): string {
+function spoken(block: Block, mark: Mark | undefined): string {
   if (!mark) return block.label;
   if (mark.state === 'replaced') return `${mark.original} devenu ${block.label}`;
   return `${mark.original} laissé tel quel (${mark.reason})`;

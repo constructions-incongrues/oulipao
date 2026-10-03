@@ -5,12 +5,14 @@ import { renderToString } from 'preact-render-to-string';
 import { CATEGORIES } from '../../../src/domain/categories.ts';
 import type { ModelState } from '../../../src/ui/tracks/controller.ts';
 import { PluginSlot } from '../../../src/ui/tracks/components/plugin-slot.ts';
+import { definePlugin } from '../../../src/domain/plugin.ts';
+import { s7Plugin } from '../../../src/domain/s7/plugin.ts';
 import { Result } from '../../../src/ui/tracks/components/result.ts';
 import { EmptyScore, Score } from '../../../src/ui/tracks/components/score.ts';
 import { Source, type SourceProps } from '../../../src/ui/tracks/components/source.ts';
 import { Strip, TRACK_NAMES } from '../../../src/ui/tracks/components/strip.ts';
 import { layoutScore } from '../../../src/ui/tracks/score-layout.ts';
-import type { NounMark } from '../../../src/ui/tracks/view-model.ts';
+import type { Mark } from '../../../src/ui/tracks/view-model.ts';
 import { tag } from '../../support/morphology.ts';
 import { byClass, byLabel, elements, find, inputEvent } from '../../support/vnode.ts';
 
@@ -33,37 +35,52 @@ test('Strip : pastille, nom, nombre de mots, Muet et Seul en toutes lettres, ave
   assert.deepEqual(Object.keys(TRACK_NAMES), [...CATEGORIES]);
 });
 
-test('PluginSlot : marche, Décalage borné, Parmi, et l’effet en clair', () => {
+test('PluginSlot : marche, un réglage par paramètre déclaré, et l’effet en clair', () => {
   const calls: unknown[] = [];
-  const slot = html`<${PluginSlot} plugin=${{ enabled: true, offset: 7, mode: 'reagree' }}
-    onToggle=${() => calls.push('toggle')} onOffset=${(n: number) => calls.push(n)} onMode=${(m: string) => calls.push(m)} />`;
+  const slot = html`<${PluginSlot} plugin=${s7Plugin} state=${{ enabled: true, params: { offset: 7, mode: 'reagree' } }}
+    onToggle=${() => calls.push('toggle')} onParam=${(key: string, value: unknown) => calls.push(`${key}=${value}`)} />`;
   const out = renderToString(slot);
   assert.match(out, /class="plugin on"/);
   assert.match(out, /aria-pressed="true" aria-label="Plugin S\+7 actif"/);
   assert.match(out, /S\+7 actif/);
-  assert.match(out, /<input type="number" step="1" min="-99" max="99" value="7"/);
-  assert.match(out, /Parmi<select><option value="reagree" selected>tous les noms<\/option><option value="same-gender">les noms du même genre<\/option>/);
+  assert.match(out, /<label>Décalage<input type="number" step="1" min="-99" max="99" value="7"/);
+  assert.match(out, /<label>Parmi<select><option value="reagree" selected>tous les noms<\/option><option value="same-gender">les noms du même genre<\/option>/);
   assert.match(out, /Chaque nom devient le 7e nom qui le suit dans le dictionnaire ; la phrase est réaccordée\./);
   click(slot, byClass('power'));
   const input = find(slot, (e) => e.type === 'input').props['onInput'] as (event: Event) => void;
   for (const value of ['3', '2.5', '', '100', '-100', '-99']) input(inputEvent(value)); // hors bornes, vide ou à virgule : ignoré
   (find(slot, (e) => e.type === 'select').props['onChange'] as (event: Event) => void)(inputEvent('same-gender'));
-  assert.deepEqual(calls, ['toggle', 3, -99, 'same-gender']);
+  assert.deepEqual(calls, ['toggle', 'offset=3', 'offset=-99', 'mode=same-gender']);
 
-  const help = (plugin: object) => renderToString(html`<${PluginSlot} plugin=${plugin} />`);
-  assert.match(help({ enabled: false, offset: -3, mode: 'same-gender' }), /class="plugin off".*S−3 coupé.*Plugin coupé : les noms restent ceux du texte\./s);
-  assert.match(help({ enabled: true, offset: 0, mode: 'reagree' }), /S\+0 : aucun changement\./);
-  assert.match(help({ enabled: true, offset: -1, mode: 'same-gender' }), /le 1er nom de même genre qui le précède/);
+  const help = (enabled: boolean, params: object) => renderToString(html`<${PluginSlot} plugin=${s7Plugin} state=${{ enabled, params }} />`);
+  assert.match(help(false, { offset: -3, mode: 'same-gender' }), /class="plugin off".*S−3 coupé.*Plugin coupé : les noms restent ceux du texte\./s);
+  assert.match(help(true, { offset: 0, mode: 'reagree' }), /S\+0 : aucun changement\./);
+  assert.match(help(true, { offset: -1, mode: 'same-gender' }), /le 1er nom de même genre qui le précède/);
   // sans gestionnaires : les gestes sont sans effet, sans erreur
-  const bare = html`<${PluginSlot} plugin=${{ enabled: true, offset: 7, mode: 'reagree' }} />`;
+  const bare = html`<${PluginSlot} plugin=${s7Plugin} state=${{ enabled: true, params: { offset: 7, mode: 'reagree' } }} />`;
   (find(bare, (e) => e.type === 'input').props['onInput'] as (event: Event) => void)(inputEvent('4'));
   (find(bare, (e) => e.type === 'select').props['onChange'] as (event: Event) => void)(inputEvent('reagree'));
+
+  // la page ne connaît pas le S+7 : un autre plugin se dessine d'après sa propre déclaration
+  const other = definePlugin({
+    ...s7Plugin,
+    id: 'essai', name: 'Essai', track: 'adjective',
+    parameters: [{ kind: 'choice', key: 'sens', label: 'Sens', options: [{ value: 'haut', label: 'vers le haut' }] }],
+    defaults: { sens: 'haut' },
+    parse: (values) => values,
+    title: () => 'Essai',
+    help: () => 'Un plugin d’essai.',
+  });
+  const drawn = renderToString(html`<${PluginSlot} plugin=${other} state=${{ enabled: false, params: { sens: 'haut' } }} />`);
+  assert.match(drawn, /aria-label="Plugin Essai actif">Essai coupé/);
+  assert.match(drawn, /<label>Sens<select><option value="haut" selected>vers le haut<\/option><\/select><\/label>/);
+  assert.match(drawn, /Plugin coupé : les adjectifs restent ceux du texte\./);
 });
 
 test('Score : la règle, les seules pistes non vides, trois aspects de bloc, une liste pour les lecteurs d’écran', () => {
   const text = 'La vieille ferme dort.';
   const layout = layoutScore(text, tag(text), new Map([[2, 'fermoir']]));
-  const marks = new Map<number, NounMark>([[2, { state: 'replaced', original: 'ferme' }]]);
+  const marks = new Map<number, Mark>([[2, { state: 'replaced', original: 'ferme' }]]);
   const score = html`<${Score} layout=${layout} audible=${new Set(['noun', 'verb', 'adverb', 'other'])} marks=${marks} />`;
   const out = renderToString(score);
   assert.match(out, /<div aria-hidden="true"><div class="system">/);
@@ -95,7 +112,7 @@ test('Result : noms remplacés soulignés, mots changés éclairés, pistes coup
   const props = {
     segments: [{ text: 'Le', index: 0 }, { text: ' ' }, { text: 'fermoir', index: 1 }, { text: ',\nvieux.' }],
     empty: false,
-    marks: new Map<number, NounMark>([[1, { state: 'replaced', original: 'ferme' }]]),
+    marks: new Map<number, Mark>([[1, { state: 'replaced', original: 'ferme' }]]),
     changed: new Set([0, 1]),
     generation: 3,
     audibleCount: 5,

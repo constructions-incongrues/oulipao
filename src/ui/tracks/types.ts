@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { CategorySchema, type Category } from '../../domain/categories.ts';
 import { TracksSchema } from '../../domain/mixing.ts';
-import { S7ModeSchema } from '../../domain/s7/types.ts';
+import { ParameterValuesSchema } from '../../domain/plugin.ts';
 
 /** Nom des pistes, tel qu'affiché. */
 export const TRACK_NAMES: Record<Category, string> = {
@@ -12,17 +12,17 @@ export const TRACK_NAMES: Record<Category, string> = {
   other: 'Autres',
 };
 
-/** Bornes du décalage du S+7. */
-export const MIN_OFFSET = -99;
-export const MAX_OFFSET = 99;
-export const OffsetSchema = z.number().int().min(MIN_OFFSET).max(MAX_OFFSET);
+/** Les mots d'une piste, au singulier et au pluriel : « 1 nom remplacé », « 3 noms remplacés ». */
+export const TRACK_UNITS: Record<Category, [string, string]> = {
+  noun: ['nom', 'noms'],
+  verb: ['verbe', 'verbes'],
+  adjective: ['adjectif', 'adjectifs'],
+  adverb: ['adverbe', 'adverbes'],
+  other: ['mot', 'mots'],
+};
 
-/** Le plugin S+7 branché sur la piste des noms. */
-export const PluginStateSchema = z.object({
-  enabled: z.boolean(),
-  offset: OffsetSchema,
-  mode: S7ModeSchema,
-});
+/** Le plugin branché sur sa piste : en marche ou coupé, et ses réglages. */
+export const PluginStateSchema = z.object({ enabled: z.boolean(), params: ParameterValuesSchema });
 export type PluginState = z.infer<typeof PluginStateSchema>;
 
 /** L'état de la table de mixage : les pistes et le plugin. */
@@ -34,8 +34,7 @@ export const MixerActionSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('toggle-mute'), category: CategorySchema }),
   z.object({ type: z.literal('toggle-solo'), category: CategorySchema }),
   z.object({ type: z.literal('toggle-plugin') }),
-  z.object({ type: z.literal('set-offset'), offset: OffsetSchema }),
-  z.object({ type: z.literal('set-mode'), mode: S7ModeSchema }),
+  z.object({ type: z.literal('set-param'), key: z.string().min(1), value: z.union([z.number(), z.string()]) }),
 ]);
 export type MixerAction = z.infer<typeof MixerActionSchema>;
 

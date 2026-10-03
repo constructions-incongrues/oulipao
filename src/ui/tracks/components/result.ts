@@ -1,14 +1,14 @@
 import { html } from 'htm/preact';
 import type { VNode } from 'preact';
 import type { MixedSegment } from '../../../domain/mixing.ts';
-import type { NounMark } from '../view-model.ts';
+import type { Mark } from '../view-model.ts';
 
 export interface ResultProps {
   segments: MixedSegment[];
   /** Aucun mot ne s'entend. */
   empty: boolean;
   /** Les noms touchés par le plugin : les remplacés sont soulignés. */
-  marks: ReadonlyMap<number, NounMark>;
+  marks: ReadonlyMap<number, Mark>;
   /** Les mots qui viennent de changer, et le numéro du changement (pour rejouer l'éclat). */
   changed: ReadonlySet<number>;
   generation: number;
