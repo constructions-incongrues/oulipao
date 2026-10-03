@@ -162,3 +162,9 @@ test('Verbes : sans voisin, auxiliaire, pas bouché, piste non visée, verbes pa
   // Un verbe sans la lettre n'est pas touché.
   assert.deepEqual(run('il dort', 'e', { il: 'other', dort: 'verb' }, ['verb']).marks, []);
 });
+
+test('article rétabli : « l’ » devant un mot nouveau à initiale consonantique', () => {
+  const { text, marks } = run("L'enceinte maison.", 'n');
+  assert.equal(text, 'La fermée ville.');
+  assert.deepEqual(marks.find((mark) => mark.original === 'enceinte'), { index: 1, original: 'enceinte', replacement: 'fermée' });
+});

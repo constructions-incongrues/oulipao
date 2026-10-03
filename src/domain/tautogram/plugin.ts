@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { bare, elide, lettersOf } from '../letters.ts';
+import { bare, elide, lettersOf, restoreArticle } from '../letters.ts';
 import { nthAdjective, nthAdverb, nthNoun } from '../neighbours.ts';
 import { definePlugin, FULL_SCOPE, type ParameterValues, type WordMark } from '../plugin.ts';
 import { matchCase } from '../removal.ts';
@@ -108,8 +108,12 @@ export const tautogramPlugin = definePlugin({
       ),
     );
 
-    // 4. Élision des articles devant un mot nouveau qui commence par une voyelle.
-    for (const mark of marks) if (mark.replacement !== undefined) elide(words, mark.index, apostrophe, morphology);
+    // 4. Élision des articles devant un mot nouveau qui commence par une voyelle ; « l’ » rétabli devant une consonne.
+    for (const mark of marks) {
+      if (mark.replacement === undefined) continue;
+      elide(words, mark.index, apostrophe, morphology);
+      restoreArticle(words, mark.index, mark.original, morphology);
+    }
     for (const mark of marks) if (mark.replacement !== undefined) mark.replacement = words[mark.index]!.output;
 
     return { words, tail: nouns.tail, marks: marks.sort((a, b) => a.index - b.index) };

@@ -1,4 +1,5 @@
 import type { MorphologyRepository } from '../ports/morphology.ts';
+import { matchCase } from './removal.ts';
 import { elides } from './s7/elision.ts';
 import type { OutputWord } from './s7/types.ts';
 
@@ -18,4 +19,18 @@ export function elide(words: OutputWord[], index: number, apostrophe: string, mo
   if (!next?.output || !/^(le|la)$/i.test(word.output) || !elides(next.output, morphology)) return;
   word.output = `${word.output[0]}${apostrophe}`;
   next.gap = '';
+}
+
+/**
+ * L'inverse : « l’ » devant un mot nouveau qui commence par une consonne redevient « le » ou « la »
+ * (modifie la sortie en place). Le genre est celui du mot nouveau, sinon du mot d'origine, sinon le masculin.
+ */
+export function restoreArticle(words: OutputWord[], index: number, original: string, morphology: MorphologyRepository) {
+  const previous = words[index - 1];
+  const word = words[index]!;
+  if (!previous || !/^l['’]$/i.test(previous.output) || elides(word.output, morphology)) return;
+  const readings = [word.output, original].flatMap((form) => [...morphology.nounReadings(form.toLowerCase()), ...morphology.adjectiveReadings(form.toLowerCase())]);
+  const article = readings.find((reading) => reading.gender !== 'e')?.gender === 'f' ? 'la' : 'le';
+  previous.output = matchCase(previous.output, article);
+  word.gap = ' ';
 }
