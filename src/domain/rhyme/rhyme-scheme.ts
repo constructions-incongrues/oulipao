@@ -70,6 +70,9 @@ export const rhymeSchemePlugin = definePlugin({
         }
         const settled = settle(slot, {
           offset: 1,
+          // Une lettre déjà posée : le voisin doit avoir sa rime. Sinon le critère est de ne plus
+          // rimer, ce que l'index ne sert pas : parcours complet.
+          ...(reference && { among: sounds.rhyming(rhymeOf(reference), slot.category) }),
           accept: (form) => fits(form, sounds.of(form, slot.category)),
           none: reference ? `aucun voisin en /${rhymeOf(reference)}/ (${letter})` : `aucun voisin hors des autres rimes (${letter})`,
         });

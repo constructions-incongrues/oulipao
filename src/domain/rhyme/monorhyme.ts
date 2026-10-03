@@ -55,6 +55,7 @@ export const monorhymePlugin = definePlugin({
         if (fits(slot.word, slot.sound)) return void settle(slot, { reason: 'déjà sur la rime' });
         settle(slot, {
           offset: 1,
+          among: sounds.rhyming(rhyme, slot.category), // le critère exige cette rime
           accept: (form) => fits(form, sounds.of(form, slot.category)),
           none: wanted === 'any' ? 'aucun mot sur cette rime' : `aucun mot sur cette rime, en rime ${RHYME_GENDER_LABELS[wanted]}`,
         });
