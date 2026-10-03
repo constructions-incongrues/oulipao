@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { CategorySchema, type Category } from '../../domain/categories.ts';
 import { TracksSchema } from '../../domain/mixing.ts';
 import { ParameterValuesSchema } from '../../domain/plugin.ts';
+import { FormSchema } from '../../domain/forms/form.ts';
 
 /** Nom des pistes, tel qu'affiché. */
 export const TRACK_NAMES: Record<Category, string> = {
@@ -46,6 +47,8 @@ export const MixerStateSchema = z.object({
   instances: z.array(InstanceSchema),
   /** Les mots d’origine aux pas bouchés : aucune contrainte ne les touche. Absent : aucun. */
   closed: z.array(z.number().int().nonnegative()).optional(),
+  /** La forme à refrain posée sur le texte résultant, après la chaîne. Absente : aucune. */
+  form: FormSchema.optional(),
 });
 export type MixerState = z.infer<typeof MixerStateSchema>;
 
@@ -75,5 +78,7 @@ export const MixerActionSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('clear-lock'), id: z.string().min(1), index: z.number().int().nonnegative(), key: z.string().min(1) }),
   /** Rouvre tous les pas et retire tous les verrous : à chaque nouvel étiquetage. */
   z.object({ type: z.literal('reset-steps') }),
+  /** Choisit la forme à refrain du texte résultant. */
+  z.object({ type: z.literal('set-form'), form: FormSchema }),
 ]);
 export type MixerAction = z.infer<typeof MixerActionSchema>;

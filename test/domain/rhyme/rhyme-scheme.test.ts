@@ -62,3 +62,12 @@ test('schéma de rimes : titre, mention et aide', () => {
   assert.match(plugin.help({ scheme: 'plates' }), /rimes plates \(AABB\)/);
   assert.ok(plugin.acts({}));
 });
+
+test('schéma rondel : dix vers sur deux rimes', () => {
+  const text = 'la chaise\nle vert\nle chat\nla fraise\nla table\nle ver\nla rose\nle vair\nla chose\nla glaise';
+  const { text: out, marks } = run(text, { scheme: 'rondel' });
+  const ends = out.split('\n').map((line) => line.split(' ').at(-1));
+  assert.deepEqual(ends, ['chaise', 'vert', 'vair', 'fraise', 'braise', 'ver', 'braise', 'vair', 'chose', 'glaise']);
+  assert.deepEqual(reasons(marks), ['chose : aucun voisin en /ɛʁ/ (B)']); // aucun nom féminin en /ɛʁ/
+  assert.equal(rhymeSchemePlugin.title({ scheme: 'rondel' }), 'Rondel');
+});
