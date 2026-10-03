@@ -28,3 +28,14 @@
 ## [2026-10-03] ingest | pm-roadmap: wrote docs/roadmap.md
 ## [2026-10-03] ingest | pm-prd: wrote docs/prds/textbank-phonetique.md
 ## [2026-10-03] ingest | pm-prd: wrote docs/prds/schemas-de-rimes.md
+## [2026-10-03] ingest | pm-user-feedback: wrote docs/feedback.md
+## [2026-10-03] ingest | pm-user-feedback: wrote docs/feedback.md
+## [2026-10-03] ingest | feedback 2026-10-03
+## [2026-10-03] ingest | pm-personas: wrote docs/personas.md
+## [2026-10-03] ingest | reversal: Léo remplacé par miasmes
+## [2026-10-03] ingest | personas 2026-10-03
+## [2026-10-03] ingest | pm-challenge-me: wrote docs/challenges.md
+## [2026-10-03] ingest | pm-objectives: wrote docs/objectives.md
+## [2026-10-03] ingest | pm-strategy: wrote docs/strategy.md
+## [2026-10-03] ingest | pm-roadmap: wrote docs/roadmap.md
+## [2026-10-03] ingest | pm-prd: wrote docs/prds/carnet-de-textes-gardes.md
