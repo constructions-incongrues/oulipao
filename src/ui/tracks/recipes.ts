@@ -32,7 +32,7 @@ export type Recipe = z.infer<typeof RecipeSchema> & {
 };
 
 const VOWELS = [...'aeiouy'];
-const lipograms = (letters: readonly string[]): RecipeStep[] => letters.map((letter) => ({ type: 'lipogram', params: { letter }, targets: [...CATEGORIES] }));
+const lipogram = (letters: string, mode: 'forbidden' | 'allowed' = 'forbidden'): RecipeStep[] => [{ type: 'lipogram', params: { letters, mode }, targets: [...CATEGORIES] }];
 const trackOptions = CATEGORIES.map((track) => ({ value: track, label: TRACK_NAMES[track] }));
 const ACCENTS = 'Une lettre accentuée compte pour sa lettre nue, comme chez Perec.';
 
@@ -44,19 +44,26 @@ const PAIRS = VOWELS.flatMap((a, i) => VOWELS.slice(i + 1).map((b) => `${a}${b}`
 /** Les recettes fournies, par ordre alphabétique. */
 export const RECIPES: Recipe[] = [
   {
+    id: 'beau-present',
+    name: 'Beau présent',
+    rule: `N'écrire qu'avec les lettres du nom de la personne à qui le texte est offert : tapez ce nom dans les lettres du lipogramme. ${ACCENTS}`,
+    url: 'https://oulipo.net/contraintes/beau-present',
+    build: () => lipogram('', 'allowed'),
+  },
+  {
     id: 'bivocalisme',
     name: 'Bivocalisme',
     rule: `N'employer que deux voyelles. ${ACCENTS}`,
     url: 'https://oulipo.net/contraintes/bivocalisme',
     choice: { label: 'Voyelles gardées', options: PAIRS.map((pair) => ({ value: pair, label: `${pair[0]} et ${pair[1]}` })) },
-    build: (pair) => lipograms(VOWELS.filter((vowel) => !pair!.includes(vowel))),
+    build: (pair) => lipogram(VOWELS.filter((vowel) => !pair!.includes(vowel)).join('')),
   },
   {
     id: 'prisonnier',
     name: 'Contrainte du prisonnier',
     rule: `N'écrire qu'avec les lettres sans hampe ni jambage. ${ACCENTS}`,
     url: 'https://oulipo.net/contraintes/contrainte-du-prisonnier',
-    build: () => lipograms([...'bdfghjklpqty']),
+    build: () => lipogram('bdfghjklpqty'),
   },
   {
     id: 'hai-kaisation',
@@ -108,7 +115,7 @@ export const RECIPES: Recipe[] = [
     rule: `N'employer qu'une voyelle. ${ACCENTS}`,
     url: 'https://oulipo.net/contraintes/monovocalisme',
     choice: { label: 'Voyelle gardée', options: VOWELS.map((vowel) => ({ value: vowel, label: vowel })) },
-    build: (vowel) => lipograms(VOWELS.filter((other) => other !== vowel)),
+    build: (vowel) => lipogram(VOWELS.filter((other) => other !== vowel).join('')),
   },
   {
     id: 'bandit',

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { aroundAmong, nthAdjective, nthAdverb, nthNoun } from '../../src/domain/neighbours.ts';
+import { aroundAmong, nthAdjective, nthAdverb, nthNoun, before } from '../../src/domain/neighbours.ts';
 import { nthVerb } from '../../src/domain/verb.ts';
 import { RHYME_NOUNS, rhymeMorphology, rhymeVerbs } from '../support/phonetics.ts';
 
@@ -49,6 +49,14 @@ test('adjectifs, adverbes et verbes : mêmes voisins avec ou sans les candidates
         assert.deepEqual(nthVerb(form, [], offset, accept, verbs, 'rien', amongVerbs), nthVerb(form, [], offset, accept, verbs, 'rien'), `${name} ${form} ${offset}`);
     }
   }
+});
+
+test('before : la place d’où partir pour rencontrer d’abord la première entrée qui ne précède pas l’ancre', () => {
+  const list = ['aire', 'chat', 'école', 'ferme'];
+  assert.equal(before(list, 'eerme'), 2); // « école » précède « eerme » : on part d'elle, « ferme » vient d'abord
+  assert.equal(before(list, 'chat'), 0);
+  assert.equal(before(list, 'a'), -1);
+  assert.equal(before(list, 'zzz'), 3);
 });
 
 test('Sounds.rhyming : une rime ou plusieurs, le même ensemble d’un passage à l’autre', async () => {

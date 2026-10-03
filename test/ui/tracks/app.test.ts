@@ -145,8 +145,8 @@ test('le lipogramme se met en marche dans la page, après le S+7, puis passe dev
   click(app(), byLabel('Monter la contrainte 2'));
   assert.ok(renderToString(app()).indexOf('Contrainte 1 : Lipogramme') > 0);
   assert.deepEqual(controller.state.mixer.instances.map((i) => i.id), ['lipogram-1', 's7-1']);
-  (find(app(), (e) => e.type === 'select' && String(e.props['value']) === 'e').props['onChange'] as (event: Event) => void)(inputEvent('a'));
-  assert.equal(controller.state.mixer.instances[0]!.params['letter'], 'a');
+  (find(app(), (e) => e.type === 'input' && e.props['type'] === 'text' && String(e.props['value']) === 'e').props['onInput'] as (event: Event) => void)(inputEvent('a'));
+  assert.equal(controller.state.mixer.instances[0]!.params['letters'], 'a');
 });
 
 test('rack : un second S+n sur les adjectifs, rappelé par leur tranche, puis monté en tête de chaîne', async () => {

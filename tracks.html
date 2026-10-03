@@ -38,8 +38,9 @@
   a.version-link { text-transform: none; }
   button:disabled { opacity: .45; cursor: default; }
   input, select, textarea { background: var(--paper); border: var(--rule) solid var(--ink); border-radius: var(--radius); }
-  input[type="number"], select { font-family: var(--font-mono); font-size: var(--size-small); min-height: 28px; padding: 2px 4px; }
+  input[type="number"], input[type="text"].param-text, select { font-family: var(--font-mono); font-size: var(--size-small); min-height: 28px; padding: 2px 4px; }
   input[type="number"] { width: 4.5rem; text-align: center; }
+  input[type="text"].param-text { width: 9rem; text-align: center; }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .noun { --track: var(--noun); } .verb { --track: var(--verb); } .adjective { --track: var(--adjective); }
   .adverb { --track: var(--adverb); } .other { --track: var(--other); }
