@@ -76,6 +76,12 @@ test('prononciation de « chaise » ; « couvent » nom et verbe ; homophones de
   assert.deepEqual(phonetics.rhyming('ɛʁ', 'adjective'), ['vert', 'vers']);
   assert.deepEqual(phonetics.homophones('vɛʁ', 'adjective'), ['vert']);
   assert.deepEqual(phonetics.rhyming('zzz', 'noun'), []);
+  // Les finales : « ɛʁ » réunit les cinq homophones et l'adjectif emprunté ; « z » ajoute « glaise ».
+  assert.deepEqual([...phonetics.ending('vɛʁ', 'noun')].sort(), ['vair', 'ver', 'verre', 'vers', 'vert']);
+  assert.deepEqual([...phonetics.ending('ɛz', 'noun')].sort(), ['chaise', 'glaise']);
+  assert.deepEqual(phonetics.ending('ʃɛz', 'noun'), ['chaise']);
+  assert.deepEqual(phonetics.ending('ɑ̃', 'noun'), ['couvent']);
+  assert.deepEqual(phonetics.ending('zzz', 'noun'), []);
   assert.equal(phonetics.readings('glaise', 'noun')[0]!.guessed, true);
   assert.equal(phonetics.readings('vers', 'adjective')[0]!.guessed, false);
 });

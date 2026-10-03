@@ -15,4 +15,9 @@ export interface PhoneticsRepository {
    * candidates d'un filtre de rime, sans parcourir le dictionnaire.
    */
   rhyming(rhyme: string, category: Category): readonly string[];
+  /**
+   * Les formes d'une catégorie dont la prononciation finit par ces phonèmes (de un à trois, joints),
+   * devinées comprises : les candidates d'une rime qui exige des phonèmes communs.
+   */
+  ending(phonemes: string, category: Category): readonly string[];
 }
