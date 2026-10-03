@@ -16,9 +16,9 @@ adaptateur, où un schéma zod les valide. Il sert aussi la promesse de confiden
 traitement a lieu dans le navigateur, et le texte de l'utilisateur ne quitte jamais la machine.
 Le découpage sert directement trois objectifs de la section 1.2. Il sert l'objectif 1 (`#secure`),
 puisque aucune brique ne tourne sur un serveur. Il sert l'objectif 2 (`#suitable`), puisque le
-Domaine vérifie le contrat de tout étiqueteur. Il vise l'objectif 4 (`#flexible`) : une contrainte
-vit dans le Domaine, derrière le contrat de plugin. Cet objectif n'est pas encore atteint, puisque
-le lipogramme a dû étendre un port et deux adaptateurs (voir la section 1.2). La section 4 résume la stratégie
+Domaine vérifie le contrat de tout étiqueteur. Il sert l'objectif 4 (`#flexible`) : une contrainte
+vit dans le Domaine, derrière le contrat de plugin. Trois contraintes ont été ajoutées ainsi sans
+toucher aux ports ni aux adaptateurs (voir la section 1.2). La section 4 résume la stratégie
 dont découle ce découpage.
 
 ---
@@ -107,7 +107,9 @@ depuis `tracks.html`) est le prototype. La page d'essai (`essai.html`) compare l
 étiqueteurs et applique un S+7 brut. L'Interface décide aussi, dans sa racine de composition,
 quels adaptateurs servent les ports, et elle charge la morphologie et les verbes à la demande
 seulement. Elle tient enfin le registre des contraintes installées (`installedPlugins`, dans
-`src/ui/tracks/mixer-state.ts`) : ajouter une contrainte touche donc aussi l'Interface.
+`src/ui/tracks/mixer-state.ts`) et les recettes (`recipes.ts`), des contraintes de l'Oulipo
+nommées qui se réduisent à des instances de ces types : ajouter une contrainte touche donc
+aussi l'Interface.
 
 **Interfaces :**
 
@@ -132,8 +134,8 @@ changent à la main après chaque régénération.
 
 **Rôle :** porter toute la logique d'Oulipao sans effet de bord. Le Domaine découpe le texte en
 mots, vérifie qu'un étiqueteur respecte le contrat du port, répartit les mots en pistes (noms,
-adjectifs, verbes, adverbes, mots-outils), puis applique une chaîne de contraintes (S+7,
-lipogramme) en gardant les accords, l'élision et la majuscule initiale. Il calcule aussi la
+adjectifs, verbes, adverbes, mots-outils), puis applique une chaîne de contraintes (S+n,
+lipogramme, tri par piste, bord, mise en vers) en gardant les accords, l'élision et la majuscule initiale. Il calcule aussi la
 comparaison avec les textes de référence et la vérification de la palette.
 
 Les ports (`src/ports`) font partie de cette brique : ils forment son interface requise vers
@@ -155,10 +157,12 @@ hexagonal ordinaire.
 - `src/domain/` : découpage (`tokenizer.ts`), étiquetage (`tagging.ts`), pistes (`mixing.ts`), chaîne (`plugin.ts`, `plugin-chain.ts`) ;
 - `src/domain/s7/` : le moteur S+7 et ses accords ;
 - `src/domain/lipogram/` : le lipogramme ;
+- `src/domain/track-sort/`, `edge/`, `lineation/` : le tri par piste, le bord et la mise en vers,
+  avec leurs règles communes de retrait (`removal.ts`) et de lignes (`lines.ts`) ;
 - `src/ports/` : les ports.
 
-**Limites connues :** le contrat de plugin est interne, sans version et non publié ; la stratégie
-attend trois contraintes avant d'en ouvrir le format. Le découpage en mots suit des règles
+**Limites connues :** le contrat de plugin est interne, sans version et non publié. Cinq
+contraintes l'utilisent ; il ne sera ouvert que si quelqu'un d'autre veut en écrire une (ADR-004). Le découpage en mots suit des règles
 minimales, et les mots composés (« peut-être ») restent un seul mot. La seule dépendance de la
 brique est zod.
 
