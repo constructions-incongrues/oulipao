@@ -50,7 +50,7 @@ que le produit s'interdit de faire.
 | Les fichiers dérivés du lexique Grammalecte (`data/*.tsv`) restent sous MPL 2.0, avec leur notice et l'adresse de leur source | C'est une obligation de la MPL 2.0, qui est un copyleft au niveau du fichier. Le reste du code peut être sous MIT (ADR-003). |
 | Chaque composant tiers est déclaré avec sa licence dans `THIRD_PARTY_LICENSES.md`, publié avec le site | Les polices sont sous SIL OFL 1.1, fr-compromise sous MIT et Transformers.js sous Apache 2.0, et ces licences demandent l'attribution. C'est aussi une exigence de la spec `mise-en-ligne`. |
 | Ne pas redistribuer le modèle d'étiquetage tant que sa licence est inconnue | Sans licence déclarée, aucun droit de redistribution n'est accordé (RISK-03). Le modèle reste chargé depuis Hugging Face. |
-| RGPD : Oulipao ne collecte aucune donnée personnelle ; ni traceur, ni mesure d'audience, ni cookie | Le texte ne quitte pas le navigateur (objectif 1). Le visiteur fait cependant connaître son adresse IP à GitHub Pages, jsDelivr et Hugging Face en chargeant le site ; aucun bandeau n'informe de ces transferts aujourd'hui. Les polices sont déjà servies par le site lui-même. Voir la section 2.5. *Lecture de la situation, pas un avis juridique.* |
+| RGPD : Oulipao ne collecte aucune donnée personnelle ; ni traceur, ni mesure d'audience, ni cookie | Le texte ne quitte pas le navigateur (objectif 1). Le visiteur fait cependant connaître son adresse IP à GitHub Pages en ouvrant le site, et à jsDelivr et Hugging Face au premier clic, après une notice qui les nomme. Les polices sont déjà servies par le site lui-même. Voir la section 2.5. *Lecture de la situation, pas un avis juridique.* |
 | Accessibilité : aucune obligation légale identifiée | Le RGAA vise les services publics et les grandes entreprises, pas un outil personnel gratuit. L'accessibilité reste un objectif de qualité (objectif 5), pas une obligation. |
 
 ---
@@ -66,15 +66,17 @@ que le produit s'interdit de faire.
 
 ---
 
-## 2.5 Une contrainte qu'Oulipao impose aux visiteurs
+## 2.5 Une contrainte qu'Oulipao imposait aux visiteurs
 
-Les contraintes ci-dessus pèsent sur ceux qui construisent Oulipao. Celle-ci pèse sur ceux qui
-l'ouvrent, et elle n'a été ni annoncée ni décidée comme telle. Le préchargement du modèle part
-dès l'ouverture de la page : la question « à l'ouverture ou au clic » est restée non tranchée,
-et l'on a gardé le comportement existant (`design.md` de la mise en ligne, décision 6). Le défaut
-fait donc office de règle.
+Les contraintes ci-dessus pèsent sur ceux qui construisent Oulipao. Celle-ci pesait sur ceux qui
+l'ouvrent, et elle n'avait été ni annoncée ni décidée comme telle. Jusqu'au 2026-10-03, le
+préchargement du modèle partait dès l'ouverture de la page : la question « à l'ouverture ou au
+clic » était restée non tranchée, et l'on avait gardé le comportement existant (`design.md` de la
+mise en ligne, décision 6). Le défaut faisait donc office de règle.
 
-<!-- // incongru-voix: lessig — l'adresse IP du visiteur part chez GitHub Pages, jsDelivr et Hugging Face dès l'ouverture, régulée par l'architecture (préchargement par défaut) — recours: aucun avant la requête -->
+<!-- // incongru-voix: lessig — l'adresse IP du visiteur ne part chez jsDelivr et Hugging Face qu'au premier clic, après une notice, régulée par l'architecture (chargement à la demande) — recours: ne pas cliquer ; GitHub Pages reste sans recours -->
+
+**Avant la décision**, la grille des quatre modalités donnait ceci :
 
 ```
 CONTRAINTE : en ouvrant la page, le visiteur fait connaître son adresse IP à GitHub Pages
@@ -87,26 +89,40 @@ CONTRAINTE : en ouvrant la page, le visiteur fait connaître son adresse IP à G
                 comparable, pas identique. Lecture, pas avis juridique.
   norme         Rien : l'usage du web tient les CDN pour ordinaires, et personne ne s'en offusque.
   prix          Pour le visiteur : ne pas ouvrir la page, ou activer l'économie de données de son
-                navigateur, qui retarde le chargement jusqu'à un clic. Il ignore que ce réglage
-                a cet effet ici. Pour l'éditeur : héberger les 141 Mo (TODOS.md, RISK-01),
-                ce qui est subordonné à la licence du modèle (RISK-03).
-  architecture  Totale. La requête part au chargement de la page ; aucune notification ne la
-                précède.
+                navigateur, qui retardait le chargement jusqu'à un clic. Il ignorait que ce
+                réglage avait cet effet ici. Pour l'éditeur : héberger les 141 Mo (TODOS.md,
+                RISK-01), ce qui est subordonné à la licence du modèle (RISK-03).
+  architecture  Totale. La requête partait au chargement de la page ; aucune notification ne la
+                précédait.
 
   RECOURS       Aucun avant la requête. Après : les droits d'accès et d'opposition s'exercent
                 auprès de GitHub, jsDelivr et Hugging Face, pas auprès d'Oulipao, qui ne voit
                 rien passer.
 ```
 
-Cette règle aurait-elle été adoptée si elle avait été présentée comme une règle ? La décision 6
-dit qu'elle ne l'a pas été : elle est restée par défaut. Deux amendements sont possibles, et ce
-sont des décisions à prendre, pas des constats :
+Deux amendements étaient possibles : prévenir et demander, ou héberger soi-même la bibliothèque et
+les poids (bloqué par RISK-03).
 
-- **Prévenir et demander :** charger le modèle au premier clic, comme le fait déjà le mode
-  d'économie de données. La page dirait alors à qui partent les requêtes. Cela rend une
-  notification et un refus possibles, au prix d'une attente au premier usage.
-- **Héberger soi-même** la bibliothèque et les poids : il ne reste plus qu'un seul tiers, GitHub
-  Pages, qui est inévitable. Cette voie est bloquée par RISK-03.
+**Décision du fondateur, 2026-10-03 : le premier amendement.** Le modèle se charge au premier clic
+(changement OpenSpec `modele-au-premier-clic`). La grille devient :
 
-Ces deux amendements réparent la règle sans discuter le cadre. Faut-il dépendre de ces
-plateformes ? C'est une autre question, qui n'est pas posée ici.
+```
+CONTRAINTE : en ouvrant la page, le visiteur fait connaître son adresse IP à GitHub Pages
+             (inévitable : c'est l'hébergeur) ; à jsDelivr et Hugging Face seulement s'il clique
+
+  loi           Inchangée. Le transfert vers jsDelivr et Hugging Face suit désormais un geste du
+                visiteur, précédé d'une notice. Lecture, pas avis juridique.
+  norme         Inchangée.
+  prix          Pour le visiteur : un clic, et l'attente du chargement à chaque visite (courte une
+                fois le modèle en cache). Refuser ne coûte rien, sauf l'usage de l'outil.
+  architecture  Partielle. Rien ne part vers jsDelivr ni Hugging Face avant « Charger le modèle »,
+                « Mettre en pistes » ou « Essayer avec un exemple ». La notice les nomme, et dit
+                qu'ils voient l'adresse. GitHub Pages, lui, reste contacté à l'ouverture.
+
+  RECOURS       Avant la requête : ne pas cliquer. Après : les mêmes droits qu'avant, auprès des
+                tiers. Pour GitHub Pages : aucun, tant que le site y est hébergé.
+```
+
+Ce qui reste : l'hébergeur voit l'adresse de quiconque ouvre la page, et l'accord n'est pas
+mémorisé d'une visite à l'autre. Ce sont deux choix, pas deux oublis. Héberger le modèle
+soi-même retirerait encore deux tiers, mais cette voie reste bloquée par RISK-03.

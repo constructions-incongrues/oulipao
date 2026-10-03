@@ -34,25 +34,21 @@ test('état de départ : rien d’étiqueté, saisie dépliée, modèle pas enco
   assert.equal(createTracksController({ tagger: tagger(), loadMorphology: async () => morphology(), preload: async () => {}, copy: async () => {} }).state.input, '');
 });
 
-test('ouverture : le modèle se précharge, avec son avancement en octets', async () => {
+test('ouverture : rien ne part vers les tiers avant le premier clic', () => {
+  let preloads = 0;
+  const { controller } = setup({ preload: async () => void preloads++ });
+  assert.equal(controller.state.model.status, 'waiting');
+  assert.equal(preloads, 0);
+});
+
+test('premier clic sur « Charger le modèle » : téléchargement avec son avancement en octets', async () => {
   const { controller, states } = setup();
-  controller.start();
+  const loading = controller.preload();
   assert.equal(controller.state.model.status, 'loading');
-  await tick();
+  await loading;
   assert.equal(controller.state.model.status, 'ready');
   assert.ok(states.some((s) => s.model.status === 'loading' && s.model.loaded === 50 && s.model.total === 100));
   await controller.preload(); // déjà prêt : rien à refaire
-  assert.equal(controller.state.model.status, 'ready');
-});
-
-test('économie de données (D10) : rien ne part avant le clic', async () => {
-  let preloads = 0;
-  const { controller } = setup({ saveData: true, preload: async () => void preloads++ });
-  controller.start();
-  assert.equal(controller.state.model.status, 'waiting');
-  assert.equal(preloads, 0);
-  await controller.preload();
-  assert.equal(preloads, 1);
   assert.equal(controller.state.model.status, 'ready');
 });
 

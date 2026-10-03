@@ -16,13 +16,11 @@ export interface TracksDependencies {
   preload: (onProgress: (loaded: number, total: number) => void) => Promise<void>;
   /** Place un texte dans le presse-papiers. */
   copy: (text: string) => Promise<void>;
-  /** Le navigateur demande-t-il d'économiser les données ? Alors le modèle attend un clic. */
-  saveData?: boolean;
 }
 
 /** Le chargement du modèle et du dictionnaire. */
 export interface ModelState {
-  /** `waiting` : pas encore demandé (économie de données). */
+  /** `waiting` : pas encore demandé ; rien ne part vers les tiers avant le premier clic. */
   status: 'waiting' | 'loading' | 'ready' | 'error';
   /** Octets reçus et attendus ; `total` vaut 0 tant que la taille n'est pas connue. */
   loaded: number;
@@ -62,9 +60,7 @@ export interface TracksState {
 
 export interface TracksController {
   readonly state: TracksState;
-  /** À l'ouverture : lance le préchargement, sauf si le navigateur demande d'économiser les données. */
-  start(): void;
-  /** Télécharge le modèle et le dictionnaire ; relance après un échec. */
+  /** Télécharge le modèle et le dictionnaire, au premier clic ; relance après un échec. */
   preload(): Promise<void>;
   setInput(text: string): void;
   /** Rouvre la saisie repliée. */
@@ -151,9 +147,6 @@ export function createTracksController(dependencies: TracksDependencies, onChang
   const controller: TracksController = {
     get state() {
       return state;
-    },
-    start() {
-      if (!dependencies.saveData) void controller.preload();
     },
     preload() {
       if (state.model.status === 'ready') return Promise.resolve();

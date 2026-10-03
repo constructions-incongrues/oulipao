@@ -236,7 +236,7 @@ test('Source : définition et exemple au premier contact, avancement du modèle,
   const render = (patch: Partial<SourceProps>) => renderToString(html`<${Source} ...${{ ...props, ...patch }} />`);
   const first = html`<${Source} ...${props} />`;
   const out = renderToString(first);
-  assert.match(out, /<button type="button" class="run" disabled>Mettre en pistes<\/button>/); // le modèle n'est pas prêt
+  assert.match(out, /<button type="button" class="run" disabled>Mettre en pistes<\/button>/); // le modèle se charge
   assert.match(out, /<progress max="111000000" value="42000000" aria-label="Chargement du modèle"><\/progress>/);
   assert.match(out, /Chargement du modèle : 42 \/ 111 Mo — une seule fois, puis gardé par votre navigateur\./);
   (find(first, (e) => e.type === 'textarea').props['onInput'] as (event: Event) => void)(inputEvent('Un texte'));
@@ -244,9 +244,13 @@ test('Source : définition et exemple au premier contact, avancement du modèle,
   click(first, byClass('example'));
   assert.match(render({ model: model({ status: 'loading' }) }), /<progress aria-label="Chargement du modèle"><\/progress>\s*Chargement du modèle… — une seule fois/);
   const waiting = html`<${Source} ...${{ ...props, model: model({ status: 'waiting' }) }} />`;
-  assert.match(renderToString(waiting), /Charger le modèle \(141 Mo\)/);
+  const before = renderToString(waiting);
+  assert.match(before, /Charger le modèle \(141 Mo\)/);
+  assert.match(before, /depuis jsDelivr et Hugging Face, qui voient alors votre adresse\. Votre texte, lui, reste dans ce navigateur\./);
+  assert.match(before, /<button type="button" class="run">Mettre en pistes<\/button>/); // le premier clic vaut accord
   click(waiting, byClass('load'));
   const failed = html`<${Source} ...${{ ...props, model: model({ status: 'error', error: 'Échec : hors ligne. Vous pouvez relancer.' }) }} />`;
+  assert.match(renderToString(failed), /<button type="button" class="run">Mettre en pistes/); // relancer en mettant en pistes
   assert.match(renderToString(failed), /role="alert">Échec : hors ligne\. Vous pouvez relancer\. <button type="button" class="load">Relancer/);
   click(failed, byClass('load'));
   const ready = render({ model: model({}), started: true, message: 'Collez d’abord un texte.' });
