@@ -19,4 +19,4 @@
 
 ## 4. Vérification en ligne
 
-- [ ] 4.1 Après le déploiement, on colle `https://oulipao.incongru.org/?v=1` dans une messagerie : la carte montre le titre, la description et l'image. Capture jointe à la PR.
+- [x] 4.1 Après le déploiement, on colle `https://oulipao.incongru.org/?v=1` dans une messagerie : la carte montre le titre, la description et l'image. Capture jointe à la PR.
