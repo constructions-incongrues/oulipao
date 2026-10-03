@@ -19,3 +19,4 @@
 ## [2026-10-03] ingest | pm-strategy: wrote docs/strategy.md (révision : le fondateur est le persona)
 ## [2026-10-03] ingest | pm-roadmap: wrote docs/roadmap.md (révision : le fondateur est le persona)
 ## [2026-10-03] ingest | pm-prd: wrote docs/prds/filtres-instanciables.md
+## [2026-10-03] ingest | pm-prd: wrote docs/prds/inspecteur-de-chaine.md

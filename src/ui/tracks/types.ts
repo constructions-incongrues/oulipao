@@ -57,26 +57,3 @@ export const MixerActionSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('move-instance'), id: z.string().min(1), position: z.number().int().nonnegative() }),
 ]);
 export type MixerAction = z.infer<typeof MixerActionSchema>;
-
-/** Un mot posé sur sa piste. */
-export const BlockSchema = z.object({
-  /** Position du mot dans le découpage du texte d'origine. */
-  index: z.number().int().nonnegative(),
-  /** Le mot affiché : le mot d'origine, ou celui qui le remplace quand le plugin agit. */
-  label: z.string().min(1),
-  /** Colonne du mot dans la règle du système, en caractères. */
-  column: z.number().int().nonnegative(),
-  /** Largeur affichée, en caractères. */
-  width: z.number().int().positive(),
-});
-export type Block = z.infer<typeof BlockSchema>;
-
-/** Un système : une ligne du texte d'origine (la règle) et ses pistes. */
-export const SystemSchema = z.object({
-  ruler: z.string(),
-  lanes: z.record(CategorySchema, z.array(BlockSchema)),
-});
-export type System = z.infer<typeof SystemSchema>;
-
-export const ScoreLayoutSchema = z.object({ systems: z.array(SystemSchema) });
-export type ScoreLayout = z.infer<typeof ScoreLayoutSchema>;

@@ -5,8 +5,7 @@ import { runChain, type ChainStep, type StepReport } from '../../domain/plugin-c
 import type { TaggedWord } from '../../domain/tagged-word.ts';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
 import { pluginById } from './mixer-state.ts';
-import { layoutScore } from './score-layout.ts';
-import { TRACK_NAMES, TRACK_UNITS, type Instance, type MixerState, type ScoreLayout } from './types.ts';
+import { TRACK_NAMES, TRACK_UNITS, type Instance, type MixerState } from './types.ts';
 
 /** Un texte collé et étiqueté : on ne l'étiquette qu'une fois, puis chaque geste rejoue la suite. */
 export interface Session {
@@ -23,8 +22,21 @@ export interface Mark {
 }
 
 /** Ce que la page affiche pour un texte et un état de la table. */
+/** Une bande de l'inspecteur : le texte tel qu'une étape de la chaîne l'a laissé, un mot par mot d'origine. */
+export interface Stage {
+  /** `origin` pour le texte d'origine, sinon l'identifiant de l'instance. */
+  id: string;
+  /** « Origine », ou le filtre nommé comme dans le résumé : « S+7 sur les noms ». */
+  label: string;
+  /** Chaîne vide pour un mot retiré. */
+  words: string[];
+}
+
 export interface TracksView {
-  layout: ScoreLayout;
+  /** Le texte d'origine, puis la sortie de chaque filtre actif, dans l'ordre de la chaîne. */
+  stages: Stage[];
+  /** La piste de chaque mot d'origine. */
+  tracks: Category[];
   /** Le texte résultant : chaîne de plugins appliquée, puis pistes coupées. */
   result: string;
   /** Le même, en morceaux : chaque mot garde sa position dans le texte d'origine. */
@@ -70,21 +82,19 @@ export function describeInstance(instance: Instance, lookup: PluginLookup = plug
   return `${label}${label.includes(',') ? ',' : ''} sur ${tracksPhrase(instance.targets)}`;
 }
 
-/** Rejoue la chaîne de plugins, puis le mixage et la disposition, sans réétiqueter. */
+/** Rejoue la chaîne de filtres, puis le mixage, sans réétiqueter. */
 export function buildView(
   session: Session,
   mixer: MixerState,
   morphology: MorphologyRepository,
-  width?: number,
   lookup: PluginLookup = pluginById,
 ): TracksView {
   const { text, tagged } = session;
   const chain = runChain(text, tagged, activeSteps(mixer, lookup), { morphology });
-  const labels = new Map<number, string>();
+  const active = mixer.instances.filter((instance) => chain.steps.some((step) => step.id === instance.id));
   const marks = new Map<number, Mark>();
   for (const { index, original, replacement, removed, reason } of chain.marks.values()) {
     if (replacement !== undefined) {
-      labels.set(index, replacement);
       marks.set(index, { state: 'replaced', original });
     } else if (removed) {
       marks.set(index, { state: 'removed', original });
@@ -98,7 +108,11 @@ export function buildView(
   const audible = audibleCategories(mixer.tracks);
   const segments = mixSegments(chain.words, tagged, audible, chain.tail, chain.steps.some((step) => step.removed > 0));
   return {
-    layout: layoutScore(text, tagged, labels, width),
+    stages: [
+      { id: 'origin', label: 'Origine', words: tagged.map((word) => word.word) },
+      ...active.map((instance, k) => ({ id: instance.id, label: describeInstance(instance, lookup), words: chain.stages[k]! })),
+    ],
+    tracks: tagged.map((word) => word.category),
     result: segments.map((segment) => segment.text).join(''),
     segments,
     empty: !segments.some((segment) => segment.index !== undefined),
@@ -162,4 +176,27 @@ export function changedWords(before: TracksView | undefined, after: TracksView):
   if (!before) return new Set();
   const previous = new Map(before.segments.filter((s) => s.index !== undefined).map((s) => [s.index!, s.text]));
   return new Set(after.segments.filter((s) => s.index !== undefined && previous.has(s.index) && previous.get(s.index) !== s.text).map((s) => s.index!));
+}
+
+/** Une colonne de l'inspecteur : un mot d'origine et sa distance au mot choisi. */
+export interface InspectorColumn {
+  index: number;
+  distance: number;
+}
+
+/** Ce que montre l'inspecteur : les colonnes autour du mot choisi, et chaque bande sur ces colonnes. */
+export interface InspectorWindow {
+  columns: InspectorColumn[];
+  bands: { id: string; label: string; cells: string[] }[];
+}
+
+/** La fenêtre de l'inspecteur : le mot choisi et `radius` voisins de chaque côté, bornés au texte ; « · » pour un mot retiré. */
+export function inspectorWindow(view: TracksView, index: number, radius: number): InspectorWindow {
+  const from = Math.max(0, index - radius);
+  const to = Math.min(view.tracks.length - 1, index + radius);
+  const columns = Array.from({ length: to - from + 1 }, (_, k) => ({ index: from + k, distance: Math.abs(from + k - index) }));
+  return {
+    columns,
+    bands: view.stages.map(({ id, label, words }) => ({ id, label, cells: columns.map((column) => words[column.index] || '·') })),
+  };
 }

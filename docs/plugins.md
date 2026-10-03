@@ -25,7 +25,7 @@ ce contrat a de faux.
 | `apply(text, tagged, values, resources, targets)` | le texte transformé, sur les pistes visées par l'instance |
 
 `apply` rend, comme `plainWords`, un élément par mot du texte qu'il a lu (`words`, `tail`) : la
-page peut ensuite couper des pistes et disposer la partition sans connaître la contrainte. Il
+page peut ensuite couper des pistes et montrer chaque étape dans l'inspecteur sans connaître la contrainte. Il
 rend aussi `marks` : pour chaque mot qu'il a touché, le remplaçant, le fait qu'il l'a retiré
 (`removed`), ou la raison pour laquelle il l'a laissé tel quel.
 

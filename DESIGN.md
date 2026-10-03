@@ -21,7 +21,7 @@ Les trois polices sont servies par le projet (`fonts/`, licence SIL OFL 1.1, fic
 |---|---|---|
 | `--font-read` | Source Serif 4, 400 et 600 | texte résultant, titre de la page |
 | `--font-ui` | IBM Plex Sans, 400 et 600 | réglages, boutons, messages |
-| `--font-mono` | IBM Plex Mono, 400 | partition : les colonnes de caractères s'y alignent |
+| `--font-mono` | IBM Plex Mono, 400 | sans usage depuis le retrait de la partition (2026-10-03) |
 
 ## Tailles
 

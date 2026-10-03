@@ -4,21 +4,21 @@ import { CATEGORIES } from '../../domain/categories.ts';
 import { audibleCategories } from '../../domain/mixing.ts';
 import { Rack } from './components/rack.ts';
 import { Result } from './components/result.ts';
-import { EmptyScore, Score } from './components/score.ts';
+import { Inspector } from './components/inspector.ts';
 import { Source } from './components/source.ts';
 import { Strip } from './components/strip.ts';
 import type { TracksController, TracksState } from './controller.ts';
 import { installedPlugins, pluginById } from './mixer-state.ts';
-import { summarize } from './view-model.ts';
+import { inspectorWindow, summarize } from './view-model.ts';
 
 export interface AppProps {
   state: TracksState;
-  controller: Pick<TracksController, 'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'dispatch' | 'toggleScore' | 'copy'>;
+  controller: Pick<TracksController, 'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy'>;
 }
 
 /**
  * La page des pistes : la saisie en tête ; puis la table de mixage à gauche et, à droite, le
- * texte résultant au-dessus de la partition.
+ * texte résultant et, dessous, l'inspecteur du mot choisi.
  */
 export function App({ state, controller }: AppProps): VNode {
   const { mixer, view, stale } = state;
@@ -70,6 +70,9 @@ export function App({ state, controller }: AppProps): VNode {
             segments=${view.segments}
             empty=${view.empty}
             marks=${view.marks}
+            tracks=${view.tracks}
+            selected=${state.selected}
+            onSelect=${controller.select}
             changed=${state.changed}
             generation=${state.generation}
             audibleCount=${audible.size}
@@ -77,12 +80,15 @@ export function App({ state, controller }: AppProps): VNode {
             copyMessage=${state.copyMessage}
             onCopy=${() => void controller.copy()}
           />`}
-          <button type="button" class="score-toggle" aria-expanded=${state.scoreOpen} onClick=${controller.toggleScore}>
-            ${state.scoreOpen ? 'Masquer la partition' : 'Voir la partition'}
-          </button>
-          <div class=${`score-frame ${state.scoreOpen ? '' : 'folded'} ${stale ? 'stale' : ''}`.replace(/\s+/g, ' ').trim()}>
-            ${view ? html`<${Score} layout=${view.layout} audible=${audible} marks=${view.marks} />` : html`<${EmptyScore} />`}
-          </div>
+          ${view &&
+          (state.selected === undefined
+            ? html`<p class="inspector-hint">Cliquez un mot pour voir ce que chaque filtre en a fait.</p>`
+            : html`<${Inspector}
+                window=${inspectorWindow(view, state.selected, 6)}
+                word=${view.stages[0]!.words[state.selected]}
+                onStep=${controller.step}
+                onClose=${controller.closeInspector}
+              />`)}
         </div>
       </div>
     </main>

@@ -198,27 +198,27 @@ test('texte modifié après la mise en pistes : vue périmée, copie refusée, j
   assert.equal(controller.state.stale, false);
 });
 
-test('largeur des systèmes : bornée, et la vue suit', async () => {
+test('inspecteur : choisir un mot, passer au voisin sans sortir du texte, fermer ; le choix suit les gestes, pas un nouvel étiquetage', async () => {
   const { controller } = setup();
-  controller.setWidth(20);
-  assert.equal(controller.state.width, 48);
-  controller.setInput('La vieille ferme du village est grise, et la ferme aussi, et le village aussi, et encore la ferme.');
+  controller.step(1); // rien de choisi : rien ne bouge
+  assert.equal(controller.state.selected, undefined);
+  controller.setInput('La ferme dort.');
   await controller.run();
-  const systems = controller.state.view!.layout.systems.length;
-  controller.setWidth(200);
-  assert.equal(controller.state.width, 72);
-  assert.ok(controller.state.view!.layout.systems.length < systems);
-  const before = controller.state;
-  controller.setWidth(300); // même largeur bornée : rien ne change
-  assert.equal(controller.state, before);
-});
-
-test('partition repliée sur petit écran : on la déplie et on la replie', () => {
-  const { controller } = setup();
-  controller.toggleScore();
-  assert.equal(controller.state.scoreOpen, true);
-  controller.toggleScore();
-  assert.equal(controller.state.scoreOpen, false);
+  controller.step(1);
+  assert.equal(controller.state.selected, undefined);
+  controller.select(1);
+  controller.step(-1);
+  controller.step(-1);
+  assert.equal(controller.state.selected, 0);
+  controller.step(5);
+  assert.equal(controller.state.selected, 2); // trois mots : le dernier
+  controller.dispatch({ type: 'set-param', id: 's7-1', key: 'offset', value: 2 });
+  assert.equal(controller.state.selected, 2);
+  controller.closeInspector();
+  assert.equal(controller.state.selected, undefined);
+  controller.select(1);
+  await controller.run();
+  assert.equal(controller.state.selected, undefined);
 });
 
 test('copier : le texte résultant et sa mention (D11) ; message à côté du bouton', async () => {

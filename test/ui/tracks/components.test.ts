@@ -11,10 +11,9 @@ import { sansPlugin } from '../../support/plugins.ts';
 import { definePlugin } from '../../../src/domain/plugin.ts';
 import { s7Plugin } from '../../../src/domain/s7/plugin.ts';
 import { Result } from '../../../src/ui/tracks/components/result.ts';
-import { EmptyScore, Score } from '../../../src/ui/tracks/components/score.ts';
+import { Inspector } from '../../../src/ui/tracks/components/inspector.ts';
 import { Source, type SourceProps } from '../../../src/ui/tracks/components/source.ts';
 import { Strip, TRACK_NAMES } from '../../../src/ui/tracks/components/strip.ts';
-import { layoutScore } from '../../../src/ui/tracks/score-layout.ts';
 import type { Mark } from '../../../src/ui/tracks/view-model.ts';
 import { tag } from '../../support/morphology.ts';
 import { byClass, byLabel, elements, find, inputEvent } from '../../support/vnode.ts';
@@ -82,42 +81,44 @@ test('PluginSlot : marche, un réglage par paramètre déclaré, et l’effet en
   assert.match(drawn, /Filtre coupé : le texte passe tel quel\./);
 });
 
-test('Score : la règle, les seules pistes non vides, trois aspects de bloc, une liste pour les lecteurs d’écran', () => {
-  const text = 'La vieille ferme dort.';
-  const layout = layoutScore(text, tag(text), new Map([[2, 'fermoir']]));
-  const marks = new Map<number, Mark>([[2, { state: 'replaced', original: 'ferme' }]]);
-  const score = html`<${Score} layout=${layout} audible=${new Set(['noun', 'verb', 'adverb', 'other'])} marks=${marks} />`;
-  const out = renderToString(score);
-  assert.match(out, /<div aria-hidden="true"><div class="system">/);
-  assert.match(out, /<span class="lane-name">Texte<\/span><span class="cells">La vieille ferme   dort\.<\/span>/);
-  assert.doesNotMatch(out, /lane adverb/); // aucun adverbe : la piste est masquée
-  assert.match(out, /<div class="lane adjective silent">/);
-  assert.match(out, /<span class="block replaced" title="ferme → fermoir" style="left:11ch;width:7ch">fermoir<\/span>/);
-  assert.match(out, /<span class="block" title="dort"/);
-  assert.equal(elements(score).filter(byClass('lane')).length, 5); // la règle et quatre pistes
-  assert.match(out, /<li>Noms, 1 mot : ferme devenu fermoir\.<\/li>/);
-  assert.match(out, /<li>Adjectifs \(coupée\), 1 mot : vieille\.<\/li>/);
-  assert.match(out, /<li>Adverbes, 0 mot\.<\/li>/);
-  assert.match(out, /<li>Autres, 1 mot : La\.<\/li>/);
-
-  const kept = renderToString(html`<${Score} layout=${layoutScore('Le zorg', tag('Le zorg', { zorg: 'noun' }))} audible=${new Set(CATEGORIES)}
-    marks=${new Map([[1, { state: 'kept', original: 'zorg', reason: 'absent du dictionnaire' }]])} />`);
-  assert.match(kept, /<span class="block kept" title="zorg : laissé tel quel, absent du dictionnaire"/);
-  assert.match(kept, /zorg laissé tel quel \(absent du dictionnaire\)/);
-  assert.match(renderToString(html`<${Score} layout=${{ systems: [] }} audible=${new Set()} />`), /class="score"/);
+test('Inspector : une ligne par étape, la colonne choisie, les colonnes lointaines ; flèches, Échap, Fermer', () => {
+  const calls: string[] = [];
+  const window = {
+    columns: [0, 1, 2, 3, 4].map((index) => ({ index, distance: Math.abs(index - 3) })),
+    bands: [
+      { id: 'origin', label: 'Origine', cells: ['dans', 'la', 'cuisine', 'étroite', 'comme'] },
+      { id: 's7-1', label: 'S+7 sur les noms', cells: ['dans', 'la', 'cuistrerie', 'étroite', '·'] },
+    ],
+  };
+  const inspector = html`<${Inspector} window=${window} word="étroite" onStep=${(d: number) => calls.push(`step ${d}`)} onClose=${() => calls.push('close')} />`;
+  const out = renderToString(inspector);
+  assert.match(out, /<section class="inspector" tabindex="0" aria-label="Inspecteur">/);
+  assert.match(out, /<caption>« étroite » à chaque étape de la chaîne<\/caption>/);
+  assert.match(out, /<tr><th scope="row">Origine<\/th><td class="far">dans<\/td><td>la<\/td><td>cuisine<\/td><td class="chosen" aria-current="true">étroite<\/td><td>comme<\/td><\/tr>/);
+  assert.match(out, /<th scope="row">S\+7 sur les noms<\/th>.*<td>cuistrerie<\/td>.*<td>·<\/td><\/tr>/s);
+  const key = (k: string) => {
+    let prevented = false;
+    (find(inspector, byClass('inspector')).props['onKeyDown'] as (event: KeyboardEvent) => void)({ key: k, preventDefault: () => (prevented = true) } as unknown as KeyboardEvent);
+    return prevented;
+  };
+  assert.equal(key('ArrowLeft'), true);
+  assert.equal(key('ArrowRight'), true);
+  key('Escape');
+  key('a'); // rien
+  click(inspector, byClass('close'));
+  assert.deepEqual(calls, ['step -1', 'step 1', 'close', 'close']);
 });
 
-test('EmptyScore : avant tout texte, les cinq pistes vides, déjà nommées', () => {
-  const out = renderToString(html`<${EmptyScore} />`);
-  for (const name of Object.values(TRACK_NAMES)) assert.match(out, new RegExp(`<span class="lane-name">${name}</span>`));
-});
-
-test('Result : noms remplacés soulignés, mots changés éclairés, pistes coupées, copie', () => {
+test('Result : mots remplacés soulignés à la couleur de leur piste, mots cliquables, éclat, pistes coupées, copie', () => {
   let copies = 0;
+  const selected: number[] = [];
   const props = {
     segments: [{ text: 'Le', index: 0 }, { text: ' ' }, { text: 'fermoir', index: 1 }, { text: ',\nvieux.' }],
     empty: false,
     marks: new Map<number, Mark>([[1, { state: 'replaced', original: 'ferme' }]]),
+    tracks: ['other', 'noun'] as const,
+    selected: 0,
+    onSelect: (index: number) => void selected.push(index),
     changed: new Set([0, 1]),
     generation: 3,
     audibleCount: 5,
@@ -127,14 +128,22 @@ test('Result : noms remplacés soulignés, mots changés éclairés, pistes coup
   };
   const result = html`<${Result} ...${props} />`;
   const out = renderToString(result);
-  assert.match(out, /<p class="result-text"><span class="changed">Le<\/span> <span class="replaced changed">fermoir<\/span>,\nvieux\.<\/p>/);
+  assert.match(out, /<p class="result-text"><span class="word changed selected">Le<\/span> <span class="word replaced noun changed" tabindex="0" title="Noms : ferme → fermoir">fermoir<\/span>,\nvieux\.<\/p>/);
+  // un clic sur n'importe quel mot, ou Entrée sur un mot changé, ouvre l'inspecteur
+  click(result, (e) => e.props['class'] === 'word changed selected');
+  const fermoir = find(result, byClass('replaced'));
+  (fermoir.props['onKeyDown'] as (event: KeyboardEvent) => void)({ key: 'Enter' } as KeyboardEvent);
+  (fermoir.props['onKeyDown'] as (event: KeyboardEvent) => void)({ key: 'a' } as KeyboardEvent);
+  assert.deepEqual(selected, [0, 1]);
+  const kept = renderToString(html`<${Result} ...${{ ...props, marks: new Map<number, Mark>([[1, { state: 'kept', original: 'fermoir', reason: 'absent du dictionnaire' }]]) }} />`);
+  assert.match(kept, /<span class="word changed" title="Noms : laissé tel quel, absent du dictionnaire">fermoir</);
   assert.doesNotMatch(out, /class="notice"/);
   click(result, byClass('copy'));
   assert.equal(copies, 1);
   assert.equal(find(result, byLabel('Texte résultant')).type, 'section');
 
   const calm = renderToString(html`<${Result} ...${{ ...props, changed: new Set(), marks: new Map(), audibleCount: 4, copyMessage: 'Copié.' }} />`);
-  assert.match(calm, /<p class="result-text">Le fermoir,\nvieux\.<\/p>/);
+  assert.match(calm, /<p class="result-text"><span class="word selected">Le<\/span> <span class="word">fermoir<\/span>,\nvieux\.<\/p>/);
   assert.match(calm, /Pistes coupées : le texte est rendu tel quel, sans réparer la phrase\./);
   assert.match(calm, /<span class="copy-message" role="status" aria-live="polite">Copié\.<\/span>/);
   const empty = renderToString(html`<${Result} ...${{ ...props, segments: [{ text: '.' }], empty: true, audibleCount: 1 }} />`);

@@ -31,11 +31,11 @@ test('avant l’étiquetage : définition, saisie, table inactive et cinq pistes
   assert.match(out, /Essayer avec un exemple/);
   assert.equal(elements(app()).filter(byClass('strip')).length, 5);
   assert.match(out, /0 mot/);
-  assert.match(out, /class="score empty"/);
+  assert.doesNotMatch(out, /class="score|Cliquez un mot/); // ni partition, ni invitation avant le texte
   assert.doesNotMatch(out, /Texte résultant/);
 });
 
-test('mise en pistes : saisie repliée, texte résultant au-dessus de la partition, résumé annoncé', async () => {
+test('mise en pistes : saisie repliée, texte résultant, inspecteur fermé, résumé annoncé', async () => {
   const { controller, app } = setup();
   controller.start();
   await tick();
@@ -55,9 +55,10 @@ test('mise en pistes : saisie repliée, texte résultant au-dessus de la partiti
   assert.doesNotMatch(strip('Noms'), /class="plugin/);
   assert.match(out, /D'autres contraintes viendront\./);
   assert.match(out, /<p class="summary" role="status" aria-live="polite">S\+7 sur les noms : 2 noms remplacés sur 2\.<\/p>/);
-  assert.match(out, /<p class="result-text">Le vieil <span class="replaced">oncle<\/span> du <span class="replaced">cheval<\/span> dort\.<\/p>/);
-  assert.ok(out.indexOf('Texte résultant') < out.indexOf('class="score"')); // le résultat d'abord
-  assert.match(out, /title="ferme → oncle"/);
+  assert.equal(controller.state.view!.result, 'Le vieil oncle du cheval dort.');
+  assert.match(out, /<span class="word replaced noun" tabindex="0" title="Noms : ferme → oncle">oncle<\/span>/);
+  assert.match(out, /title="Noms : ferme → oncle"/);
+  assert.match(out, /<p class="inspector-hint">Cliquez un mot pour voir ce que chaque filtre en a fait\.<\/p>/); // inspecteur fermé
   click(app(), byClass('edit'));
   assert.match(renderToString(app()), /<textarea id="input"/);
 });
@@ -71,10 +72,10 @@ test('chaque réglage de la page passe par le contrôleur', async () => {
   await controller.run();
 
   click(app(), byLabel('Muet : retirer la piste Adjectifs du texte'));
-  assert.match(renderToString(app()), /<p class="result-text">Le <span class="replaced">oncle<\/span> dort\.<\/p>/);
+  assert.equal(controller.state.view!.result, 'Le oncle dort.');
   assert.match(renderToString(app()), /Pistes coupées : le texte est rendu tel quel/);
   click(app(), byLabel('Seul : ne garder que la piste Verbes'));
-  assert.match(renderToString(app()), /<p class="result-text">dort\.<\/p>/);
+  assert.equal(controller.state.view!.result, 'dort.');
   click(app(), byLabel('Plugin S+7 actif'));
   assert.match(renderToString(app()), /Filtres coupés : texte d’origine\. Pistes coupées : noms, adjectifs, adverbes, autres\./);
   (find(app(), (e) => e.type === 'input').props['onInput'] as (event: Event) => void)(inputEvent('3'));
@@ -90,9 +91,6 @@ test('chaque réglage de la page passe par le contrôleur', async () => {
   await tick();
   assert.deepEqual(copied, ['dort.\n\n— pistes coupées : noms, adjectifs, adverbes, autres (Potao)']);
   assert.match(renderToString(app()), /Copié\./);
-  click(app(), byClass('score-toggle'));
-  assert.match(renderToString(app()), /aria-expanded="true"[^>]*>Masquer la partition/);
-  assert.match(renderToString(app()), /class="score-frame"/);
 });
 
 test('texte modifié : bandeau « remettre en pistes », partition estompée, relance', async () => {
@@ -103,7 +101,7 @@ test('texte modifié : bandeau « remettre en pistes », partition estompée, re
   controller.setInput('La ferme dort.');
   const out = renderToString(app());
   assert.match(out, /<p class="stale-bar">Texte modifié — <button type="button" class="rerun">remettre en pistes<\/button>/);
-  assert.match(out, /class="score-frame folded stale"/);
+  assert.match(out, /class="result stale"/);
   click(app(), byClass('rerun'));
   await tick();
   assert.equal(controller.state.stale, false);
@@ -168,4 +166,32 @@ test('rack : un second S+n sur les adjectifs, rappelé par leur tranche, puis mo
   click(app(), byClass('duplicate'));
   click(app(), byClass('remove'));
   assert.deepEqual(controller.state.mixer.instances.map((i) => i.id), ['s7-1', 'lipogram-1', 's7-3']); // la copie va en fin de chaîne
+});
+
+test('inspecteur : un clic sur un mot, une bande par étape, les flèches, un filtre déplacé, Échap', async () => {
+  const { controller, app } = setup();
+  controller.setInput('La vieille ferme du village dort.');
+  await controller.run();
+  controller.dispatch({ type: 'toggle-instance', id: 'lipogram-1' });
+  controller.dispatch({ type: 'add-instance', plugin: 's7' });
+  controller.dispatch({ type: 'set-targets', id: 's7-2', targets: ['adjective'] });
+  click(app(), (e) => e.props['title'] === 'Noms : ferme → voisin'); // « ferme » : oncle, puis voisin
+  assert.equal(controller.state.selected, 2);
+  const inspector = () => renderToString(find(app(), byClass('inspector')));
+  assert.match(inspector(), /<caption>« ferme » à chaque étape de la chaîne<\/caption>/);
+  const rows = () => [...inspector().matchAll(/<th scope="row">([^<]*)<\/th>/g)].map((match) => match[1]);
+  assert.deepEqual(rows(), ['Origine', 'S+7 sur les noms', 'lipogramme en e', 'S+7 sur les adjectifs']);
+  assert.match(inspector(), /<td class="chosen" aria-current="true">ferme<\/td>/);
+  assert.doesNotMatch(renderToString(app()), /Cliquez un mot/);
+  const key = (k: string) => (find(app(), byClass('inspector')).props['onKeyDown'] as (event: KeyboardEvent) => void)({ key: k, preventDefault: () => {} } as unknown as KeyboardEvent);
+  key('ArrowRight');
+  assert.match(inspector(), /« du »/);
+  // le troisième filtre monte en tête : même mot, bandes dans le nouvel ordre
+  click(app(), byLabel('Monter le filtre 3'));
+  click(app(), byLabel('Monter le filtre 2'));
+  assert.equal(controller.state.selected, 3);
+  assert.deepEqual(rows(), ['Origine', 'S+7 sur les adjectifs', 'S+7 sur les noms', 'lipogramme en e']);
+  key('Escape');
+  assert.equal(controller.state.selected, undefined);
+  assert.match(renderToString(app()), /Cliquez un mot/);
 });

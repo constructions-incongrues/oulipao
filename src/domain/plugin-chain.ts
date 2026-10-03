@@ -29,6 +29,8 @@ export interface ChainResult {
   /** Ce que la chaîne a fait de chaque mot d'origine touché, par position. */
   marks: Map<number, WordMark>;
   steps: StepReport[];
+  /** La sortie de chaque étape, un mot par mot d'origine (chaîne vide pour un mot retiré). */
+  stages: string[][];
 }
 
 /** Une sortie relue comme un texte neuf ; `origin[k]` est le mot d'origine d'où vient le k-ième mot relu. */
@@ -91,12 +93,14 @@ export function runChain(text: string, tagged: readonly TaggedWord[], steps: rea
   let { words, tail } = plainWords(text);
   const marks = new Map<number, WordMark>();
   const reports: StepReport[] = [];
+  const stages: string[][] = [];
   for (const { id, plugin, values, targets } of steps) {
     const current = reread(words, tail, tagged);
     const result = plugin.apply(current.text, current.tagged, values, resources, targets);
     if (result.words.length !== current.origin.length) throw new Error(`${plugin.id} : la sortie ne suit pas les mots du texte`);
     words = fold(result.words, current.origin, tagged.length);
     tail = result.tail;
+    stages.push(words.map((word) => word.output));
     const report: StepReport = { id, replaced: 0, removed: 0, kept: 0 };
     for (const mark of result.marks) {
       const index = current.origin[mark.index]!;
@@ -117,5 +121,5 @@ export function runChain(text: string, tagged: readonly TaggedWord[], steps: rea
   }
   // Un mot remplacé porte au bout du compte ce que la chaîne entière en a fait.
   for (const mark of marks.values()) if (mark.replacement !== undefined) mark.replacement = words[mark.index]!.output;
-  return { words, tail, marks, steps: reports };
+  return { words, tail, marks, steps: reports, stages };
 }

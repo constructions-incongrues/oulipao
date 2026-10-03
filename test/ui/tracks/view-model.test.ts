@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { initialState, reduce } from '../../../src/ui/tracks/mixer-state.ts';
-import { buildView, changedWords, describeInstance, ruleMention, summarize } from '../../../src/ui/tracks/view-model.ts';
+import { buildView, changedWords, describeInstance, inspectorWindow, ruleMention, summarize } from '../../../src/ui/tracks/view-model.ts';
 import { morphology, tag } from '../../support/morphology.ts';
 import { sansPlugin } from '../../support/plugins.ts';
 import { s7Plugin } from '../../../src/domain/s7/plugin.ts';
@@ -12,22 +12,22 @@ const text = 'La vieille ferme du village est grise, et la Zorglub aussi.';
 const session = { text, tagged: tag(text, { Zorglub: 'noun' }) };
 const offsetOne = reduce(initialState, { type: 'set-param', id: 's7-1', key: 'offset', value: 1 });
 
-test('plugin actif : texte transformé, noms remplacés comptés, blocs des noms au nouveau mot', () => {
+test('plugin actif : texte transformé, noms remplacés comptés, bandes de l’inspecteur', () => {
   const view = buildView(session, offsetOne, m);
   assert.equal(view.result, 'Le vieux fermoir de la ville est gris, et la Zorglub aussi.');
   assert.deepEqual(view.counts, { noun: 3, verb: 1, adjective: 2, adverb: 0, other: 5 });
   assert.deepEqual(view.steps, [{ id: 's7-1', replaced: 2, removed: 0, kept: 1 }]);
-  const nouns = view.layout.systems.flatMap((s) => s.lanes.noun.map((b) => b.label));
-  assert.deepEqual(nouns, ['fermoir', 'ville', 'Zorglub']); // le nom inconnu garde son mot
-  // la règle porte le texte d'origine, avec la place du remplaçant plus long (« fermoir »)
-  assert.equal(view.layout.systems[0]!.ruler, 'La vieille ferme   du village est grise, et la Zorglub aussi.');
+  assert.deepEqual(view.stages.map((stage) => stage.label), ['Origine', 'S+1 sur les noms']);
+  assert.deepEqual(view.stages[0]!.words.slice(0, 5), ['La', 'vieille', 'ferme', 'du', 'village']);
+  assert.deepEqual(view.stages[1]!.words.slice(0, 5), ['Le', 'vieux', 'fermoir', 'de la', 'ville']); // la contraction reste à sa place
+  assert.equal(view.tracks[2], 'noun');
 });
 
-test('plugin coupé : texte d’origine, blocs au mot d’origine', () => {
+test('plugin coupé : texte d’origine, la seule bande d’origine', () => {
   const view = buildView(session, reduce(offsetOne, { type: 'toggle-instance', id: 's7-1' }), m);
   assert.equal(view.result, text);
   assert.deepEqual(view.steps, []);
-  assert.deepEqual(view.layout.systems.flatMap((s) => s.lanes.noun.map((b) => b.label)), ['ferme', 'village', 'Zorglub']);
+  assert.deepEqual(view.stages.map((stage) => stage.id), ['origin']);
 });
 
 test('mode et décalage changent le résultat ; mute et solo s’appliquent au texte transformé', () => {
@@ -39,8 +39,16 @@ test('mode et décalage changent le résultat ; mute et solo s’appliquent au t
   assert.equal(solo.result, 'fermoir ville, Zorglub.');
 });
 
-test('largeur des systèmes transmise à la disposition', () => {
-  assert.ok(buildView(session, offsetOne, m, 20).layout.systems.length > 1);
+test('fenêtre de l’inspecteur : le mot au centre, bornée au texte, « · » pour un mot retiré', () => {
+  const view = buildView(session, offsetOne, m);
+  const middle = inspectorWindow(view, 5, 2);
+  assert.deepEqual(middle.columns, [3, 4, 5, 6, 7].map((index) => ({ index, distance: Math.abs(index - 5) })));
+  assert.deepEqual(middle.bands[0], { id: 'origin', label: 'Origine', cells: ['du', 'village', 'est', 'grise', 'et'] });
+  assert.deepEqual(middle.bands[1]!.cells, ['de la', 'ville', 'est', 'gris', 'et']);
+  assert.deepEqual(inspectorWindow(view, 0, 2).columns.map((c) => c.index), [0, 1, 2]); // début du texte
+  assert.deepEqual(inspectorWindow(view, 10, 6).columns.at(-1), { index: 10, distance: 0 }); // fin du texte
+  const removed = { ...view, stages: [...view.stages, { id: 'x', label: 'X', words: view.stages[1]!.words.map((w, k) => (k === 4 ? '' : w)) }] };
+  assert.equal(inspectorWindow(removed, 4, 0).bands[2]!.cells[0], '·');
 });
 
 test('marques des noms : remplacé, ou laissé tel quel avec sa raison ; rien quand le plugin n’agit pas', () => {
@@ -98,18 +106,20 @@ test('chaîne avec un plugin sur toutes les pistes : résumé, mention, mots ret
   const sans = { id: 'sans-1', type: 'sans', enabled: true, params: { lettre: 'e' }, targets: [...CATEGORIES] };
   const mixer = { ...offsetOne, instances: [offsetOne.instances[0]!, sans] };
   const short = { text: 'La vieille ferme dort.', tagged: tag('La vieille ferme dort.') };
-  const view = buildView(short, mixer, m, undefined, lookup);
+  const view = buildView(short, mixer, m, lookup);
   // S+1 : « La vieille ferme » → « Le vieux fermoir » ; puis sans « e » : « Le », « vieux », « fermoir » retirés
   assert.equal(view.result, 'dort.');
   assert.deepEqual(view.marks.get(2), { state: 'removed', original: 'ferme' });
   assert.deepEqual(view.steps, [{ id: 's7-1', replaced: 1, removed: 0, kept: 0 }, { id: 'sans-1', replaced: 0, removed: 3, kept: 0 }]);
+  // trois bandes : l'origine, puis chaque filtre actif dans l'ordre de la chaîne
+  assert.deepEqual(view.stages.map((stage) => [stage.label, stage.words[2]]), [['Origine', 'ferme'], ['S+1 sur les noms', 'fermoir'], ['sans e', '']]);
   assert.equal(summarize(mixer, view, lookup), 'S+1 sur les noms : 1 nom remplacé sur 1. sans e : 0 mot remplacé, 3 retirés, 0 laissé tel quel.');
   assert.equal(ruleMention(mixer, view.audible, lookup), '\n\n— S+1 sur les noms · sans e (Potao)');
-  const verbs = buildView({ text: 'Le chat est vite.', tagged: tag('Le chat est vite.') }, mixer, m, undefined, lookup);
+  const verbs = buildView({ text: 'Le chat est vite.', tagged: tag('Le chat est vite.') }, mixer, m, lookup);
   assert.match(summarize(mixer, verbs, lookup), /3 retirés, 1 laissé tel quel\.$/); // « Le cheval » et « vite » retirés, « est » laissé
   // tous coupés
   const off = { ...mixer, instances: mixer.instances.map((instance) => ({ ...instance, enabled: false })) };
-  assert.equal(summarize(off, buildView(short, off, m, undefined, lookup), lookup), 'Filtres coupés : texte d’origine.');
+  assert.equal(summarize(off, buildView(short, off, m, lookup), lookup), 'Filtres coupés : texte d’origine.');
 });
 
 test('instances : pistes nommées sauf quand elles couvrent le type ; phrase à trois comptes sur plusieurs pistes', () => {

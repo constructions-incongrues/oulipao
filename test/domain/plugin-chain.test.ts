@@ -84,6 +84,11 @@ test('deux plugins : le second lit la sortie du premier, ramenée aux mots d’o
   assert.deepEqual(result.marks.get(3), { index: 3, original: 'village', removed: true });
   assert.deepEqual(result.marks.get(1), { index: 1, original: 'ferme', replacement: 'fermoir' });
   assert.deepEqual(result.steps.map((s) => s.id), ['s7', 'sans-v']);
+  // chaque étape, alignée sur les mots d'origine : la contraction reste à sa place, le mot retiré est vide
+  assert.deepEqual(result.stages, [
+    ['Le', 'fermoir', 'de la', 'ville', 'dort'],
+    ['Le', 'fermoir', 'de la', '', 'dort'],
+  ]);
 });
 
 test('un mot remplacé par plusieurs, puis relu par un autre plugin', () => {

@@ -337,3 +337,28 @@ Préparait le câlin en une cuistrerie étrusque… »
   voyelles accentuées sont hors du périmètre v1.
 - **Un filtre ajouté est en marche** : il agit dès qu'il est branché (S+7 par défaut,
   lipogramme en « e »).
+
+# Inspecteur de chaîne
+
+Vérification du 2026-10-03, dans le navigateur, sur le texte 1 de référence avec l'étiqueteur
+neuronal. Capture : `resultats/inspecteur/texte-1-inspecteur.jpg`.
+
+| Critère du PRD | Constat |
+|---|---|
+| Suivre un mot dans la chaîne | Cinq filtres ; un clic sur le mot venu de « cuisine » ouvre l'inspecteur : six bandes, « Origine » puis chaque filtre dans l'ordre. On y lit « cuisine → cuisseau (S+7) → cuissot (lipogramme en e) → cuissot (lipogramme en a) → cuistance (S+1) », et « étroite » devenue « étrusque » au S+2 puis « étudiante » par réaccord |
+| Le texte d'abord | À 1280 × 900 px : plus de partition ; le texte résultant occupe la colonne de droite, l'inspecteur fermé ne laisse qu'une ligne d'invitation ; la page ne défile pas à l'horizontale |
+| Sur téléphone | À 375 px : la page ne défile pas à l'horizontale ; l'inspecteur montre cinq mots et défile en lui-même (442 px de contenu pour 343 de place), la colonne des noms d'étape prenant de la largeur |
+| Toujours en direct | Inspecteur ouvert, cinq filtres, geste et rendu compris : ouvrir 165 ms, mot suivant 8 à 153 ms, changer un décalage 130 ms, monter un filtre 300 ms ; sous la demi-seconde, sans nouvel étiquetage ; le choix reste sur le même mot quand un filtre monte |
+| Ce qui change dans le code | `score-layout.ts`, `components/score.ts`, la mesure de largeur de `main.ts`, `setWidth` et `toggleScore` supprimés ; `runChain` rend `stages` ; `components/inspector.ts` et ses tests |
+| Falsification | À mesurer : une ligne à la fin de chacune des 3 premières séances d'écriture, avant le 31 octobre 2026 (« inspecteur ouvert, réglage changé : oui/non ») |
+
+## Écarts et limites
+
+- **Mots coupés.** Au premier essai, le tableau serrait ses colonnes et coupait les mots
+  (« da/ns ») ; les mots restent maintenant sur une ligne, et l'inspecteur défile en lui-même
+  si la place manque.
+- **La raison d'un mot laissé tel quel**, que donnait la partition, passe dans l'infobulle du mot
+  du texte résultant (« Noms : laissé tel quel, absent du dictionnaire »).
+- **Les mesures varient** d'un geste à l'autre (8 à 300 ms) dans un panneau de navigateur
+  partagé ; aucune ne dépasse la demi-seconde.
+

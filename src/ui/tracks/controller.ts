@@ -2,7 +2,6 @@ import { tagText } from '../../domain/tagging.ts';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
 import type { Tagger } from '../../ports/tagger.ts';
 import { initialState, reduce } from './mixer-state.ts';
-import { DEFAULT_WIDTH, systemWidth } from './score-layout.ts';
 import type { MixerAction, MixerState } from './types.ts';
 import { buildView, changedWords, ruleMention, type Session, type TracksView } from './view-model.ts';
 
@@ -47,10 +46,8 @@ export interface TracksState {
   generation: number;
   /** Message à côté du bouton de copie. */
   copyMessage: string;
-  /** Sur petit écran : la partition est-elle dépliée ? */
-  scoreOpen: boolean;
-  /** Largeur des systèmes, en caractères. */
-  width: number;
+  /** Le mot d'origine ouvert dans l'inspecteur ; aucun : l'inspecteur est fermé. */
+  selected?: number;
 }
 
 export interface TracksController {
@@ -62,15 +59,17 @@ export interface TracksController {
   setInput(text: string): void;
   /** Rouvre la saisie repliée. */
   edit(): void;
-  /** Étiquette le texte saisi et affiche la partition. */
+  /** Étiquette le texte saisi et affiche le texte résultant. */
   run(): Promise<void>;
   /** Place le texte d'exemple dans la saisie et le met en pistes. */
   example(): Promise<void>;
   /** Applique un geste à la table et met la vue à jour, sans réétiqueter. */
   dispatch(action: MixerAction): void;
-  /** Nouvelle place disponible pour les systèmes, en caractères. */
-  setWidth(availableChars: number): void;
-  toggleScore(): void;
+  /** Ouvre l'inspecteur sur un mot d'origine. */
+  select(index: number): void;
+  /** Passe au mot d'origine précédent ou suivant, sans sortir du texte. */
+  step(delta: number): void;
+  closeInspector(): void;
   copy(): Promise<void>;
 }
 
@@ -93,8 +92,6 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     changed: new Set(),
     generation: 0,
     copyMessage: '',
-    scoreOpen: false,
-    width: DEFAULT_WIDTH,
   };
   let session: Session | undefined;
   let morphology: MorphologyRepository | undefined;
@@ -110,9 +107,8 @@ export function createTracksController(dependencies: TracksDependencies, onChang
   /** Rejoue la vue après un geste ; les mots qui ont changé s'éclairent. */
   const rebuild = (patch: Partial<TracksState>) => {
     const mixer = patch.mixer ?? state.mixer;
-    const width = patch.width ?? state.width;
     if (!session || !morphology) return update(patch);
-    const view = buildView(session, mixer, morphology, width);
+    const view = buildView(session, mixer, morphology);
     const changed = changedWords(state.view, view);
     update({ ...patch, view, changed, generation: state.generation + 1, copyMessage: '' });
   };
@@ -160,8 +156,9 @@ export function createTracksController(dependencies: TracksDependencies, onChang
         const tagged = await tagText(dependencies.tagger, text);
         if (run !== runs) return;
         session = { text, tagged };
-        const view = buildView(session, state.mixer, morphology!, state.width);
-        update({ tagging: false, editing: false, stale: state.input !== text, view, changed: new Set(), generation: state.generation + 1 });
+        const view = buildView(session, state.mixer, morphology!);
+        // Nouvel étiquetage, nouvelles positions : l'inspecteur se ferme.
+        update({ tagging: false, editing: false, stale: state.input !== text, view, changed: new Set(), generation: state.generation + 1, selected: undefined });
       } catch (error) {
         if (run === runs) update({ tagging: false, inputMessage: `Échec de l’étiquetage : ${messageOf(error)}. Vous pouvez relancer.` });
       }
@@ -173,12 +170,15 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     dispatch(action) {
       rebuild({ mixer: reduce(state.mixer, action) });
     },
-    setWidth(availableChars) {
-      const width = systemWidth(availableChars);
-      if (width !== state.width) rebuild({ width });
+    select(index) {
+      update({ selected: index });
     },
-    toggleScore() {
-      update({ scoreOpen: !state.scoreOpen });
+    step(delta) {
+      if (state.selected === undefined || !state.view) return;
+      update({ selected: Math.min(Math.max(state.selected + delta, 0), state.view.tracks.length - 1) });
+    },
+    closeInspector() {
+      update({ selected: undefined });
     },
     async copy() {
       const view = state.view;
