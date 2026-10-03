@@ -36,6 +36,14 @@ The system SHALL re-agree determiners, adjectives, attributes and pronouns with 
 - **WHEN** le texte résultant s'affiche
 - **THEN** son déterminant est au masculin
 
+### Requirement: Élision de l'article
+The system SHALL elide « le » or « la » into « l’ » before a new word that begins with a vowel or a mute h, and SHALL restore « l’ » into « le » or « la » before a new word that begins with a consonant, with the gender of the new word, else of the replaced word, else the masculine.
+
+#### Scenario: Adjectif nouveau à initiale consonantique
+- **GIVEN** le texte « L'enceinte maison. » et la lettre interdite « n »
+- **WHEN** le lipogramme s'applique
+- **THEN** le résultat est « La fermée ville. », et non « L'fermée ville. »
+
 ### Requirement: Mots-outils
 The system SHALL replace a function word containing the forbidden letter with an equivalent of the same function from a table, and SHALL remove and count it when no equivalent exists; a removed word SHALL keep the line breaks and punctuation of the spacing before it, following the shared rule for removed words.
 

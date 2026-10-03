@@ -91,3 +91,8 @@ test('le voisin part du mot à l’initiale changée, pas du début de la lettre
   // « camion » vers « h » part de « hamion » : « héros » vient d'abord.
   assert.equal(run('Le camion dort.', 'h', ['noun']).text, 'Le héros dort.');
 });
+
+test('article rétabli : « l’ » devant un adjectif ou un adverbe nouveau à initiale consonantique', () => {
+  assert.equal(run("L'enceinte maison.", 'r', ['adjective']).text, 'La rapide maison.');
+  assert.equal(run('Elle voit l’ici.', 'v', ['adverb']).text, 'Elle voit le vite.');
+});

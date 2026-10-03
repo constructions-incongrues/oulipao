@@ -8,7 +8,7 @@ import type { OutputWord } from '../s7/types.ts';
 import type { TaggedWord } from '../tagged-word.ts';
 import { tokenize } from '../tokenizer.ts';
 import { CATEGORIES } from '../categories.ts';
-import { elide, lettersOf } from '../letters.ts';
+import { elide, lettersOf, restoreArticle } from '../letters.ts';
 import { neighbourVerb, rewriteVerbs } from '../verb.ts';
 import { functionWordWithout } from './function-words.ts';
 import { containsLetter, neighbourAdjective, neighbourAdverb, neighbourNoun } from './neighbour.ts';
@@ -175,8 +175,12 @@ export const lipogramPlugin = definePlugin({
       );
     }
 
-    // 4. Élision des articles remplacés devant une voyelle : « une horloge » → « l’horloge ».
-    for (const mark of marks) if (mark.replacement !== undefined) elide(words, mark.index, apostrophe, morphology);
+    // 4. Élision des articles remplacés devant une voyelle : « une horloge » → « l’horloge » ; « l’ » rétabli devant une consonne.
+    for (const mark of marks) {
+      if (mark.replacement === undefined) continue;
+      elide(words, mark.index, apostrophe, morphology);
+      restoreArticle(words, mark.index, mark.original, morphology);
+    }
     for (const mark of marks) if (mark.replacement !== undefined) mark.replacement = words[mark.index]!.output;
 
     return { words, tail, marks: marks.sort((a, b) => a.index - b.index) };
