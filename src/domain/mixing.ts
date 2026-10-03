@@ -47,10 +47,17 @@ const CLOSE = '';
  *
  * @param words la sortie du moteur (ou `plainWords`), un élément par mot du texte d'origine
  * @param tagged les mots d'origine étiquetés, dans le même ordre
+ * @param tidy resserrer le texte même si aucune piste n'est coupée : des mots ont été retirés par un plugin
  */
-export function mixSegments(words: readonly OutputWord[], tagged: readonly TaggedWord[], audible: ReadonlySet<Category>, tail: string): MixedSegment[] {
+export function mixSegments(
+  words: readonly OutputWord[],
+  tagged: readonly TaggedWord[],
+  audible: ReadonlySet<Category>,
+  tail: string,
+  tidy = false,
+): MixedSegment[] {
   if (words.length !== tagged.length) throw new Error('les mots à mixer ne correspondent pas aux mots étiquetés');
-  let silenced = false;
+  let silenced = tidy;
   let out = '';
   words.forEach((word, i) => {
     const heard = audible.has(tagged[i]!.category);

@@ -259,3 +259,51 @@ commence désormais à l'ouverture, sauf si le navigateur demande d'économiser 
   moins de 2 minutes) reste à mesurer : elle attend la mise en ligne et les cinq testeurs.
 - En solo ou en mute, le texte résultant est une suite de mots, pas une phrase : la règle
   s'applique telle quelle (« la horloge »).
+
+# Lipogramme
+
+Vérification du 2026-10-03, lettre « e » interdite, sur les 3 textes de référence de 200 mots.
+Deux mesures : sous Node, avec les catégories annotées des textes de référence ; dans le
+navigateur, sur le texte 1, avec l'étiqueteur neuronal (fenêtre de 1280 × 900 px). Capture :
+`resultats/lipogramme/texte-1-s7-puis-lipogramme.jpg`.
+
+| Texte | Chaîne | Remplacés | Retirés | Laissés tels quels | Mots gardant un « e » hors laissés |
+|---|---|---|---|---|---|
+| 1 | lipogramme | 85 | 10 | 16 (verbes) | 0 |
+| 1 | S+7 puis lipogramme | 92 | 10 | 17 (16 verbes, 1 nom sans voisin) | 0 |
+| 2 | lipogramme | 105 | 8 | 32 (verbes) | 0 |
+| 2 | S+7 puis lipogramme | 114 | 8 | 32 (verbes) | 0 |
+| 3 | lipogramme | 77 | 6 | 26 (verbes) | 0 |
+| 3 | S+7 puis lipogramme | 96 | 6 | 26 (verbes) | 0 |
+
+| Critère du PRD | Constat |
+|---|---|
+| La lettre a disparu | 0 « e » dans les noms, adjectifs, adverbes et mots-outils des 3 textes ; les verbes qui la contiennent restent tels quels et sont comptés (v1) |
+| Les remplacements sont accordés | Non mesuré : la relecture à la main revient au fondateur. Par construction, noms et adjectifs gardent genre et nombre ; un pronom « le » devient « un » (la table ne distingue pas le pronom du déterminant) |
+| Les deux contraintes se combinent | S+7 puis lipogramme : 0 « e » hors verbes ; dans le navigateur, « S+7, parmi tous les noms : 33 noms remplacés sur 34. lipogramme en e : 86 mots remplacés, 9 retirés, 16 laissés tels quels. » ; l'ordre s'inverse, et le S+7 placé après réintroduit des « e », comme attendu |
+| Le réglage reste en direct | Dans le navigateur, rendu compris : mettre le lipogramme en marche 106 ms, brancher le S+7 37 ms, changer de lettre 157 ms, inverser l'ordre 65 ms ; sans nouvel étiquetage |
+| Le contrat tient | Le lipogramme est écrit contre `ConstraintPlugin` ; deux ajouts au contrat (portée « toutes les pistes », mot retiré), consignés dans `docs/plugins.md` ; la chaîne est tenue par la page |
+| Le texte reste dans le navigateur | Hôtes contactés : la page et `cdn.jsdelivr.net` (la bibliothèque du modèle) ; aucune requête ne contient le texte |
+| La mention copiée décrit la chaîne | « — S+7, parmi tous les noms · lipogramme en e (Potao) » |
+
+Extrait du texte 1, S+7 puis lipogramme : « Un matois où un vif hors-bilan s'arrêta néanmoins
+un remarqua vulgo Préparait un café dans un cuissot étroit, quand on un faisait dès anacondas,
+ou sa marihuana lisait la jovialité sans lever nos officialisations. »
+
+## Écarts et limites
+
+- **Copie périmée du dictionnaire.** Pendant la vérification, le navigateur servait une copie en
+  cache de `data/morpho-potao.tsv` d'avant l'ajout des adverbes : les adverbes gardaient leur
+  « e ». L'adresse du fichier porte désormais une version (`MORPHOLOGY_VERSION` dans
+  `src/ui/composition.ts`), à changer à chaque reconstruction.
+- **Les verbes** gardent leur « e » (v1) ; un second PRD les traitera.
+- **Les mots-outils sans équivalent** sont retirés (« je », « ne », « se ») ; un nom propre
+  étiqueté « autre » qui contient la lettre l'est aussi (« Marthe » disparaît, sa majuscule
+  passe au mot suivant).
+- **Le pronom et le déterminant** se confondent dans la table : « ne le remarqua » devient
+  « néanmoins un remarqua ».
+- **Des voisins lointains** : faute de voisin proche, un mot peut sauter loin dans l'ordre du
+  dictionnaire (« encore » → « fifty-fifty »). C'est le jeu de « voisin = le suivant sans la
+  lettre ».
+- **La falsification** (2 testeurs sur 5 branchent les deux contraintes au premier essai) attend
+  la mise en ligne et les cinq testeurs.

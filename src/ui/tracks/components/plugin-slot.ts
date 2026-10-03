@@ -47,7 +47,7 @@ export function PluginSlot({ plugin, state, onToggle, onParam }: PluginSlotProps
       ${plugin.parameters.map(
         (parameter) => html`<label>${parameter.label}<${Control} parameter=${parameter} value=${params[parameter.key]} onParam=${onParam} /></label>`,
       )}
-      <p class="help">${enabled ? plugin.help(params) : `Plugin coupé : les ${TRACK_UNITS[plugin.track][1]} restent ceux du texte.`}</p>
+      <p class="help">${enabled ? plugin.help(params) : `Plugin coupé : les ${plugin.track === 'all' ? 'mots' : TRACK_UNITS[plugin.track][1]} restent ceux du texte.`}</p>
     </div>
   ` as VNode;
 }

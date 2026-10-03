@@ -4,7 +4,7 @@ import { tokenize } from '../tokenizer.ts';
 import { agreeAdjective } from './agreement.ts';
 import { identifyDeterminer, isTout, VARIABLE_FORMS, type IdentifiedDeterminer } from './determiners.ts';
 import { elides, realizeDeterminer } from './elision.ts';
-import { substituteNoun, type NounChoice } from './substitution.ts';
+import { substituteNoun, type NounChoice, type NounHints } from './substitution.ts';
 import { adjectiveChain, findPredicate, isImpersonal, LINKING_PREPOSITIONS, SUBJECT_PRONOUNS, subjectPronoun, TextView } from './syntax.ts';
 import { S7OptionsSchema, type ConcreteGender, type ConcreteNumber, type OutputWord, type S7OptionsInput, type S7Result, type Substitution } from './types.ts';
 
@@ -32,6 +32,9 @@ function matchCase(original: string, replacement: string): string {
   return capitalized ? replacement[0]!.toUpperCase() + replacement.slice(1) : replacement;
 }
 
+/** Choisit le remplaçant d'un nom, d'après ce que la phrase dit de son genre et de son nombre. */
+export type NounChooser = (word: string, hints: NounHints) => NounChoice;
+
 /**
  * Applique la contrainte : chaque nom est remplacé par le n-ième suivant du dictionnaire, puis
  * ce qui s'accordait avec lui est remis d'aplomb : déterminant, adjectifs, attribut, participe
@@ -46,6 +49,21 @@ export function applyS7(
   morphology: MorphologyRepository,
 ): S7Result {
   const { offset, mode, category } = S7OptionsSchema.parse(options);
+  return rewriteNouns(text, tagged, (word, hints) => substituteNoun(word, hints, { offset, mode }, morphology), morphology, category);
+}
+
+/**
+ * Remplace chaque nom par ce que `choose` en fait, puis remet d'aplomb ce qui s'accordait avec
+ * lui : la réécriture du S+7, partagée avec les contraintes qui remplacent aussi des noms
+ * (le lipogramme).
+ */
+export function rewriteNouns(
+  text: string,
+  tagged: readonly TaggedWord[],
+  choose: NounChooser,
+  morphology: MorphologyRepository,
+  category: TaggedWord['category'] = 'noun',
+): S7Result {
   const tokens = tokenize(text);
   if (tagged.length !== tokens.length || tokens.some((token, i) => token.word !== tagged[i]!.word)) {
     throw new Error('les mots étiquetés ne correspondent pas au découpage du texte');
@@ -103,12 +121,7 @@ export function applyS7(
     // « toute la ville » : « tout » placé avant le déterminant s'accorde avec lui.
     const tout = identified && view.follows(from) && !claimed.has(from - 1) && isTout(tokens[from - 1]!.word) ? from - 1 : undefined;
 
-    const choice = substituteNoun(
-      token.word,
-      { gender: identified?.determiner.gender, number: identified?.determiner.number },
-      { offset, mode },
-      morphology,
-    );
+    const choice = choose(token.word, { gender: identified?.determiner.gender, number: identified?.determiner.number });
 
     // Complément du nom précédent ? Par un article contracté ou une préposition, sans rien entre les deux.
     const previous = groups.at(-1);

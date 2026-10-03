@@ -5,6 +5,8 @@ import { renderToString } from 'preact-render-to-string';
 import { CATEGORIES } from '../../../src/domain/categories.ts';
 import type { ModelState } from '../../../src/ui/tracks/controller.ts';
 import { PluginSlot } from '../../../src/ui/tracks/components/plugin-slot.ts';
+import { Master } from '../../../src/ui/tracks/components/master.ts';
+import { sansPlugin } from '../../support/plugins.ts';
 import { definePlugin } from '../../../src/domain/plugin.ts';
 import { s7Plugin } from '../../../src/domain/s7/plugin.ts';
 import { Result } from '../../../src/ui/tracks/components/result.ts';
@@ -174,4 +176,32 @@ test('Source : définition et exemple au premier contact, avancement du modèle,
   click(folded, byClass('edit'));
   assert.match(render({ editing: false, words: 1 }), /Texte : 1 mot</);
   assert.deepEqual(calls, ['input:Un texte', 'run', 'example', 'load', 'load', 'edit']);
+});
+
+test('Master : l’emplacement « Toutes les pistes », et l’ordre de la chaîne dès deux plugins', () => {
+  const calls: string[] = [];
+  const props = {
+    plugins: [s7Plugin, sansPlugin],
+    states: { s7: { enabled: true, params: { offset: 7, mode: 'reagree' } }, sans: { enabled: false, params: { lettre: 'e' } } },
+    order: ['s7', 'sans'],
+    onToggle: (id: string) => calls.push(`toggle ${id}`),
+    onParam: (id: string, key: string, value: unknown) => calls.push(`${id} ${key}=${value}`),
+    onReverse: () => calls.push('reverse'),
+  };
+  const master = html`<${Master} ...${props} />`;
+  const out = renderToString(master);
+  assert.match(out, /<section class="master" aria-label="Toutes les pistes"><h3>Toutes les pistes<\/h3>/);
+  assert.match(out, /aria-label="Plugin Sans actif">Sans e coupé/); // seul le plugin de portée « toutes les pistes »
+  assert.doesNotMatch(out, /Plugin S\+7/);
+  assert.match(out, /Ordre : S\+7 → Sans/);
+  click(master, byClass('power'));
+  (find(master, (e) => e.type === 'select').props['onChange'] as (event: Event) => void)(inputEvent('a'));
+  click(master, byClass('reverse'));
+  assert.deepEqual(calls, ['toggle sans', 'sans lettre=a', 'reverse']);
+  assert.match(renderToString(html`<${Master} ...${{ ...props, order: ['sans', 's7'] }} />`), /Ordre : Sans → S\+7/);
+  const alone = renderToString(html`<${Master} ...${{ ...props, plugins: [s7Plugin], order: ['s7'] }} />`);
+  assert.doesNotMatch(alone, /Ordre/);
+  assert.match(alone, /Emplacement vide\./);
+  assert.doesNotMatch(out, /Emplacement vide/);
+  assert.match(renderToString(html`<${Master} ...${{ ...props, order: ['s7', 'inconnu'] }} />`), /S\+7 → inconnu/);
 });

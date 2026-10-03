@@ -7,7 +7,8 @@ const after = (...actions: MixerAction[]) => MixerStateSchema.parse(actions.redu
 
 test('état initial : toutes les pistes s’entendent ; S+7 actif, décalage 7, réaccord', () => {
   const state = MixerStateSchema.parse(initialState);
-  assert.deepEqual(state.plugin, { enabled: true, params: { offset: 7, mode: 'reagree' } });
+  assert.deepEqual(state.plugins, { s7: { enabled: true, params: { offset: 7, mode: 'reagree' } }, lipogram: { enabled: false, params: { letter: 'e' } } });
+  assert.deepEqual(state.order, ['s7', 'lipogram']);
   assert.deepEqual(Object.keys(state.tracks), ['noun', 'verb', 'adjective', 'adverb', 'other']);
   assert.ok(Object.values(state.tracks).every((t) => !t.muted && !t.solo));
 });
@@ -22,10 +23,10 @@ test('mute et solo basculent, piste par piste', () => {
 });
 
 test('plugin : actif ou coupé, décalage, mode', () => {
-  assert.equal(after({ type: 'toggle-plugin' }).plugin.enabled, false);
-  assert.equal(after({ type: 'toggle-plugin' }, { type: 'toggle-plugin' }).plugin.enabled, true);
-  assert.equal(after({ type: 'set-param', key: 'offset', value: -3 }).plugin.params['offset'], -3);
-  assert.equal(after({ type: 'set-param', key: 'mode', value: 'same-gender' }).plugin.params['mode'], 'same-gender');
+  assert.equal(after({ type: 'toggle-plugin', id: 's7' }).plugins['s7']!.enabled, false);
+  assert.equal(after({ type: 'toggle-plugin', id: 's7' }, { type: 'toggle-plugin', id: 's7' }).plugins['s7']!.enabled, true);
+  assert.equal(after({ type: 'set-param', id: 's7', key: 'offset', value: -3 }).plugins['s7']!.params['offset'], -3);
+  assert.equal(after({ type: 'set-param', id: 's7', key: 'mode', value: 'same-gender' }).plugins['s7']!.params['mode'], 'same-gender');
 });
 
 test('un geste ne modifie pas l’état précédent', () => {
@@ -34,12 +35,22 @@ test('un geste ne modifie pas l’état précédent', () => {
 });
 
 test('refuse un geste non conforme', () => {
-  assert.throws(() => reduce(initialState, { type: 'set-param', key: 'offset', value: 1.5 }));
-  assert.throws(() => reduce(initialState, { type: 'set-param', key: 'offset', value: 100 })); // décalage borné à ±99
-  assert.throws(() => reduce(initialState, { type: 'set-param', key: 'offset', value: -100 }));
-  assert.equal(after({ type: 'set-param', key: 'offset', value: -99 }, { type: 'set-param', key: 'offset', value: 99 }).plugin.params['offset'], 99);
-  assert.throws(() => reduce(initialState, { type: 'set-param', key: 'mode', value: 'au hasard' }));
-  assert.throws(() => reduce(initialState, { type: 'set-param', key: 'vitesse', value: 3 }), /paramètre inconnu : vitesse/);
+  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7', key: 'offset', value: 1.5 }));
+  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7', key: 'offset', value: 100 })); // décalage borné à ±99
+  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7', key: 'offset', value: -100 }));
+  assert.equal(after({ type: 'set-param', id: 's7', key: 'offset', value: -99 }, { type: 'set-param', id: 's7', key: 'offset', value: 99 }).plugins['s7']!.params['offset'], 99);
+  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7', key: 'mode', value: 'au hasard' }));
+  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7', key: 'vitesse', value: 3 }), /paramètre inconnu : vitesse/);
+  assert.throws(() => reduce(initialState, { type: 'toggle-plugin', id: 'inconnu' }), /plugin inconnu : inconnu/);
+  assert.throws(() => reduce(initialState, { type: 'set-param', id: 'inconnu', key: 'offset', value: 3 }), /plugin inconnu/);
+  assert.throws(() => reduce(initialState, { type: 'move-plugin', id: 'inconnu', position: 0 }), /plugin inconnu/);
   assert.throws(() => reduce(initialState, { type: 'toggle-mute', category: 'pronom' as never }));
   assert.throws(() => reduce(initialState, { type: 'danser' } as never));
+});
+
+test('ordre de la chaîne : un plugin se place à une position, bornée à la fin', () => {
+  const state = { ...initialState, order: ['s7', 'b', 'c'] };
+  assert.deepEqual(reduce(state, { type: 'move-plugin', id: 's7', position: 2 }).order, ['b', 'c', 's7']);
+  assert.deepEqual(reduce(state, { type: 'move-plugin', id: 's7', position: 9 }).order, ['b', 'c', 's7']);
+  assert.deepEqual(reduce(state, { type: 'move-plugin', id: 's7', position: 0 }).order, ['s7', 'b', 'c']);
 });

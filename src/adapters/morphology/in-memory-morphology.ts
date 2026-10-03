@@ -6,6 +6,8 @@ import type { TextSource } from '../../ports/text-source.ts';
 export interface MorphologyData {
   nouns: NounForm[];
   adjectives: AdjectiveForm[];
+  /** Adverbes, invariables. */
+  adverbs?: string[];
   /** Formes qui interdisent l'élision. */
   noElision: string[];
 }
@@ -25,6 +27,8 @@ export class InMemoryMorphology implements MorphologyRepository {
   readonly #adjectivesByForm = new Map<string, AdjectiveForm[]>();
   readonly #adjectivesByParadigm = new Map<string, AdjectiveForm[]>();
   readonly #noElision: Set<string>;
+  readonly #paradigms: string[];
+  readonly #adverbs: string[];
 
   constructor(data: MorphologyData) {
     for (const noun of data.nouns) {
@@ -36,7 +40,10 @@ export class InMemoryMorphology implements MorphologyRepository {
       push(this.#adjectivesByParadigm, adjective.paradigm, adjective);
     }
     // Ordre du dictionnaire français : accents ignorés au premier niveau.
-    this.#lemmas = [...this.#nounsByLemma.keys()].sort(new Intl.Collator('fr').compare);
+    const order = new Intl.Collator('fr').compare;
+    this.#lemmas = [...this.#nounsByLemma.keys()].sort(order);
+    this.#paradigms = [...this.#adjectivesByParadigm.keys()].sort(order);
+    this.#adverbs = [...new Set(data.adverbs ?? [])].sort(order);
     this.#noElision = new Set(data.noElision);
   }
 
@@ -55,23 +62,33 @@ export class InMemoryMorphology implements MorphologyRepository {
   adjectiveForms(paradigm: string): readonly AdjectiveForm[] {
     return this.#adjectivesByParadigm.get(paradigm) ?? NO_FORMS;
   }
+  adjectiveParadigms(): readonly string[] {
+    return this.#paradigms;
+  }
+  adverbs(): readonly string[] {
+    return this.#adverbs;
+  }
   blocksElision(form: string): boolean {
     return this.#noElision.has(form);
   }
 }
 
-// Fichier dérivé data/morpho-potao.tsv : « N|A <TAB> forme <TAB> lemme <TAB> genre <TAB> nombre <TAB> 0|1 »
-// (1 = pas d'élision).
-const RowSchema = z.tuple([z.enum(['N', 'A']), z.string(), z.string(), z.string(), z.string(), z.enum(['0', '1'])]);
+// Fichier dérivé data/morpho-potao.tsv : « N|A|R <TAB> forme <TAB> lemme <TAB> genre <TAB> nombre <TAB> 0|1 »
+// (1 = pas d'élision ; R = adverbe, invariable).
+const RowSchema = z.tuple([z.enum(['N', 'A', 'R']), z.string(), z.string(), z.string(), z.string(), z.enum(['0', '1'])]);
 
 /** Lit le fichier dérivé ; lève si une ligne n'est pas conforme. */
 export function parseMorphology(tsv: string): MorphologyData {
-  const data: MorphologyData = { nouns: [], adjectives: [], noElision: [] };
+  const data: MorphologyData = { nouns: [], adjectives: [], adverbs: [], noElision: [] };
   for (const line of tsv.split('\n')) {
     if (!line || line.startsWith('#')) continue;
     const row = RowSchema.safeParse(line.split('\t'));
     if (!row.success) throw new Error(`morphologie : ligne non conforme « ${line} »`);
     const [kind, form, lemma, gender, number, noElision] = row.data;
+    if (kind === 'R') {
+      data.adverbs!.push(form);
+      continue;
+    }
     const entry =
       kind === 'N'
         ? NounFormSchema.safeParse({ form, lemma, gender, number })

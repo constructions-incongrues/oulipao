@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { createMorphologyLoader, createNeuralTagger, createNeuralTagging, createTaggers } from '../../src/ui/composition.ts';
+import { createMorphologyLoader, createNeuralTagger, createNeuralTagging, createTaggers, MORPHOLOGY_VERSION } from '../../src/ui/composition.ts';
 
 test('les trois étiqueteurs de l’essai, le neuronal en premier', () => {
   const taggers = createTaggers('http://localhost/dist/page.js');
@@ -22,7 +22,7 @@ test('le dictionnaire est cherché à côté de dist/, une seule fois', async ()
     const [a, b] = await Promise.all([load(), load()]);
     assert.equal(a, b);
     assert.deepEqual(a.nounLemmas(), ['horloge']);
-    assert.deepEqual(urls, ['http://localhost/data/morpho-potao.tsv']);
+    assert.deepEqual(urls, [`http://localhost/data/morpho-potao.tsv?v=${MORPHOLOGY_VERSION}`]); // versionné : pas de copie périmée
   } finally {
     globalThis.fetch = original;
   }

@@ -2,13 +2,14 @@ import { html } from 'htm/preact';
 import type { VNode } from 'preact';
 import { CATEGORIES } from '../../domain/categories.ts';
 import { audibleCategories } from '../../domain/mixing.ts';
+import { Master } from './components/master.ts';
 import { PluginSlot } from './components/plugin-slot.ts';
 import { Result } from './components/result.ts';
 import { EmptyScore, Score } from './components/score.ts';
 import { Source } from './components/source.ts';
 import { Strip } from './components/strip.ts';
 import type { TracksController, TracksState } from './controller.ts';
-import { installedPlugin } from './mixer-state.ts';
+import { installedPlugins } from './mixer-state.ts';
 import { summarize } from './view-model.ts';
 
 export interface AppProps {
@@ -51,16 +52,27 @@ export function App({ state, controller }: AppProps): VNode {
                 onMute=${() => controller.dispatch({ type: 'toggle-mute', category })}
                 onSolo=${() => controller.dispatch({ type: 'toggle-solo', category })}
               >
-                ${category === installedPlugin.track &&
-                html`<${PluginSlot}
-                  plugin=${installedPlugin}
-                  state=${mixer.plugin}
-                  onToggle=${() => controller.dispatch({ type: 'toggle-plugin' })}
-                  onParam=${(key: string, value: number | string) => controller.dispatch({ type: 'set-param', key, value })}
-                />`}
+                ${installedPlugins
+                  .filter((plugin) => plugin.track === category)
+                  .map(
+                    (plugin) => html`<${PluginSlot}
+                      plugin=${plugin}
+                      state=${mixer.plugins[plugin.id]}
+                      onToggle=${() => controller.dispatch({ type: 'toggle-plugin', id: plugin.id })}
+                      onParam=${(key: string, value: number | string) => controller.dispatch({ type: 'set-param', id: plugin.id, key, value })}
+                    />`,
+                  )}
               <//>
             `,
           )}
+          <${Master}
+            plugins=${installedPlugins}
+            states=${mixer.plugins}
+            order=${mixer.order}
+            onToggle=${(id: string) => controller.dispatch({ type: 'toggle-plugin', id })}
+            onParam=${(id: string, key: string, value: number | string) => controller.dispatch({ type: 'set-param', id, key, value })}
+            onReverse=${() => controller.dispatch({ type: 'move-plugin', id: mixer.order[0]!, position: mixer.order.length - 1 })}
+          />
           <p class="more">D'autres contraintes viendront.</p>
         </section>
         <div class="stage">

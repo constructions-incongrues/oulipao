@@ -45,8 +45,10 @@ test('mise en pistes : saisie repliée, texte résultant au-dessus de la partiti
   await tick();
   const out = renderToString(app());
   assert.match(out, /Texte : 6 mots/);
-  assert.equal(elements(app()).filter(byClass('plugin')).length, 1);
+  assert.equal(elements(app()).filter(byClass('plugin')).length, 2); // S+7 sur les noms, lipogramme sur toutes les pistes
+  assert.match(renderToString(app()), /Ordre : S\+7 → Lipogramme/);
   assert.match(out, /D'autres contraintes viendront\./);
+  assert.match(out, /<section class="master" aria-label="Toutes les pistes">/);
   assert.match(out, /<p class="summary" role="status" aria-live="polite">S\+7, parmi tous les noms : 2 noms remplacés sur 2\.<\/p>/);
   assert.match(out, /<p class="result-text">Le vieil <span class="replaced">oncle<\/span> du <span class="replaced">cheval<\/span> dort\.<\/p>/);
   assert.ok(out.indexOf('Texte résultant') < out.indexOf('class="score"')); // le résultat d'abord
@@ -69,15 +71,15 @@ test('chaque réglage de la page passe par le contrôleur', async () => {
   click(app(), byLabel('Seul : ne garder que la piste Verbes'));
   assert.match(renderToString(app()), /<p class="result-text">dort\.<\/p>/);
   click(app(), byLabel('Plugin S+7 actif'));
-  assert.match(renderToString(app()), /Plugin coupé : texte d’origine\. Pistes coupées : noms, adjectifs, adverbes, autres\./);
+  assert.match(renderToString(app()), /Plugins coupés : texte d’origine\. Pistes coupées : noms, adjectifs, adverbes, autres\./);
   (find(app(), (e) => e.type === 'input').props['onInput'] as (event: Event) => void)(inputEvent('3'));
   (find(app(), (e) => e.type === 'select').props['onChange'] as (event: Event) => void)(inputEvent('same-gender'));
   assert.deepEqual(actions, [
     { type: 'toggle-mute', category: 'adjective' },
     { type: 'toggle-solo', category: 'verb' },
-    { type: 'toggle-plugin' },
-    { type: 'set-param', key: 'offset', value: 3 },
-    { type: 'set-param', key: 'mode', value: 'same-gender' },
+    { type: 'toggle-plugin', id: 's7' },
+    { type: 'set-param', id: 's7', key: 'offset', value: 3 },
+    { type: 'set-param', id: 's7', key: 'mode', value: 'same-gender' },
   ]);
   click(app(), byClass('copy'));
   await tick();
@@ -119,4 +121,22 @@ test('premier contact : l’exemple et le chargement du modèle passent par le c
   click(html`<${App} state=${waiting.state} controller=${waiting} />`, byClass('load'));
   await tick();
   assert.equal(waiting.state.model.status, 'ready');
+});
+
+test('le lipogramme se met en marche dans la page, après le S+7, et l’ordre s’inverse', async () => {
+  const { controller, app, copied } = setup();
+  controller.setInput('La vieille ferme du village dort.');
+  await controller.run();
+  click(app(), byLabel('Plugin Lipogramme actif'));
+  const out = renderToString(app());
+  assert.match(out, /S\+7, parmi tous les noms : 2 noms remplacés sur 2\. lipogramme en e : /);
+  assert.doesNotMatch(controller.state.view!.result.replace(/\bdort\b/, ''), /e/); // plus de « e » hors verbes
+  click(app(), byClass('copy'));
+  await tick();
+  assert.match(copied[0]!, /— S\+7, parmi tous les noms · lipogramme en e \(Potao\)$/);
+  click(app(), byClass('reverse'));
+  assert.match(renderToString(app()), /Ordre : Lipogramme → S\+7/);
+  assert.deepEqual(controller.state.mixer.order, ['lipogram', 's7']);
+  (find(app(), (e) => e.type === 'select' && String(e.props['value']) === 'e').props['onChange'] as (event: Event) => void)(inputEvent('a'));
+  assert.equal(controller.state.mixer.plugins['lipogram']!.params['letter'], 'a');
 });

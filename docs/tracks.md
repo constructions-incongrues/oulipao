@@ -13,6 +13,10 @@ Page : `tracks.html` (script assemblé `dist/tracks.js`, par `npm run build`). L
   ligne des noms, avec deux paramètres : « Décalage » (de −99 à +99) et « Parmi » (« tous les
   noms », ou « les noms du même genre »). Une ligne dit que d'autres contraintes viendront.
   La page dessine ces réglages d'après la déclaration du plugin : voir `docs/plugins.md`.
+- **Toutes les pistes** : sous les cinq pistes, un emplacement pour les contraintes qui agissent
+  partout, comme un effet sur le bus master. Le lipogramme s'y branche, coupé à l'ouverture, avec
+  son paramètre « Lettre ». La ligne « Ordre : S+7 → Lipogramme » et son bouton « Inverser
+  l'ordre » disent dans quel ordre les contraintes s'appliquent.
 - **Partition** : le texte d'origine disposé en systèmes.
 - **Système** : une ligne du texte d'origine (la règle) et, dessous, les pistes qui y ont des
   mots (les pistes vides du système sont masquées). La partition revient à la ligne comme une
@@ -27,9 +31,9 @@ Page : `tracks.html` (script assemblé `dist/tracks.js`, par `npm run build`). L
 
 L'étiquetage a lieu une fois par texte. Ensuite chaque geste rejoue trois fonctions pures :
 
-1. **Plugin** (`installedPlugin.apply`, aujourd'hui le S+7 de `src/domain/s7/plugin.ts`) : si
-   le plugin est en marche et que son réglage change le texte, sa sortie mot par mot ; sinon les
-   mots d'origine (`plainWords`).
+1. **Chaîne de plugins** (`runChain`, `src/domain/plugin-chain.ts`) : les plugins en marche et
+   réglés pour agir, dans l'ordre de la table (S+7, lipogramme) ; chacun lit la sortie du
+   précédent ; le résultat reste mot par mot, aligné sur le texte d'origine.
 2. **Mixage** (`src/domain/mixing.ts`) : `audibleCategories` dit quelles pistes s'entendent
    (sans solo, celles qui ne sont pas muettes ; sinon les seules pistes en solo) ; `mixText`
    retire les mots des autres, resserre le texte et garde la ponctuation.

@@ -22,16 +22,16 @@ export interface NounChoice {
 
 // Position de chaque lemme dans la liste triée ; calculée une fois par dictionnaire.
 const positions = new WeakMap<readonly string[], Map<string, number>>();
-function positionOf(lemmas: readonly string[], lemma: string): number | undefined {
+export function positionOf(lemmas: readonly string[], lemma: string): number | undefined {
   let map = positions.get(lemmas);
   if (!map) positions.set(lemmas, (map = new Map(lemmas.map((l, i) => [l, i]))));
   return map.get(lemma);
 }
 
-const compatible = (gender: NounForm['gender'], wanted: ConcreteGender) => gender === wanted || gender === 'e';
+export const compatible = (gender: NounForm['gender'], wanted: ConcreteGender) => gender === wanted || gender === 'e';
 
 /** Lecture retenue pour une forme : compatible avec les indices, de préférence l'entrée du dictionnaire. */
-function pickReading(word: string, hints: NounHints, morphology: MorphologyRepository): NounForm | undefined {
+export function pickReading(word: string, hints: NounHints, morphology: MorphologyRepository): NounForm | undefined {
   const lower = word.toLowerCase();
   const all = morphology.nounReadings(word).length ? morphology.nounReadings(word) : morphology.nounReadings(lower);
   const matching = all.filter(

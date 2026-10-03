@@ -25,16 +25,22 @@ export const TRACK_UNITS: Record<Category, [string, string]> = {
 export const PluginStateSchema = z.object({ enabled: z.boolean(), params: ParameterValuesSchema });
 export type PluginState = z.infer<typeof PluginStateSchema>;
 
-/** L'état de la table de mixage : les pistes et le plugin. */
-export const MixerStateSchema = z.object({ tracks: TracksSchema, plugin: PluginStateSchema });
+/** L'état de la table de mixage : les pistes, les plugins installés (par identifiant) et l'ordre de leur chaîne. */
+export const MixerStateSchema = z.object({
+  tracks: TracksSchema,
+  plugins: z.record(z.string(), PluginStateSchema),
+  order: z.array(z.string()),
+});
 export type MixerState = z.infer<typeof MixerStateSchema>;
 
 /** Les gestes possibles sur la table. */
 export const MixerActionSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('toggle-mute'), category: CategorySchema }),
   z.object({ type: z.literal('toggle-solo'), category: CategorySchema }),
-  z.object({ type: z.literal('toggle-plugin') }),
-  z.object({ type: z.literal('set-param'), key: z.string().min(1), value: z.union([z.number(), z.string()]) }),
+  z.object({ type: z.literal('toggle-plugin'), id: z.string().min(1) }),
+  z.object({ type: z.literal('set-param'), id: z.string().min(1), key: z.string().min(1), value: z.union([z.number(), z.string()]) }),
+  /** Place un plugin à une position de la chaîne. */
+  z.object({ type: z.literal('move-plugin'), id: z.string().min(1), position: z.number().int().nonnegative() }),
 ]);
 export type MixerAction = z.infer<typeof MixerActionSchema>;
 

@@ -1,22 +1,24 @@
 // Dérivation de data/morpho-potao.tsv à partir du lexique Grammalecte v7.7 (MPL 2.0) :
 // les noms communs et les adjectifs (participes adjectivés compris) avec forme, lemme, genre,
-// nombre, et l'interdiction d'élision (note « pel » du lexique : h aspiré, « onze », « yaourt »).
+// nombre, et l'interdiction d'élision (note « pel » du lexique : h aspiré, « onze », « yaourt ») ;
+// les adverbes, invariables, avec leur seule forme.
 
 const GENDERS: Record<string, string> = { mas: 'm', fem: 'f', epi: 'e' };
 const NUMBERS: Record<string, string> = { sg: 's', pl: 'p', inv: 'i' };
 
-/** Lignes dérivées d'une ligne du lexique brut (aucune si elle n'est ni nom ni adjectif). */
+/** Lignes dérivées d'une ligne du lexique brut (aucune si elle n'est ni nom, ni adjectif, ni adverbe). */
 export function morphologyRowsOf(line: string): string[] {
   const columns = line.split('\t');
   if (columns.length < 20 || columns[2] === 'Flexion') return [];
   const form = columns[2]!;
   const lemma = columns[3]!;
   const tags = columns[4]!.split(' ');
-  const gender = tags.map((tag) => GENDERS[tag]).find(Boolean);
-  if (!gender) return [];
-  const number = tags.map((tag) => NUMBERS[tag]).find(Boolean) ?? 'i';
   const noElision = /(^| )pel( |$)/.test(columns[7]!) ? '1' : '0';
   const rows: string[] = [];
+  if (tags.includes('adv')) rows.push(['R', form, form, 'e', 'i', noElision].join('\t'));
+  const gender = tags.map((tag) => GENDERS[tag]).find(Boolean);
+  if (!gender) return rows;
+  const number = tags.map((tag) => NUMBERS[tag]).find(Boolean) ?? 'i';
   if (tags.includes('nom')) rows.push(['N', form, lemma, gender, number, noElision].join('\t'));
   if (tags.includes('adj')) rows.push(['A', form, lemma, gender, number, noElision].join('\t'));
   return rows;
@@ -35,6 +37,7 @@ export const DERIVED_MORPHOLOGY_HEADER = [
   '# file, You can obtain one at http://mozilla.org/MPL/2.0/.',
   '#',
   '# Dérivé du « Lexique des formes fléchies du français », Grammalecte v7.7 (Olivier R.,',
-  '# https://grammalecte.net/). Modifié le 2026-10-03 pour Potao : noms et adjectifs seulement,',
-  '# colonnes : N|A, forme, lemme, genre (m f e), nombre (s p i), pas d\'élision (0 1).',
+  '# https://grammalecte.net/). Modifié le 2026-10-03 pour Potao : noms, adjectifs et adverbes',
+  '# seulement ; colonnes : N|A|R, forme, lemme, genre (m f e), nombre (s p i), pas d\'élision (0 1).',
+  '# Les adverbes (R) sont invariables : lemme = forme, genre e, nombre i.',
 ];

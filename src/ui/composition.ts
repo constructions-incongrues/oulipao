@@ -26,11 +26,17 @@ export function createTaggers(base: string | URL): Tagger[] {
   ];
 }
 
-/** Le dictionnaire du S+7, chargé à la première demande seulement ; un échec n'est pas gardé. */
+/**
+ * Version du dictionnaire dérivé, ajoutée à son adresse : un navigateur qui en garde une copie
+ * plus ancienne en cache va chercher la nouvelle. À changer à chaque `npm run build:morphology`.
+ */
+export const MORPHOLOGY_VERSION = '2026-10-03-adverbes';
+
+/** Le dictionnaire des contraintes, chargé à la première demande seulement ; un échec n'est pas gardé. */
 export function createMorphologyLoader(base: string | URL): () => Promise<MorphologyRepository> {
   let morphology: Promise<MorphologyRepository> | undefined;
   return () =>
-    (morphology ??= loadMorphology(fetchTextSource(new URL('../data/morpho-potao.tsv', base))).catch((error: unknown) => {
+    (morphology ??= loadMorphology(fetchTextSource(new URL(`../data/morpho-potao.tsv?v=${MORPHOLOGY_VERSION}`, base))).catch((error: unknown) => {
       morphology = undefined;
       throw error;
     }));

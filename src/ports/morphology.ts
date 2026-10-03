@@ -1,7 +1,7 @@
 import type { AdjectiveForm, NounForm } from '../domain/s7/types.ts';
 
 /**
- * Port : la morphologie dont le moteur S+7 a besoin. C'est aussi le « dictionnaire » de la
+ * Port : la morphologie dont les contraintes ont besoin (S+7, lipogramme). C'est aussi le « dictionnaire » de la
  * contrainte : changer d'implémentation, c'est changer de textbank.
  */
 export interface MorphologyRepository {
@@ -15,6 +15,10 @@ export interface MorphologyRepository {
   adjectiveReadings(form: string): readonly AdjectiveForm[];
   /** Toutes les formes d'un adjectif. */
   adjectiveForms(paradigm: string): readonly AdjectiveForm[];
+  /** Les adjectifs (par leur lemme), dans l'ordre du dictionnaire. */
+  adjectiveParadigms(): readonly string[];
+  /** Les adverbes, invariables, dans l'ordre du dictionnaire. */
+  adverbs(): readonly string[];
   /** Le mot interdit-il l'élision malgré son initiale (h aspiré, « onze », « yaourt ») ? */
   blocksElision(form: string): boolean;
 }

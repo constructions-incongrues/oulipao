@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { MorphologyRepository } from '../ports/morphology.ts';
-import { CategorySchema, type Category } from './categories.ts';
+import { CategorySchema } from './categories.ts';
 import type { OutputWord } from './s7/types.ts';
 import type { TaggedWord } from './tagged-word.ts';
 
@@ -31,18 +31,24 @@ export type Parameter = z.infer<typeof ParameterSchema>;
 export const ParameterValuesSchema = z.record(z.string(), z.union([z.number(), z.string()]));
 export type ParameterValues = z.infer<typeof ParameterValuesSchema>;
 
-/** Ce que la contrainte a fait d'un mot de sa piste : remplacé, ou laissé tel quel et pourquoi. */
+/** Ce que la contrainte a fait d'un mot : remplacé, retiré, ou laissé tel quel et pourquoi. */
 export const WordMarkSchema = z.object({
   index: z.number().int().nonnegative(),
   original: z.string(),
   /** Présent si le mot a été remplacé. */
   replacement: z.string().optional(),
+  /** Présent si le mot a été retiré du texte. */
+  removed: z.literal(true).optional(),
   /** Présent si le mot a été laissé tel quel : la raison, en clair. */
   reason: z.string().optional(),
 });
 export type WordMark = z.infer<typeof WordMarkSchema>;
 
-/** Le texte transformé, mot par mot, et ce que la contrainte a fait de chaque mot de sa piste. */
+/** Une piste, ou toutes : une contrainte comme le lipogramme agit partout, comme un effet sur le bus master. */
+export const PluginTrackSchema = z.union([CategorySchema, z.literal('all')]);
+export type PluginTrack = z.infer<typeof PluginTrackSchema>;
+
+/** Le texte transformé, mot par mot, et ce que la contrainte a fait des mots qu'elle a touchés. */
 export interface PluginResult {
   /** Un élément par mot du texte d'origine, comme `plainWords`. */
   words: OutputWord[];
@@ -59,8 +65,8 @@ export interface ConstraintPlugin {
   id: string;
   /** Le nom court, sur le bouton de marche : « S+7 ». */
   name: string;
-  /** La piste sur laquelle la contrainte se branche. */
-  track: Category;
+  /** La piste sur laquelle la contrainte se branche, ou toutes. */
+  track: PluginTrack;
   /** Les paramètres, dans l'ordre d'affichage. */
   parameters: Parameter[];
   /** Les valeurs à l'ouverture. */
@@ -75,14 +81,17 @@ export interface ConstraintPlugin {
   label(values: ParameterValues): string;
   /** L'effet du réglage en une phrase. */
   help(values: ParameterValues): string;
-  /** Applique la contrainte au texte étiqueté. */
+  /**
+   * Applique la contrainte au texte étiqueté. Dans une chaîne, la page lui passe la sortie du
+   * plugin précédent, relue comme un texte (voir `plugin-chain.ts`).
+   */
   apply(text: string, tagged: readonly TaggedWord[], values: ParameterValues, resources: PluginResources): PluginResult;
 }
 
 const DeclarationSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
-  track: CategorySchema,
+  track: PluginTrackSchema,
   parameters: z.array(ParameterSchema),
 });
 

@@ -41,7 +41,10 @@ export const ADJECTIVES: AdjectiveForm[] = [
   a('fermé', 'fermé', 'm', 's'),
 ];
 
-export const morphology = () => new InMemoryMorphology({ nouns: NOUNS, adjectives: ADJECTIVES, noElision: ['héros'] });
+// Ordre du dictionnaire : ainsi, bien, ici, jamais, pas, plus, très, vite.
+export const ADVERB_LIST = ['très', 'pas', 'plus', 'vite', 'ici', 'bien', 'jamais', 'ainsi'];
+
+export const morphology = () => new InMemoryMorphology({ nouns: NOUNS, adjectives: ADJECTIVES, adverbs: ADVERB_LIST, noElision: ['héros'] });
 
 const NOUN_FORMS = new Set(NOUNS.map((x) => x.form));
 const ADJECTIVE_FORMS = new Set(ADJECTIVES.map((x) => x.form));

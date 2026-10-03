@@ -18,8 +18,12 @@ test('morphologyRowsOf : noms, adjectifs, participes adjectivés, interdiction d
   assert.deepEqual(morphologyRowsOf(row('livre', 'livre', 'nom epi')), ['N\tlivre\tlivre\te\ti\t0']);
 });
 
-test('morphologyRowsOf : ignore ce qui n’est ni nom ni adjectif, et les lignes hors données', () => {
-  assert.deepEqual(morphologyRowsOf(row('vite', 'vite', 'adv')), []);
+test('morphologyRowsOf : adverbes invariables, avec leur seule forme', () => {
+  assert.deepEqual(morphologyRowsOf(row('vite', 'vite', 'adv')), ['R\tvite\tvite\te\ti\t0']);
+  assert.deepEqual(morphologyRowsOf(row('plus', 'plus', 'mg adv negadv')), ['R\tplus\tplus\te\ti\t0']);
+});
+
+test('morphologyRowsOf : ignore ce qui n’est ni nom, ni adjectif, ni adverbe, et les lignes hors données', () => {
   assert.deepEqual(morphologyRowsOf(row('ferme', 'fermer', 'v1_itnq__a ipre 3sg')), []);
   assert.deepEqual(morphologyRowsOf(row('Marthe', 'Marthe', 'prn fem inv')), []);
   assert.deepEqual(morphologyRowsOf('# commentaire'), []);
@@ -32,10 +36,11 @@ test('deriveMorphology : sans doublon', () => {
 });
 
 test('parseMorphology : lit le fichier dérivé, refuse une ligne non conforme', () => {
-  const data = parseMorphology('# en-tête\nN\théros\théros\tm\ti\t1\nA\tbel\tbeau\tm\ts\t0\n\n');
+  const data = parseMorphology('# en-tête\nN\théros\théros\tm\ti\t1\nA\tbel\tbeau\tm\ts\t0\nR\tvite\tvite\te\ti\t0\n\n');
   assert.deepEqual(data, {
     nouns: [{ form: 'héros', lemma: 'héros', gender: 'm', number: 'i' }],
     adjectives: [{ form: 'bel', paradigm: 'beau', gender: 'm', number: 's' }],
+    adverbs: ['vite'],
     noElision: ['héros'],
   });
   assert.throws(() => parseMorphology('X\ta\ta\tm\ts\t0'), /ligne non conforme/);
@@ -58,6 +63,8 @@ test('InMemoryMorphology : consultation et ordre du dictionnaire français', () 
   assert.equal(m.nounForms('école').length, 2);
   assert.equal(m.nounReadings('écoles')[0]!.number, 'p');
   assert.equal(m.adjectiveReadings('bel')[0]!.paradigm, 'beau');
+  assert.deepEqual(m.adjectiveParadigms(), ['beau']);
+  assert.deepEqual(m.adverbs(), []); // sans adverbes fournis
   assert.equal(m.adjectiveForms('beau').length, 1);
   assert.deepEqual([m.nounReadings('x'), m.nounForms('x'), m.adjectiveReadings('x'), m.adjectiveForms('x')], [[], [], [], []]);
   assert.equal(m.blocksElision('onze'), true);

@@ -75,4 +75,7 @@ test('mixSegments : chaque mot entendu garde sa position, même après le resser
   const muted = mixSegments(words, tag(text), audibleCategories(tracks({ adjective: { muted: true } })), tail);
   assert.deepEqual(muted, [{ text: 'La', index: 0 }, { text: ' ' }, { text: 'ferme', index: 2 }, { text: '.' }]);
   assert.deepEqual(mixSegments([], [], new Set(), ''), []);
+  // des mots retirés par un plugin : le texte se resserre aussi
+  const removed = words.map((w, i) => (i < 2 ? { ...w, output: '', gap: '' } : w));
+  assert.equal(mixSegments(removed, tag(text), audibleCategories(tracks()), tail, true).map((s) => s.text).join(''), 'ferme, grise.');
 });
