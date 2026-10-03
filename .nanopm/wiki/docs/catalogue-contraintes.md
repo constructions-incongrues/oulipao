@@ -35,19 +35,21 @@ Deux réserves valent pour tout le niveau A :
 
 ## Couverture dans Oulipao (2026-10-04)
 
-**30 contraintes sur 153 sont gérées, soit 20 %.** Sur les 61 que ce catalogue juge réalisables comme filtres (A et B), 28 le sont, soit 46 %. Une contrainte compte comme gérée quand un moteur ou une recette la produit.
+**32 contraintes sur 153 sont gérées, soit 21 %.** Sur les 61 que ce catalogue juge réalisables comme filtres (A et B), 30 le sont, soit 49 %. Une contrainte compte comme gérée quand un moteur ou une recette la produit.
 
 | Niveau | Gérées | Total | Part |
 |---|---|---|---|
-| A | 14 | 25 | 56 % |
+| A | 16 | 25 | 64 % |
 | B | 14 | 36 | 39 % |
 | C | 2 | 91 | 2 % |
 | ? | 0 | 1 | — |
-| **Total** | **30** | **153** | **20 %** |
+| **Total** | **32** | **153** | **21 %** |
 
 | Contrainte | Niveau | Comment |
 |---|---|---|
 | S+7, V+7 | A | moteur S+n, sur les noms, adjectifs et verbes |
+| S+dé | A | moteur S+n, tirage « au dé » : un décalage de 1 à 6 par mot, déduit d'une graine ; la recette prend la date julienne du jour |
+| Éclipse | A | recette : un S+7 sur les noms et la forme éclipse, qui met le texte d'origine devant le texte résultant |
 | Lipogramme | A | moteur Lipogramme, sur une liste de lettres interdites ou permises (paramètre texte, E1) |
 | Liponymie, La rien que la toute la, Inventaire | A | moteur Tri par piste, et une recette chacune |
 | Haï-kaïsation, Intérieur de poème | A | moteur Bord, et une recette chacune |
@@ -66,16 +68,11 @@ Deux réserves valent pour tout le niveau A :
 | Étreinte, Rime bisexuelle | B | moteur Schéma de rimes, schémas « étreinte » et « rime bisexuelle » (E2) |
 | Rondel, Villanelle | C | forme à refrain posée après la chaîne, avec le schéma de rimes du même nom : le fondateur écrit les vers neufs, les refrains sont recopiés (E2, E3 en partie) |
 
-**Presque gérées.** Le moteur existe, mais pas la recette :
-
-- **Éclipse :** le S+7 donne la seconde partie, mais il faut E3 pour juxtaposer les deux.
-- **S+dé :** un S+n dont le décalage est tiré au dé à la main.
-
 **Hors catalogue.** Le moteur R+n (remplacer un mot par le n-ième mot qui rime avec lui) ne correspond à aucune fiche. Il prépare Aphorime et Locurime, qui attendent encore E5.
 
 Familles suivantes, dans l'ordre :
 - **Voisin à initiale imposée :** Acrostiche universel, Delmas, Lipossible. Le moteur du Tautogramme progressif en fait déjà l'essentiel ; l'Acrostiche brivadois reste à faire.
-- **Variantes du S+n :** adverbes, S+dé, Poème carré, Propre-Commun. Homosyntaxisme et Aphorisme n'attendent plus que les adverbes.
+- **Variantes du S+n :** adverbes, Poème carré, Propre-Commun. Homosyntaxisme et Aphorisme n'attendent plus que les adverbes.
 - **Recherche par forme :** Anagramme, Homovocalisme, avec un index construit à la demande.
 
 ## Récapitulatif

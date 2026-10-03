@@ -51,10 +51,13 @@ L'étiquetage a lieu une fois par texte. Ensuite chaque geste rejoue deux foncti
 2. **Mixage** (`src/domain/mixing.ts`) : `audibleCategories` dit quelles pistes s'entendent
    (sans solo, celles qui ne sont pas muettes ; sinon les seules pistes en solo) ; `mixText`
    retire les mots des autres, resserre le texte et garde la ponctuation.
-3. **Forme à refrain** (`layoutForm`, `src/domain/forms/form.ts`) : aucune, rondel ou
-   villanelle, choisie près du texte résultant. Elle se pose sur le texte mixé, après la chaîne,
-   et recopie les vers de refrain à leurs places. Un mot recopié garde l'index de son mot
-   d'origine : la chaîne, l'inspecteur et la grille restent alignés mot à mot.
+3. **Forme** (`layoutForm`, `src/domain/forms/form.ts`) : aucune, rondel, villanelle ou
+   éclipse, choisie près du texte résultant. Elle se pose sur le texte mixé, après la chaîne.
+   Le rondel et la villanelle recopient les vers de refrain à leurs places ; un mot recopié
+   garde l'index de son mot d'origine, si bien que la chaîne, l'inspecteur et la grille restent
+   alignés mot à mot. L'éclipse met devant le texte d'origine, puis une ligne vide. Ce texte
+   d'origine n'a pas d'index : il ne s'inspecte pas, mais la copie et le carnet le reprennent.
+   La recette Éclipse branche un S+7 et pose cette forme.
 
 `buildView` (`view-model.ts`) enchaîne les trois et prépare les bandes de l'inspecteur ;
 `inspectorWindow` en découpe la fenêtre autour du mot choisi ; `createTracksController` (`controller.ts`)

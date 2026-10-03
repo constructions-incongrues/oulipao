@@ -1,11 +1,13 @@
 import { z } from 'zod';
 import { CATEGORIES, CategorySchema, type Category } from '../../domain/categories.ts';
+import { FormSchema } from '../../domain/forms/form.ts';
 import { ParameterValuesSchema, type ConstraintPlugin } from '../../domain/plugin.ts';
 import { TRACK_NAMES } from './types.ts';
 
 /**
  * Une recette : une contrainte de l'Oulipo par son nom, qui se réduit à une ou plusieurs instances
- * des contraintes installées. Elle peut demander un seul réglage, à choix, quand on la branche.
+ * des contraintes installées. Elle peut demander un seul réglage, à choix, quand on la branche, et
+ * poser une forme sur le texte résultant.
  */
 export const RecipeSchema = z.object({
   id: z.string().min(1),
@@ -14,6 +16,8 @@ export const RecipeSchema = z.object({
   rule: z.string().min(1),
   /** La fiche de la contrainte sur oulipo.net. */
   url: z.string().url(),
+  /** La forme posée au branchement ; absente : la forme courante reste. */
+  form: FormSchema.optional(),
   choice: z
     .object({
       label: z.string().min(1),
@@ -77,6 +81,14 @@ export const RECIPES: Recipe[] = [
     build: () => lipogram('bdfghjklpqty'),
   },
   {
+    id: 'eclipse',
+    name: 'Éclipse',
+    rule: 'Votre texte, suivi de son S+7 : le texte d’origine passe devant le texte résultant, séparé par une ligne vide.',
+    url: 'https://oulipo.net/contraintes/eclipse',
+    form: 'eclipse',
+    build: () => [{ type: 's7', params: { offset: 7 }, targets: ['noun'] }],
+  },
+  {
     id: 'hai-kaisation',
     name: 'Haï-kaïsation',
     rule: 'Réduire un poème à ses fins de vers.',
@@ -134,6 +146,13 @@ export const RECIPES: Recipe[] = [
     rule: 'Voler un poème à une prose : seule la disposition change.',
     url: 'https://oulipo.net/contraintes/poeme-de-bandit',
     build: () => [{ type: 'lineation', params: { cut: 'every', n: 6 }, targets: [...CATEGORIES] }],
+  },
+  {
+    id: 's-de',
+    name: 'S+dé',
+    rule: 'Comme le S+7, mais chaque nom avance d’un nombre de places tiré au dé, de 1 à 6. La graine part de la date du jour : changez-la pour relancer le dé.',
+    url: 'https://oulipo.net/contraintes/sde',
+    build: (_choice, today) => [{ type: 's7', params: { draw: 'dice', seed: julianDay(today) }, targets: ['noun'] }],
   },
   {
     id: 'tautogramme',

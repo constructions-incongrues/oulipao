@@ -1,18 +1,20 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { applyS7 } from '../../../src/domain/s7/engine.ts';
-import { s7Plugin } from '../../../src/domain/s7/plugin.ts';
+import { dieRoll, s7Plugin } from '../../../src/domain/s7/plugin.ts';
 import { AUXILIARY, LOADING } from '../../../src/domain/verb.ts';
 import { morphology, tag, verbs } from '../../support/morphology.ts';
 
 const m = morphology();
 
-test('déclaration : sur la piste des noms, Décalage borné à ±99 et Parmi ; S+7 réaccordé à l’ouverture', () => {
+test('déclaration : sur la piste des noms, Décalage borné à ±99, Parmi, Tirage et Graine ; S+7 réaccordé et fixe à l’ouverture', () => {
   assert.deepEqual(s7Plugin.tracks, ['noun', 'adjective', 'verb']);
   assert.deepEqual(s7Plugin.defaultTargets, ['noun']);
-  assert.deepEqual(s7Plugin.parameters.map((p) => p.label), ['Décalage', 'Parmi']);
-  assert.deepEqual(s7Plugin.defaults, { offset: 7, mode: 'reagree' });
-  assert.deepEqual(s7Plugin.parse({ offset: -99 }), { offset: -99, mode: 'reagree' });
+  assert.deepEqual(s7Plugin.parameters.map((p) => p.label), ['Décalage', 'Parmi', 'Tirage', 'Graine']);
+  assert.deepEqual(s7Plugin.defaults, { offset: 7, mode: 'reagree', draw: 'fixed', seed: 1 });
+  assert.deepEqual(s7Plugin.parse({ offset: -99 }), { offset: -99, mode: 'reagree', draw: 'fixed', seed: 1 });
+  assert.throws(() => s7Plugin.parse({ seed: 0 }));
+  assert.throws(() => s7Plugin.parse({ draw: 'pile ou face' }));
   assert.throws(() => s7Plugin.parse({ offset: 100 }));
   assert.throws(() => s7Plugin.parse({ offset: 1.5 }));
   assert.throws(() => s7Plugin.parse({ mode: 'au hasard' }));
@@ -98,4 +100,32 @@ test('S+7 sur les verbes : au même temps et à la même personne, le pronom sui
   assert.deepEqual(apply({}).marks.map((mark) => mark.reason), [LOADING, LOADING, LOADING]);
   assert.match(s7Plugin.help({ offset: 7 }, new Set(['verb'])), /^Chaque verbe devient le 7e verbe/);
   assert.match(s7Plugin.help({ offset: 7 }, new Set(['noun', 'verb'])), /réaccordée\. Chaque verbe/);
+});
+
+test('le dé : une face de 1 à 6, la même pour la même graine et la même position, à peu près équitable', () => {
+  const faces = Array.from({ length: 600 }, (_, index) => dieRoll(2461318, index));
+  const counts = [1, 2, 3, 4, 5, 6].map((face) => faces.filter((f) => f === face).length);
+  assert.ok(counts.every((n) => n >= 60 && n <= 140), `répartition : ${counts}`);
+  assert.equal(dieRoll(2461318, 7), dieRoll(2461318, 7));
+  const other = Array.from({ length: 10 }, (_, index) => dieRoll(2461319, index));
+  assert.notDeepEqual(other, faces.slice(0, 10)); // une autre graine relance le dé
+});
+
+test('S+dé : chaque nom prend le décalage de son dé, un verrou garde le sien ; titre et aide', () => {
+  const text = 'Le chat et la vieille horloge.';
+  const tagged = tag(text);
+  const run = (values: object, overrides: { index: number; values: object }[] = []) =>
+    s7Plugin.apply(text, tagged, values as never, { morphology: m }, new Set(['noun']), { skip: [], overrides } as never).words.map((w) => w.output);
+  const dice = { draw: 'dice', seed: 2461318 };
+  const fixed = (offset: number) => run({ offset });
+  const out = run(dice);
+  assert.equal(out[1], fixed(dieRoll(2461318, 1))[1]);
+  assert.equal(out[5], fixed(dieRoll(2461318, 5))[5]);
+  assert.deepEqual(run(dice), out); // même graine, même texte
+  const locked = run(dice, [{ index: 1, values: { offset: 9 } }]);
+  assert.equal(locked[1], fixed(9)[1]);
+  assert.equal(s7Plugin.title(dice), 'S+dé');
+  assert.equal(s7Plugin.label(dice), 'S+dé');
+  assert.ok(s7Plugin.acts({ ...dice, offset: 0 }));
+  assert.match(s7Plugin.help(dice), /tiré au dé, de 1 à 6/);
 });

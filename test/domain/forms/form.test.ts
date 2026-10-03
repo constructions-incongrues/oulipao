@@ -48,3 +48,13 @@ test('douze vers en rondel : les vers 11 et 12 suivent dans une strophe à part'
 test('texte vide : rien à poser, tous les vers manquent', () => {
   assert.deepEqual(layoutForm([{ text: '\n\n' }], 'rondel'), { segments: [], missing: 10 });
 });
+
+test('éclipse : le texte d’origine, une ligne vide, puis le texte résultant ; rien ne manque', () => {
+  const segments = verses(2);
+  const { segments: out, missing } = layoutForm(segments, 'eclipse', 'u1.\nu2.');
+  assert.equal(text(out), 'u1.\nu2.\n\nv1.\nv2.');
+  assert.equal(missing, 0);
+  assert.equal(out[0]!.index, undefined); // le texte d'origine ne s'inspecte pas
+  assert.deepEqual(out.slice(2), segments);
+  assert.equal(text(layoutForm(segments, 'eclipse').segments), '\n\nv1.\nv2.');
+});

@@ -1,18 +1,18 @@
 import { z } from 'zod';
 import type { MixedSegment } from '../mixing.ts';
 
-/** Les formes à refrain : elles se posent sur le texte résultant, après la chaîne. */
-export const FormSchema = z.enum(['none', 'rondel', 'villanelle']);
+/** Les formes : elles se posent sur le texte résultant, après la chaîne. Éclipse le fait précéder du texte d'origine. */
+export const FormSchema = z.enum(['none', 'rondel', 'villanelle', 'eclipse']);
 export type Form = z.infer<typeof FormSchema>;
 
-export const FORM_LABELS: Record<Form, string> = { none: 'aucune', rondel: 'rondel', villanelle: 'villanelle' };
+export const FORM_LABELS: Record<Form, string> = { none: 'aucune', rondel: 'rondel', villanelle: 'villanelle', eclipse: 'éclipse' };
 
 /** Une place de la forme : un vers neuf de l'auteur (`0`), ou la copie du vers de ce numéro. */
 type Place = number;
 const A = 0;
 
 /** Les strophes de chaque forme. Rondel : 7 et 8 recopient 1 et 2, 13 recopie 1. Villanelle : 6, 12, 18 recopient 1 ; 9, 15, 19 recopient 3. */
-export const FORM_STANZAS: Record<Exclude<Form, 'none'>, readonly (readonly Place[])[]> = {
+export const FORM_STANZAS: Record<Exclude<Form, 'none' | 'eclipse'>, readonly (readonly Place[])[]> = {
   rondel: [[A, A, A, A], [A, A, 1, 2], [A, A, A, A, 1]],
   villanelle: [[A, A, A], [A, A, 1], [A, A, 3], [A, A, 1], [A, A, 3], [A, A, 1, 3]],
 };
@@ -43,10 +43,12 @@ function linesOf(segments: readonly MixedSegment[]): MixedSegment[][] {
  * Pose une forme à refrain sur le texte résultant. Les vers de l'auteur sont pris dans l'ordre,
  * ses sauts de strophe ignorés ; un refrain recopie un vers déjà posé, ses mots gardent l'index de
  * leur mot d'origine. La forme s'arrête au premier vers neuf qui manque ; les vers en trop suivent,
- * dans une strophe à part. Sans forme, le texte reste tel quel.
+ * dans une strophe à part. Sans forme, le texte reste tel quel. Éclipse pose le texte d'origine
+ * (`source`), une ligne vide, puis le texte résultant : le texte d'origine n'a pas d'index.
  */
-export function layoutForm(segments: readonly MixedSegment[], form: Form): FormedText {
+export function layoutForm(segments: readonly MixedSegment[], form: Form, source = ''): FormedText {
   if (form === 'none') return { segments: [...segments], missing: 0 };
+  if (form === 'eclipse') return { segments: [{ text: source }, { text: '\n\n' }, ...segments], missing: 0 };
   const lines = linesOf(segments);
   const stanzas: MixedSegment[][][] = [];
   const placed: MixedSegment[][] = [];

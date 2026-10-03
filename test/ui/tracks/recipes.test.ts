@@ -10,8 +10,8 @@ const add = (recipe: string, choice?: string, state = initialState) =>
   MixerStateSchema.parse(reduce(state, { type: 'add-recipe', recipe, choice, today: TODAY } as MixerAction));
 const summary = (state: ReturnType<typeof add>) => state.instances.map((i) => `${i.id} ${JSON.stringify(i.params)} ${i.targets.join(',')}`);
 
-test('les treize recettes tiennent toutes, par ordre alphabétique', () => {
-  assert.equal(recipes.length, 13);
+test('les quinze recettes tiennent toutes, par ordre alphabétique', () => {
+  assert.equal(recipes.length, 15);
   assert.deepEqual(recipes, RECIPES);
   const names = recipes.map((recipe) => recipe.name);
   assert.deepEqual(names, [...names].sort((a, b) => a.localeCompare(b, 'fr')));
@@ -73,4 +73,17 @@ test('Tautogramme et Abécédaire : un tautogramme progressif sur les noms, adje
   assert.deepEqual(summary(add('abecedaire')), ['tautogram-1 {"letters":"abcdefghijklmnopqrstuvwxyz"} noun,verb,adjective,adverb']);
   assert.equal(recipeById('tautogramme').choice!.options.length, 26);
   for (const id of ['tautogramme', 'abecedaire']) assert.match(recipeById(id).rule, /mots-outils ne comptent pas/);
+});
+
+test('Éclipse : un S+7 sur les noms et la forme éclipse, qui remplace la forme courante', () => {
+  const rondel = MixerStateSchema.parse(reduce(initialState, { type: 'set-form', form: 'rondel' }));
+  const state = add('eclipse', undefined, rondel);
+  assert.deepEqual(summary(state), ['s7-1 {"offset":7,"mode":"reagree","draw":"fixed","seed":1} noun']);
+  assert.equal(state.form, 'eclipse');
+  assert.equal(add('monovocalisme', 'a', rondel).form, 'rondel'); // une recette sans forme laisse la forme
+});
+
+test('S+dé le 4 octobre 2026 : un S+n au dé sur les noms, de graine 2461318', () => {
+  const state = MixerStateSchema.parse(reduce(initialState, { type: 'add-recipe', recipe: 's-de', today: '2026-10-04' }));
+  assert.deepEqual(summary(state), ['s7-1 {"offset":7,"mode":"reagree","draw":"dice","seed":2461318} noun']);
 });
