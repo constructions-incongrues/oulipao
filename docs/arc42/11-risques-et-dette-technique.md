@@ -161,7 +161,7 @@ le tableau du toolkit.*
 | **Probabilité** | Moyenne : l'interface a beaucoup changé depuis. |
 | **Impact** | Moyen : l'objectif 5 est peut-être déjà rompu sans qu'on le sache. |
 | **Priorité** | Moyenne |
-| **Mitigation** | Prévue : refaire une recette à 375, 768 et 1440 px et au clavier seul. Ajouter un test qui vérifie les noms accessibles des composants rendus en texte. |
+| **Mitigation** | Prévue : refaire une vérification à 375, 768 et 1440 px et au clavier seul. Ajouter un test qui vérifie les noms accessibles des composants rendus en texte. |
 | **Statut** | Ouvert |
 
 **Contexte :** objectif 5 de la section 1.2.
