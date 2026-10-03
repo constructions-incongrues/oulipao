@@ -21,6 +21,11 @@ The system SHALL replace every noun, adjective, adverb or verb containing the fo
 - **WHEN** le lipogramme s'applique
 - **THEN** le nom est remplacé par le premier nom suivant, au même genre et au même nombre, qui ne contient pas « e »
 
+#### Scenario: Lettre accentuée
+- **GIVEN** la lettre « a » interdite et les mots « âtre », « à » et « cœur »
+- **WHEN** le lipogramme s'applique
+- **THEN** « âtre » et « à » contiennent la lettre, comme chez Perec : une lettre accentuée compte pour la lettre nue, une ligature (« œ », « æ ») pour ses deux lettres
+
 #### Scenario: Verbe fautif
 - **GIVEN** la lettre « e » interdite et « elle mangeait »
 - **WHEN** le lipogramme s'applique
@@ -59,6 +64,11 @@ The system SHALL apply installed plugins in order, each receiving the previous p
 - **GIVEN** le S+7 et le lipogramme en marche
 - **WHEN** le texte résultant s'affiche
 - **THEN** les noms sont ceux du S+7, privés de la lettre interdite
+
+#### Scenario: Lipogrammes enchaînés
+- **GIVEN** un lipogramme en a suivi d'un lipogramme en e
+- **WHEN** le texte résultant s'affiche
+- **THEN** le second cherche des voisins sans « a » ni « e » : un lipogramme ne réintroduit pas une lettre bannie par un lipogramme placé avant lui
 
 ### Requirement: Réglage en direct
 The system SHALL update the result text without re-tagging when the lipogram is switched on or off, its letter changes, or the chain order changes.

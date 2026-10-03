@@ -122,6 +122,10 @@ peut-être en revanche revoir `track` et `marks`, pensés pour une contrainte at
 - Une chaîne de contraintes, tenue par la page : le contrat lui-même n'a pas eu à changer pour
   qu'une contrainte lise la sortie d'une autre.
 
+- `inherit` (facultatif) : dans une chaîne, une instance reçoit aussi les réglages des instances
+  du même type placées avant elle. Le lipogramme s'en sert pour cumuler les lettres bannies : un
+  lipogramme en e après un lipogramme en a ne remet pas de « a ».
+
 ## Ce que la mise en page a changé au contrat
 
 - Une contrainte peut ne pas viser de pistes (`targetable: false`) : elle compte tous les mots,

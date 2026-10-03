@@ -148,6 +148,18 @@ test('S+7 sur les verbes puis lipogramme en e : un verbe sans « e », au même 
   assert.deepEqual(chain.stages.map((stage) => stage[1]!.output), ['chante', 'dors']);
 });
 
+test('lipogrammes enchaînés : chacun respecte aussi les lettres bannies avant lui', () => {
+  const text = 'La ferme dort.';
+  const steps: ChainStep[] = ['a', 'e'].map((letter) => step(lipogramPlugin, { letter }));
+  // en a : « La » → « Une » ; en e, sans le cumul, « Une » redeviendrait « La » et « ferme » « maison ».
+  // Ici « Une » n'a pas d'équivalent sans a ni e (retiré) et « ferme » pas de voisin (gardé).
+  const chain = runChain(text, tag(text), steps, resources);
+  assert.equal(join(chain.words, chain.tail), 'Ferme dort.');
+  // Hors chaîne, les réglages ne bougent pas ; un lipogramme qui ouvre la chaîne n'hérite de rien.
+  assert.deepEqual(lipogramPlugin.inherit!({ letter: 'e' }, [{ letter: 'a' }, { letter: 'i' }]), { letter: 'e', banned: 'ai' });
+  assert.deepEqual(lipogramPlugin.inherit!({ letter: 'e' }, []), { letter: 'e', banned: '' });
+});
+
 /** Un plugin d'essai qui met chaque mot à la ligne, sans le changer. */
 const lineByLine = definePlugin({
   id: 'ligne',
