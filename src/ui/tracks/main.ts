@@ -48,10 +48,11 @@ new ResizeObserver(([entry]) => controller.resize(entry!.contentRect.width)).obs
 // défiler, le défilement reviendrait à zéro et la bande se décollerait aussitôt. On rend cette place
 // en bas de page tant qu'elle est collée.
 new IntersectionObserver(([entry]) => {
-  const result = root.querySelector<HTMLElement>('.result')!;
-  const before = result.offsetHeight;
+  // Avant la première mise en pistes, pas de bloc résultat : rien à réserver.
+  const height = () => root.querySelector<HTMLElement>('.result')?.offsetHeight ?? 0;
+  const before = height();
   // Réservée avant le rendu compact, sinon le navigateur ramène le défilement à zéro avant qu'on l'ajuste.
   document.body.style.paddingBottom = entry!.isIntersecting ? '' : `${before}px`;
   controller.pin(!entry!.isIntersecting);
-  if (!entry!.isIntersecting) document.body.style.paddingBottom = `${Math.max(0, before - result.offsetHeight)}px`;
+  if (!entry!.isIntersecting) document.body.style.paddingBottom = `${Math.max(0, before - height())}px`;
 }).observe(root.querySelector('.pin-sentinel')!);
