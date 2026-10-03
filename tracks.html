@@ -89,7 +89,24 @@
   .slot.dragging { opacity: .4; }
   .slot.drop-before::before, .slot.drop-after::after { content: ""; position: absolute; left: -2px; right: -2px; height: 3px; background: var(--ink); }
   .slot.drop-before::before { top: -6px; } .slot.drop-after::after { bottom: -6px; }
-  .adder { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; border: var(--rule) dashed var(--muted); border-radius: var(--radius); padding: var(--space-1) var(--space-1) var(--space-1) var(--space-3); }
+  /* Navigateur de contraintes : une touche qui déplie les recettes, puis les moteurs */
+  .browser > summary { display: inline-flex; align-items: center; gap: var(--space-1); list-style: none; cursor: pointer;
+    font-family: var(--font-ui); font-stretch: var(--silk-stretch); font-weight: 600; font-size: var(--size-label); text-transform: uppercase; letter-spacing: 0.02em;
+    background: var(--panel); border: var(--rule) solid var(--ink); border-radius: var(--radius); padding: 4px 9px; min-height: 28px; box-sizing: border-box; }
+  .browser > summary::-webkit-details-marker { display: none; }
+  .browser > summary::before { content: "▸"; }
+  .browser[open] > summary { background: var(--ink); color: var(--panel); }
+  .browser[open] > summary::before { content: "▾"; }
+  .browser > section { border-top: var(--rule) solid var(--line); margin-top: var(--space-3); padding-top: var(--space-2); }
+  .browser h3 { margin: 0 0 var(--space-2); }
+  .recipes { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+  .recipe { display: grid; grid-template-columns: 24ch minmax(0, 1fr) auto; column-gap: var(--space-3); row-gap: var(--space-1); align-items: center; }
+  .recipe .add-recipe { justify-self: start; }
+  .recipe .rule { font-size: var(--size-small); color: var(--muted); }
+  .recipe .sheet { font-size: var(--size-small); color: var(--ink); white-space: nowrap; }
+  .recipe .choice:not([hidden]) { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; padding-left: var(--space-4); border-left: var(--rule) solid var(--ink); }
+  .recipe .choice label { display: inline-flex; gap: var(--space-2); align-items: center; }
+  .engines { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 
   /* Grille : une ligne par piste, une colonne par mot, un pas percé ou bouché */
   .rack { border: var(--rule) solid var(--line); margin-bottom: var(--space-4); }
@@ -149,6 +166,10 @@
     .slot .power { grid-column: 1 / 4; justify-self: start; }
     .slot .slot-keys { grid-column: 4; justify-self: end; }
     .help { grid-column: 1 / -1; }
+  }
+  @media (max-width: 639px) {
+    .recipe { grid-template-columns: minmax(0, 1fr) auto; }
+    .recipe .rule { grid-column: 1 / -1; grid-row: 2; }
   }
   @media (max-width: 767px) {
     .bar .silk { display: none; }

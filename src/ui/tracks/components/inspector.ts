@@ -68,7 +68,10 @@ export function Inspector({ window, word, onClose, step, locks = [], onLock = ()
               ${band.cells.map((cell, k) => {
                 const { distance } = window.columns[k]!;
                 const classes = [distance === 0 ? 'chosen' : '', distance > NEAR ? 'far' : ''].join(' ').trim();
-                return html`<td class=${classes || undefined} aria-current=${distance === 0 ? 'true' : undefined}>${cell}</td>`;
+                // Un mot que l'étape a mis à la ligne : « ↵ » devant lui, dit « à la ligne ».
+                return html`<td class=${classes || undefined} aria-current=${distance === 0 ? 'true' : undefined}>${cell.newline
+                  ? html`<span class="newline" aria-hidden="true">↵ </span><span class="sr-only">à la ligne, </span>`
+                  : ''}${cell.text}</td>`;
               })}
             </tr>`,
           )}

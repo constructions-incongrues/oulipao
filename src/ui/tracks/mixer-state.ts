@@ -1,12 +1,26 @@
 import { CATEGORIES } from '../../domain/categories.ts';
 import type { Tracks } from '../../domain/mixing.ts';
 import type { ConstraintPlugin } from '../../domain/plugin.ts';
+import { edgePlugin } from '../../domain/edge/plugin.ts';
+import { lineationPlugin } from '../../domain/lineation/plugin.ts';
 import { lipogramPlugin } from '../../domain/lipogram/plugin.ts';
 import { s7Plugin } from '../../domain/s7/plugin.ts';
+import { trackSortPlugin } from '../../domain/track-sort/plugin.ts';
+import { RECIPES, validRecipes, type Recipe } from './recipes.ts';
 import { MixerActionSchema, type Instance, type MixerAction, type MixerState } from './types.ts';
 
 /** Les types de contraintes qu'on peut brancher sur la table. */
-export const installedPlugins: readonly ConstraintPlugin[] = [s7Plugin, lipogramPlugin];
+export const installedPlugins: readonly ConstraintPlugin[] = [s7Plugin, lipogramPlugin, trackSortPlugin, edgePlugin, lineationPlugin];
+
+/** Les recettes proposées : celles qui tiennent avec les types installés. */
+export const recipes: readonly Recipe[] = validRecipes(RECIPES, installedPlugins);
+
+/** Une recette proposée, par son identifiant ; lève si elle n'existe pas. */
+export function recipeById(id: string): Recipe {
+  const recipe = recipes.find((candidate) => candidate.id === id);
+  if (!recipe) throw new Error(`recette inconnue : ${id}`);
+  return recipe;
+}
 
 /** Un type de contrainte installé, par son identifiant ; lève s'il n'est pas installé. */
 export function pluginById(id: string): ConstraintPlugin {
@@ -75,6 +89,7 @@ export function reduce(state: MixerState, action: MixerAction): MixerState {
     case 'set-targets': {
       const instance = instanceOf(state, checked.id);
       const plugin = pluginById(instance.type);
+      if (plugin.targetable === false) throw new Error(`${plugin.name} agit sur tout le texte : pas de pistes à choisir`);
       const refused = checked.targets.filter((track) => !plugin.tracks.includes(track));
       if (refused.length) throw new Error(`${plugin.name} ne traite pas : ${refused.join(', ')}`);
       // Dans l'ordre des pistes de la table, sans doublon.
@@ -83,6 +98,24 @@ export function reduce(state: MixerState, action: MixerAction): MixerState {
     case 'add-instance': {
       const plugin = pluginById(checked.plugin);
       return { ...state, instances: [...state.instances, freshInstance(plugin, nextId(state.instances, plugin.id))] };
+    }
+    case 'add-recipe': {
+      const recipe = recipeById(checked.recipe);
+      const options = recipe.choice?.options.map((option) => option.value);
+      if (options ? !options.includes(checked.choice ?? '') : checked.choice !== undefined) throw new Error(`${recipe.name} : choix refusé`);
+      const [year, month, day] = checked.today.split('-').map(Number) as [number, number, number];
+      const instances = [...state.instances];
+      for (const step of recipe.build(checked.choice, new Date(year, month - 1, day))) {
+        const plugin = pluginById(step.type);
+        instances.push({
+          id: nextId(instances, plugin.id),
+          type: plugin.id,
+          enabled: true,
+          params: plugin.parse(step.params),
+          targets: CATEGORIES.filter((track) => step.targets.includes(track)),
+        });
+      }
+      return { ...state, instances };
     }
     case 'duplicate-instance': {
       // Le double porte les verrous de l'original ; il va en fin de chaîne.

@@ -2,6 +2,8 @@ import { html } from 'htm/preact';
 import type { VNode } from 'preact';
 import type { ConstraintPlugin } from '../../../domain/plugin.ts';
 import { TRACK_NAMES, type Instance, type MixerAction } from '../types.ts';
+import type { Recipe } from '../recipes.ts';
+import { Browser } from './browser.ts';
 import { Control } from './control.ts';
 import { Shape } from './shape.ts';
 
@@ -10,6 +12,10 @@ export interface ChainProps {
   instances: readonly Instance[];
   /** Les types qu'on peut ajouter. */
   plugins: readonly ConstraintPlugin[];
+  /** Les recettes proposées dans le navigateur. */
+  recipes?: readonly Recipe[];
+  /** Le jour du branchement d'une recette ; aujourd'hui, sauf en test. */
+  now?: () => Date;
   lookup: (type: string) => ConstraintPlugin;
   dispatch: (action: MixerAction) => void;
 }
@@ -75,15 +81,18 @@ function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance
             onParam=${(key: string, value: number | string) => dispatch({ type: 'set-param', id, key, value })} /></label>`,
         )}
       </span>
-      <span class="targets" role="group" aria-label="Pistes visées">
-        <span class="silk" aria-hidden="true">Pistes visées</span>
-        ${plugin.tracks.map((track) => {
-          const on = targets.includes(track);
-          return html`<button type="button" class=${`chip ${track}`} aria-pressed=${on} disabled=${on && targets.length === 1}
-            onClick=${() => dispatch({ type: 'set-targets', id, targets: on ? targets.filter((t) => t !== track) : [...targets, track] })}
-          ><${Shape} track=${track} />${TRACK_NAMES[track]}</button>`;
-        })}
-      </span>
+      ${plugin.targetable === false
+        ? // Une mise en page agit sur tout le texte : pas de pistes à choisir.
+          html`<span class="targets"><span class="silk">Tout le texte</span></span>`
+        : html`<span class="targets" role="group" aria-label="Pistes visées">
+            <span class="silk" aria-hidden="true">Pistes visées</span>
+            ${plugin.tracks.map((track) => {
+              const on = targets.includes(track);
+              return html`<button type="button" class=${`chip ${track}`} aria-pressed=${on} disabled=${on && targets.length === 1}
+                onClick=${() => dispatch({ type: 'set-targets', id, targets: on ? targets.filter((t) => t !== track) : [...targets, track] })}
+              ><${Shape} track=${track} />${TRACK_NAMES[track]}</button>`;
+            })}
+          </span>`}
       <button type="button" class="key power" aria-pressed=${enabled} aria-label=${`${plugin.title(params)} ${enabled ? 'actif' : 'coupé'}`}
         onClick=${() => dispatch({ type: 'toggle-instance', id })}>${enabled ? 'Actif' : 'Coupé'}</button>
       <span class="slot-keys">
@@ -101,9 +110,9 @@ function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance
 
 /**
  * La chaîne, au-dessus des pistes : les contraintes dans l'ordre où le texte les traverse, une ligne
- * de même largeur chacun ; en dessous, de quoi en ajouter un en fin de chaîne.
+ * de même largeur chacune ; en dessous, le navigateur qui en ajoute en fin de chaîne.
  */
-export function Chain({ instances, plugins, lookup, dispatch }: ChainProps): VNode {
+export function Chain({ instances, plugins, recipes = [], now, lookup, dispatch }: ChainProps): VNode {
   const ids = instances.map((instance) => instance.id);
   return html`
     <section class="chain" aria-labelledby="chain-title">
@@ -116,12 +125,7 @@ export function Chain({ instances, plugins, lookup, dispatch }: ChainProps): VNo
             )}
           </ol>`
         : html`<p class="more">Aucune contrainte : le texte passe tel quel.</p>`}
-      <div class="adder">
-        <span class="silk">Ajouter</span>
-        ${plugins.map(
-          (plugin) => html`<button type="button" class="key add-instance" onClick=${() => dispatch({ type: 'add-instance', plugin: plugin.id })}>+ ${plugin.name}</button>`,
-        )}
-      </div>
+      <${Browser} recipes=${recipes} plugins=${plugins} dispatch=${dispatch} now=${now} />
     </section>
   ` as VNode;
 }

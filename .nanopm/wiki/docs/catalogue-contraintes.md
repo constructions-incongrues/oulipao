@@ -27,10 +27,25 @@ Un filtre, c'est le contrat `ConstraintPlugin` (`src/domain/plugin.ts`) tel qu'i
 
 Deux réserves valent pour tout le niveau A :
 
-- **Les verbes résistent.** Tant que E6 n'est pas faite, aucun filtre ne remplace un verbe ; il le laisse avec une raison, comme le lipogramme v1.
+- **Les verbes résistent, en partie.** E6 est faite pour le S+n et le lipogramme : ils remplacent les verbes au même temps et à la même personne (« être » et « avoir » restent). Un filtre qui remplace par un voisin dans un autre ordre (initiale imposée, forme) n'en profite pas encore.
 - **Les mots-outils échappent au lexique.** Un filtre qui remplace par un « voisin » ne peut pas les traiter ; il les retire ou les laisse.
 
 « Faisable » veut donc dire « implémentable », pas « parfait ».
+
+## Couverture dans Oulipao (2026-10-03)
+
+| Contrainte | Comment |
+|---|---|
+| S+7, V+7 | moteur S+n, sur les noms, adjectifs et verbes |
+| Lipogramme | moteur Lipogramme |
+| Liponymie, La rien que la toute la, Inventaire | moteur Tri par piste, et une recette chacune |
+| Haï-kaïsation, Intérieur de poème | moteur Bord, et une recette chacune |
+| Poème de bandit, Juliennes | moteur Mise en vers, et une recette chacune (Juliennes prend la date julienne du jour) |
+| Monovocalisme, Bivocalisme | recettes : des lipogrammes enchaînés, voyelle(s) gardée(s) au choix ; les voyelles accentuées passent |
+| Contrainte du prisonnier | recette : douze lipogrammes enchaînés (classée B ci-dessous, couverte sans évolution) |
+| Éclipse | pas de recette : le S+7 donne la seconde partie, mais juxtaposer les deux demande E3 |
+
+Familles suivantes, dans l'ordre : voisin à initiale imposée (Tautogramme, Abécédaire, Acrostiche universel, Delmas, Lipossible), variantes du S+n (adverbes, S+dé, Poème carré, Propre-Commun ; Homosyntaxisme et Aphorisme n'attendent plus que les adverbes), recherche par forme (Anagramme, Homovocalisme, avec un index construit à la demande).
 
 ## Récapitulatif
 
@@ -184,7 +199,7 @@ Deux réserves valent pour tout le niveau A :
 | [Transduction](https://oulipo.net/contraintes/transduction) | B | remplacer les noms par ceux d'un lexique spécialisé | E5 |
 | [Ulcérations](https://oulipo.net/contraintes/ulcerations) | C | vers de onze lettres, anagrammes d'ulcérations | — |
 | [Un hôte de marque](https://oulipo.net/contraintes/un-hote-de-marque-0) | C | exemple de critique constructive | — |
-| [V+7](https://oulipo.net/contraintes/v7) | B | S+7 sur les verbes | E6 |
+| [V+7](https://oulipo.net/contraintes/v7) | A | existe : un S+7 qui vise les verbes | — |
 | [Villanelle](https://oulipo.net/contraintes/villanelle) | C | forme fixe à refrain sur deux rimes | E2, E3 |
 | [Vocabulaires raisonnés](https://oulipo.net/contraintes/vocabulaires-raisonnes) | C | classer le lexique selon des principes nouveaux | — |
 | [X prend Y pour Z](https://oulipo.net/contraintes/x-prend-y-pour-z) | C | récit dicté par une table de multiplication | — |

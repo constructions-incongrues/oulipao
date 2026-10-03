@@ -18,11 +18,19 @@ export interface ChainStep {
   locks?: ReadonlyMap<number, ParameterValues>;
 }
 
+/** Un mot d'origine à la sortie d'une étape. */
+export interface StageWord {
+  output: string;
+  /** L'étape a mis un saut de ligne devant ce mot, qui n'y était pas avant elle. */
+  newline: boolean;
+}
+
 /** Ce qu'un plugin a fait, une fois ses marques ramenées aux mots d'origine. */
 export interface StepReport {
   id: string;
   replaced: number;
   removed: number;
+  relaid: number;
   kept: number;
 }
 
@@ -33,8 +41,11 @@ export interface ChainResult {
   /** Ce que la chaîne a fait de chaque mot d'origine touché, par position. */
   marks: Map<number, WordMark>;
   steps: StepReport[];
-  /** La sortie de chaque étape, un mot par mot d'origine (chaîne vide pour un mot retiré). */
-  stages: string[][];
+  /**
+   * La sortie de chaque étape, un mot par mot d'origine (chaîne vide pour un mot retiré), et si
+   * l'étape a mis ce mot à la ligne.
+   */
+  stages: StageWord[][];
 }
 
 /** Une sortie relue comme un texte neuf ; `origin[k]` est le mot d'origine d'où vient le k-ième mot relu. */
@@ -111,15 +122,16 @@ export function runChain(text: string, tagged: readonly TaggedWord[], steps: rea
   let { words, tail } = plainWords(text);
   const marks = new Map<number, WordMark>();
   const reports: StepReport[] = [];
-  const stages: string[][] = [];
+  const stages: StageWord[][] = [];
   for (const { id, plugin, values, targets, closed = new Set<number>(), locks = new Map<number, ParameterValues>() } of steps) {
     const current = reread(words, tail, tagged);
     const result = plugin.apply(current.text, current.tagged, values, resources, targets, scopeOf(current.origin, closed, locks));
     if (result.words.length !== current.origin.length) throw new Error(`${plugin.id} : la sortie ne suit pas les mots du texte`);
+    const before = words;
     words = fold(result.words, current.origin, tagged.length);
     tail = result.tail;
-    stages.push(words.map((word) => word.output));
-    const report: StepReport = { id, replaced: 0, removed: 0, kept: 0 };
+    stages.push(words.map((word, i) => ({ output: word.output, newline: word.gap.includes('\n') && !before[i]!.gap.includes('\n') })));
+    const report: StepReport = { id, replaced: 0, removed: 0, relaid: 0, kept: 0 };
     for (const mark of result.marks) {
       const index = current.origin[mark.index]!;
       const original = marks.get(index)?.original ?? tagged[index]!.word;
@@ -129,6 +141,11 @@ export function runChain(text: string, tagged: readonly TaggedWord[], steps: rea
       } else if (mark.replacement !== undefined) {
         marks.set(index, { index, original, replacement: mark.replacement });
         report.replaced++;
+      } else if (mark.relaid) {
+        // Une coupe de ligne n'efface pas un remplacement ni un retrait d'une étape précédente.
+        const previous = marks.get(index);
+        if (!previous || previous.reason !== undefined) marks.set(index, { index, original, relaid: true });
+        report.relaid++;
       } else {
         // Laissé tel quel : on garde ce qu'un plugin précédent en a fait, s'il l'a touché.
         if (!marks.has(index)) marks.set(index, { index, original, reason: mark.reason });
