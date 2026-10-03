@@ -81,6 +81,10 @@ flowchart LR
   émis et renouvelé par GitHub. Une requête en `http://` reçoit une redirection 301 vers HTTPS.
 - **Hôtes tiers :** jsDelivr et Hugging Face, appelés en HTTPS depuis le navigateur. Le code
   importé de jsDelivr est épinglé à la version 4.3.0, mais sans vérification d'intégrité (SRI).
+- **Politique de sécurité du contenu (CSP) :** déclarée dans une balise `<meta>` de chaque page,
+  puisque GitHub Pages n'envoie pas d'en-têtes personnalisés. `connect-src` n'admet que le site, `cdn.jsdelivr.net`, `huggingface.co` et `*.hf.co` : aucune
+  requête ne peut partir ailleurs, même lancée par un code tiers altéré. `frame-ancestors`, qu'une
+  balise `<meta>` ne peut pas porter, manque.
 - **Mesure d'audience :** aucune, ni traceur.
 
 ### Réplication et mise à l'échelle

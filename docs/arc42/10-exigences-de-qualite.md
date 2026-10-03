@@ -1,7 +1,7 @@
 # 10. Exigences de qualité
 
 **Niveau de détail :** ESSENTIAL, plus le tableau des scénarios pas encore tenus (10.3), que la
-section 11 reprend.
+section 11 reprend. QS-02 en est sorti le 2026-10-03.
 
 ## Vue d'ensemble
 
@@ -60,11 +60,13 @@ observée dans l'onglet réseau ».
 | **Source** | Un attaquant qui contrôle le fichier servi par jsDelivr |
 | **Stimulus** | Le module Transformers.js importé tente d'envoyer le texte vers un hôte tiers. |
 | **Environnement** | Fonctionnement dégradé : un distributeur compromis |
-| **Réponse du système** | Le navigateur refuse le module (empreinte fausse) ou la requête (hôte non autorisé). |
+| **Réponse du système** | Le navigateur refuse la requête : la politique de sécurité du contenu n'admet que les quatre hôtes de QS-01. |
 | **Mesure** | Aucune requête ne part vers un hôte hors des quatre de QS-01. Le refus apparaît dans la console. |
 
-**Références :** RISK-02 ; section 8.2. **Pas tenu** aujourd'hui : il n'y a ni SRI ni CSP
-(voir 10.3).
+**Références :** RISK-02 ; sections 7.1 et 8.2 ; spec `mise-en-ligne`, « Politique de sécurité
+du contenu ». **Tenu** depuis le 2026-10-03 : un `fetch` vers `https://example.com` lancé depuis la
+page est refusé, et la violation de `connect-src` apparaît dans la console. Le scénario ne couvre
+pas un envoi vers l'un des hôtes autorisés, faute de SRI (RISK-02).
 
 ### QS-03 : un étiquetage juste
 
@@ -228,6 +230,5 @@ l'interface (voir 10.3).
 
 | ID | Scénario | État actuel | Cible | Ce qu'il faut changer |
 |----|----------|-------------|-------|-----------------------|
-| QS-02 | Un code tiers altéré ne peut pas envoyer le texte | Ni SRI ni CSP : un module altéré peut envoyer n'importe quoi | Aucune requête hors des quatre hôtes autorisés | Ajouter une CSP (`connect-src`, `script-src`) dans les pages, et l'empreinte du module dans une carte d'import ; ou héberger la bibliothèque (RISK-01, RISK-02) |
 | QS-06 | Un réglage en direct | Sous Node : 69 ms au 95e percentile sur le texte 2 ; rien dans un navigateur | Moins de 100 ms au 95e percentile dans le navigateur | Mesurer dans un navigateur, et sur téléphone ; chercher pourquoi le texte 2 est neuf fois plus lent (RISK-08) |
 | QS-11 | La table au clavier et sur un téléphone | Vérifié une fois, avant l'inspecteur, la grille, les filtres instanciables et les recettes | Parcours complet sans souris ; pas de défilement à 375, 768 et 1440 px | Refaire la vérification ; ajouter un test des noms accessibles dans les composants rendus en texte (RISK-09) |

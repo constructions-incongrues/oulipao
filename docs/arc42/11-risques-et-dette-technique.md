@@ -8,7 +8,7 @@ matrice et dans une courte liste).
 Cette section suit neuf risques et deux dettes. Les risques RISK-01 à RISK-07 viennent des
 champs « Risques créés » des ADR (section 9). RISK-08 et RISK-09 viennent d'objectifs de qualité
 qui ne sont pas encore tenus ou pas encore vérifiés : ce sont les scénarios QS-06 et QS-11
-(section 10.3). Le troisième scénario non tenu, QS-02, relève de RISK-02. Les deux dettes ont été relevées en écrivant les sections 6 et 5.
+(section 10.3). QS-02, qui relevait de RISK-02, est tenu depuis la politique de sécurité du contenu. Les deux dettes ont été relevées en écrivant les sections 6 et 5.
 
 Aucun risque n'est critique. Trois sont de priorité haute :
 - **RISK-01 :** la dépendance à deux distributeurs tiers ;
@@ -41,10 +41,10 @@ le tableau du toolkit.*
 | RISK-03 | Licence du modèle d'étiquetage non déclarée | Données et conformité | Haute | Moyen | Haute | Accepté |
 | RISK-04 | Le texte est perdu quand l'onglet se ferme | Données | Haute | Moyen | Haute | Accepté |
 | RISK-05 | Ajouter une contrainte oblige à toucher plusieurs briques | Architecture | Moyenne | Moyen | Moyenne | Ouvert |
-| RISK-02 | Code tiers chargé sans vérification d'intégrité | Sécurité | Basse | Haut | Moyenne | Ouvert |
 | RISK-06 | Fautes d'accord hors du voisinage, et erreurs d'étiquetage propagées | Architecture | Haute | Bas | Moyenne | Accepté |
 | RISK-08 | Le réglage en direct est proche de la limite de 100 ms | Architecture | Moyenne | Moyen | Moyenne | Ouvert |
 | RISK-09 | Usage au clavier et affichage à 375 px non revérifiés | Architecture | Moyenne | Moyen | Moyenne | Ouvert |
+| RISK-02 | Code tiers chargé sans vérification d'intégrité | Sécurité | Basse | Moyen | Basse | Atténué |
 | RISK-07 | Version d'adresse des fichiers dérivés mise à jour à la main | Intégration | Moyenne | Bas | Basse | Ouvert |
 | DEBT-01 | Un préchargement raté arrête la mise en pistes sans message propre | Accidentelle | — | Bas | Basse | Ouvert |
 | DEBT-02 | Le découpage en mots garde les mots composés d'un seul tenant | Délibérée | — | Bas | Basse | Ouvert |
@@ -110,20 +110,6 @@ le tableau du toolkit.*
 
 **Contexte :** ADR-004 ; objectif 4 de la section 1.2.
 
-### RISK-02 : code tiers chargé sans vérification d'intégrité
-
-| Attribut | Valeur |
-|----------|--------|
-| **Type** | Sécurité |
-| **Description** | Transformers.js est importé depuis jsDelivr par un `import()` dynamique, sans SRI. Un fichier altéré chez le distributeur s'exécuterait dans la page. Il pourrait alors lire le texte et l'envoyer ailleurs, ce qui casserait l'objectif 1. |
-| **Probabilité** | Basse : la version est épinglée, et les paquets npm publiés ne sont pas modifiables. |
-| **Impact** | Haut : c'est la promesse de confidentialité qui tombe. |
-| **Priorité** | Moyenne |
-| **Mitigation** | Prévue : héberger la bibliothèque avec le site (voir RISK-01), ou déclarer son empreinte dans une carte d'import (`<script type="importmap">` avec `integrity`). Une politique de sécurité du contenu (CSP) qui limite `connect-src` aux trois fournisseurs empêcherait aussi l'envoi. |
-| **Statut** | Ouvert |
-
-**Contexte :** ADR-002 ; section 7.1, « Réseau et sécurité ».
-
 ### RISK-06 : fautes d'accord hors du voisinage, et erreurs d'étiquetage propagées
 
 | Attribut | Valeur |
@@ -165,6 +151,20 @@ le tableau du toolkit.*
 | **Statut** | Ouvert |
 
 **Contexte :** objectif 5 de la section 1.2.
+
+### RISK-02 : code tiers chargé sans vérification d'intégrité
+
+| Attribut | Valeur |
+|----------|--------|
+| **Type** | Sécurité |
+| **Description** | Transformers.js est importé depuis jsDelivr par un `import()` dynamique, sans SRI. Un fichier altéré chez le distributeur s'exécuterait dans la page. Il pourrait alors lire le texte. Depuis le 2026-10-03, la politique de sécurité du contenu l'empêche de l'envoyer ailleurs que vers le site, jsDelivr ou Hugging Face. Il pourrait encore viser ces hôtes-là, ou fausser l'étiquetage. |
+| **Probabilité** | Basse : la version est épinglée, et les paquets npm publiés ne sont pas modifiables. |
+| **Impact** | Moyen, depuis la CSP : l'envoi vers un hôte quelconque est bloqué, il ne reste que les hôtes autorisés, qui sont des distributeurs en lecture. *Révisé le 2026-10-03 (il était haut).* |
+| **Priorité** | Basse |
+| **Mitigation** | Faite : une politique de sécurité du contenu borne `connect-src` aux trois fournisseurs (spec `mise-en-ligne`, QS-02). Prévue : héberger la bibliothèque avec le site (voir RISK-01), ou déclarer son empreinte dans une carte d'import (`<script type="importmap">` avec `integrity`). |
+| **Statut** | Atténué : reste ouvert tant qu'il n'y a pas de SRI. |
+
+**Contexte :** ADR-002 ; sections 7.1 et 8.2.
 
 ### RISK-07 : version d'adresse des fichiers dérivés mise à jour à la main
 
