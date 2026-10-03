@@ -42,7 +42,8 @@
   .result-header { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin-bottom: var(--space-3); }
   .result-header h2 { flex: 1; }
   .copy-message { font-size: var(--size-small); color: var(--muted); }
-  .result-scroll { overflow-y: auto; overscroll-behavior: contain; }
+  /* Plafonnée : un texte long défile dans la bande, sans avaler la molette quand il ne déborde pas */
+  .result-scroll { overflow-y: auto; max-height: 60svh; }
   .result-text { white-space: pre-wrap; font: var(--size-read)/1.6 var(--font-read); max-width: var(--measure); margin: 0; }
   .result-empty { font: italic var(--size-read)/1.6 var(--font-read); color: var(--muted); margin: 0; }
   .result.stuck { border-color: var(--ink); padding-top: var(--space-2); padding-bottom: var(--space-2); }
