@@ -35,15 +35,15 @@ Deux réserves valent pour tout le niveau A :
 
 ## Couverture dans Oulipao (2026-10-04)
 
-**28 contraintes sur 153 sont gérées, soit 18 %.** Sur les 61 que ce catalogue juge réalisables comme filtres (A et B), 26 le sont, soit 43 %. Une contrainte compte comme gérée quand un moteur ou une recette la produit.
+**30 contraintes sur 153 sont gérées, soit 20 %.** Sur les 61 que ce catalogue juge réalisables comme filtres (A et B), 28 le sont, soit 46 %. Une contrainte compte comme gérée quand un moteur ou une recette la produit.
 
 | Niveau | Gérées | Total | Part |
 |---|---|---|---|
-| A | 12 | 25 | 48 % |
+| A | 14 | 25 | 56 % |
 | B | 14 | 36 | 39 % |
 | C | 2 | 91 | 2 % |
 | ? | 0 | 1 | — |
-| **Total** | **28** | **153** | **18 %** |
+| **Total** | **30** | **153** | **20 %** |
 
 | Contrainte | Niveau | Comment |
 |---|---|---|
@@ -56,6 +56,7 @@ Deux réserves valent pour tout le niveau A :
 | Contrainte du prisonnier | B | recette : un lipogramme sur les douze lettres à hampe ou à jambage (E1) |
 | Beau présent, Épithalame oulipien | B | recette Beau présent : un lipogramme en lettres permises, où l'on tape le nom (E1) |
 | Monoconsonnantisme | B | lipogramme en lettres permises sur les voyelles et la consonne gardée (E1) ; les mots qui survivent sont rares tant que E7 manque |
+| Tautogramme, Abécédaire | A | moteur Tautogramme progressif, et une recette chacune : la lettre choisie, ou les lettres de a à z ; les mots-outils ne comptent pas |
 | Tautogramme progressif | B | moteur Tautogramme progressif : les initiales suivent une liste de lettres en boucle ; chaque mot part du dictionnaire à son initiale changée (E1) |
 | Poème monorime, Sonnet monorime (les deux fiches) | B | moteur Monorime, sur la textbank phonétique (E2) ; le genre peut alterner masculin et féminin |
 | Antirime | B | moteur Antirime (E2) |
@@ -67,14 +68,13 @@ Deux réserves valent pour tout le niveau A :
 
 **Presque gérées.** Le moteur existe, mais pas la recette :
 
-- **Tautogramme et Abécédaire :** le Tautogramme progressif les produit avec une liste d'une seule lettre, ou de a à z. Deux recettes les feraient passer à 30, soit 20 %.
 - **Éclipse :** le S+7 donne la seconde partie, mais il faut E3 pour juxtaposer les deux.
 - **S+dé :** un S+n dont le décalage est tiré au dé à la main.
 
 **Hors catalogue.** Le moteur R+n (remplacer un mot par le n-ième mot qui rime avec lui) ne correspond à aucune fiche. Il prépare Aphorime et Locurime, qui attendent encore E5.
 
 Familles suivantes, dans l'ordre :
-- **Voisin à initiale imposée :** Tautogramme, Abécédaire, Acrostiche universel, Delmas, Lipossible. Le moteur du Tautogramme progressif en fait déjà l'essentiel ; l'Acrostiche brivadois reste à faire.
+- **Voisin à initiale imposée :** Acrostiche universel, Delmas, Lipossible. Le moteur du Tautogramme progressif en fait déjà l'essentiel ; l'Acrostiche brivadois reste à faire.
 - **Variantes du S+n :** adverbes, S+dé, Poème carré, Propre-Commun. Homosyntaxisme et Aphorisme n'attendent plus que les adverbes.
 - **Recherche par forme :** Anagramme, Homovocalisme, avec un index construit à la demande.
 

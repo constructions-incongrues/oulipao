@@ -10,8 +10,8 @@ const add = (recipe: string, choice?: string, state = initialState) =>
   MixerStateSchema.parse(reduce(state, { type: 'add-recipe', recipe, choice, today: TODAY } as MixerAction));
 const summary = (state: ReturnType<typeof add>) => state.instances.map((i) => `${i.id} ${JSON.stringify(i.params)} ${i.targets.join(',')}`);
 
-test('les onze recettes tiennent toutes, par ordre alphabétique', () => {
-  assert.equal(recipes.length, 11);
+test('les treize recettes tiennent toutes, par ordre alphabétique', () => {
+  assert.equal(recipes.length, 13);
   assert.deepEqual(recipes, RECIPES);
   const names = recipes.map((recipe) => recipe.name);
   assert.deepEqual(names, [...names].sort((a, b) => a.localeCompare(b, 'fr')));
@@ -66,4 +66,11 @@ test('choix au branchement : obligatoire et pris dans la liste', () => {
   assert.throws(() => add('liponymie', 'pronom'), /choix refusé/);
   assert.throws(() => add('prisonnier', 'a'), /choix refusé/);
   assert.throws(() => reduce(initialState, { type: 'add-recipe', recipe: 'prisonnier', today: '3 octobre' } as MixerAction));
+});
+
+test('Tautogramme et Abécédaire : un tautogramme progressif sur les noms, adjectifs, verbes et adverbes', () => {
+  assert.deepEqual(summary(add('tautogramme', 'p')), ['tautogram-1 {"letters":"p"} noun,verb,adjective,adverb']);
+  assert.deepEqual(summary(add('abecedaire')), ['tautogram-1 {"letters":"abcdefghijklmnopqrstuvwxyz"} noun,verb,adjective,adverb']);
+  assert.equal(recipeById('tautogramme').choice!.options.length, 26);
+  for (const id of ['tautogramme', 'abecedaire']) assert.match(recipeById(id).rule, /mots-outils ne comptent pas/);
 });
