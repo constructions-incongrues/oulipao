@@ -160,5 +160,7 @@ export function reduce(state: MixerState, action: MixerAction): MixerState {
     }
     case 'reset-steps':
       return { ...state, closed: [], instances: state.instances.map((instance) => ({ ...instance, locks: [] })) };
+    case 'set-form':
+      return { ...state, form: checked.form };
   }
 }

@@ -2,6 +2,7 @@ import { html } from 'htm/preact';
 import type { VNode } from 'preact';
 import type { Category } from '../../../domain/categories.ts';
 import type { MixedSegment } from '../../../domain/mixing.ts';
+import { FORM_LABELS, FormSchema, type Form } from '../../../domain/forms/form.ts';
 import { TRACK_NAMES } from '../types.ts';
 import type { Mark } from '../view-model.ts';
 
@@ -30,6 +31,9 @@ export interface ResultProps {
   onCopy: () => void;
   /** Le nombre de syllabes de chaque ligne, affiché en bout de ligne ; absent sans filtre phonétique. */
   syllables?: readonly (number | undefined)[];
+  /** La forme à refrain posée sur le texte, et son choix ; sans `onForm`, pas de choix affiché. */
+  form?: Form;
+  onForm?: (form: Form) => void;
 }
 
 /** Le compte de syllabes d'une ligne, en bout de ligne. */
@@ -43,20 +47,34 @@ function between(text: string, syllables: readonly (number | undefined)[] | unde
 }
 
 /** Le texte résultant, en tête de page et collé en haut de l'écran quand on descend, et sa copie. */
-export function Result({ segments, empty, marks, tracks, selected, onSelect, changed, generation, audibleCount, stale, pinned = false, copyMessage, onCopy, syllables }: ResultProps): VNode {
+export function Result({ segments, empty, marks, tracks, selected, onSelect, changed, generation, audibleCount, stale, pinned = false, copyMessage, onCopy, syllables, form = 'none', onForm }: ResultProps): VNode {
   const line = { at: 0 };
+  let refrain: number | undefined;
+  /** L'annonce d'un refrain, pour les lecteurs d'écran, au premier morceau de chaque vers recopié. */
+  const announce = (copyOf: number | undefined) => {
+    const start = copyOf !== undefined && copyOf !== refrain;
+    refrain = copyOf;
+    return start ? html`<span class="sr-only">Refrain, copie du vers ${copyOf} : </span>` : '';
+  };
   return html`
     <section class=${['result', stale ? 'stale' : '', pinned ? 'stuck' : ''].filter(Boolean).join(' ')} aria-label="Texte résultant">
       <div class="result-header">
         <h2 class="silk">Texte résultant</h2>
         <button type="button" class="key copy" disabled=${empty || stale} onClick=${onCopy}>Copier</button>
         <span class="copy-message" role="status" aria-live="polite">${copyMessage}</span>
+        ${onForm &&
+        html`<label class="silk form-choice">Forme<select class="form" value=${form} onChange=${(event: Event) => onForm(FormSchema.parse((event.currentTarget as HTMLSelectElement).value))}>
+          ${FormSchema.options.map((value) => html`<option value=${value} selected=${value === form}>${FORM_LABELS[value]}</option>`)}
+        </select></label>`}
       </div>
       ${empty
         ? html`<p class="result-empty">Toutes les pistes sont coupées.</p>`
         : html`<div class="result-scroll"><p class="result-text">${segments.map((segment) => {
-            const { index, text } = segment;
-            if (index === undefined) return between(text, syllables, line);
+            const { index, text, copyOf } = segment;
+            if (index === undefined) {
+              if (text.includes('\n')) refrain = undefined;
+              return copyOf === undefined ? between(text, syllables, line) : html`${announce(copyOf)}<span class="copy">${text}</span>`;
+            }
             const mark = marks.get(index);
             const replaced = mark?.state === 'replaced';
             const track = tracks[index]!;
@@ -66,10 +84,10 @@ export function Result({ segments, empty, marks, tracks, selected, onSelect, cha
               : mark?.state === 'kept'
                 ? `${TRACK_NAMES[track]} : laissé tel quel, ${mark.reason}`
                 : undefined;
-            const classes = ['word', replaced ? `replaced ${track}` : '', changed.has(index) ? 'changed' : '', index === selected ? 'selected' : ''].join(' ').replace(/\s+/g, ' ').trim();
+            const classes = ['word', copyOf !== undefined ? 'copy' : '', replaced ? `replaced ${track}` : '', changed.has(index) ? 'changed' : '', index === selected ? 'selected' : ''].join(' ').replace(/\s+/g, ' ').trim();
             // Seuls les mots changés prennent le focus : deux cents arrêts de tabulation n'aideraient personne.
             // La clé change à chaque geste : l'éclat se rejoue sur un mot qui change encore.
-            return html`<span key=${`${index}-${changed.has(index) ? generation : 0}`} class=${classes}
+            return html`${announce(copyOf)}<span key=${`${index}-${copyOf ?? 0}-${changed.has(index) ? generation : 0}`} class=${classes}
               tabindex=${replaced ? 0 : undefined} title=${title}
               onClick=${() => onSelect(index)}
               onKeyDown=${(event: KeyboardEvent) => event.key === 'Enter' && onSelect(index)}>${text}</span>`;

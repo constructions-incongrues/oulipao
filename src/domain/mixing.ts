@@ -33,6 +33,8 @@ export function plainWords(text: string): { words: OutputWord[]; tail: string } 
 export interface MixedSegment {
   text: string;
   index?: number;
+  /** Le morceau appartient à un refrain : il recopie le vers de ce numéro (compté depuis 1). */
+  copyOf?: number;
 }
 
 // Bornes d'un mot pendant le nettoyage : caractères d'usage privé, absents d'un texte réel.

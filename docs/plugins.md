@@ -185,8 +185,10 @@ qu'une fin remplacée compte ensuite par sa rime nouvelle. L'antirime y passe au
 | Antérime (`anterhyme`) | richesse | « la chaise dort / la table dort » → « la chaise dort / la braise dort » |
 | Rime berrychonne (`berrychonne`) | aucun | « le vert / la chose / la table » → « … / la braise » (/ɛ/ de l'un, /z/ de l'autre) |
 
-Le rondel et la villanelle ajoutent des vers. Ils n'entrent donc pas dans la chaîne : voir
-`openspec/changes/refrains/`.
+Les schémas « rondel » (ABBAABABBA) et « villanelle » (ABAABABABABAB) donnent leurs lettres
+aux seuls vers de l'auteur. Les deux formes ajoutent des vers, et une contrainte doit rendre un
+mot par mot qu'elle lit : elles ne sont donc pas des contraintes. Elles se posent après la
+chaîne (`layoutForm`, voir `docs/tracks.md`), et aucun filtre ne peut agir après elles.
 
 ## Côté page
 

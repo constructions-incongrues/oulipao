@@ -86,7 +86,7 @@ test('chaque réglage de la page passe par le contrôleur', async () => {
   click(app(), byLabel('S+7 actif'));
   assert.match(renderToString(app()), /Contraintes coupées : texte d’origine\. Pistes coupées : noms, adjectifs, adverbes, autres\./);
   (find(app(), (e) => e.type === 'input').props['onInput'] as (event: Event) => void)(inputEvent('3'));
-  (find(app(), (e) => e.type === 'select').props['onChange'] as (event: Event) => void)(inputEvent('same-gender'));
+  (find(app(), (e) => e.type === 'select' && e.props['class'] !== 'form').props['onChange'] as (event: Event) => void)(inputEvent('same-gender'));
   assert.deepEqual(actions, [
     { type: 'toggle-mute', category: 'adjective' },
     { type: 'toggle-solo', category: 'verb' },

@@ -24,7 +24,7 @@ Il existe déjà une échappée : un mot de sortie peut contenir plusieurs mots,
 
 ### 1. Une étape de forme hors de la chaîne, et non un filtre
 
-Retenu : la forme s'applique au résultat final de `runChain`, comme une mise en page. **Domain** : `src/domain/forms/` est pur, sans port. Il prend `ChainResult` et `layoutVerse`, et rend des vers, chacun marqué « original » ou « copie de tel vers ».
+Retenu : la forme s'applique au texte mixé (la sortie de `runChain` après le mixage des pistes), comme une mise en page. **Domain** : `src/domain/forms/` est pur, sans port. `layoutForm` prend les morceaux du texte mixé (`MixedSegment`) et les rend mis en forme : chaque morceau d'un refrain porte `copyOf`, le numéro du vers recopié. Une piste coupée disparaît donc aussi des refrains, et les syllabes et la copie suivent sans traitement à part.
 
 Alternatives écartées :
 
@@ -40,15 +40,11 @@ S'il manque des vers, la forme s'arrête au dernier vers fourni et le dit. S'il 
 
 ### 3. Les rimes ne sont pas l'affaire de la forme
 
-Les deux formes tiennent sur deux rimes. Pour cela, on place un **schéma de rimes** avant l'étape de forme. Un schéma « rondel » (ABBA ABAB ABBAA) et un schéma « villanelle » (ABA… ABAA) s'ajouteraient à la liste fermée de `scheme.ts`. La forme elle-même ne fait que recopier.
+Les deux formes tiennent sur deux rimes. Pour cela, on place un **schéma de rimes** avant l'étape de forme. Les schémas « rondel » et « villanelle » s'ajoutent, dans ce changement, à la liste fermée de `scheme.ts`. Ils lettrent les vers **de l'auteur**, sans les refrains : ABBAABABBA pour les 10 vers d'un rondel, ABAABABABABAB pour les 13 vers d'une villanelle. Ce sont les lettres des places non recopiées des formes complètes (ABBA ABAB ABBAA et ABA ABA … ABAA). La forme elle-même ne fait que recopier.
 
 ## Risks / Trade-offs
 
 - **[Compromis] Aucun filtre après la forme.** C'est assumé : on transforme le texte, puis on le met en forme.
 - **[Risque] Des marques de copie illisibles.** → Le rendu suit `DESIGN.md`. À valider par une recette d'interface.
-
-## Open Questions
-
-- Faut-il ajouter les schémas « rondel » et « villanelle » à `scheme.ts` dans ce changement, ou dans `schemas-de-rimes` ? Ce changement les suppose. La réponse ne change pas la conception.
 
 **Réponse à la question du PRD** (« comment une contrainte qui ajoute des mots entre-t-elle dans `runChain` ? ») : elle n'y entre pas. C'est une étape de forme après la chaîne. La tranche ne tombe donc pas.
