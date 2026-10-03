@@ -49,6 +49,18 @@ sous-ensemble, qui reste sous la licence d'origine.
 - Une ligne par couple forme × étiquette : le plus commode pour compter les formes ambiguës
   (« affluent » y figure comme nom, adjectif et verbe).
 - Formes simples seulement : pas de noms composés, de locutions ni de noms propres.
+- Format relevé le 2026-10-03 sur `glaff-1.2.2.txt` : champs séparés par `|` — forme,
+  étiquette GRACE, lemme, prononciations en API, prononciations en SAMPA, puis douze colonnes de
+  fréquences. Plusieurs prononciations sont séparées par `;`, les syllabes par `.` :
+  `couvent|Ncms|couvent|ku.vɑ̃|ku.vA~|…`, `couvent|Vmip3p-|couver|kuv|kuv|…`,
+  `aînée|Ncfs|aînée|e.ne;e.ne|e.ne;e.ne|…`.
+- **Retenu pour les prononciations** (2026-10-03, textbank phonétique). Lexique 3.83 porte aussi
+  la phonétique, mais l'anomalie de licence ci-dessus n'est pas levée ; GLÀFF n'en a aucune.
+  `data/phonetique-oulipao.tsv` en est dérivé (`npm run build:phonetics`) : première
+  prononciation de chaque forme et catégorie, formes connues de Grammalecte seulement, rime
+  ajoutée. Il reste sous CC BY-SA 3.0 et se publie à part du code et des fichiers Grammalecte.
+  Les formes que GLÀFF ignore (noms composés, ~20 % des formes de Grammalecte) sont phonétisées
+  par des règles, et marquées « prononciation devinée ».
 
 ### Morphalou 3.1
 - Licence : « LGPL-LR (Lesser General Public License For Linguistic Resources) » —

@@ -19,7 +19,7 @@ export interface AppProps {
   state: TracksState;
   controller: Pick<
     TracksController,
-    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage'
+    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage'
   >;
   /** Bascule le thème clair ou sombre ; posé par le montage, qui seul touche au document. */
   onTheme?: () => void;
@@ -67,6 +67,7 @@ export function App({ state, controller, onTheme = () => {} }: AppProps): VNode 
         pinned=${state.pinned}
         copyMessage=${state.copyMessage}
         onCopy=${() => void controller.copy()}
+        syllables=${view.syllables}
       />`}
       <${Source}
         input=${state.input}
@@ -87,6 +88,8 @@ export function App({ state, controller, onTheme = () => {} }: AppProps): VNode 
       <p class="summary" role="status" aria-live="polite">${view ? summarize(mixer, view) : ''}</p>
       ${state.verbs.status === 'error' &&
       html`<p class="loading error" role="alert">${state.verbs.error} <button type="button" class="load" onClick=${() => void controller.loadVerbs()}>Relancer</button></p>`}
+      ${state.phonetics.status === 'error' &&
+      html`<p class="loading error" role="alert">${state.phonetics.error} <button type="button" class="load" onClick=${() => void controller.loadPhonetics()}>Relancer</button></p>`}
       <${Chain} instances=${mixer.instances} plugins=${installedPlugins} recipes=${recipes} lookup=${pluginById} dispatch=${controller.dispatch} />
       <${StepGrid}
         steps=${steps}
@@ -114,6 +117,7 @@ export function App({ state, controller, onTheme = () => {} }: AppProps): VNode 
             onLock=${(id: string, key: string, value: number | undefined) =>
               controller.dispatch(value === undefined ? { type: 'clear-lock', id, index: selected, key } : { type: 'set-lock', id, index: selected, key, value })}
             onClose=${controller.closeInspector}
+            pronunciation=${view.pronunciations[selected]}
           />`)}
     </main>
   ` as VNode;

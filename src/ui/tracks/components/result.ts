@@ -28,10 +28,23 @@ export interface ResultProps {
   pinned?: boolean;
   copyMessage: string;
   onCopy: () => void;
+  /** Le nombre de syllabes de chaque ligne, affiché en bout de ligne ; absent sans filtre phonétique. */
+  syllables?: readonly (number | undefined)[];
+}
+
+/** Le compte de syllabes d'une ligne, en bout de ligne. */
+const count = (syllables: number | undefined) =>
+  syllables === undefined ? '' : html`<span class="syllables" title=${`${syllables} syllabe${syllables > 1 ? 's' : ''}`}>${syllables}</span>`;
+
+/** Un séparateur entre deux mots, avec le compte de chaque ligne qu'il termine ; `line` avance d'autant. */
+function between(text: string, syllables: readonly (number | undefined)[] | undefined, line: { at: number }) {
+  if (!syllables || !text.includes('\n')) return text;
+  return text.split('\n').flatMap((part, k) => (k === 0 ? [part] : [count(syllables[line.at++]), '\n', part]));
 }
 
 /** Le texte résultant, en tête de page et collé en haut de l'écran quand on descend, et sa copie. */
-export function Result({ segments, empty, marks, tracks, selected, onSelect, changed, generation, audibleCount, stale, pinned = false, copyMessage, onCopy }: ResultProps): VNode {
+export function Result({ segments, empty, marks, tracks, selected, onSelect, changed, generation, audibleCount, stale, pinned = false, copyMessage, onCopy, syllables }: ResultProps): VNode {
+  const line = { at: 0 };
   return html`
     <section class=${['result', stale ? 'stale' : '', pinned ? 'stuck' : ''].filter(Boolean).join(' ')} aria-label="Texte résultant">
       <div class="result-header">
@@ -43,7 +56,7 @@ export function Result({ segments, empty, marks, tracks, selected, onSelect, cha
         ? html`<p class="result-empty">Toutes les pistes sont coupées.</p>`
         : html`<div class="result-scroll"><p class="result-text">${segments.map((segment) => {
             const { index, text } = segment;
-            if (index === undefined) return text;
+            if (index === undefined) return between(text, syllables, line);
             const mark = marks.get(index);
             const replaced = mark?.state === 'replaced';
             const track = tracks[index]!;
@@ -60,7 +73,7 @@ export function Result({ segments, empty, marks, tracks, selected, onSelect, cha
               tabindex=${replaced ? 0 : undefined} title=${title}
               onClick=${() => onSelect(index)}
               onKeyDown=${(event: KeyboardEvent) => event.key === 'Enter' && onSelect(index)}>${text}</span>`;
-          })}</p></div>`}
+          })}${syllables && count(syllables[line.at])}</p></div>`}
       ${!empty && audibleCount < 5 && html`<p class="notice">Pistes coupées : le texte est rendu tel quel, sans réparer la phrase.</p>`}
     </section>
   ` as VNode;

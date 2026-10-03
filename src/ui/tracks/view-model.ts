@@ -2,8 +2,11 @@ import { CATEGORIES, type Category } from '../../domain/categories.ts';
 import { audibleCategories, mixSegments, type MixedSegment } from '../../domain/mixing.ts';
 import type { ConstraintPlugin, ParameterValues } from '../../domain/plugin.ts';
 import { runChain, type ChainStep, type StageWord, type StepReport } from '../../domain/plugin-chain.ts';
+import { describeReading, lineSyllables, pronounce, type VerseWord } from '../../domain/phonetics/lookup.ts';
 import type { TaggedWord } from '../../domain/tagged-word.ts';
+import { tokenize } from '../../domain/tokenizer.ts';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
+import type { PhoneticsRepository } from '../../ports/phonetics.ts';
 import type { VerbRepository } from '../../ports/verbs.ts';
 import { pluginById } from './mixer-state.ts';
 import { TRACK_NAMES, TRACK_UNITS, type Instance, type MixerState } from './types.ts';
@@ -51,6 +54,29 @@ export interface TracksView {
   /** Les mots touchés par la chaîne, par position ; vide quand aucun plugin n'agit. */
   marks: ReadonlyMap<number, Mark>;
   audible: ReadonlySet<Category>;
+  /** La prononciation de chaque mot d'origine, en clair ; vide tant que les prononciations ne sont pas chargées. */
+  pronunciations: string[];
+  /** Le nombre de syllabes de chaque ligne du texte résultant, quand un filtre phonétique est en marche. */
+  syllables?: (number | undefined)[];
+}
+
+/**
+ * Le nombre de syllabes de chaque ligne du texte résultant ; une ligne sans mot (entre deux
+ * strophes) n'en a pas. Un morceau qui porte plusieurs mots les prend tous dans la piste de son mot d'origine.
+ */
+export function segmentSyllables(segments: readonly MixedSegment[], tracks: readonly Category[], phonetics: PhoneticsRepository): (number | undefined)[] {
+  const lines: (number | undefined)[] = [];
+  let words: VerseWord[] = [];
+  const close = () => {
+    lines.push(words.length ? lineSyllables(words, phonetics) : undefined);
+    words = [];
+  };
+  for (const { text, index } of segments) {
+    if (index !== undefined) words.push(...tokenize(text).map((token) => ({ word: token.word, category: tracks[index] })));
+    else for (const _ of text.matchAll(/\n/g)) close();
+  }
+  close();
+  return lines;
 }
 
 /** Retrouve un type de contrainte par son identifiant : les types installés, sauf en test. */
@@ -137,9 +163,11 @@ export function buildView(
   morphology: MorphologyRepository,
   lookup: PluginLookup = pluginById,
   verbs?: VerbRepository,
+  phonetics?: PhoneticsRepository,
 ): TracksView {
   const { text, tagged } = session;
-  const chain = runChain(text, tagged, activeSteps(mixer, lookup), { morphology, verbs });
+  const steps = activeSteps(mixer, lookup);
+  const chain = runChain(text, tagged, steps, { morphology, verbs, phonetics });
   const active = mixer.instances.filter((instance) => chain.steps.some((step) => step.id === instance.id));
   const marks = new Map<number, Mark>();
   for (const { index, original, replacement, removed, relaid, reason } of chain.marks.values()) {
@@ -171,6 +199,11 @@ export function buildView(
     steps: chain.steps,
     marks,
     audible,
+    pronunciations: phonetics ? tagged.map(({ word, category }) => {
+      const reading = pronounce(word, category, phonetics);
+      return reading ? describeReading(reading) : '';
+    }) : [],
+    ...(phonetics && steps.some((step) => step.plugin.phonetic) && { syllables: segmentSyllables(segments, tagged.map((word) => word.category), phonetics) }),
   };
 }
 

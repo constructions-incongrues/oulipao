@@ -31,7 +31,7 @@ export function shiftAdjective(word: string, offset: number, nextElides: boolean
 }
 
 /** « le », « la » devant une voyelle : « l’ » ; et l'inverse quand l'adjectif nouveau commence par une consonne. */
-function fixElision(words: OutputWord[], index: number, gender: ConcreteGender, apostrophe: string, morphology: MorphologyRepository) {
+export function fixElision(words: OutputWord[], index: number, gender: ConcreteGender, apostrophe: string, morphology: MorphologyRepository) {
   const previous = words[index - 1];
   const word = words[index]!;
   if (!previous?.output) return;

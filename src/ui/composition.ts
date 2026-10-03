@@ -1,6 +1,7 @@
 // Câblage commun aux pages : quels adaptateurs servent les ports. Le script assemblé est servi
 // depuis dist/ : les données sont un cran au-dessus.
 import { loadMorphology } from '../adapters/morphology/in-memory-morphology.ts';
+import { loadPhonetics } from '../adapters/morphology/in-memory-phonetics.ts';
 import { loadVerbs } from '../adapters/morphology/in-memory-verbs.ts';
 import { createCamembertClassifier } from '../adapters/taggers/camembert-model.ts';
 import { CamembertTagger } from '../adapters/taggers/camembert-tagger.ts';
@@ -8,6 +9,7 @@ import { FrCompromiseTagger } from '../adapters/taggers/fr-compromise-tagger.ts'
 import { LexiconLookupTagger } from '../adapters/taggers/lexicon-lookup-tagger.ts';
 import { fetchTextSource } from '../adapters/text-sources/fetch-text-source.ts';
 import type { MorphologyRepository } from '../ports/morphology.ts';
+import type { PhoneticsRepository } from '../ports/phonetics.ts';
 import type { Tagger } from '../ports/tagger.ts';
 import type { VerbRepository } from '../ports/verbs.ts';
 
@@ -53,6 +55,19 @@ export function createVerbsLoader(base: string | URL): () => Promise<VerbReposit
   return () =>
     (verbs ??= loadVerbs(fetchTextSource(new URL(`../data/verbes-oulipao.tsv?v=${VERBS_VERSION}`, base))).catch((error: unknown) => {
       verbs = undefined;
+      throw error;
+    }));
+}
+
+/** Version du fichier des prononciations, ajoutée à son adresse. À changer à chaque `npm run build:phonetics`. */
+export const PHONETICS_VERSION = '2026-10-03-glaff';
+
+/** Les prononciations, chargées seulement quand un filtre phonétique est dans la chaîne ; un échec n'est pas gardé. */
+export function createPhoneticsLoader(base: string | URL): () => Promise<PhoneticsRepository> {
+  let phonetics: Promise<PhoneticsRepository> | undefined;
+  return () =>
+    (phonetics ??= loadPhonetics(fetchTextSource(new URL(`../data/phonetique-oulipao.tsv?v=${PHONETICS_VERSION}`, base))).catch((error: unknown) => {
+      phonetics = undefined;
       throw error;
     }));
 }

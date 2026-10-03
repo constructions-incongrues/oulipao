@@ -108,18 +108,27 @@ export function shiftVerb(word: string, previous: readonly string[], offset: num
   return form ? { form: matchCase(word, form.form) } : { reason: NO_FORM };
 }
 
-/** Le premier verbe qui suit dans le dictionnaire et qui a, aux mêmes traits, une forme sans la lettre. */
-export function neighbourVerb(word: string, previous: readonly string[], letter: string, verbs: VerbRepository): VerbShift {
+/**
+ * Le n-ième verbe qui suit dans le dictionnaire (`offset` négatif : qui précède) et qui a, aux
+ * mêmes traits, une forme que `accept` retient ; `none` est la raison s'il n'y en a pas assez.
+ */
+export function nthVerb(word: string, previous: readonly string[], offset: number, accept: (form: string) => boolean, verbs: VerbRepository, none: string): VerbShift {
   const found = locate(word, previous, verbs);
   if ('reason' in found) return found;
   const infinitives = verbs.infinitives();
-  for (let step = 1; step < infinitives.length; step++) {
-    const target = infinitives[(found.start + step) % infinitives.length]!;
-    const form = verbs.forms(target).find((candidate) => fits(candidate, found.reading) && !candidate.form.toLowerCase().includes(letter));
-    if (form) return { form: matchCase(word, form.form) };
+  const step = Math.sign(offset) || 1;
+  let remaining = Math.abs(offset);
+  for (let k = 1; k < infinitives.length; k++) {
+    const target = infinitives[(((found.start + k * step) % infinitives.length) + infinitives.length) % infinitives.length]!;
+    const form = verbs.forms(target).find((candidate) => fits(candidate, found.reading) && accept(candidate.form));
+    if (form && --remaining === 0) return { form: matchCase(word, form.form) };
   }
-  return { reason: 'aucun voisin sans la lettre' };
+  return { reason: none };
 }
+
+/** Le premier verbe qui suit dans le dictionnaire et qui a, aux mêmes traits, une forme sans la lettre. */
+export const neighbourVerb = (word: string, previous: readonly string[], letter: string, verbs: VerbRepository): VerbShift =>
+  nthVerb(word, previous, 1, (form) => !form.toLowerCase().includes(letter), verbs, 'aucun voisin sans la lettre');
 
 const FULL_PRONOUN: Record<string, string> = { j: 'je', m: 'me', t: 'te', s: 'se', n: 'ne', l: 'le' };
 
