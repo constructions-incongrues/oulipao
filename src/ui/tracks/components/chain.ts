@@ -1,6 +1,6 @@
 import { html } from 'htm/preact';
 import type { VNode } from 'preact';
-import type { ConstraintPlugin } from '../../../domain/plugin.ts';
+import { visibleParameters, type ConstraintPlugin } from '../../../domain/plugin.ts';
 import { TRACK_NAMES, type Instance, type MixerAction } from '../types.ts';
 import type { Recipe } from '../recipes.ts';
 import { Browser } from './browser.ts';
@@ -77,7 +77,7 @@ function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance
       <span class="pos mono" aria-hidden="true">${rank}</span>
       <span class="name">${name}</span>
       <span class="param">
-        ${plugin.parameters.map(
+        ${visibleParameters(plugin, params).map(
           (parameter) => html`<label class="silk">${parameter.label}<${Control} parameter=${parameter} value=${params[parameter.key]}
             onParam=${(key: string, value: number | string) => dispatch({ type: 'set-param', id, key, value })} /></label>`,
         )}
