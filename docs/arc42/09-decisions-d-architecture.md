@@ -19,8 +19,13 @@ Deux choix structurants n'ont pas d'ADR ici :
 Une décision nouvelle donne un nouvel ADR. Un ADR n'est jamais réécrit. Quand une décision
 change, l'ancien ADR passe à « Remplacé par ADR-xxx », et le nouveau explique pourquoi.
 
-Les risques créés portent des identifiants RISK-xx, que la section 11 reprendra quand elle sera
-écrite.
+Les risques créés portent des identifiants RISK-xx, repris dans la section 11.
+
+**Note du 2026-10-03, à propos de l'ADR-004.** Ses conséquences disent que l'objectif 4 n'est pas
+atteint. C'était vrai quand il a été écrit, mais ce ne l'est plus : la PR #9 a ajouté trois
+contraintes sans toucher aux ports ni aux adaptateurs (sections 1.2 et 10, QS-09). La décision,
+elle, ne change pas : le contrat reste interne tant que personne d'autre n'écrit de contrainte.
+L'ADR n'est donc ni réécrit ni remplacé.
 
 ### Journal des décisions
 
