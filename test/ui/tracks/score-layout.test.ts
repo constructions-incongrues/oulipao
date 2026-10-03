@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { CATEGORIES } from '../../../src/domain/categories.ts';
 import { ReferenceTextSchema } from '../../../src/domain/reference-text.ts';
-import { DEFAULT_WIDTH, layoutScore } from '../../../src/ui/tracks/score-layout.ts';
+import { DEFAULT_WIDTH, layoutScore, MAX_WIDTH, MIN_WIDTH, systemWidth } from '../../../src/ui/tracks/score-layout.ts';
 import { ScoreLayoutSchema } from '../../../src/ui/tracks/types.ts';
 import { tag } from '../../support/morphology.ts';
 
@@ -67,4 +67,12 @@ test('texte vide, et mots étiquetés qui ne suivent pas le découpage', () => {
   assert.deepEqual(layoutScore('', []), { systems: [] });
   assert.deepEqual(layoutScore(' \n… ', []), { systems: [{ ruler: '…', lanes: { noun: [], verb: [], adjective: [], adverb: [], other: [] } }] });
   assert.throws(() => layoutScore('Le chat', tag('Le')), /ne correspondent pas/);
+});
+
+test('systemWidth : la place disponible, bornée entre 48 et 72 caractères', () => {
+  assert.equal(systemWidth(60.7), 60);
+  assert.equal(systemWidth(20), MIN_WIDTH);
+  assert.equal(systemWidth(200), MAX_WIDTH);
+  assert.equal(systemWidth(Number.NaN), MIN_WIDTH); // colonne cachée : rien à mesurer
+  assert.equal(systemWidth(-Infinity), MIN_WIDTH);
 });

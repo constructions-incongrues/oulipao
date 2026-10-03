@@ -80,15 +80,15 @@ Contraintes du projet (voir `openspec/config.yaml`) : TypeScript strict, archite
 
 Tâches issues de la revue de design (22 décisions, détaillées dans `design.md`, section « Revue de design du 2026-10-03 »). T1 d'abord ; T2 à T10 ensuite ; T11 en dernier.
 
-- [ ] 5.1 Système de design : `DESIGN.md`, variables CSS partagées, trois polices servies par le projet (M ; décisions 14, 15, 18)
-- [ ] 5.2 Disposition : texte résultant en haut, saisie repliable, table de mixage en lignes (M ; décisions 1, 2, 16)
-- [ ] 5.3 Premier contact : définition du S+7, bouton d'exemple, préchargement avec progression (M ; décisions 4, 5 ; revue d'ingénierie D9, D10, D12 : `preload(onProgress)` fourni par l'assemblage, bouton si le navigateur demande d'économiser les données, relance après échec)
-- [ ] 5.4 États : texte périmé, texte vide ou coupé, messages par zone, bornes du décalage (M ; décisions 6, 8, 9, 10)
-- [ ] 5.5 Libellés : « Muet », « Seul » ; paramètres « Décalage » et « Parmi » (S ; décisions 11, 17)
-- [ ] 5.6 Blocs et texte : trois aspects de bloc, original → remplaçant, noms soulignés, éclat au changement (M ; décisions 7, 12)
-- [ ] 5.7 Copie : mention de la règle ajoutée au texte copié (S ; décision 13 précisée par D11 : mention seulement si le texte a changé, pistes coupées comprises)
-- [ ] 5.8 Partition : pistes vides masquées, largeur calculée entre 48 et 72 caractères (M ; décisions 3, 22 ; calcul de largeur pur et testé, `setWidth` sur le contrôleur)
-- [ ] 5.9 Petit écran : page lisible sous 1024 px, partition repliée (M ; décision 19)
-- [ ] 5.10 Accessibilité : liste équivalente à la partition, annonce après chaque geste (M ; décisions 20, 21)
-- [ ] 5.11 Vérification dans le navigateur, capture et compte rendu refaits (S ; toutes les décisions)
+- [x] 5.1 Système de design : `DESIGN.md`, variables CSS partagées, trois polices servies par le projet (M ; décisions 14, 15, 18)
+- [x] 5.2 Disposition : texte résultant en haut, saisie repliable, table de mixage en lignes (M ; décisions 1, 2, 16)
+- [x] 5.3 Premier contact : définition du S+7, bouton d'exemple, préchargement avec progression (M ; décisions 4, 5 ; revue d'ingénierie D9, D10, D12 : `preload(onProgress)` fourni par l'assemblage, bouton si le navigateur demande d'économiser les données, relance après échec)
+- [x] 5.4 États : texte périmé, texte vide ou coupé, messages par zone, bornes du décalage (M ; décisions 6, 8, 9, 10)
+- [x] 5.5 Libellés : « Muet », « Seul » ; paramètres « Décalage » et « Parmi » (S ; décisions 11, 17)
+- [x] 5.6 Blocs et texte : trois aspects de bloc, original → remplaçant, noms soulignés, éclat au changement (M ; décisions 7, 12)
+- [x] 5.7 Copie : mention de la règle ajoutée au texte copié (S ; décision 13 précisée par D11 : mention seulement si le texte a changé, pistes coupées comprises)
+- [x] 5.8 Partition : pistes vides masquées, largeur calculée entre 48 et 72 caractères (M ; décisions 3, 22 ; calcul de largeur pur et testé, `setWidth` sur le contrôleur)
+- [x] 5.9 Petit écran : page lisible sous 1024 px, partition repliée (M ; décision 19)
+- [x] 5.10 Accessibilité : liste équivalente à la partition, annonce après chaque geste (M ; décisions 20, 21)
+- [x] 5.11 Vérification dans le navigateur, capture et compte rendu refaits (S ; toutes les décisions)
 

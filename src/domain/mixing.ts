@@ -29,29 +29,55 @@ export function plainWords(text: string): { words: OutputWord[]; tail: string } 
   return { words, tail: tokens.length ? text.slice(tokens.at(-1)!.end) : text };
 }
 
+/** Un morceau du texte résultant : un mot (avec sa position dans le texte d'origine) ou ce qui les sépare. */
+export interface MixedSegment {
+  text: string;
+  index?: number;
+}
+
+// Bornes d'un mot pendant le nettoyage : caractères d'usage privé, absents d'un texte réel.
+const OPEN = '';
+const MIDDLE = '';
+const CLOSE = '';
+
 /**
- * Le texte résultant : les mots des pistes inaudibles disparaissent, le texte se resserre, la
- * ponctuation reste. La règle s'applique telle quelle, sans réparer la phrase (« la horloge »).
+ * Le texte résultant, en morceaux : les mots des pistes inaudibles disparaissent, le texte se
+ * resserre, la ponctuation reste. La règle s'applique telle quelle, sans réparer la phrase
+ * (« la horloge »). Chaque mot entendu garde sa position, pour que l'interface puisse le marquer.
  *
  * @param words la sortie du moteur (ou `plainWords`), un élément par mot du texte d'origine
  * @param tagged les mots d'origine étiquetés, dans le même ordre
  */
-export function mixText(words: readonly OutputWord[], tagged: readonly TaggedWord[], audible: ReadonlySet<Category>, tail: string): string {
+export function mixSegments(words: readonly OutputWord[], tagged: readonly TaggedWord[], audible: ReadonlySet<Category>, tail: string): MixedSegment[] {
   if (words.length !== tagged.length) throw new Error('les mots à mixer ne correspondent pas aux mots étiquetés');
   let silenced = false;
   let out = '';
   words.forEach((word, i) => {
     const heard = audible.has(tagged[i]!.category);
     if (!heard) silenced = true;
-    out += word.gap + (heard ? word.output : '');
+    out += word.gap + (heard && word.output ? `${OPEN}${i}${MIDDLE}${word.output}${CLOSE}` : '');
   });
   out += tail;
-  if (!silenced) return out; // rien de coupé : exactement le texte du moteur
-  return out
-    .replace(/[^\S\n]+/g, ' ') // un seul espace entre deux mots
-    .replace(/ ?,(?: ?,)+/g, ',') // virgules qui se suivent
-    .replace(/,(?= ?[.!?…;:])/g, '') // virgule devenue inutile avant une ponctuation forte
-    .replace(/([.!?…;:]) ?,/g, '$1') // ou juste après
-    .replace(/ +([,.…])/g, '$1') // pas d'espace avant une virgule ou un point
-    .replace(/^[ ,]+| +$/gm, ''); // ni en début ou fin de ligne
+  if (silenced) {
+    out = out
+      .replace(/[^\S\n]+/g, ' ') // un seul espace entre deux mots
+      .replace(/ ?,(?: ?,)+/g, ',') // virgules qui se suivent
+      .replace(/,(?= ?[.!?…;:])/g, '') // virgule devenue inutile avant une ponctuation forte
+      .replace(/([.!?…;:]) ?,/g, '$1') // ou juste après
+      .replace(/ +([,.…])/g, '$1') // pas d'espace avant une virgule ou un point
+      .replace(/^[ ,]+| +$/gm, ''); // ni en début ou fin de ligne
+  }
+  const segments: MixedSegment[] = [];
+  for (const [, between, index, word] of out.matchAll(new RegExp(`([^${OPEN}]*)(?:${OPEN}(\\d+)${MIDDLE}([^${CLOSE}]*)${CLOSE})?`, 'g'))) {
+    if (between) segments.push({ text: between });
+    if (index !== undefined) segments.push({ text: word!, index: Number(index) });
+  }
+  return segments;
+}
+
+/** Le texte résultant, d'un seul tenant. */
+export function mixText(words: readonly OutputWord[], tagged: readonly TaggedWord[], audible: ReadonlySet<Category>, tail: string): string {
+  return mixSegments(words, tagged, audible, tail)
+    .map((segment) => segment.text)
+    .join('');
 }

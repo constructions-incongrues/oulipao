@@ -4,24 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Potao — essai d'étiquetage et S+7</title>
+<link rel="stylesheet" href="styles/tokens.css">
 <style>
-  body { font: 16px/1.6 system-ui, sans-serif; max-width: 46rem; margin: 2rem auto; padding: 0 1rem; }
-  textarea { width: 100%; height: 10rem; font: inherit; box-sizing: border-box; }
-  .controls { display: flex; gap: .75rem; align-items: center; margin: .75rem 0; flex-wrap: wrap; }
-  #output, #s7-output { white-space: pre-wrap; border-top: 1px solid #ccc; padding-top: 1rem; }
+  body { line-height: 1.6; max-width: 46rem; margin: var(--space-8) auto; padding: 0 var(--space-4); }
+  textarea { width: 100%; height: 10rem; font: inherit; box-sizing: border-box; background: var(--bg); color: var(--fg); border: var(--rule) solid var(--line); border-radius: var(--radius); }
+  .controls { display: flex; gap: var(--space-3); align-items: center; margin: var(--space-3) 0; flex-wrap: wrap; }
+  #output, #s7-output { white-space: pre-wrap; border-top: var(--rule) solid var(--line); padding-top: var(--space-4); }
+  #s7-output { font: var(--size-read)/1.6 var(--font-read); }
   #offset { width: 4.5rem; font: inherit; }
-  h2 { font-size: 1.1rem; margin-top: 2rem; }
-  #s7-status { color: #666; }
-  #s7-status.error { color: #c00; }
-  #output span, .legend span { border-radius: 3px; padding: 0 2px; }
+  h2 { font-size: 1.1rem; margin-top: var(--space-8); }
+  #s7-status { color: var(--muted); }
+  #s7-status.error { color: var(--error); }
+  #output span, .legend span { border-radius: var(--radius); padding: 0 2px; }
   /* Couleur + soulignement : la catégorie reste lisible sans distinguer les teintes. */
-  .noun { background: #ffd8a8; }
-  .verb { background: #a5d8ff; text-decoration: underline; }
-  .adjective { background: #b2f2bb; text-decoration: underline dotted; }
-  .adverb { background: #eebefa; text-decoration: underline wavy; }
-  .other { color: #666; }
-  #status { color: #666; }
-  #status.error { color: #c00; }
+  .noun { background: color-mix(in srgb, var(--noun) 22%, transparent); }
+  .verb { background: color-mix(in srgb, var(--verb) 22%, transparent); text-decoration: underline; }
+  .adjective { background: color-mix(in srgb, var(--adjective) 22%, transparent); text-decoration: underline dotted; }
+  .adverb { background: color-mix(in srgb, var(--adverb) 22%, transparent); text-decoration: underline wavy; }
+  .other { color: var(--muted); }
+  #status { color: var(--muted); }
+  #status.error { color: var(--error); }
 </style>
 </head>
 <body>

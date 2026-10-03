@@ -24,19 +24,42 @@ interface Loaded {
   };
 }
 
-export function createCamembertClassifier(): PieceClassifier {
+/** Le classifieur, et son chargement : à appeler d'avance pour suivre l'avancement du téléchargement. */
+export interface CamembertClassifier extends PieceClassifier {
+  load(onProgress?: (loaded: number, total: number) => void): Promise<void>;
+}
+
+/** Avancement global du téléchargement des poids, tel que le rapporte Transformers.js. */
+interface ProgressInfo {
+  status: string;
+  loaded?: number;
+  total?: number;
+}
+
+export function createCamembertClassifier(): CamembertClassifier {
   let loaded: Promise<Loaded> | undefined;
-  const load = () =>
+  const load = (onProgress?: (loaded: number, total: number) => void) =>
     (loaded ??= (async () => {
       const { AutoTokenizer, AutoModelForTokenClassification } = await import(/* @vite-ignore */ LIBRARY);
       const [tokenizer, model] = await Promise.all([
         AutoTokenizer.from_pretrained(MODEL),
-        AutoModelForTokenClassification.from_pretrained(MODEL, { dtype: 'q8' }),
+        AutoModelForTokenClassification.from_pretrained(MODEL, {
+          dtype: 'q8',
+          progress_callback: (info: ProgressInfo) => {
+            if (info.status === 'progress_total') onProgress?.(info.loaded ?? 0, info.total ?? 0);
+          },
+        }),
       ]);
       return { tokenizer, model } as Loaded;
-    })());
+    })().catch((error: unknown) => {
+      loaded = undefined; // un échec n'est pas gardé : le prochain essai retélécharge
+      throw error;
+    }));
 
   return {
+    async load(onProgress) {
+      await load(onProgress);
+    },
     async classify(sentence: string): Promise<LabelledPiece[]> {
       const { tokenizer, model } = await load();
       const inputs = await tokenizer(sentence);

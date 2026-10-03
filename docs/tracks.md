@@ -7,16 +7,18 @@ Page : `tracks.html` (script assemblé `dist/tracks.js`, par `npm run build`). L
 
 - **Piste** : une catégorie de mots. Cinq pistes : noms, verbes, adjectifs, adverbes, autres
   (les mots-outils : déterminants, pronoms, prépositions…).
-- **Tranche** : les réglages d'une piste, dans la table de mixage (colonne de gauche, toujours
-  visible) : nom, nombre de mots, mute,
-  solo, emplacement de plugin.
-- **Plugin** : une contrainte branchée sur une piste. Un seul existe, le S+7, sur la piste des
-  noms ; les autres emplacements sont vides.
+- **Tranche** : la ligne d'une piste dans la table de mixage (colonne de gauche) : pastille de
+  couleur, nom, nombre de mots, « Muet », « Seul ».
+- **Plugin** : une contrainte branchée sur une piste. Un seul existe, le S+7, ouvert sous la
+  ligne des noms, avec deux paramètres : « Décalage » (de −99 à +99) et « Parmi » (« tous les
+  noms », ou « les noms du même genre »). Une ligne dit que d'autres contraintes viendront.
 - **Partition** : le texte d'origine disposé en systèmes.
-- **Système** : une ligne du texte d'origine (la règle) et, dessous, les cinq pistes. La
-  partition revient à la ligne comme une partition de musique.
-- **Bloc** : un mot posé sur sa piste, à sa colonne dans la règle. Sur la piste des noms, le
-  bloc porte le mot remplacé quand le plugin est actif.
+- **Système** : une ligne du texte d'origine (la règle) et, dessous, les pistes qui y ont des
+  mots (les pistes vides du système sont masquées). La partition revient à la ligne comme une
+  partition de musique.
+- **Bloc** : un mot posé sur sa piste, à sa colonne dans la règle. Trois aspects : plein pour un
+  nom remplacé (il porte le nouveau mot ; l'infobulle dit « horloge → horodatage »), contour
+  pointillé pour un nom laissé tel quel (l'infobulle dit pourquoi), simple filet pour les autres.
 - **Texte résultant** : ce qu'on lit et qu'on copie, une fois la contrainte appliquée et les
   pistes coupées.
 
@@ -45,7 +47,30 @@ Preact ; les composants (`components/`, `app.ts`) sont des fonctions de cet éta
 - **Colonnes de caractères.** Les blocs s'alignent sous les mots grâce à une police à chasse
   fixe. Un mot remplacé plus long que l'original est tronqué à l'écran (son libellé complet est
   dans l'infobulle) pour ne pas recouvrir le bloc suivant.
-- **Largeur des systèmes** : 64 caractères, fixe (`DEFAULT_WIDTH`).
+- **Largeur des systèmes** : calculée d'après la place laissée à la partition, entre 48 et 72
+  caractères (`systemWidth`), et recalculée au redimensionnement (`main.ts`).
+- **La copie dit d'où vient le texte.** Le texte copié est suivi, après une ligne vide, de ce qui
+  l'a changé : « — S+7, parmi tous les noms (Potao) », avec « · pistes coupées : … » s'il y en a.
+  Rien quand le texte copié est le texte d'origine (plugin coupé ou S+0, toutes les pistes
+  entendues). Décision D11 de la revue d'ingénierie.
+
+## La page
+
+- **Premier contact** : la définition du S+7, la saisie, le bouton « Essayer avec un exemple »,
+  et le chargement du modèle, lancé dès l'ouverture avec sa barre en Mo (`preload`, fourni par
+  `composition.ts`). Si le navigateur demande d'économiser les données, un bouton « Charger le
+  modèle (141 Mo) » attend un clic. Un échec se relance : le chargement raté n'est pas gardé.
+- **Après la mise en pistes** : la saisie se replie en « Texte : N mots · Modifier » ; le texte
+  résultant vient en tête, au-dessus de la partition. Si l'on modifie le texte, la vue est
+  estompée et la copie refusée jusqu'à « remettre en pistes ».
+- **Après chaque geste** : une phrase résume l'état (« S+3, parmi tous les noms : 33 noms
+  remplacés sur 34. ») et est annoncée aux lecteurs d'écran ; les mots qui viennent de changer
+  s'éclairent un tiers de seconde, sauf si le système demande de réduire les animations.
+- **Lecteurs d'écran** : la partition dessinée leur est cachée ; ils lisent à la place une liste
+  par piste (« Noms, 13 mots : matin devenu matois, … »).
+- **Sous 1024 px** : une seule colonne ; la partition est repliée derrière « Voir la partition »
+  et défile dans son cadre.
+- **Apparence** : variables et polices de `styles/tokens.css`, décrites dans `DESIGN.md`.
 
 ## Tests
 

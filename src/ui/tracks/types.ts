@@ -1,12 +1,26 @@
 import { z } from 'zod';
-import { CategorySchema } from '../../domain/categories.ts';
+import { CategorySchema, type Category } from '../../domain/categories.ts';
 import { TracksSchema } from '../../domain/mixing.ts';
 import { S7ModeSchema } from '../../domain/s7/types.ts';
+
+/** Nom des pistes, tel qu'affiché. */
+export const TRACK_NAMES: Record<Category, string> = {
+  noun: 'Noms',
+  verb: 'Verbes',
+  adjective: 'Adjectifs',
+  adverb: 'Adverbes',
+  other: 'Autres',
+};
+
+/** Bornes du décalage du S+7. */
+export const MIN_OFFSET = -99;
+export const MAX_OFFSET = 99;
+export const OffsetSchema = z.number().int().min(MIN_OFFSET).max(MAX_OFFSET);
 
 /** Le plugin S+7 branché sur la piste des noms. */
 export const PluginStateSchema = z.object({
   enabled: z.boolean(),
-  offset: z.number().int(),
+  offset: OffsetSchema,
   mode: S7ModeSchema,
 });
 export type PluginState = z.infer<typeof PluginStateSchema>;
@@ -20,7 +34,7 @@ export const MixerActionSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('toggle-mute'), category: CategorySchema }),
   z.object({ type: z.literal('toggle-solo'), category: CategorySchema }),
   z.object({ type: z.literal('toggle-plugin') }),
-  z.object({ type: z.literal('set-offset'), offset: z.number().int() }),
+  z.object({ type: z.literal('set-offset'), offset: OffsetSchema }),
   z.object({ type: z.literal('set-mode'), mode: S7ModeSchema }),
 ]);
 export type MixerAction = z.infer<typeof MixerActionSchema>;

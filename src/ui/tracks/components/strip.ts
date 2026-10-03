@@ -2,15 +2,9 @@ import { html } from 'htm/preact';
 import type { ComponentChildren, VNode } from 'preact';
 import type { Category } from '../../../domain/categories.ts';
 import type { TrackState } from '../../../domain/mixing.ts';
+import { TRACK_NAMES } from '../types.ts';
 
-/** Nom des pistes, tel qu'affiché. */
-export const TRACK_NAMES: Record<Category, string> = {
-  noun: 'Noms',
-  verb: 'Verbes',
-  adjective: 'Adjectifs',
-  adverb: 'Adverbes',
-  other: 'Autres',
-};
+export { TRACK_NAMES };
 
 export interface StripProps {
   category: Category;
@@ -19,20 +13,23 @@ export interface StripProps {
   track: TrackState;
   onMute: () => void;
   onSolo: () => void;
-  /** L'emplacement de plugin. */
+  /** Le plugin branché sur la piste, ouvert sous sa ligne. */
   children?: ComponentChildren;
 }
 
-/** La tranche d'une piste : nom, nombre de mots, mute, solo, emplacement de plugin. */
+/** La ligne d'une piste dans la table de mixage : pastille, nom, nombre de mots, Muet, Seul. */
 export function Strip({ category, count, track, onMute, onSolo, children }: StripProps): VNode {
   const name = TRACK_NAMES[category];
   return html`
     <section class=${`strip ${category}`} aria-label=${`Piste ${name}`}>
-      <h3>${name}</h3>
-      <p class="count">${count} ${count > 1 ? 'mots' : 'mot'}</p>
-      <div class="buttons">
-        <button type="button" class="mute" aria-pressed=${track.muted} aria-label=${`Rendre muette la piste ${name}`} onClick=${onMute}>M</button>
-        <button type="button" class="solo" aria-pressed=${track.solo} aria-label=${`Mettre en solo la piste ${name}`} onClick=${onSolo}>S</button>
+      <div class="strip-row">
+        <span class="dot" aria-hidden="true"></span>
+        <h3>${name}</h3>
+        <span class="count">${count} ${count > 1 ? 'mots' : 'mot'}</span>
+        <button type="button" class="mute" aria-pressed=${track.muted} aria-label=${`Muet : retirer la piste ${name} du texte`}
+          title="Retirer cette piste du texte" onClick=${onMute}>Muet</button>
+        <button type="button" class="solo" aria-pressed=${track.solo} aria-label=${`Seul : ne garder que la piste ${name}`}
+          title="Ne garder que cette piste" onClick=${onSolo}>Seul</button>
       </div>
       ${children}
     </section>

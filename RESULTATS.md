@@ -203,32 +203,56 @@ disponible.
 
 # Interface à pistes
 
-Vérification du 2026-10-03 dans le navigateur, sur le texte de référence 1 (200 mots), étiqueté
-par le modèle neuronal. Page : `tracks.html`. Capture : `resultats/pistes/interface-texte-1.jpg`.
+Vérification du 2026-10-03 dans le navigateur, refaite après la revue de design (22 décisions) et
+la revue d'ingénierie (D8 à D13), sur le texte de référence 1 (200 mots), étiqueté par le modèle
+neuronal, fenêtre de 1280 × 900 px. Page : `tracks.html`. Capture :
+`resultats/pistes/interface-texte-1.jpg` (S+7, parmi tous les noms).
 
-| Critère du PRD | Constat |
+Les huit étapes du test d'interface (tâche 3.1 de `tasks.md`) :
+
+| Étape | Constat |
 |---|---|
-| Les pistes s'affichent | 20 systèmes, cinq pistes chacun, 200 blocs pour 200 mots, chacun sous son mot |
-| Le réglage est en direct | 5 décalages essayés (3, 1, 12, −7, 2) : 5 textes différents ; mise à jour en 2 à 4 ms mesurés, sans nouvel étiquetage |
-| Le plugin se coupe et se rétablit | Coupé : le texte d'origine, à l'identique ; rétabli : le même texte transformé qu'avant |
-| Le mode se choisit | Le texte change entre S+7 strict et « même genre » |
-| Mute et solo | Adjectifs muets : ils disparaissent du texte, la piste est estompée sur la partition ; verbes en solo : « arrêta, remarqua. préparait, faisait, lisait lever. tombait. » |
-| Le résultat se copie | Le texte envoyé au presse-papiers est exactement le texte résultant ; la page affiche « Copié. » |
-| Le texte reste dans le navigateur | Aucune requête ne contient le texte |
-| Clavier | Tous les boutons, champs et sélecteurs reçoivent le focus et portent un libellé |
+| 1. Coller 200 mots, mettre en pistes | La saisie se replie en « Texte : 200 mots · Modifier » |
+| 2. Partition et texte résultant | 20 systèmes de 64 caractères au plus, 200 blocs pour 200 mots ; 3 à 5 pistes par système (les vides sont masquées) ; le texte résultant commence à 156 px du haut, sans défiler |
+| 3. Décalage de 7 à 3, puis 1, 12, −7, 2 | 5 textes différents, sans nouvel étiquetage ; geste et affichage en 15 à 26 ms ; le résumé suit (« S+2, parmi tous les noms : 27 noms remplacés sur 34. ») ; les mots changés s'éclairent |
+| 4. Couper puis rétablir le plugin | Coupé : le texte d'origine, à l'identique ; rétabli : le même texte qu'avant |
+| 5. Changer « Parmi » | Le texte change |
+| 6. Muet sur les adjectifs, Seul sur les verbes | Les adjectifs disparaissent, leurs 11 pistes sont estompées, la ligne « Pistes coupées : le texte est rendu tel quel… » s'affiche ; en solo, il ne reste que les verbes ; tout rétabli, le texte revient à l'identique |
+| 7. Copier | Le texte remis au presse-papiers est le texte résultant, puis une ligne vide et « — S+7, parmi tous les noms (Potao) » ; « Copié. » à côté du bouton |
+| 8. Réseau | 11 requêtes, aucune ne contient le texte ; hôtes : la page et `cdn.jsdelivr.net` (la bibliothèque du modèle) |
 
-Premier affichage : 2,7 secondes sur cette machine, modèle déjà en cache ; le premier
-chargement réel reste d'une vingtaine de secondes (mesure de l'essai technique).
+Autres vérifications :
 
-Le temps de mise à jour est mesuré autour du geste, attente de l'affichage déduite ; le seuil du
-PRD était d'une demi-seconde.
+| Point | Constat |
+|---|---|
+| Chargement du modèle | Cache vidé, la barre avance avant tout clic : « Chargement du modèle : 3 / 111 Mo — une seule fois, puis gardé par votre navigateur. » ; le bouton « Mettre en pistes » reste inactif jusqu'à la fin |
+| Seconde visite | Les poids viennent du cache du navigateur (`transformers-cache`) : aucune requête vers Hugging Face ; la promesse « une seule fois » est tenue |
+| Texte modifié | Bandeau « Texte modifié — remettre en pistes », partition et texte estompés, copie inactive |
+| 375 px | Une seule colonne, aucun défilement horizontal de la page ; la partition est repliée derrière « Voir la partition » et défile dans son cadre |
+| Clavier et libellés | 16 commandes, toutes atteignables au clavier et nommées ; aucune dans la partition cachée aux lecteurs d'écran |
+| Lecteurs d'écran | À la place de la partition, une liste par piste : « Noms, 34 mots : matin devenu matois, horloge devenu horodatage, café laissé tel quel (aucun nom au bon genre et au bon nombre)… » |
+| Polices | Servies par le projet ; aucune requête vers un serveur de polices |
+| Page d'essai | `index.html` étiquette et applique le S+7 comme avant, avec les variables partagées |
+| Console | Aucune erreur |
+
+Le temps de mise à jour est mesuré autour du geste, rendu de la page compris ; le seuil du PRD
+était d'une demi-seconde. Il passe de 2 à 4 ms (avant la revue) à 15 à 26 ms : la page rend
+maintenant les mots un par un, pour les souligner et les éclairer.
+
+Le premier chargement réel reste d'une vingtaine de secondes (mesure de l'essai technique) ; il
+commence désormais à l'ouverture, sauf si le navigateur demande d'économiser les données.
 
 ## Écarts et limites
 
 - **Les tranches ne sont pas à gauche de chaque piste** comme le prévoyait le PRD : la partition
-  revenant à la ligne, chaque piste apparaît dans chaque système. Les cinq tranches forment une
-  table de mixage dans une colonne à gauche, qui reste visible pendant le défilement (choix du
-  fondateur, 2026-10-03) ; dans les systèmes, chaque piste porte son nom.
+  revenant à la ligne, chaque piste apparaît dans chaque système. Les cinq pistes forment une
+  table de mixage dans une colonne à gauche (choix du fondateur, 2026-10-03) ; dans les
+  systèmes, chaque piste porte son nom.
+- **Les pistes ne sont plus à la même hauteur d'un système à l'autre**, puisque les pistes vides
+  sont masquées (décision 3, compromis accepté).
+- **Le contraste et le daltonisme** ont été vérifiés par le calcul (`DESIGN.md`), pas par des
+  lecteurs daltoniens. La lecture complète d'une session au lecteur d'écran reste à faire avec
+  un vrai lecteur ; la vérification porte sur ce que la page lui expose.
 - **Le presse-papiers réel** n'a pas pu être relu depuis la session de vérification
   automatisée : c'est le texte remis au navigateur qui a été comparé.
 - **La falsification du PRD** (3 testeurs sur 5 changent le décalage et coupent une piste en

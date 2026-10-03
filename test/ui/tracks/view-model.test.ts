@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { initialState, reduce } from '../../../src/ui/tracks/mixer-state.ts';
-import { buildView } from '../../../src/ui/tracks/view-model.ts';
+import { buildView, changedWords, ruleMention, ruleName, summarize } from '../../../src/ui/tracks/view-model.ts';
 import { morphology, tag } from '../../support/morphology.ts';
 
 const m = morphology();
@@ -38,4 +38,55 @@ test('mode et décalage changent le résultat ; mute et solo s’appliquent au t
 
 test('largeur des systèmes transmise à la disposition', () => {
   assert.ok(buildView(session, offsetOne, m, 20).layout.systems.length > 1);
+});
+
+test('marques des noms : remplacé, ou laissé tel quel avec sa raison ; rien quand le plugin n’agit pas', () => {
+  const view = buildView(session, offsetOne, m);
+  assert.deepEqual(view.marks.get(2), { state: 'replaced', original: 'ferme' });
+  assert.deepEqual(view.marks.get(9), { state: 'kept', original: 'Zorglub', reason: 'absent du dictionnaire' });
+  assert.equal(view.marks.size, 3);
+  assert.equal(buildView(session, reduce(offsetOne, { type: 'set-offset', offset: 0 }), m).marks.size, 0); // S+0 : rien ne change
+  assert.equal(buildView(session, reduce(offsetOne, { type: 'set-offset', offset: 0 }), m).result, text);
+  const feminine = { text: 'La ferme.', tagged: tag('La ferme.') };
+  const missing = buildView(feminine, reduce(reduce(initialState, { type: 'set-mode', mode: 'same-gender' }), { type: 'set-offset', offset: 99 }), m);
+  assert.ok([...missing.marks.values()].every((mark) => mark.state === 'replaced' || mark.reason === 'aucun nom au bon genre et au bon nombre'));
+});
+
+test('morceaux du texte résultant : les mots gardent leur position', () => {
+  const view = buildView(session, offsetOne, m);
+  assert.equal(view.segments.map((s) => s.text).join(''), view.result);
+  assert.deepEqual(view.segments.find((s) => s.index === 2), { text: 'fermoir', index: 2 });
+});
+
+test('résumé annoncé après chaque geste', () => {
+  const view = (mixer: typeof offsetOne) => summarize(mixer, buildView(session, mixer, m));
+  assert.equal(view(offsetOne), 'S+1, parmi tous les noms : 2 noms remplacés sur 3.');
+  assert.equal(view(reduce(offsetOne, { type: 'set-offset', offset: -1 })), 'S−1, parmi tous les noms : 2 noms remplacés sur 3.');
+  assert.equal(view(reduce(offsetOne, { type: 'set-mode', mode: 'same-gender' })), 'S+1, parmi les noms du même genre : 2 noms remplacés sur 3.');
+  assert.equal(view(reduce(offsetOne, { type: 'set-offset', offset: 0 })), 'S+0 : aucun changement.');
+  assert.equal(view(reduce(offsetOne, { type: 'toggle-plugin' })), 'Plugin coupé : texte d’origine.');
+  assert.equal(view(reduce(offsetOne, { type: 'toggle-mute', category: 'adjective' })), 'S+1, parmi tous les noms : 2 noms remplacés sur 3. Pistes coupées : adjectifs.');
+  const single = { text: 'La ferme.', tagged: tag('La ferme.') };
+  assert.equal(summarize(offsetOne, buildView(single, offsetOne, m)), 'S+1, parmi tous les noms : 1 nom remplacé sur 1.');
+  assert.equal(ruleName(-3), 'S−3');
+});
+
+test('mention de la règle (D11) : seulement ce qui a changé le texte', () => {
+  const all = new Set(['noun', 'verb', 'adjective', 'adverb', 'other'] as const);
+  assert.equal(ruleMention(initialState, all), '\n\n— S+7, parmi tous les noms (Potao)');
+  assert.equal(ruleMention(reduce(initialState, { type: 'set-offset', offset: -3 }), all), '\n\n— S−3, parmi tous les noms (Potao)');
+  assert.equal(ruleMention(reduce(initialState, { type: 'set-mode', mode: 'same-gender' }), all), '\n\n— S+7, parmi les noms du même genre (Potao)');
+  assert.equal(ruleMention(reduce(initialState, { type: 'toggle-plugin' }), all), ''); // plugin coupé : texte d'origine
+  assert.equal(ruleMention(reduce(initialState, { type: 'set-offset', offset: 0 }), all), ''); // S+0
+  assert.equal(ruleMention(initialState, new Set(['noun', 'other'])), '\n\n— S+7, parmi tous les noms · pistes coupées : verbes, adjectifs, adverbes (Potao)');
+  assert.equal(ruleMention(reduce(initialState, { type: 'toggle-plugin' }), new Set(['verb'])), '\n\n— pistes coupées : noms, adjectifs, adverbes, autres (Potao)');
+});
+
+test('mots changés : ceux dont le texte diffère d’une vue à l’autre', () => {
+  const one = buildView(session, offsetOne, m);
+  const two = buildView(session, reduce(offsetOne, { type: 'set-offset', offset: 2 }), m);
+  assert.deepEqual(changedWords(undefined, one), new Set());
+  assert.deepEqual(changedWords(one, one), new Set());
+  const changed = changedWords(one, two);
+  assert.ok(changed.has(2) && !changed.has(0));
 });

@@ -6,6 +6,19 @@ import type { Block, ScoreLayout, System } from './types.ts';
 /** Largeur d'un système, en caractères, quand l'appelant n'en donne pas. */
 export const DEFAULT_WIDTH = 64;
 
+/** Bornes de la largeur d'un système : assez pour une phrase, pas plus qu'une ligne lisible. */
+export const MIN_WIDTH = 48;
+export const MAX_WIDTH = 72;
+
+/**
+ * La largeur d'un système d'après la place disponible dans la colonne, en caractères de la
+ * police de la partition ; bornée entre 48 et 72. Une mesure absente (colonne cachée) donne 48.
+ */
+export function systemWidth(availableChars: number): number {
+  if (!Number.isFinite(availableChars)) return MIN_WIDTH;
+  return Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, Math.floor(availableChars)));
+}
+
 const emptyLanes = () => Object.fromEntries(CATEGORIES.map((category) => [category, [] as Block[]])) as Record<Category, Block[]>;
 
 /**

@@ -145,47 +145,47 @@ un exemple », la progression du chargement, et les cinq pistes déjà dessinée
 
 Synthesized from this review's findings. Each task derives from a specific finding above.
 
-- [ ] **T1 (P1, human: ~3h / CC: ~20min)** — design system — Écrire `DESIGN.md` et les variables CSS partagées ; héberger les trois polices
+- [x] **T1 (P1, human: ~3h / CC: ~20min)** — design system — Écrire `DESIGN.md` et les variables CSS partagées ; héberger les trois polices
   - Surfaced by: passes 4 et 5 — décisions 14, 15, 18
   - Files: `DESIGN.md`, `styles/tokens.css`, `fonts/`, `tracks.html`, `index.html`
   - Verify: les deux pages n'utilisent que des variables ; aucune requête de police vers un tiers
-- [ ] **T2 (P1, human: ~4h / CC: ~25min)** — layout — Texte résultant en haut, saisie repliable, table en lignes
+- [x] **T2 (P1, human: ~4h / CC: ~25min)** — layout — Texte résultant en haut, saisie repliable, table en lignes
   - Surfaced by: passes 1 et 4 — décisions 1, 2, 16
   - Files: `src/ui/tracks/app.ts`, `components/strip.ts`, `components/result.ts`, `tracks.html`
   - Verify: tests des composants ; à 1280 px le texte résultant est visible sans défiler
-- [ ] **T3 (P1, human: ~4h / CC: ~30min)** — first run — Définition, bouton d'exemple, préchargement avec progression
+- [x] **T3 (P1, human: ~4h / CC: ~30min)** — first run — Définition, bouton d'exemple, préchargement avec progression
   - Surfaced by: passe 2 — décisions 4, 5
   - Files: `src/ui/tracks/controller.ts`, `app.ts`, `src/ui/composition.ts`, `src/adapters/taggers/camembert-model.ts`
   - Verify: tests du contrôleur (chargement, progression, échec) ; dans le navigateur, la barre avance avant tout clic
-- [ ] **T4 (P1, human: ~4h / CC: ~30min)** — states — Texte périmé, texte vide ou coupé, messages par zone, bornes du décalage
+- [x] **T4 (P1, human: ~4h / CC: ~30min)** — states — Texte périmé, texte vide ou coupé, messages par zone, bornes du décalage
   - Surfaced by: passe 2 — décisions 6, 8, 9, 10
   - Files: `src/ui/tracks/controller.ts`, `mixer-state.ts`, `types.ts`, `app.ts`, `components/result.ts`, `components/plugin-slot.ts`
   - Verify: tests du contrôleur et des composants pour chaque état
-- [ ] **T5 (P1, human: ~1h / CC: ~10min)** — labels — « Muet », « Seul » ; paramètres « Décalage » et « Parmi »
+- [x] **T5 (P1, human: ~1h / CC: ~10min)** — labels — « Muet », « Seul » ; paramètres « Décalage » et « Parmi »
   - Surfaced by: passes 3 et 4 — décisions 11, 17
   - Files: `components/strip.ts`, `components/plugin-slot.ts`, `docs/tracks.md`
   - Verify: tests des composants sur les libellés et les infobulles
-- [ ] **T6 (P2, human: ~4h / CC: ~30min)** — score — Trois aspects de bloc, original → remplaçant, noms soulignés, éclat au changement
+- [x] **T6 (P2, human: ~4h / CC: ~30min)** — score — Trois aspects de bloc, original → remplaçant, noms soulignés, éclat au changement
   - Surfaced by: passes 2 et 3 — décisions 7, 12
   - Files: `src/ui/tracks/view-model.ts`, `types.ts`, `score-layout.ts`, `components/score.ts`, `components/result.ts`
   - Verify: tests de la vue et des composants ; l'éclat est coupé avec `prefers-reduced-motion`
-- [ ] **T7 (P2, human: ~1h / CC: ~10min)** — sharing — Mention de la règle dans le texte copié
+- [x] **T7 (P2, human: ~1h / CC: ~10min)** — sharing — Mention de la règle dans le texte copié
   - Surfaced by: passe 3 — décision 13
   - Files: `src/ui/tracks/controller.ts`, `view-model.ts`
   - Verify: test du contrôleur : le texte remis au presse-papiers se termine par la mention
-- [ ] **T8 (P2, human: ~3h / CC: ~20min)** — score layout — Pistes vides masquées ; largeur calculée entre 48 et 72 caractères
+- [x] **T8 (P2, human: ~3h / CC: ~20min)** — score layout — Pistes vides masquées ; largeur calculée entre 48 et 72 caractères
   - Surfaced by: passes 1 et 7 — décisions 3, 22
   - Files: `score-layout.ts`, `components/score.ts`, `controller.ts`, `main.ts`
   - Verify: tests de la disposition ; redimensionner la fenêtre redécoupe les systèmes
-- [ ] **T9 (P2, human: ~3h / CC: ~20min)** — responsive — Page lisible sous 1024 px, partition repliée
+- [x] **T9 (P2, human: ~3h / CC: ~20min)** — responsive — Page lisible sous 1024 px, partition repliée
   - Surfaced by: passe 6 — décision 19
   - Files: `tracks.html`, `app.ts`
   - Verify: à 375 px, pas de défilement horizontal de la page ; le texte résultant se lit et se copie
-- [ ] **T10 (P2, human: ~3h / CC: ~25min)** — accessibility — Liste équivalente à la partition ; annonce après chaque geste
+- [x] **T10 (P2, human: ~3h / CC: ~25min)** — accessibility — Liste équivalente à la partition ; annonce après chaque geste
   - Surfaced by: passe 6 — décisions 20, 21
   - Files: `components/score.ts`, `view-model.ts`, `controller.ts`, `app.ts`
   - Verify: tests des composants ; lecture au lecteur d'écran d'une session complète
-- [ ] **T11 (P1, human: ~2h / CC: ~15min)** — verification — Refaire la vérification dans le navigateur, la capture et le compte rendu
+- [x] **T11 (P1, human: ~2h / CC: ~15min)** — verification — Refaire la vérification dans le navigateur, la capture et le compte rendu
   - Surfaced by: toutes les passes
   - Files: `RESULTATS.md`, `resultats/pistes/`, `docs/tracks.md`
   - Verify: les huit étapes du test d'interface passent avec la nouvelle disposition
@@ -569,23 +569,23 @@ Conflict flags : `tracks.html` (T1, T2, T9) et `controller.ts` (T3, T4, T7, T8, 
 
 Elles précisent les tâches T3, T7 et T8 ci-dessus ; elles ne s'y ajoutent pas en effort séparé.
 
-- [ ] **E1 (P1, human: ~2h / CC: ~15min)** — préchargement — `preload(onProgress)` dans `TracksDependencies`, fourni par `composition.ts` avec `progress_total`
+- [x] **E1 (P1, human: ~2h / CC: ~15min)** — préchargement — `preload(onProgress)` dans `TracksDependencies`, fourni par `composition.ts` avec `progress_total`
   - Surfaced by: Scope Challenge — S1 (D9)
   - Files: `src/ui/tracks/controller.ts`, `src/ui/composition.ts`, `src/adapters/taggers/camembert-model.ts`, `test/ui/tracks/controller.test.ts`
   - Verify: test du contrôleur avec une fausse fonction qui émet des octets ; barre visible avant tout clic
-- [ ] **E2 (P2, human: ~1h / CC: ~10min)** — préchargement — bouton « Charger le modèle (141 Mo) » si `navigator.connection.saveData`
+- [x] **E2 (P2, human: ~1h / CC: ~10min)** — préchargement — bouton « Charger le modèle (141 Mo) » si `navigator.connection.saveData`
   - Surfaced by: Scope Challenge — S2 (D10)
   - Files: `src/ui/tracks/controller.ts`, `app.ts`, `main.ts`, tests du contrôleur
   - Verify: tests du contrôleur, signal vrai et faux
-- [ ] **E3 (P1, human: ~30min / CC: ~5min)** — chargement — oublier une promesse rejetée pour permettre la relance
+- [x] **E3 (P1, human: ~30min / CC: ~5min)** — chargement — oublier une promesse rejetée pour permettre la relance
   - Surfaced by: Architecture — A3 (D12)
   - Files: `src/adapters/taggers/camembert-model.ts`, `src/ui/composition.ts`, `test/ui/composition.test.ts`
   - Verify: test échec puis réussite du chargeur de dictionnaire
-- [ ] **E4 (P2, human: ~1h / CC: ~10min)** — copie — mention seulement si le texte a changé
+- [x] **E4 (P2, human: ~1h / CC: ~10min)** — copie — mention seulement si le texte a changé
   - Surfaced by: Scope Challenge — S3 (D11)
   - Files: `src/ui/tracks/view-model.ts`, `controller.ts`, `test/ui/tracks/view-model.test.ts`
   - Verify: tests des cinq cas (nominal, S−3, plugin coupé, S+0, pistes coupées)
-- [ ] **E5 (P2, human: ~1h / CC: ~10min)** — partition — largeur pure bornée 48..72 et `setWidth`
+- [x] **E5 (P2, human: ~1h / CC: ~10min)** — partition — largeur pure bornée 48..72 et `setWidth`
   - Surfaced by: Architecture — mécanique de la décision 22
   - Files: `src/ui/tracks/score-layout.ts`, `controller.ts`, `main.ts`, tests
   - Verify: tests des bornes ; redimensionner redécoupe les systèmes

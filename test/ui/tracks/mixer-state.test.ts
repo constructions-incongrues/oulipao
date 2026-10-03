@@ -35,6 +35,9 @@ test('un geste ne modifie pas l’état précédent', () => {
 
 test('refuse un geste non conforme', () => {
   assert.throws(() => reduce(initialState, { type: 'set-offset', offset: 1.5 }));
+  assert.throws(() => reduce(initialState, { type: 'set-offset', offset: 100 })); // décalage borné à ±99
+  assert.throws(() => reduce(initialState, { type: 'set-offset', offset: -100 }));
+  assert.equal(after({ type: 'set-offset', offset: -99 }, { type: 'set-offset', offset: 99 }).plugin.offset, 99);
   assert.throws(() => reduce(initialState, { type: 'set-mode', mode: 'au hasard' as never }));
   assert.throws(() => reduce(initialState, { type: 'toggle-mute', category: 'pronom' as never }));
   assert.throws(() => reduce(initialState, { type: 'danser' } as never));

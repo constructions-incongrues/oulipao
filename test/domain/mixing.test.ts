@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { CATEGORIES, type Category } from '../../src/domain/categories.ts';
-import { audibleCategories, mixText, plainWords, TracksSchema, type Tracks } from '../../src/domain/mixing.ts';
+import { audibleCategories, mixSegments, mixText, plainWords, TracksSchema, type Tracks } from '../../src/domain/mixing.ts';
 import { applyS7 } from '../../src/domain/s7/engine.ts';
 import { morphology, tag } from '../support/morphology.ts';
 
@@ -62,4 +62,17 @@ test('le mixage s’applique à la sortie du moteur, mot par mot', () => {
 
 test('refuse des mots qui ne correspondent pas aux mots étiquetés', () => {
   assert.throws(() => mixText(plainWords('Le chat').words, tag('Le'), new Set(CATEGORIES), ''), /ne correspondent pas/);
+});
+
+test('mixSegments : chaque mot entendu garde sa position, même après le resserrement', () => {
+  const text = 'La vieille ferme, grise.';
+  const { words, tail } = plainWords(text);
+  const all = mixSegments(words, tag(text), audibleCategories(tracks()), tail);
+  assert.deepEqual(all, [
+    { text: 'La', index: 0 }, { text: ' ' }, { text: 'vieille', index: 1 }, { text: ' ' },
+    { text: 'ferme', index: 2 }, { text: ', ' }, { text: 'grise', index: 3 }, { text: '.' },
+  ]);
+  const muted = mixSegments(words, tag(text), audibleCategories(tracks({ adjective: { muted: true } })), tail);
+  assert.deepEqual(muted, [{ text: 'La', index: 0 }, { text: ' ' }, { text: 'ferme', index: 2 }, { text: '.' }]);
+  assert.deepEqual(mixSegments([], [], new Set(), ''), []);
 });
