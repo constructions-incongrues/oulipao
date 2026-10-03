@@ -12,7 +12,7 @@ export const homophonyPlugin = definePlugin({
   tracks: ['noun', 'adjective', 'verb', 'adverb'],
   defaultTargets: ['noun'],
   phonetic: true,
-  parameters: [{ kind: 'integer', key: 'offset', label: 'Rang', min: 1, max: 9 }],
+  parameters: [{ kind: 'integer', key: 'offset', label: 'Rang', min: 1, max: 9, lockable: true }],
   defaults: ParamsSchema.parse({}),
   parse: params,
   acts: () => true,

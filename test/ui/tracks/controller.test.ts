@@ -34,25 +34,21 @@ test('état de départ : rien d’étiqueté, saisie dépliée, modèle pas enco
   assert.equal(createTracksController({ tagger: tagger(), loadMorphology: async () => morphology(), preload: async () => {}, copy: async () => {} }).state.input, '');
 });
 
-test('ouverture : le modèle se précharge, avec son avancement en octets', async () => {
+test('ouverture : rien ne part vers les tiers avant le premier clic', () => {
+  let preloads = 0;
+  const { controller } = setup({ preload: async () => void preloads++ });
+  assert.equal(controller.state.model.status, 'waiting');
+  assert.equal(preloads, 0);
+});
+
+test('premier clic sur « Charger le modèle » : téléchargement avec son avancement en octets', async () => {
   const { controller, states } = setup();
-  controller.start();
+  const loading = controller.preload();
   assert.equal(controller.state.model.status, 'loading');
-  await tick();
+  await loading;
   assert.equal(controller.state.model.status, 'ready');
   assert.ok(states.some((s) => s.model.status === 'loading' && s.model.loaded === 50 && s.model.total === 100));
   await controller.preload(); // déjà prêt : rien à refaire
-  assert.equal(controller.state.model.status, 'ready');
-});
-
-test('économie de données (D10) : rien ne part avant le clic', async () => {
-  let preloads = 0;
-  const { controller } = setup({ saveData: true, preload: async () => void preloads++ });
-  controller.start();
-  assert.equal(controller.state.model.status, 'waiting');
-  assert.equal(preloads, 0);
-  await controller.preload();
-  assert.equal(preloads, 1);
   assert.equal(controller.state.model.status, 'ready');
 });
 
@@ -342,13 +338,13 @@ test('Verbes visés : d’abord la raison du chargement, puis le recalcul sans n
   await controller.run();
   controller.dispatch({ type: 'set-targets', id: 's7-1', targets: ['noun', 'verb'] });
   assert.equal(controller.state.verbs.status, 'loading');
-  assert.equal(controller.state.view!.stages.at(-1)!.words[2], 'dort');
+  assert.equal(controller.state.view!.stages.at(-1)!.words[2]!.output, 'dort');
   assert.deepEqual(controller.state.view!.marks.get(2), { state: 'kept', original: 'dort', reason: LOADING });
   release();
   await tick();
   assert.equal(controller.state.verbs.status, 'ready');
   // dormir + 7, en faisant le tour des huit verbes du dictionnaire de test : chanter.
-  assert.equal(controller.state.view!.stages.at(-1)!.words[2], 'chante');
+  assert.equal(controller.state.view!.stages.at(-1)!.words[2]!.output, 'chante');
   assert.deepEqual(calls, ['Le chat dort.']);
   // Déjà là : un nouveau geste ne les redemande pas.
   await controller.loadVerbs();
@@ -368,7 +364,7 @@ test('Verbes injoignables : l’erreur reste affichée, la relance les charge', 
   assert.equal(calls, 1); // un geste ne relance pas : le bouton le fait
   await controller.loadVerbs();
   assert.equal(controller.state.verbs.status, 'ready');
-  assert.equal(controller.state.view!.stages.at(-1)!.words[2], 'chante');
+  assert.equal(controller.state.view!.stages.at(-1)!.words[2]!.output, 'chante');
 });
 
 test('Un lipogramme mis en marche dès l’étiquetage vise les verbes : ils sont demandés', async () => {

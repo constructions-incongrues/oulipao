@@ -42,7 +42,7 @@ export const s7Plugin = definePlugin({
   tracks: ['noun', 'adjective', 'verb'],
   defaultTargets: ['noun'],
   parameters: [
-    { kind: 'integer', key: 'offset', label: 'Décalage', min: MIN_OFFSET, max: MAX_OFFSET },
+    { kind: 'integer', key: 'offset', label: 'Décalage', min: MIN_OFFSET, max: MAX_OFFSET, lockable: true },
     {
       kind: 'choice',
       key: 'mode',

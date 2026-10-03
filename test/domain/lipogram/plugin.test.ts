@@ -46,9 +46,13 @@ test('la lettre a disparu, hors verbes et mots sans voisin', () => {
   words.forEach((word) => assert.ok(kept.has(word.index) || !containsLetter(word.output, 'e'), word.output));
 });
 
+test('mot-outil retiré en tête de vers : le vers reste sur sa ligne', () => {
+  assert.equal(run('Un mur\nje vois').text, 'Un mur\nvois');
+});
+
 test('mot-outil sans équivalent retiré, sa majuscule léguée ; article élidé devant une voyelle', () => {
   const removed = run('Je vois une école.');
-  assert.equal(removed.text, ' Vois la maison.');
+  assert.equal(removed.text, 'Vois la maison.');
   assert.deepEqual(removed.marks[0], { index: 0, original: 'Je', removed: true });
   // « une » → « la » devant une voyelle : « l’ », collé ; l'apostrophe suit le texte
   assert.equal(run('Une abri, et une école.', 'e', { abri: 'other' }).text, "L'abri, ou la maison.");

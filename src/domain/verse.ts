@@ -14,8 +14,9 @@ const FULL_WORDS: ReadonlySet<Category> = new Set(['noun', 'adjective', 'verb', 
 
 /**
  * Le texte découpé en vers et en strophes, d'après les blancs entre les mots : un saut de ligne
- * ouvre un vers, une ligne vide une strophe. Un élément par mot de `tokenize(text)`. Les filtres
- * ne déplacent ni n'ajoutent de saut de ligne : la découpe vaut pour toute la chaîne.
+ * ouvre un vers, une ligne vide une strophe. Un élément par mot de `tokenize(text)`. Chaque
+ * contrainte la recalcule sur le texte qu'elle reçoit : une mise en vers placée avant elle dans
+ * la chaîne redéfinit ses vers.
  */
 export function layoutVerse(text: string, tagged: readonly TaggedWord[]): VersePlace[] {
   const tokens = tokenize(text);

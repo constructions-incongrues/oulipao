@@ -11,6 +11,9 @@ import type { MixerAction } from '../../../src/ui/tracks/types.ts';
 import { sansPlugin } from '../../support/plugins.ts';
 import { definePlugin } from '../../../src/domain/plugin.ts';
 import { s7Plugin } from '../../../src/domain/s7/plugin.ts';
+import { edgePlugin } from '../../../src/domain/edge/plugin.ts';
+import { Browser } from '../../../src/ui/tracks/components/browser.ts';
+import { recipes } from '../../../src/ui/tracks/mixer-state.ts';
 import { Result } from '../../../src/ui/tracks/components/result.ts';
 import { Inspector } from '../../../src/ui/tracks/components/inspector.ts';
 import { Source, type SourceProps } from '../../../src/ui/tracks/components/source.ts';
@@ -18,6 +21,9 @@ import type { Parameter } from '../../../src/domain/plugin.ts';
 import type { GridStep, Mark } from '../../../src/ui/tracks/view-model.ts';
 import { tag } from '../../support/morphology.ts';
 import { byClass, byLabel, elements, find, inputEvent } from '../../support/vnode.ts';
+
+/** Des cases d'inspecteur sans saut de ligne. */
+const cells = (...texts: string[]) => texts.map((text) => ({ text, newline: false }));
 
 const click = (node: unknown, predicate: Parameters<typeof find>[1]) => (find(node as never, predicate).props['onClick'] as () => void)();
 
@@ -119,8 +125,9 @@ test('Inspector : une ligne par étape, la colonne choisie, les colonnes lointai
   const window = {
     columns: [0, 1, 2, 3, 4].map((index) => ({ index, distance: Math.abs(index - 3) })),
     bands: [
-      { id: 'origin', label: 'Origine', cells: ['dans', 'la', 'cuisine', 'étroite', 'comme'] },
-      { id: 's7-1', label: 'S+7 sur les noms', cells: ['dans', 'la', 'cuistrerie', 'étroite', '·'] },
+      { id: 'origin', label: 'Origine', cells: cells('dans', 'la', 'cuisine', 'étroite', 'comme') },
+      { id: 's7-1', label: 'S+7 sur les noms', cells: cells('dans', 'la', 'cuistrerie', 'étroite', '·') },
+      { id: 'lineation-1', label: 'Mise en vers', cells: [...cells('dans', 'la', 'cuistrerie'), { text: 'étroite', newline: true }, ...cells('·')] },
     ],
   };
   const inspector = html`<${Inspector} window=${window} word="étroite" onStep=${(d: number) => calls.push(`step ${d}`)} onClose=${() => calls.push('close')} />`;
@@ -129,6 +136,8 @@ test('Inspector : une ligne par étape, la colonne choisie, les colonnes lointai
   assert.match(out, /<caption>« étroite » à chaque étape de la chaîne<\/caption>/);
   assert.match(out, /<tr><th scope="row">Origine<\/th><td class="far">dans<\/td><td>la<\/td><td>cuisine<\/td><td class="chosen" aria-current="true">étroite<\/td><td>comme<\/td><\/tr>/);
   assert.match(out, /<th scope="row">S\+7 sur les noms<\/th>.*<td>cuistrerie<\/td>.*<td>·<\/td><\/tr>/s);
+  // Un mot mis à la ligne par l'étape : « ↵ » devant lui, dit « à la ligne » au lecteur d'écran.
+  assert.match(out, /<th scope="row">Mise en vers<\/th>.*<td class="chosen" aria-current="true"><span class="newline" aria-hidden="true">↵ <\/span><span class="sr-only">à la ligne, <\/span>étroite<\/td>/s);
   // Les flèches et Échap passent par le contrôleur, où que soit le focus ; ici, la touche Fermer.
   click(inspector, byClass('close'));
   assert.deepEqual(calls, ['close']);
@@ -139,8 +148,8 @@ test('Inspector : état du pas, champ de verrou dans la bande de l’instance, v
   const window = {
     columns: [{ index: 0, distance: 0 }],
     bands: [
-      { id: 'origin', label: 'Origine', cells: ['chat'] },
-      { id: 's7-1', label: 'S+7 sur les noms', cells: ['chaton'] },
+      { id: 'origin', label: 'Origine', cells: cells('chat') },
+      { id: 's7-1', label: 'S+7 sur les noms', cells: cells('chaton') },
     ],
   };
   const entries = [{ id: 's7-1', fields: [{ key: 'offset', label: 'Décalage', min: -99, max: 99, value: 3 }], note: 'S+3 sur ce mot' }];
@@ -227,7 +236,7 @@ test('Source : définition et exemple au premier contact, avancement du modèle,
   const render = (patch: Partial<SourceProps>) => renderToString(html`<${Source} ...${{ ...props, ...patch }} />`);
   const first = html`<${Source} ...${props} />`;
   const out = renderToString(first);
-  assert.match(out, /<button type="button" class="run" disabled>Mettre en pistes<\/button>/); // le modèle n'est pas prêt
+  assert.match(out, /<button type="button" class="run" disabled>Mettre en pistes<\/button>/); // le modèle se charge
   assert.match(out, /<progress max="111000000" value="42000000" aria-label="Chargement du modèle"><\/progress>/);
   assert.match(out, /Chargement du modèle : 42 \/ 111 Mo — une seule fois, puis gardé par votre navigateur\./);
   (find(first, (e) => e.type === 'textarea').props['onInput'] as (event: Event) => void)(inputEvent('Un texte'));
@@ -235,9 +244,13 @@ test('Source : définition et exemple au premier contact, avancement du modèle,
   click(first, byClass('example'));
   assert.match(render({ model: model({ status: 'loading' }) }), /<progress aria-label="Chargement du modèle"><\/progress>\s*Chargement du modèle… — une seule fois/);
   const waiting = html`<${Source} ...${{ ...props, model: model({ status: 'waiting' }) }} />`;
-  assert.match(renderToString(waiting), /Charger le modèle \(141 Mo\)/);
+  const before = renderToString(waiting);
+  assert.match(before, /Charger le modèle \(141 Mo\)/);
+  assert.match(before, /depuis jsDelivr et Hugging Face, qui voient alors votre adresse\. Votre texte, lui, reste dans ce navigateur\./);
+  assert.match(before, /<button type="button" class="run">Mettre en pistes<\/button>/); // le premier clic vaut accord
   click(waiting, byClass('load'));
   const failed = html`<${Source} ...${{ ...props, model: model({ status: 'error', error: 'Échec : hors ligne. Vous pouvez relancer.' }) }} />`;
+  assert.match(renderToString(failed), /<button type="button" class="run">Mettre en pistes/); // relancer en mettant en pistes
   assert.match(renderToString(failed), /role="alert">Échec : hors ligne\. Vous pouvez relancer\. <button type="button" class="load">Relancer/);
   click(failed, byClass('load'));
   const ready = render({ model: model({}), started: true, message: 'Collez d’abord un texte.' });
@@ -335,6 +348,13 @@ function fakeRow(top: number, rows: { classList: Set<string> }[] = []) {
   return row;
 }
 
+test('Chain : une contrainte non ciblable n’a pas de puces de pistes', () => {
+  const edge = { id: 'edge-1', type: 'edge', enabled: true, params: edgePlugin.defaults, targets: [...CATEGORIES] };
+  const chain = html`<${Chain} instances=${[edge]} plugins=${[edgePlugin]} lookup=${() => edgePlugin} dispatch=${() => {}} />`;
+  assert.equal(elements(chain).filter(byClass('chip')).length, 0);
+  assert.match(renderToString(chain), /<span class="targets"><span class="silk">Tout le texte<\/span><\/span>/);
+});
+
 test('Chain : glisser une ligne par sa poignée, un trait marque la place, lâcher la déplace', () => {
   const actions: MixerAction[] = [];
   const make = (id: string) => ({ id, type: 's7', enabled: true, params: { offset: 7, mode: 'reagree' }, targets: ['noun' as const] });
@@ -371,4 +391,52 @@ test('Chain : glisser une ligne par sa poignée, un trait marque la place, lâch
   on(rowsOf[2]!, 'onDrop', { currentTarget: third, dataTransfer: transfer, preventDefault: () => {} });
   on(rowsOf[2]!, 'onPointerUp', { currentTarget: third });
   assert.equal(actions.length, 1);
+});
+
+test('Browser : replié par défaut, recettes puis moteurs ; une recette sans choix se branche d’un clic', () => {
+  const actions: MixerAction[] = [];
+  const props = { recipes, plugins: [s7Plugin, edgePlugin], dispatch: (action: MixerAction) => void actions.push(action), now: () => new Date(2026, 9, 3) };
+  const browser = html`<${Browser} ...${props} />`;
+  const out = renderToString(browser);
+  assert.match(out, /^<details class="browser"><summary>Ajouter une contrainte<\/summary>/);
+  assert.ok(out.indexOf('Recettes') < out.indexOf('Moteurs'));
+  assert.match(out, /<button type="button" class="add-recipe">\+ Haï-kaïsation<\/button><span class="rule">Réduire un poème à ses fins de vers\.<\/span>/);
+  // la fiche s'ouvre dans un nouvel onglet, et le dit
+  assert.match(out, /<a class="sheet" href="https:\/\/oulipo\.net\/contraintes\/hai-kaisation" target="_blank" rel="noopener">fiche<span aria-hidden="true"> ↗<\/span><span class="sr-only"> Haï-kaïsation sur oulipo\.net, nouvel onglet<\/span><\/a>/);
+  // une recette à choix : sa touche dit ce qu'elle déplie, le choix est caché
+  assert.match(out, /class="add-recipe" aria-expanded="false" aria-controls="recipe-liponymie">\+ Liponymie</);
+  assert.match(out, /<form class="choice" id="recipe-liponymie" hidden>/);
+  click(browser, (e) => byClass('add-recipe')(e) && String(e.props['children']).includes('Juliennes'));
+  click(browser, (e) => byClass('add-instance')(e) && String(e.props['children']).includes('Bord'));
+  assert.deepEqual(actions, [
+    { type: 'add-recipe', recipe: 'juliennes', choice: undefined, today: '2026-10-03' },
+    { type: 'add-instance', plugin: 'edge' },
+  ]);
+});
+
+test('Browser : le choix se déplie, Brancher ajoute la recette réglée, Annuler et Échap replient sans rien ajouter', () => {
+  const actions: MixerAction[] = [];
+  const browser = html`<${Browser} recipes=${recipes} plugins=${[]} dispatch=${(action: MixerAction) => void actions.push(action)} now=${() => new Date(2026, 9, 3)} />`;
+  // Une ligne de recette factice, assez pour les gestes : la touche, le formulaire et son choix.
+  const select = { value: 'adjective', focus: () => calls.push('focus select') };
+  const key = { setAttribute: (name: string, value: string) => calls.push(`${name}=${value}`), focus: () => calls.push('focus key') };
+  const form = { hidden: true, querySelector: () => select, elements: { namedItem: () => select } };
+  const row = { querySelector: (selector: string) => (selector === 'form' ? form : key) };
+  const inRow = { closest: () => row };
+  const calls: string[] = [];
+  const liponymie = find(browser, (e) => e.props['class'] === 'recipe' && renderToString(e as never).includes('Liponymie'));
+  (find(liponymie, byClass('add-recipe')).props['onClick'] as (event: unknown) => void)({ currentTarget: inRow });
+  assert.equal(form.hidden, false);
+  assert.deepEqual(calls, ['aria-expanded=true', 'focus select']);
+  const choice = find(liponymie, (e) => e.type === 'form');
+  let prevented = false;
+  (choice.props['onSubmit'] as (event: unknown) => void)({ preventDefault: () => (prevented = true), currentTarget: { ...form, closest: () => row } });
+  assert.ok(prevented);
+  assert.deepEqual(actions, [{ type: 'add-recipe', recipe: 'liponymie', choice: 'adjective', today: '2026-10-03' }]);
+  assert.equal(form.hidden, true);
+  (find(liponymie, byClass('cancel')).props['onClick'] as (event: unknown) => void)({ currentTarget: inRow });
+  (choice.props['onKeyDown'] as (event: unknown) => void)({ key: 'Escape', currentTarget: inRow });
+  (choice.props['onKeyDown'] as (event: unknown) => void)({ key: 'a', currentTarget: inRow });
+  assert.equal(actions.length, 1);
+  assert.deepEqual(calls.slice(-2), ['aria-expanded=false', 'focus key']);
 });

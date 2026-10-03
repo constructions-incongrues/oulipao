@@ -16,10 +16,10 @@ adaptateur, où un schéma zod les valide. Il sert aussi la promesse de confiden
 traitement a lieu dans le navigateur, et le texte de l'utilisateur ne quitte jamais la machine.
 Le découpage sert directement trois objectifs de la section 1.2. Il sert l'objectif 1 (`#secure`),
 puisque aucune brique ne tourne sur un serveur. Il sert l'objectif 2 (`#suitable`), puisque le
-Domaine vérifie le contrat de tout étiqueteur. Il vise l'objectif 4 (`#flexible`) : une contrainte
-vit dans le Domaine, derrière le contrat de plugin. Cet objectif n'est pas encore atteint, puisque
-le lipogramme a dû étendre un port et deux adaptateurs (voir la section 1.2). La section 4 (stratégie) n'existe
-pas encore.
+Domaine vérifie le contrat de tout étiqueteur. Il sert l'objectif 4 (`#flexible`) : une contrainte
+vit dans le Domaine, derrière le contrat de plugin. Trois contraintes ont été ajoutées ainsi sans
+toucher aux ports ni aux adaptateurs (voir la section 1.2). La section 4 résume la stratégie
+dont découle ce découpage.
 
 ---
 
@@ -50,7 +50,7 @@ flowchart TB
     adaptateurs -- "IF-05 fetch / fs" --> donnees
     adaptateurs -- "IF-02 import HTTPS" --> jsdelivr
     adaptateurs -- "IF-03 HTTPS, mis en cache" --> hf
-    mainteneur -- "npm run …" --> outils
+    mainteneur -- "IF-06 npm run …" --> outils
     outils -- "appels en mémoire" --> adaptateurs
     outils -- "appels en mémoire" --> domaine
     outils -- "écrit" --> donnees
@@ -68,7 +68,7 @@ cycle : les ports appartiennent à la brique Domaine (voir la boîte noire du Do
 | Domaine | Découpe, étiquette et transforme un texte selon une chaîne de contraintes, sans effet de bord. | I-01 à I-05 (fournies) |
 | Adaptateurs | Implémentent les ports à partir du modèle neuronal, des fichiers dérivés, de `fetch` et de `node:fs`. | I-01 à I-04 (implémentées) ; IF-02, IF-03, IF-05 (requises) |
 | Données dérivées | Contiennent les dictionnaires des contraintes, tirés de Grammalecte, servis tels quels avec le site. | IF-05 (fournie) |
-| Outils | Dérivent les données, mesurent les étiqueteurs, vérifient la palette et assemblent le site publié. | IF-04 (requise) |
+| Outils | Dérivent les données, mesurent les étiqueteurs, vérifient la palette et assemblent le site publié. | IF-06 (fournie) ; IF-04 (requise) |
 
 ### Interfaces
 
@@ -78,6 +78,7 @@ cycle : les ports appartiennent à la brique Domaine (voir la boîte noire du Do
 | IF-02 | Bibliothèque Transformers.js 4.3.0 | Externe | `import` dynamique HTTPS depuis jsDelivr |
 | IF-03 | Poids du modèle `Xenova/french-camembert-postag-model` (environ 111 Mo, quantifiés) | Externe | HTTPS depuis Hugging Face, mis en cache par le navigateur |
 | IF-04 | Lexique Grammalecte v7.7 | Externe | Fichier texte téléchargé à la main dans `data/brut/` (voir `docs/lexiques.md`) |
+| IF-06 | Commandes du mainteneur | Externe | Ligne de commande `npm run …`, scripts Node |
 | IF-05 | Fichiers dérivés `data/*.tsv` | Interne | `fetch` (navigateur) ou `node:fs` (scripts, tests) ; une version dans l'adresse contourne le cache |
 | I-01 | Port `Tagger` : un mot étiqueté par mot du découpage | Interne | Interface TypeScript, `src/ports/tagger.ts` |
 | I-02 | Port `MorphologyRepository` : noms, adjectifs, adverbes, élision | Interne | Interface TypeScript, `src/ports/morphology.ts` |
@@ -85,8 +86,8 @@ cycle : les ports appartiennent à la brique Domaine (voir la boîte noire du Do
 | I-04 | Port `TextSource` : le contenu d'un fichier texte | Interne | Type fonction, `src/ports/text-source.ts` |
 | I-05 | Contrat de plugin : réglages, pistes visées, application | Interne | Schémas zod, `src/domain/plugin.ts` et `plugin-chain.ts` |
 
-Ces identifiants IF-xx sont posés ici en premier. La section 3 (contexte), quand elle existera,
-devra reprendre IF-01 à IF-04 à l'identique.
+Les interfaces externes IF-01 à IF-04 et IF-06 sont celles du contexte (section 3), avec les
+mêmes identifiants. IF-05 est interne et n'y figure pas.
 
 ### Justification du découpage
 
@@ -106,7 +107,9 @@ depuis `tracks.html`) est le prototype. La page d'essai (`essai.html`) compare l
 étiqueteurs et applique un S+7 brut. L'Interface décide aussi, dans sa racine de composition,
 quels adaptateurs servent les ports, et elle charge la morphologie et les verbes à la demande
 seulement. Elle tient enfin le registre des contraintes installées (`installedPlugins`, dans
-`src/ui/tracks/mixer-state.ts`) : ajouter une contrainte touche donc aussi l'Interface.
+`src/ui/tracks/mixer-state.ts`) et les recettes (`recipes.ts`), des contraintes de l'Oulipo
+nommées qui se réduisent à des instances de ces types : ajouter une contrainte touche donc
+aussi l'Interface.
 
 **Interfaces :**
 
@@ -131,8 +134,8 @@ changent à la main après chaque régénération.
 
 **Rôle :** porter toute la logique d'Oulipao sans effet de bord. Le Domaine découpe le texte en
 mots, vérifie qu'un étiqueteur respecte le contrat du port, répartit les mots en pistes (noms,
-adjectifs, verbes, adverbes, mots-outils), puis applique une chaîne de contraintes (S+7,
-lipogramme) en gardant les accords, l'élision et la majuscule initiale. Il calcule aussi la
+adjectifs, verbes, adverbes, mots-outils), puis applique une chaîne de contraintes (S+n,
+lipogramme, tri par piste, bord, mise en vers) en gardant les accords, l'élision et la majuscule initiale. Il calcule aussi la
 comparaison avec les textes de référence et la vérification de la palette.
 
 Les ports (`src/ports`) font partie de cette brique : ils forment son interface requise vers
@@ -154,10 +157,12 @@ hexagonal ordinaire.
 - `src/domain/` : découpage (`tokenizer.ts`), étiquetage (`tagging.ts`), pistes (`mixing.ts`), chaîne (`plugin.ts`, `plugin-chain.ts`) ;
 - `src/domain/s7/` : le moteur S+7 et ses accords ;
 - `src/domain/lipogram/` : le lipogramme ;
+- `src/domain/track-sort/`, `edge/`, `lineation/` : le tri par piste, le bord et la mise en vers,
+  avec leurs règles communes de retrait (`removal.ts`) et de lignes (`lines.ts`) ;
 - `src/ports/` : les ports.
 
-**Limites connues :** le contrat de plugin est interne, sans version et non publié ; la stratégie
-attend trois contraintes avant d'en ouvrir le format. Le découpage en mots suit des règles
+**Limites connues :** le contrat de plugin est interne, sans version et non publié. Cinq
+contraintes l'utilisent ; il ne sera ouvert que si quelqu'un d'autre veut en écrire une (ADR-004). Le découpage en mots suit des règles
 minimales, et les mots composés (« peut-être ») restent un seul mot. La seule dépendance de la
 brique est zod.
 
@@ -233,6 +238,7 @@ on l'oublie, un navigateur peut garder l'ancienne copie en cache.
 
 | ID | Description | Type | Technologie |
 |----|-------------|------|-------------|
+| IF-06 | Commandes du mainteneur | Fournie | `npm run …` |
 | IF-04 | Lexique Grammalecte v7.7 | Requise | Fichier texte local |
 | IF-05 | Fichiers dérivés | Écrits | TSV |
 

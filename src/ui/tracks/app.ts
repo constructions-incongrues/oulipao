@@ -9,7 +9,7 @@ import { Source } from './components/source.ts';
 import { StepGrid } from './components/step-grid.ts';
 import { ThemeToggle } from './components/theme-toggle.ts';
 import type { TracksController, TracksState } from './controller.ts';
-import { installedPlugins, pluginById } from './mixer-state.ts';
+import { installedPlugins, pluginById, recipes } from './mixer-state.ts';
 import { gridSteps, inspectorLocks, inspectorWindow, summarize } from './view-model.ts';
 
 /** Le dépôt du code d'Oulipao, ouvert sous licence MIT. */
@@ -32,7 +32,7 @@ export interface AppProps {
 export function App({ state, controller, onTheme = () => {} }: AppProps): VNode {
   const { mixer, view, stale } = state;
   const audible = view?.audible ?? audibleCategories(mixer.tracks);
-  const words = view?.stages[0]!.words ?? [];
+  const words = view?.stages[0]!.words.map((word) => word.output) ?? [];
   const steps = view ? gridSteps(mixer, view.tracks, words) : [];
   const reminders = Object.fromEntries(
     CATEGORIES.map((category) => [
@@ -90,7 +90,7 @@ export function App({ state, controller, onTheme = () => {} }: AppProps): VNode 
       html`<p class="loading error" role="alert">${state.verbs.error} <button type="button" class="load" onClick=${() => void controller.loadVerbs()}>Relancer</button></p>`}
       ${state.phonetics.status === 'error' &&
       html`<p class="loading error" role="alert">${state.phonetics.error} <button type="button" class="load" onClick=${() => void controller.loadPhonetics()}>Relancer</button></p>`}
-      <${Chain} instances=${mixer.instances} plugins=${installedPlugins} lookup=${pluginById} dispatch=${controller.dispatch} />
+      <${Chain} instances=${mixer.instances} plugins=${installedPlugins} recipes=${recipes} lookup=${pluginById} dispatch=${controller.dispatch} />
       <${StepGrid}
         steps=${steps}
         tracks=${mixer.tracks}

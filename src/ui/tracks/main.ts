@@ -9,7 +9,6 @@ import { nextTheme, type Theme } from './components/theme-toggle.ts';
 
 const root = document.getElementById('app')!;
 const { tagger, preload } = createNeuralTagging();
-const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
 // À l'ouverture de l'inspecteur, le focus y passe, pour que les flèches et Échap répondent.
 let inspecting = false;
 const page = document.documentElement;
@@ -29,12 +28,10 @@ const controller = createTracksController(
     loadVerbs: createVerbsLoader(import.meta.url),
     loadPhonetics: createPhoneticsLoader(import.meta.url),
     copy: (text) => navigator.clipboard.writeText(text),
-    saveData: connection?.saveData === true,
   },
   draw,
 );
 draw(controller.state);
-controller.start();
 
 // Les raccourcis de l'inspecteur répondent où que soit le focus, sauf dans un champ de saisie.
 document.addEventListener('keydown', (event) => {

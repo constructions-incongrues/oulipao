@@ -36,4 +36,9 @@ test('definePlugin : refuse une déclaration incohérente', () => {
   assert.throws(() => definePlugin({ ...base, parameters: [base.parameters[0]!, base.parameters[0]!] }), /même clé/);
   assert.throws(() => definePlugin({ ...base, parameters: [{ kind: 'integer', key: 'n', label: 'N', min: 3, max: 0 }] }), /bornes inversées/);
   assert.throws(() => definePlugin({ ...base, defaults: { n: 9, sens: 'haut' } }), /n invalide/); // valeurs d'ouverture refusées
+  // une contrainte non ciblable vise les cinq pistes, toutes par défaut
+  assert.throws(() => definePlugin({ ...base, targetable: false }), /non ciblable/);
+  const all = ['noun', 'verb', 'adjective', 'adverb', 'other'] as const;
+  assert.throws(() => definePlugin({ ...base, targetable: false, tracks: [...all], defaultTargets: ['noun'] }), /non ciblable/);
+  assert.equal(definePlugin({ ...base, targetable: false, tracks: [...all], defaultTargets: [...all] }).targetable, false);
 });

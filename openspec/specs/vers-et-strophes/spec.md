@@ -32,7 +32,7 @@ The system SHALL mark as the end of its line the last word of each line that bel
 - **THEN** « pense » est la fin de vers, « à » et « elle » étant des mots-outils
 
 ### Requirement: Découpe stable dans la chaîne
-The system SHALL keep each word's line and stanza through the chain, since filters replace or remove words but never move them or add line breaks.
+The system SHALL compute lines and stanzas on the text each constraint receives, so that a word keeps its line and stanza through constraints that only replace or remove words, and a layout constraint earlier in the chain (Mise en vers) defines the lines for the rhyme filters after it.
 
 #### Scenario: Après un S+7
 - **GIVEN** un texte en vers passé au S+7

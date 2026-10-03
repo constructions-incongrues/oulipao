@@ -16,7 +16,7 @@ test('état initial : toutes les pistes s’entendent, aucune contrainte ; la ch
   ]);
   assert.deepEqual(Object.keys(state.tracks), ['noun', 'verb', 'adjective', 'adverb', 'other']);
   assert.ok(Object.values(state.tracks).every((t) => !t.muted && !t.solo));
-  assert.deepEqual(installedPlugins.map((plugin) => plugin.id), ['s7', 'lipogram', 'rn', 'monorhyme', 'antirhyme', 'homophony']);
+  assert.deepEqual(installedPlugins.map((plugin) => plugin.id), ['s7', 'lipogram', 'track-sort', 'edge', 'lineation', 'rn', 'monorhyme', 'antirhyme', 'homophony']);
   assert.throws(() => pluginById('inconnu'), /plugin inconnu : inconnu/);
 });
 
@@ -56,6 +56,10 @@ test('pistes visées : parmi celles du type, dans l’ordre de la table, au moin
   assert.deepEqual(instance(after({ type: 'set-targets', id: 's7-1', targets: ['adjective', 'noun', 'noun'] }), 's7-1').targets, ['noun', 'adjective']);
   assert.deepEqual(instance(after({ type: 'set-targets', id: 'lipogram-1', targets: ['noun'] }), 'lipogram-1').targets, ['noun']);
   assert.throws(() => reduce(seededState, { type: 'set-targets', id: 's7-1', targets: ['adverb'] }), /S\+7 ne traite pas : adverb/);
+  // une contrainte non ciblable vise les cinq pistes, sans choix
+  const edge = after({ type: 'add-instance', plugin: 'edge' });
+  assert.deepEqual(instance(edge, 'edge-1').targets, ['noun', 'verb', 'adjective', 'adverb', 'other']);
+  assert.throws(() => reduce(edge, { type: 'set-targets', id: 'edge-1', targets: ['noun'] }), /agit sur tout le texte/);
   assert.throws(() => reduce(seededState, { type: 'set-targets', id: 's7-1', targets: [] }));
 });
 
@@ -111,6 +115,8 @@ test('verrous : posés par instance et par mot, validés comme un réglage, reti
   assert.throws(() => after({ type: 'set-lock', id: 's7-1', index: 3, key: 'offset', value: 120 }));
   assert.throws(() => after({ type: 'set-lock', id: 's7-1', index: 3, key: 'mode', value: 1 }));
   assert.throws(() => after({ type: 'set-lock', id: 'lipogram-1', index: 3, key: 'letter', value: 1 }));
+  // Bord ne lit pas les verrous : son paramètre entier n'en accepte pas.
+  assert.throws(() => after({ type: 'add-instance', plugin: 'edge' }, { type: 'set-lock', id: 'edge-1', index: 3, key: 'n', value: 2 }));
   // Vider le champ retire le verrou.
   const cleared = after({ type: 'set-lock', id: 's7-1', index: 3, key: 'offset', value: 3 }, { type: 'clear-lock', id: 's7-1', index: 3, key: 'offset' });
   assert.deepEqual(instance(cleared, 's7-1').locks, []);

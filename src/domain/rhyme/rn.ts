@@ -38,7 +38,7 @@ export const rnPlugin = definePlugin({
   defaultTargets: ['noun'],
   phonetic: true,
   parameters: [
-    { kind: 'integer', key: 'offset', label: 'Décalage', min: MIN_OFFSET, max: MAX_OFFSET },
+    { kind: 'integer', key: 'offset', label: 'Décalage', min: MIN_OFFSET, max: MAX_OFFSET, lockable: true },
     { kind: 'choice', key: 'richness', label: 'Rime', options: RICHNESS_OPTIONS },
     { kind: 'choice', key: 'reach', label: 'Où', options: REACH_OPTIONS },
   ],

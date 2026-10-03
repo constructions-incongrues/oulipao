@@ -16,9 +16,17 @@ Page : `tracks.html` (script assemblé `dist/tracks.js`, par `npm run build`). L
 - **Rack** : sous les cinq tranches, les filtres dans l'ordre où le texte les traverse. Chacun
   porte sa marche, ses réglages, l'effet en clair, une pastille par piste que son type sait
   traiter (enfoncée si elle est visée ; la dernière visée ne s'éteint pas), et ↑, ↓,
-  « Dupliquer », « Retirer ». En bas, un bouton par type (« + S+7 », « + Lipogramme ») ajoute un
-  filtre en fin de chaîne, aux réglages et pistes par défaut du type ; une copie va aussi en fin
-  de chaîne. À l'ouverture, la chaîne est vide : le texte passe tel quel.
+  « Dupliquer », « Retirer ». Une mise en page (Bord, Mise en vers) agit sur tout le texte : à
+  la place des pastilles, « Tout le texte ». À l'ouverture, la chaîne est vide : le texte passe
+  tel quel.
+- **Navigateur de contraintes** : sous le rack, la touche « Ajouter une contrainte » le déplie.
+  D'abord les **recettes**, par leur nom de l'Oulipo (Haï-kaïsation, Liponymie, Monovocalisme…),
+  chacune avec sa règle en une phrase et le lien vers sa fiche oulipo.net ; une recette branche
+  une ou plusieurs instances. Celles qui demandent un réglage (la voyelle gardée, la piste
+  interdite) déplient un choix : « Brancher » ou « Annuler » (Échap). Puis les **moteurs** : un
+  bouton par type, qui ajoute une instance aux réglages et pistes par défaut. Tout ajout va en fin
+  de chaîne ; une copie aussi. L'Éclipse (un texte suivi de son S+7) n'a pas de recette : le S+7
+  donne la seconde partie, mais la sortie ne sait pas encore juxtaposer les deux.
 - **Texte résultant** : ce qu'on lit et qu'on copie, une fois les filtres appliqués et les
   pistes coupées. Un mot remplacé est souligné de la couleur de sa piste ; son infobulle nomme
   la piste et le mot d'origine (« Noms : cuisine → cuissot »), ou dit pourquoi un mot est laissé
@@ -26,7 +34,8 @@ Page : `tracks.html` (script assemblé `dist/tracks.js`, par `npm run build`). L
 - **Inspecteur** : sous le texte résultant, fermé tant qu'aucun mot n'est choisi (une phrase
   invite à cliquer). Un tableau : une ligne « Origine », puis une ligne par filtre actif dans
   l'ordre de la chaîne ; le mot choisi au centre, six voisins de chaque côté (deux sous 768 px),
-  chaque mot dans sa colonne ; « · » pour un mot retiré. À l'ouverture, le focus y passe :
+  chaque mot dans sa colonne ; « · » pour un mot retiré, « ↵ » devant un mot que l'étape a mis à
+  la ligne (dit « à la ligne » au lecteur d'écran). À l'ouverture, le focus y passe :
   ← → changent de mot (y compris les mots absents du texte résultant), Échap ferme. Le choix
   survit aux réglages ; un nouvel étiquetage le ferme. Une fenêtre trop large défile dans
   l'inspecteur, jamais la page.
@@ -87,3 +96,9 @@ leurs gestionnaires en parcourant l'arbre rendu (`test/support/vnode.ts`), sans 
 Hors couverture, nommément (`package.json`) : `src/ui/tracks/main.ts` et `src/ui/page.ts`
 (montage sur le DOM, presse-papiers), `src/adapters/taggers/camembert-model.ts` (chargement du
 modèle).
+
+## Voir aussi
+
+- [Le contrat des plugins](plugins.md) : ce que la page attend d'une contrainte
+- [Comment ajouter une recette](guides/ajouter-une-recette.md)
+- [Comment publier le site](guides/publier-le-site.md)

@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type { MorphologyRepository } from '../ports/morphology.ts';
 import type { PhoneticsRepository } from '../ports/phonetics.ts';
 import type { VerbRepository } from '../ports/verbs.ts';
-import { CategorySchema, type Category } from './categories.ts';
+import { CATEGORIES, CategorySchema, type Category } from './categories.ts';
 import type { OutputWord } from './s7/types.ts';
 import type { TaggedWord } from './tagged-word.ts';
 
@@ -16,6 +16,8 @@ export const IntegerParameterSchema = z.object({
   label: z.string().min(1),
   min: z.number().int(),
   max: z.number().int(),
+  /** Un mot peut recevoir sa propre valeur (un verrou) : seulement si `apply` lit `scope.overrides` pour ce paramètre. */
+  lockable: z.literal(true).optional(),
 });
 
 /** Un paramètre à choix : l'hôte en fait une liste. */
@@ -33,7 +35,10 @@ export type Parameter = z.infer<typeof ParameterSchema>;
 export const ParameterValuesSchema = z.record(z.string(), z.union([z.number(), z.string()]));
 export type ParameterValues = z.infer<typeof ParameterValuesSchema>;
 
-/** Ce que la contrainte a fait d'un mot : remplacé, retiré, ou laissé tel quel et pourquoi. */
+/**
+ * Ce que la contrainte a fait d'un mot : remplacé, retiré, remis en ligne (seul son blanc a
+ * changé), ou laissé tel quel et pourquoi.
+ */
 export const WordMarkSchema = z.object({
   index: z.number().int().nonnegative(),
   original: z.string(),
@@ -41,6 +46,8 @@ export const WordMarkSchema = z.object({
   replacement: z.string().optional(),
   /** Présent si le mot a été retiré du texte. */
   removed: z.literal(true).optional(),
+  /** Présent si seul le blanc qui précède le mot a changé (une coupe de ligne). */
+  relaid: z.literal(true).optional(),
   /** Présent si le mot a été laissé tel quel : la raison, en clair. */
   reason: z.string().optional(),
 });
@@ -76,6 +83,11 @@ export interface PluginResources {
 
 export interface ConstraintPlugin {
   id: string;
+  /**
+   * `false` : la contrainte agit sur tout le texte, sans choix de pistes (une mise en page). Elle
+   * déclare alors les cinq pistes, toutes visées par défaut.
+   */
+  targetable?: false;
   /** Le nom court, sur le bouton de marche : « S+7 ». */
   name: string;
   /** Les pistes que la contrainte sait traiter : une instance choisit les siennes parmi elles. */
@@ -131,6 +143,8 @@ export function definePlugin(plugin: ConstraintPlugin): ConstraintPlugin {
     if (parameter.kind === 'integer' && parameter.min > parameter.max) throw new Error(`${plugin.id} : bornes inversées pour ${parameter.key}`);
   }
   if (plugin.defaultTargets.some((track) => !plugin.tracks.includes(track))) throw new Error(`${plugin.id} : une piste par défaut n'est pas traitée`);
+  if (plugin.targetable === false && (plugin.tracks.length !== CATEGORIES.length || plugin.defaultTargets.length !== CATEGORIES.length))
+    throw new Error(`${plugin.id} : une contrainte non ciblable vise les cinq pistes`);
   plugin.parse(plugin.defaults);
   return plugin;
 }

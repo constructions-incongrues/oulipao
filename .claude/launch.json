@@ -3,25 +3,23 @@
   "configurations": [
     {
       "name": "oulipao",
-      "runtimeExecutable": "python3",
+      "runtimeExecutable": "sh",
       "runtimeArgs": [
-        "-m",
-        "http.server",
-        "8765"
+        "-c",
+        "npm run build >/dev/null && exec python3 -m http.server \"${PORT:-8765}\""
       ],
-      "port": 8765
+      "port": 8765,
+      "autoPort": true
     },
     {
       "name": "oulipao-site",
-      "runtimeExecutable": "python3",
+      "runtimeExecutable": "sh",
       "runtimeArgs": [
-        "-m",
-        "http.server",
-        "8766",
-        "--directory",
-        "_site"
+        "-c",
+        "npm run build:site >/dev/null && exec python3 -m http.server \"${PORT:-8766}\" --directory _site"
       ],
-      "port": 8766
+      "port": 8766,
+      "autoPort": true
     }
   ]
 }

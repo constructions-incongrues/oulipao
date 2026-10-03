@@ -94,7 +94,7 @@ test('S+7 puis R+2 : le R+2 lit la sortie du S+7, la mention nomme les deux rég
   );
   const view = buildView({ text, tagged: tagRhymes(text) }, mixer, rhymeMorphology(), undefined, rhymeVerbs(), rhymePhonetics());
   assert.deepEqual(view.stages.map((stage) => stage.label), ['Origine', 'S+1 sur les noms', 'R+2, rime suffisante, sur les adjectifs']);
-  assert.equal(view.stages[1]!.words[1], 'chat'); // S+1 strict, la phrase réaccordée
+  assert.equal(view.stages[1]!.words[1]!.output, 'chat'); // S+1 strict, la phrase réaccordée
   assert.equal(ruleMention(mixer, view.audible), '\n\n— S+1 sur les noms · R+2, rime suffisante, sur les adjectifs (Oulipao)');
   assert.deepEqual(view.syllables, [3]);
 });
