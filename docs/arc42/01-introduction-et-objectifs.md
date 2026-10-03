@@ -13,8 +13,8 @@ manière d'un logiciel de musique assistée par ordinateur, entièrement dans le
 - **Coller un texte**, ou partir du texte d'exemple.
 - **Mettre en pistes :** un étiqueteur neuronal (CamemBERT, exécuté localement) range chaque mot
   dans une piste : noms, adjectifs, verbes, adverbes, ou mots-outils.
-- **Enchaîner des contraintes :** cinq types (S+n, lipogramme, tri par piste, bord, mise en vers),
-  chacun visant une ou plusieurs pistes. Une même contrainte peut être instanciée plusieurs fois,
+- **Enchaîner des contraintes :** neuf types (S+n, lipogramme, tri par piste, bord, mise en vers,
+  et quatre filtres de rime : R+n, monorime, antirime, homophonies), chacun visant une ou plusieurs pistes. Une même contrainte peut être instanciée plusieurs fois,
   réordonnée ou coupée.
 - **Partir d'une recette :** une contrainte de l'Oulipo nommée (Liponymie, Haï-kaïsation,
   Monovocalisme…), qui se réduit à une chaîne d'instances des types installés.

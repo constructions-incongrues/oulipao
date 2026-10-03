@@ -5,8 +5,9 @@ eu, implications).
 
 ## Vue d'ensemble
 
-Cette section consigne six décisions, celles que la section 4 a désignées comme difficiles à
-défaire, touchant plusieurs briques ou porteuses de compromis peu évidents. Toutes ont été prises
+Cette section consigne sept décisions. Les six premières sont celles que la section 4 a désignées
+comme difficiles à défaire, touchant plusieurs briques ou porteuses de compromis peu évidents ; la
+septième, qui remplace la troisième, vient de la textbank phonétique (PR #26). Toutes ont été prises
 le 2026-10-03, par le fondateur, pendant les changements OpenSpec archivés sous
 `openspec/changes/archive/`, dont les `design.md` gardent le détail.
 
@@ -33,10 +34,11 @@ L'ADR n'est donc ni réécrit ni remplacé.
 |----|-------|--------|------|
 | ADR-001 | Tout le calcul dans le navigateur, sans serveur | Acceptée | 2026-10-03 |
 | ADR-002 | Étiqueter avec CamemBERT, servi par des tiers | Acceptée | 2026-10-03 |
-| ADR-003 | Grammalecte comme lexique unique | Acceptée | 2026-10-03 |
 | ADR-004 | Un contrat de plugin interne jusqu'à la troisième contrainte | Acceptée | 2026-10-03 |
 | ADR-005 | Réaccorder par des règles de voisinage, sans analyse syntaxique | Acceptée | 2026-10-03 |
 | ADR-006 | Deux ports séparés pour la morphologie et les verbes | Acceptée | 2026-10-03 |
+| ADR-007 | GLÀFF pour les prononciations, dans un fichier séparé sous CC BY-SA 3.0 | Acceptée | 2026-10-03 |
+| ADR-003 | Grammalecte comme lexique unique | Remplacée par ADR-007 | 2026-10-03 |
 
 ---
 
@@ -144,7 +146,8 @@ Négatives :
 
 ## ADR-003 : Grammalecte comme lexique unique
 
-**Statut :** Acceptée
+**Statut :** Remplacée par ADR-007 (2026-10-03). Grammalecte reste la source des formes, de la
+morphologie et des verbes ; seule l'unicité du lexique est abandonnée.
 
 **Date :** 2026-10-03
 
@@ -342,3 +345,70 @@ Négatives :
 - Contrainte créée (→ section 2) : aucune.
 - Risques créés (→ section 11) : RISK-07, version d'adresse mise à jour à la main (partagé avec
   l'ADR-003).
+
+---
+
+## ADR-007 : GLÀFF pour les prononciations, dans un fichier séparé sous CC BY-SA 3.0
+
+**Statut :** Acceptée. Remplace l'ADR-003.
+
+**Date :** 2026-10-03
+
+**Contexte :**
+Les filtres de rime (R+n, monorime, antirime, homophonies) ont besoin de savoir ce qu'un mot fait
+entendre : ses phonèmes, ses syllabes, sa rime. Grammalecte, l'unique lexique jusqu'ici
+(ADR-003), ne donne aucune prononciation. Deux des lexiques recensés le 2026-10-03 en donnent :
+GLÀFF 1.2.2 et Lexique 3.83 (`docs/lexiques.md`). Le choix se fait sur la licence autant que sur
+le contenu.
+
+**Décision :**
+Tirer les prononciations de GLÀFF 1.2.2 (CC BY-SA 3.0), joint par **forme et catégorie grossière**,
+et non par lemme, dans un fichier dérivé à part : `data/phonetique-oulipao.tsv`. Ce fichier reste
+sous CC BY-SA 3.0, avec sa notice, séparé du code (MIT) et des fichiers tirés de Grammalecte
+(MPL 2.0). Il n'est chargé que lorsqu'un filtre phonétique est en marche, derrière un port à part,
+`PhoneticsRepository` (I-06). La rime et les syllabes se calculent dans le Domaine. Une forme
+absente de GLÀFF est phonétisée par des règles, et elle porte la raison « prononciation devinée ».
+Grammalecte reste la source des formes candidates, de la morphologie et des verbes.
+
+**Conséquences :**
+
+Positives :
+- 382 669 formes avec leur prononciation en API, sous une licence sans ambiguïté.
+- Le partage à l'identique ne touche que le fichier dérivé : le code reste sous MIT, et les
+  fichiers Grammalecte sous MPL 2.0.
+- Qui ne se sert pas des filtres de rime ne télécharge rien : 1,98 Mo compressé, à la demande.
+- Le port est étroit (deux méthodes). La définition de la rime reste dans le Domaine, testable sans
+  fichier, et commune au lexique et au repli par règles.
+
+Négatives :
+- Quiconque réutilise `phonetique-oulipao.tsv` doit le redistribuer sous CC BY-SA 3.0. C'est un
+  choix assumé du fondateur.
+- 19,6 % des formes de Grammalecte, surtout des noms composés, sont absentes de GLÀFF. Leur
+  prononciation est devinée par des règles : une rime plausible, pas exacte.
+- GLÀFF est figé depuis 2017, alors que l'ADR-003 avait justement fait de la maintenance un
+  critère. Les deux lexiques peuvent se contredire, et rien ne les recoupe.
+- La justesse des rimes (9 sur 10, comme pour les accords) reste à relire par le fondateur.
+
+**Alternatives envisagées :**
+
+| Alternative | Raison du rejet |
+|-------------|-----------------|
+| Lexique 3.83, qui porte aussi la phonétique | Une anomalie de licence n'est pas levée : la page française renvoie vers CC BY-NC, les autres sources vers BY-SA. Écarté tant que ses auteurs ne l'ont pas tranchée. |
+| Joindre GLÀFF à Grammalecte par le lemme | Les lemmes divergent entre les deux lexiques, alors que la rime ne dépend que de la forme. |
+| Un modèle de conversion graphème-phonème | Des centaines de kilo-octets de plus, et une licence de plus à établir. Les règles servent seulement de repli. |
+| Des règles seules, sans lexique | Une rime plausible pour chaque mot, mais fausse trop souvent pour tenir l'objectif 2. |
+
+**Implications :**
+- Briques concernées (→ section 5) :
+  - Outils (`build:phonetics`) et Données dérivées (`phonetique-oulipao.tsv`) ;
+  - Adaptateurs (`lexicon/glaff-phonetics.ts`, `morphology/in-memory-phonetics.ts`) ;
+  - Domaine (`phonetics/`, `rhyme/`, `verse.ts`, port I-06) ;
+  - Interface (chargeur des prononciations).
+- Objectifs de qualité servis (→ section 1.2) : objectif 2, `#suitable`, pour les rimes (justesse
+  pas encore relue) ; objectif 3, `#efficient`, par le chargement à la demande.
+- Contrainte créée (→ section 2) : le fichier des prononciations reste séparé, sous CC BY-SA 3.0,
+  avec l'attribution de GLÀFF et du Wiktionnaire dans `THIRD_PARTY_LICENSES.md`.
+- Risques créés (→ section 11) :
+  - RISK-10, des rimes fausses (prononciations devinées, justesse non relue) ;
+  - RISK-11, des filtres de rime plus lents que le réglage en direct ne le permet ;
+  - RISK-07, une version d'adresse de plus à mettre à jour à la main (`PHONETICS_VERSION`).

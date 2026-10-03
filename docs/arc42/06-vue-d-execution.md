@@ -175,7 +175,9 @@ lorsqu'une contrainte active vise la piste des verbes.
    changé.
 4. Si une contrainte active vise désormais la piste des verbes et que les verbes ne sont pas
    encore chargés, l'Interface les demande aux Adaptateurs, sans attendre la réponse.
-5. Les Adaptateurs lisent `verbes-oulipao.tsv` (IF-05) et valident chaque ligne. L'Interface
+5. Les Adaptateurs lisent `verbes-oulipao.tsv` (IF-05) et valident chaque ligne. Les
+   prononciations (`phonetique-oulipao.tsv`) suivent le même chemin, la première fois qu'un filtre
+   de rime est en marche (ADR-007). L'Interface
    rejoue alors la chaîne : les verbes transformés apparaissent.
 
 ```mermaid
