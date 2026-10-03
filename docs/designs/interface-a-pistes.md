@@ -48,7 +48,7 @@ L'essentiel, puis un second texte et l'échange de pistes. Écartée pour ce tri
 
 ## Recommended Approach
 
-Approche B. Commiter d'abord l'interface actuelle, qui fonctionne et dont les tests passent, puis réaliser les onze tâches. Elles portent un seul numéro de référence : 5.1 à 5.11 dans `openspec/changes/interface-a-pistes-reglage-en-direct/tasks.md` (les mêmes s'appellent T1 à T11 dans `design.md` du même dossier, section « Revue de design du 2026-10-03 », qui contient aussi le tableau des 22 décisions). La liste ci-dessous suit cet ordre : le point 1 est la tâche 5.1, et ainsi de suite.
+Approche B. Commiter d'abord l'interface actuelle, qui fonctionne et dont les tests passent, puis réaliser les onze tâches. Elles portent un seul numéro de référence : 5.1 à 5.11 dans `openspec/changes/archive/2026-10-03-interface-a-pistes-reglage-en-direct/tasks.md` (les mêmes s'appellent T1 à T11 dans `design.md` du même dossier, section « Revue de design du 2026-10-03 », qui contient aussi le tableau des 22 décisions). La liste ci-dessous suit cet ordre : le point 1 est la tâche 5.1, et ainsi de suite.
 
 Effort estimé dans `design.md` : environ 32 heures pour une personne seule, quelques heures avec des agents de code. Échéance reprise de `tasks.md` : compte rendu dans `RESULTATS.md` avant le 22 novembre 2026.
 
@@ -152,7 +152,7 @@ Stop: CONVERGENCE
 
 **Problem**
 
-> Le premier critère de réussite situe « les huit étapes du test d'interface » dans le PRD (`.nanopm/wiki/docs/prds/interface-a-pistes-reglage-en-direct.md`), mais ce fichier ne contient pas de test en huit étapes : il a un tableau de huit critères (dont un sur les commits). Les huit étapes numérotées (coller, vérifier les pistes, décalage 7 → 3, couper le plugin, changer de mode, muet et seul, copier, onglet réseau) sont dans `openspec/changes/interface-a-pistes-reglage-en-direct/tasks.md`, tâche 3.1, « GUI test ».
+> Le premier critère de réussite situe « les huit étapes du test d'interface » dans le PRD (`.nanopm/wiki/docs/prds/interface-a-pistes-reglage-en-direct.md`), mais ce fichier ne contient pas de test en huit étapes : il a un tableau de huit critères (dont un sur les commits). Les huit étapes numérotées (coller, vérifier les pistes, décalage 7 → 3, couper le plugin, changer de mode, muet et seul, copier, onglet réseau) sont dans `openspec/changes/archive/2026-10-03-interface-a-pistes-reglage-en-direct/tasks.md`, tâche 3.1, « GUI test ».
 
 **Remedy**
 

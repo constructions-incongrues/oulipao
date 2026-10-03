@@ -167,7 +167,7 @@ Max parallel width: 5. Critical path: 4 waves.
 - Total effort: 7 jours (4 S à une demi-journée, 5 M à une journée)
 - Waves: 4 (Wave 0 foundation + 3 later waves; max parallel width 5)
 - Handoff target: openspec
-- Handoff path: openspec/changes/interface-a-pistes-reglage-en-direct
+- Handoff path: openspec/changes/archive/2026-10-03-interface-a-pistes-reglage-en-direct
 
 ---
 

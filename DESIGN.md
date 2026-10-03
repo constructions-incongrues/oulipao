@@ -1,7 +1,7 @@
 # Système de design de Potao
 
 Écrit à partir de la revue de design du 2026-10-03 (décisions 14, 15 et 18,
-`openspec/changes/interface-a-pistes-reglage-en-direct/design.md`). Les valeurs vivent dans
+`openspec/changes/archive/2026-10-03-interface-a-pistes-reglage-en-direct/design.md`). Les valeurs vivent dans
 `styles/tokens.css`, que chargent la page des pistes (`tracks.html`) et la page d'essai
 (`index.html`). Une page n'écrit aucune couleur, police ou taille en dur : elle utilise ces
 variables.
