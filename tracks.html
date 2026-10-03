@@ -14,6 +14,11 @@
   button { font-family: var(--font-ui); font-stretch: var(--silk-stretch); font-weight: 600; font-size: var(--size-label); text-transform: uppercase; letter-spacing: 0.02em;
     background: var(--panel); border: var(--rule) solid var(--ink); border-radius: var(--radius); padding: 4px 9px; min-height: 28px; cursor: pointer; }
   button[aria-pressed="true"] { background: var(--ink); color: var(--panel); }
+  /* Un lien de façade : une touche qui mène ailleurs (« Code source ») */
+  a.key { font-family: var(--font-ui); font-stretch: var(--silk-stretch); font-weight: 600; font-size: var(--size-label); text-transform: uppercase; letter-spacing: 0.02em;
+    color: var(--ink); background: var(--panel); border: var(--rule) solid var(--ink); border-radius: var(--radius); padding: 4px 9px; min-height: 28px;
+    display: inline-flex; align-items: center; text-decoration: none; box-sizing: border-box; }
+  a.key:hover { background: var(--ink); color: var(--panel); }
   button:disabled { opacity: .45; cursor: default; }
   input, select, textarea { background: var(--paper); border: var(--rule) solid var(--ink); border-radius: var(--radius); }
   input[type="number"], select { font-family: var(--font-mono); font-size: var(--size-small); min-height: 28px; padding: 2px 4px; }
@@ -160,7 +165,7 @@
     .ch { grid-template-columns: 14px 1fr; padding: var(--space-1) var(--space-2); }
     .ch-keys { grid-column: 1 / -1; }
     .ch .count, .reminder { display: none; }
-    button { min-height: 32px; }
+    button, a.key { min-height: 32px; }
     .inspector .far { display: none; }
   }
 </style>

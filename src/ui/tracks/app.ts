@@ -12,6 +12,9 @@ import type { TracksController, TracksState } from './controller.ts';
 import { installedPlugins, pluginById } from './mixer-state.ts';
 import { gridSteps, inspectorLocks, inspectorWindow, summarize } from './view-model.ts';
 
+/** Le dépôt du code d'Oulipao, ouvert sous licence MIT. */
+export const SOURCE_URL = 'https://github.com/constructions-incongrues/oulipao';
+
 export interface AppProps {
   state: TracksState;
   controller: Pick<
@@ -45,6 +48,7 @@ export function App({ state, controller, onTheme = () => {} }: AppProps): VNode 
       <header class="bar">
         <h1>Oulipao</h1>
         <span class="silk">Ouvroir de littérature potentielle assistée par ordinateur</span>
+        <a class="key source-link" href=${SOURCE_URL}>Code source</a>
         <${ThemeToggle} onToggle=${onTheme} />
       </header>
       <div class="pin-sentinel" aria-hidden="true"></div>
