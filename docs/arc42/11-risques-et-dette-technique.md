@@ -5,15 +5,17 @@ matrice et dans une courte liste).
 
 ## Vue d'ensemble
 
-Cette section suit neuf risques et deux dettes. Les risques RISK-01 à RISK-07 viennent des
-champs « Risques créés » des ADR (section 9). RISK-08 et RISK-09 viennent d'objectifs de qualité
+Cette section suit onze risques et deux dettes. Les risques RISK-01 à RISK-07, RISK-10 et
+RISK-11 viennent des champs « Risques créés » des ADR (section 9) ; les deux derniers, de
+l'ADR-007 (textbank phonétique). RISK-08 et RISK-09 viennent d'objectifs de qualité
 qui ne sont pas encore tenus ou pas encore vérifiés : ce sont les scénarios QS-06 et QS-11
 (section 10.3). QS-02, qui relevait de RISK-02, est tenu depuis la politique de sécurité du contenu. Les deux dettes ont été relevées en écrivant les sections 6 et 5.
 
-Aucun risque n'est critique. Trois sont de priorité haute :
+Aucun risque n'est critique. Quatre sont de priorité haute :
 - **RISK-01 :** la dépendance à deux distributeurs tiers ;
 - **RISK-03 :** la licence du modèle ;
-- **RISK-04 :** la perte du texte faute de sauvegarde.
+- **RISK-04 :** la perte du texte faute de sauvegarde ;
+- **RISK-11 :** des filtres de rime plus lents que le réglage en direct ne le permet.
 
 RISK-05 (le coût d'une nouvelle contrainte) est passé de haute à moyenne le 2026-10-03 : trois
 contraintes ont été ajoutées sans toucher aux ports ni aux adaptateurs.
@@ -40,10 +42,12 @@ le tableau du toolkit.*
 | RISK-01 | jsDelivr ou Hugging Face indisponible, ou le modèle retiré | Dépendance | Moyenne | Haut | Haute | Ouvert |
 | RISK-03 | Licence du modèle d'étiquetage non déclarée | Données et conformité | Haute | Moyen | Haute | Accepté |
 | RISK-04 | Le texte est perdu quand l'onglet se ferme | Données | Haute | Moyen | Haute | Accepté |
+| RISK-11 | Les filtres de rime sont plus lents que le réglage en direct ne le permet | Architecture | Haute | Moyen | Haute | Ouvert |
 | RISK-05 | Ajouter une contrainte oblige à toucher plusieurs briques | Architecture | Moyenne | Moyen | Moyenne | Ouvert |
 | RISK-06 | Fautes d'accord hors du voisinage, et erreurs d'étiquetage propagées | Architecture | Haute | Bas | Moyenne | Accepté |
 | RISK-08 | Le réglage en direct est proche de la limite de 100 ms | Architecture | Moyenne | Moyen | Moyenne | Ouvert |
 | RISK-09 | Usage au clavier et affichage à 375 px non revérifiés | Architecture | Moyenne | Moyen | Moyenne | Ouvert |
+| RISK-10 | Des rimes fausses : prononciations devinées, justesse pas encore relue | Données | Moyenne | Moyen | Moyenne | Ouvert |
 | RISK-02 | Code tiers chargé sans vérification d'intégrité | Sécurité | Basse | Moyen | Basse | Atténué |
 | RISK-07 | Version d'adresse des fichiers dérivés mise à jour à la main | Intégration | Moyenne | Bas | Basse | Ouvert |
 | DEBT-01 | Un préchargement raté arrête la mise en pistes sans message propre | Accidentelle | — | Bas | Basse | Ouvert |
@@ -96,6 +100,20 @@ le tableau du toolkit.*
 
 **Contexte :** ADR-001.
 
+### RISK-11 : les filtres de rime sont plus lents que le réglage en direct ne le permet
+
+| Attribut | Valeur |
+|----------|--------|
+| **Type** | Architecture |
+| **Description** | Pour trouver le n-ième voisin qui rime, le moteur peut parcourir tout le dictionnaire d'une catégorie (environ 50 000 noms), en interrogeant la textbank à chaque lemme. Mesuré sous Node sur un poème de quatre vers (`RESULTATS.md`) : R+1 sur les noms, les adjectifs et les verbes, 78 à 98 ms ; homophonies, 318 à 363 ms. |
+| **Probabilité** | Haute : le dépassement est déjà mesuré pour les homophonies, sur un texte bien plus court que 200 mots. |
+| **Impact** | Moyen : le réglage cesse de paraître immédiat dès qu'un filtre de rime est dans la chaîne (objectif 3, QS-06). |
+| **Priorité** | Haute |
+| **Mitigation** | Actuelle : une mémoire `forme → rime` par appel (commentaire `ponytail:`). Prévue (design de la textbank, D6) : un index `rime → lemmes` précalculé à la dérivation, si la latence se confirme dans le navigateur. |
+| **Statut** | Ouvert |
+
+**Contexte :** ADR-007 ; objectif 3 de la section 1.2 ; voisin de RISK-08.
+
 ### RISK-05 : ajouter une contrainte oblige à toucher plusieurs briques
 
 | Attribut | Valeur |
@@ -108,7 +126,8 @@ le tableau du toolkit.*
 | **Mitigation** | Le test de l'objectif 4 a réussi avec la troisième contrainte, puis la quatrième et la cinquième. Reste à prévoir : dans le Domaine, un registre qui évite de modifier l'Interface pour chaque type. |
 | **Statut** | Ouvert |
 
-**Contexte :** ADR-004 ; objectif 4 de la section 1.2.
+**Contexte :** ADR-004 ; objectif 4 de la section 1.2. La PR #26 l'a confirmé pour une contrainte
+lexicale : les filtres de rime ont demandé un port (I-06) et deux adaptateurs, comme prévu.
 
 ### RISK-06 : fautes d'accord hors du voisinage, et erreurs d'étiquetage propagées
 
@@ -152,6 +171,20 @@ le tableau du toolkit.*
 
 **Contexte :** objectif 5 de la section 1.2.
 
+### RISK-10 : des rimes fausses
+
+| Attribut | Valeur |
+|----------|--------|
+| **Type** | Données |
+| **Description** | 19,6 % des formes de Grammalecte sont absentes de GLÀFF et reçoivent une prononciation devinée par des règles, donc une rime plausible mais pas sûre. Les prononciations du Wiktionnaire peuvent elles-mêmes manquer pour une forme fléchie. La justesse des rimes (9 sur 10, sur trois textes de 200 mots au R+7) n'est pas encore relue. |
+| **Probabilité** | Moyenne : GLÀFF couvre quatre formes sur cinq, et les noms composés devinés sont rarement en fin de vers. |
+| **Impact** | Moyen : une rime fausse défait la contrainte elle-même. L'objectif 2 n'est pas encore vérifié pour les rimes. |
+| **Priorité** | Moyenne |
+| **Mitigation** | Un mot dont la prononciation est devinée porte la raison « prononciation devinée », et l'inspecteur la montre. Prévue : la relecture des rimes par le fondateur (tâche 10.2 de la textbank). |
+| **Statut** | Ouvert |
+
+**Contexte :** ADR-007 ; objectif 2 de la section 1.2.
+
 ### RISK-02 : code tiers chargé sans vérification d'intégrité
 
 | Attribut | Valeur |
@@ -171,7 +204,7 @@ le tableau du toolkit.*
 | Attribut | Valeur |
 |----------|--------|
 | **Type** | Intégration |
-| **Description** | `MORPHOLOGY_VERSION` et `VERBS_VERSION` (`src/ui/composition.ts`) doivent changer à chaque régénération des données. Un oubli peut servir un dictionnaire plus ancien que le code qui le lit. |
+| **Description** | `MORPHOLOGY_VERSION`, `VERBS_VERSION` et `PHONETICS_VERSION` (`src/ui/composition.ts`) doivent changer à chaque régénération des données. Un oubli peut servir un dictionnaire plus ancien que le code qui le lit. |
 | **Probabilité** | Moyenne : l'étape est manuelle, et rien ne la vérifie. |
 | **Impact** | Bas : GitHub Pages sert ces fichiers avec `cache-control: max-age=600` et un `etag`. L'ancienne copie ne survit donc pas plus de dix minutes (vérifié le 2026-10-03). |
 | **Priorité** | Basse |

@@ -149,7 +149,7 @@ pas un envoi vers l'un des hôtes autorisés, faute de SRI (RISK-02).
 | **Stimulus** | Il ouvre la page, attend sans cliquer, puis met un texte en pistes sans viser les verbes. |
 | **Environnement** | Marche normale, cache vide |
 | **Réponse du système** | Le modèle et la morphologie arrivent, avec une barre de progression. Les verbes attendent qu'une contrainte active les vise. Avant le premier clic, rien ne part vers un tiers. |
-| **Mesure** | `verbes-oulipao.tsv` n'est jamais demandé tant qu'aucune instance active ne vise les verbes. Aucune requête vers jsDelivr ni Hugging Face avant le premier clic, à chaque visite (vérifié le 2026-10-03 : première requête vers `cdn.jsdelivr.net` au moment du clic, 20 s après l'ouverture). Les dictionnaires sont transférés compressés : 2,8 Mo pour 18,7 Mo de verbes. |
+| **Mesure** | `verbes-oulipao.tsv` n'est jamais demandé tant qu'aucune instance active ne vise les verbes, ni `phonetique-oulipao.tsv` tant qu'aucun filtre de rime n'est en marche. Aucune requête vers jsDelivr ni Hugging Face avant le premier clic, à chaque visite (vérifié le 2026-10-03 : première requête vers `cdn.jsdelivr.net` au moment du clic, 20 s après l'ouverture). Les dictionnaires sont transférés compressés : 2,8 Mo pour 18,7 Mo de verbes. |
 
 **Références :** ADR-006 ; sections 6.1 et 6.3 ; spec `morphologie-des-verbes`.
 
@@ -230,5 +230,5 @@ l'interface (voir 10.3).
 
 | ID | Scénario | État actuel | Cible | Ce qu'il faut changer |
 |----|----------|-------------|-------|-----------------------|
-| QS-06 | Un réglage en direct | Sous Node : 69 ms au 95e percentile sur le texte 2 ; rien dans un navigateur | Moins de 100 ms au 95e percentile dans le navigateur | Mesurer dans un navigateur, et sur téléphone ; chercher pourquoi le texte 2 est neuf fois plus lent (RISK-08) |
+| QS-06 | Un réglage en direct | Sous Node : 69 ms au 95e percentile sur le texte 2 ; avec un filtre de rime, 78 à 98 ms (R+1) et 318 à 363 ms (homophonies) sur quatre vers ; rien dans un navigateur | Moins de 100 ms au 95e percentile dans le navigateur | Mesurer dans un navigateur, et sur téléphone ; chercher pourquoi le texte 2 est neuf fois plus lent (RISK-08) ; pour les rimes, un index `rime → lemmes` précalculé (RISK-11) |
 | QS-11 | La table au clavier et sur un téléphone | Vérifié une fois, avant l'inspecteur, la grille, les filtres instanciables et les recettes | Parcours complet sans souris ; pas de défilement à 375, 768 et 1440 px | Refaire la vérification ; ajouter un test des noms accessibles dans les composants rendus en texte (RISK-09) |

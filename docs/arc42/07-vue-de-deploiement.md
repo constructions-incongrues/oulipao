@@ -70,7 +70,7 @@ flowchart LR
 | Interface | Navigateur du lecteur, servie par GitHub Pages | Une par onglet ouvert | Assemblée par esbuild en `dist/tracks.js` (page à pistes) et `dist/page.js` (page d'essai), avec carte des sources |
 | Domaine | Navigateur du lecteur, dans le même fichier assemblé | Une par onglet ouvert | Aucune dépendance d'exécution hors zod, qui est embarqué |
 | Adaptateurs | Navigateur du lecteur, dans le même fichier assemblé | Une par onglet ouvert | Les adaptateurs propres aux Outils (`lexicon/`, `reports/`, `file-text-source`) n'entrent pas dans le fichier publié |
-| Données dérivées | GitHub Pages, fichiers statiques `data/` | Un exemplaire | Environ 31 Mo bruts. Compressés en gzip à l'envoi : `verbes-oulipao.tsv` passe de 18,7 Mo à 2,8 Mo transférés (mesuré le 2026-10-03) |
+| Données dérivées | GitHub Pages, fichiers statiques `data/` | Un exemplaire | Environ 44 Mo bruts, en quatre fichiers. Compressés en gzip à l'envoi : `verbes-oulipao.tsv` passe de 18,7 Mo à 2,8 Mo transférés, `phonetique-oulipao.tsv` de 12,5 Mo à 1,98 Mo (mesuré le 2026-10-03) |
 | Outils | Poste du mainteneur (Node) ; `build:site` aussi dans GitHub Actions | — | Jamais publiés ; le lexique brut (`data/brut/`, environ 700 Mo) reste sur le poste du mainteneur |
 
 ### Réseau et sécurité

@@ -23,11 +23,13 @@ flowchart LR
     jsdelivr[["jsDelivr<br/><i>distribue la bibliothèque<br/>d'étiquetage</i>"]]
     hf[["Hugging Face<br/><i>distribue le modèle<br/>d'étiquetage</i>"]]
     grammalecte[["Lexique Grammalecte<br/><i>formes du français,<br/>genre, nombre, conjugaison</i>"]]
+    glaff[["Lexique GLÀFF<br/><i>prononciations du français,<br/>CC BY-SA 3.0</i>"]]
 
     lecteur -- "IF-01 texte, réglages ⇄ texte transformé" --> oulipao
     jsdelivr -- "IF-02 bibliothèque d'étiquetage" --> oulipao
     hf -- "IF-03 modèle d'étiquetage" --> oulipao
     grammalecte -- "IF-04 lexique du français" --> oulipao
+    glaff -- "IF-07 prononciations" --> oulipao
     mainteneur -- "IF-06 commandes ⇄ dictionnaires, mesures, site" --> oulipao
 ```
 
@@ -43,6 +45,7 @@ source de données : c'est le mainteneur qui l'apporte (section 3.2).
 | IF-03 | Hugging Face | Le modèle d'étiquetage (tokeniseur et poids) | Rien : ni le texte, ni donnée sur le lecteur, au-delà de la demande de fichier |
 | IF-04 | Lexique Grammalecte | Les formes du français avec leur catégorie, leur genre, leur nombre, leur conjugaison et l'interdiction d'élision | Rien |
 | IF-06 | Mainteneur | Les commandes : régénérer les dictionnaires, construire les textes de référence, mesurer, vérifier la palette, assembler le site | Les dictionnaires dérivés ; les mesures des étiqueteurs ; les grilles de relecture du S+7 ; le site prêt à publier |
+| IF-07 | Lexique GLÀFF | Les prononciations des formes du français, en API, tirées du Wiktionnaire | Rien |
 
 IF-05 (les fichiers dérivés `data/*.tsv`) n'apparaît pas ici : c'est une interface interne
 entre deux briques d'Oulipao (section 5).
@@ -78,6 +81,14 @@ accorder. Changer de lexique revient à changer de textbank.
 **Entrée :** le lexique complet, environ 700 Mo.
 **Sortie :** rien. Les dictionnaires qui en sont dérivés restent sous MPL 2.0 et portent leur
 notice.
+
+#### IF-07 : les prononciations du français
+**Partenaire :** le lexique GLÀFF 1.2.2 (CLLE-ERSS, dérivé du Wiktionnaire, CC BY-SA 3.0).
+**But :** donner aux filtres de rime ce que chaque forme fait entendre : ses syllabes et sa rime
+(ADR-007).
+**Entrée :** le lexique complet, téléchargé à la main.
+**Sortie :** rien. Le fichier qui en est dérivé reste sous CC BY-SA 3.0, séparé du code et des
+fichiers tirés de Grammalecte.
 
 #### IF-06 : les commandes du mainteneur
 **Partenaire :** le mainteneur, c'est-à-dire le fondateur (section 1.3).
@@ -118,3 +129,4 @@ mériterait d'être protégé.
 | IF-03 | Transformers.js `from_pretrained` | HTTPS, avec une redirection 302 vers le CDN de Hugging Face | ONNX quantifié q8, JSON du tokeniseur | `https://huggingface.co/Xenova/french-camembert-postag-model`, redirigé vers `*.hf.co` | Aucune |
 | IF-04 | Fichier local, lu par `scripts/build-*.ts` | Aucun (téléchargé à la main) | Texte tabulé, une forme par ligne | `data/brut/lexique-grammalecte-fr-v7.7.txt`, tiré de `https://grammalecte.net/dic/` (voir `docs/lexiques.md`) | Aucune |
 | IF-06 | Node, scripts `scripts/*.ts` | Ligne de commande | `npm run <commande>` ; sorties TSV, JSON, Markdown, HTML | Poste du mainteneur ; `build:site` aussi dans GitHub Actions | Aucune (accès au dépôt) |
+| IF-07 | Fichier local, lu par `scripts/build-phonetics.ts` | Aucun (téléchargé à la main) | Texte, champs séparés par `\|` : forme, étiquette GRACE, lemme, prononciations en API et en SAMPA, fréquences | `data/brut/`, tiré de `http://redac.univ-tlse2.fr/lexiques/glaff.html` (voir `docs/lexiques.md`) | Aucune |

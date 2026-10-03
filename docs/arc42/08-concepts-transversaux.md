@@ -99,7 +99,8 @@ classDiagram
 | `Token` | Un mot du découpage du texte (`tokenize`) : des lettres, avec élisions et clitiques | Domaine, Adaptateurs (les étiqueteurs s'alignent dessus) |
 | `TaggedWord`, `Category` | Un mot et sa piste, parmi cinq. Les valeurs sont en anglais (`noun`…), les libellés affichés en français. | Domaine, Adaptateurs (sortie de `Tagger`), Interface (pistes), Outils (mesure) |
 | `NounForm`, `AdjectiveForm`, `VerbForm` | Une forme du dictionnaire, avec son lemme et ses traits (genre, nombre ; temps, personne) | Adaptateurs (lus et validés dans les TSV), Domaine (choix et accord) |
-| `ConstraintPlugin` | Un type de contrainte : ses réglages déclarés, les pistes qu'il sait traiter, son application. Il y en a cinq : S+n, lipogramme, tri par piste, bord, mise en vers (`installedPlugins`). | Domaine (définition), Interface (registre, rack, recettes) |
+| `PhoneticReading` | Ce qu'une forme fait entendre : ses phonèmes en syllabes, et si la prononciation est devinée. La rime et le compte de syllabes s'en déduisent dans le Domaine. | Adaptateurs (lus dans `phonetique-oulipao.tsv`), Domaine (`phonetics/`, `rhyme/`), Interface (inspecteur) |
+| `ConstraintPlugin` | Un type de contrainte : ses réglages déclarés, les pistes qu'il sait traiter, son application. Il y en a neuf : S+n, lipogramme, tri par piste, bord, mise en vers, R+n, monorime, antirime, homophonies (`installedPlugins`). | Domaine (définition), Interface (registre, rack, recettes) |
 | `ChainStep` | Une instance placée dans la chaîne : ses réglages, ses pistes visées, et sa portée par mot : les pas bouchés (`closed`) et les verrous (`locks`) | Domaine (`runChain`), Interface (état de la table) |
 | `WordMark` | Ce qu'une instance a fait d'un mot d'origine : remplacé, retiré, recoupé à la ligne, ou laissé avec sa raison | Domaine (produit), Interface (inspecteur, mise en évidence) |
 | `OutputWord` | Le texte rendu, mot d'origine par mot d'origine, avec le blanc qui le précède | Domaine (relu par l'instance suivante), Interface (texte résultant) |
@@ -136,7 +137,8 @@ du Domaine.
 ## 8.3 Données et persistance
 
 - **Persistance :** aucune. Rien n'est sauvegardé (ADR-001, RISK-04).
-- **Données de référence, en lecture seule :** les trois fichiers TSV dérivés de Grammalecte. Le
+- **Données de référence, en lecture seule :** les trois fichiers TSV dérivés de Grammalecte, et
+  celui des prononciations, dérivé de GLÀFF (ADR-007). Le
   même cycle traverse quatre briques :
   - les **Outils** les écrivent (`npm run build:*`) ;
   - les **Données dérivées** les servent telles quelles ;
