@@ -99,6 +99,8 @@ export interface ConstraintPlugin {
   targetable?: false;
   /** Le nom court, sur le bouton de marche : « S+7 ». */
   name: string;
+  /** Le nom d'une instance selon ses réglages, dans la chaîne (« S+dé ») ; absent : `name`. */
+  nameOf?(values: ParameterValues): string;
   /** Les pistes que la contrainte sait traiter : une instance choisit les siennes parmi elles. */
   tracks: readonly Category[];
   /** La contrainte a-t-elle besoin des prononciations ? L'hôte les charge alors à la demande. */

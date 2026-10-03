@@ -36,6 +36,7 @@ const clearMarks = (row: Element) => row.closest('.slots')?.querySelectorAll('.s
 /** Une ligne de la chaîne : poignée, numéro, nom, réglages, pistes visées, marche, gestes. */
 function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance; position: number; ids: readonly string[]; plugin: ConstraintPlugin; dispatch: ChainProps['dispatch'] }): VNode {
   const { id, targets, enabled, params } = instance;
+  const name = plugin.nameOf?.(params) ?? plugin.name;
   const rank = position + 1;
   const last = ids.length - 1;
   // Glisser-déposer natif : seule la poignée rend la ligne déplaçable, les champs restent utilisables.
@@ -68,13 +69,13 @@ function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance
     row.removeAttribute('draggable');
   };
   return html`
-    <li class=${`slot ${enabled ? 'on' : 'off'}`} aria-label=${`Contrainte ${rank} : ${plugin.name}`}
+    <li class=${`slot ${enabled ? 'on' : 'off'}`} aria-label=${`Contrainte ${rank} : ${name}`}
       onDragStart=${onDragStart} onDragOver=${onDragOver} onDragLeave=${(event: DragEvent) => (event.currentTarget as HTMLElement).classList.remove('drop-before', 'drop-after')}
       onDrop=${onDrop} onDragEnd=${release} onPointerUp=${release}>
       <span class="grip" aria-hidden="true" title="Glisser pour réordonner"
         onPointerDown=${(event: PointerEvent) => ((event.currentTarget as HTMLElement).closest('.slot') as HTMLElement).setAttribute('draggable', 'true')}></span>
       <span class="pos mono" aria-hidden="true">${rank}</span>
-      <span class="name">${plugin.name}</span>
+      <span class="name">${name}</span>
       <span class="param">
         ${plugin.parameters.map(
           (parameter) => html`<label class="silk">${parameter.label}<${Control} parameter=${parameter} value=${params[parameter.key]}

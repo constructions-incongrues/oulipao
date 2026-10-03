@@ -454,3 +454,10 @@ test('Browser : le choix se déplie, Brancher ajoute la recette réglée, Annule
   assert.equal(actions.length, 1);
   assert.deepEqual(calls.slice(-2), ['aria-expanded=false', 'focus key']);
 });
+
+test('Chain : un S+n au dé s’appelle « S+dé », un S+n fixe « S+7 »', () => {
+  const s7 = (id: string, draw: string) => ({ id, type: 's7', enabled: true, params: { ...s7Plugin.defaults, draw, seed: 2461318 }, targets: ['noun'] });
+  const out = renderToString(html`<${Chain} instances=${[s7('s7-1', 'dice'), s7('s7-2', 'fixed')]} plugins=${[s7Plugin]} lookup=${() => s7Plugin} dispatch=${() => {}} />`);
+  assert.match(out, /aria-label="Contrainte 1 : S\+dé".*<span class="name">S\+dé<\/span>/s);
+  assert.match(out, /aria-label="Contrainte 2 : S\+7".*<span class="name">S\+7<\/span>/s);
+});

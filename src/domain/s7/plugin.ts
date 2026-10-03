@@ -54,6 +54,7 @@ const title = (values: ParameterValues) => {
 export const s7Plugin = definePlugin({
   id: 's7',
   name: 'S+7',
+  nameOf: (values) => (params(values).draw === 'dice' ? 'S+dé' : 'S+7'),
   // Les noms, les adjectifs (au même genre et au même nombre) et les verbes (au même temps et à la
   // même personne : le V+7).
   tracks: ['noun', 'adjective', 'verb'],

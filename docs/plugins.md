@@ -16,6 +16,7 @@ ce contrat a de faux.
 | Champ | Rôle |
 |---|---|
 | `id`, `name` | identifiant, et nom court du bouton de marche (« S+7 ») |
+| `nameOf` (facultatif) | le nom d'une instance selon ses réglages, affiché dans la chaîne : le S+n au dé s'appelle « S+dé » ; absent, la chaîne affiche `name` |
 | `targetable` | `false` pour une mise en page qui agit sur tout le texte (Bord, Mise en vers) : elle déclare les cinq pistes, toutes visées, et la page n'affiche pas de puces |
 | `tracks`, `defaultTargets` | les pistes que la contrainte sait traiter (S+n : noms, adjectifs et verbes ; lipogramme : les cinq), et celles qu'une instance neuve vise |
 | `parameters` | les paramètres, dans l'ordre d'affichage : entier borné (`integer`, avec `min` et `max` : un champ numérique) ou choix (`choice`, avec `options` : une liste) ; chacun a une `key` et un `label` |
@@ -34,7 +35,7 @@ n'est pas dans `tracks`, une contrainte non ciblable ne déclare pas les cinq pi
 
 | `id` | `name` | Pistes (par défaut) | Paramètres | Module |
 |---|---|---|---|---|
-| `s7` | S+7 | noms, adjectifs, verbes (noms) | `offset` (−99 à 99), `mode` (`reagree`, `same-gender`) | `src/domain/s7/plugin.ts`, voir `docs/s7.md` |
+| `s7` | S+7 | noms, adjectifs, verbes (noms) | `offset` (−99 à 99), `mode` (`reagree`, `same-gender`), `draw` (`fixed`, `dice`), `seed` (1 à 9 999 999) | `src/domain/s7/plugin.ts`, voir `docs/s7.md` |
 | `lipogram` | Lipogramme | les cinq (les cinq) | `letter` (choix) | `src/domain/lipogram/plugin.ts` |
 | `track-sort` | Tri par piste | les cinq (noms) | `mode` (`remove`, `keep`), `layout` (`as-is`, `one-per-line`) | `src/domain/track-sort/plugin.ts` |
 | `edge` | Bord | non ciblable | `mode` (`ends`, `head-tail`, `inside`), `n` (1 à 9) | `src/domain/edge/plugin.ts` |
