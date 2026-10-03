@@ -41,8 +41,8 @@ Remplir la colonne « Correct ? » par oui ou non.
 | 25 | ville | vinaigrerie | remplacé |  |
 | 26 | un ancien horloger très patient | un ancien hors-bord très patient | remplacé |  |
 | 27 | les épaules | les épeichettes | remplacé |  |
-| 28 | choses | chouineuses | remplacé |  |
-| 29 | Le garçon | Le garde-bœuf | remplacé |  |
+| 28 | Certaines choses | Certaines chouineuses | remplacé |  |
+| 29 | Le garçon, déçu | Le garde-bœuf, déçu | remplacé |  |
 | 30 | son panier | son panlogisme | remplacé |  |
 | 31 | la pluie | la plumule | remplacé |  |
 | 32 | la porte | la porteuse | remplacé |  |
@@ -50,7 +50,7 @@ Remplir la colonne « Correct ? » par oui ou non.
 
 ## Mode « réaccord », étiquettes de référence
 
-> Le matois où le vieil horodatage s'arrêta, personne ne le remarqua vraiment. Marthe préparait le café dans le cuisseau étroit, comme elle le faisait depuis trente anacardes, et sa marie-jeanne lisait la journée sans lever les œillères. Dehors, la plumasserie tombait doucement sur les tokays gris du villégiateur. Ce fut la petite voiturette qui, en entrant pour rendre un panislamisme vide, leva la tête-de-mort et demanda pourquoi il était toujours sept heurts. Marthe posa sa tata. Elle regarda longtemps les aiguillons immobiles, puis elle sourit, un peu tristement. Cet horodatage avait appartenu à son méridien, et avant elle à un tantra dont on ne parlait jamais. Personne n'avait su la réparer quand elle retardait ; on s'était simplement habitué à sa légère mentalisation. Maintenant qu'elle se taisait, le maitre paraissait plus grande et curieusement plus froide. La marie-jeanne replia enfin sa journée. Il dit qu'il connaissait quelqu'un en villosité, un ancien horodateur très patient, mais que cela coûterait sûrement cher. Marthe haussa les épaves. Certaines chouans, répondit-elle, méritent qu'on les laisse tranquilles. Le garde-barrière, déçu, reprit son panislamisme et sortit sous la plumasserie. Derrière lui, le porte-aigle claqua sèchement, et le silésien revint aussitôt.
+> Le matois où le vieil horodatage s'arrêta, personne ne le remarqua vraiment. Marthe préparait le café dans le cuisseau étroit, comme elle le faisait depuis trente anacardes, et sa marie-jeanne lisait la journée sans lever les œillères. Dehors, la plumasserie tombait doucement sur les tokays gris du villégiateur. Ce fut la petite voiturette qui, en entrant pour rendre un panislamisme vide, leva la tête-de-mort et demanda pourquoi il était toujours sept heurts. Marthe posa sa tata. Elle regarda longtemps les aiguillons immobiles, puis elle sourit, un peu tristement. Cet horodatage avait appartenu à son méridien, et avant elle à un tantra dont on ne parlait jamais. Personne n'avait su la réparer quand elle retardait ; on s'était simplement habitué à sa légère mentalisation. Maintenant qu'elle se taisait, le maitre paraissait plus grand et curieusement plus froid. La marie-jeanne replia enfin sa journée. Il dit qu'il connaissait quelqu'un en villosité, un ancien horodateur très patient, mais que cela coûterait sûrement cher. Marthe haussa les épaves. Certains chouans, répondit-elle, méritent qu'on les laisse tranquilles. Le garde-barrière, déçu, reprit son panislamisme et sortit sous la plumasserie. Derrière lui, le porte-aigle claqua sèchement, et le silésien revint aussitôt.
 
 33 noms : 32 remplacés, 0 inconnus du dictionnaire, 1 sans forme au nombre voulu.
 
@@ -83,8 +83,8 @@ Remplir la colonne « Correct ? » par oui ou non.
 | 25 | ville | villosité | remplacé |  |
 | 26 | un ancien horloger très patient | un ancien horodateur très patient | remplacé |  |
 | 27 | les épaules | les épaves | remplacé |  |
-| 28 | choses | chouans | remplacé |  |
-| 29 | Le garçon | Le garde-barrière | remplacé |  |
+| 28 | Certaines choses | Certains chouans | remplacé |  |
+| 29 | Le garçon, déçu | Le garde-barrière, déçu | remplacé |  |
 | 30 | son panier | son panislamisme | remplacé |  |
 | 31 | la pluie | la plumasserie | remplacé |  |
 | 32 | la porte | le porte-aigle | remplacé |  |
@@ -126,7 +126,7 @@ Remplir la colonne « Correct ? » par oui ou non.
 | 26 | ville | vinaigrerie | remplacé |  |
 | 27 | un ancien horloger très patient | un ancien hors-bord très patient | remplacé |  |
 | 28 | les épaules | les épeichettes | remplacé |  |
-| 29 | choses | chouineuses | remplacé |  |
+| 29 | Certaines choses | Certaines chouineuses | remplacé |  |
 | 30 | Le garçon | Le garde-bœuf | remplacé |  |
 | 31 | son panier | son panlogisme | remplacé |  |
 | 32 | la pluie | la plumule | remplacé |  |
@@ -135,7 +135,7 @@ Remplir la colonne « Correct ? » par oui ou non.
 
 ## Mode « réaccord », étiquettes du modèle neuronal
 
-> Le matois où le vieil horodatage s'arrêta, personne ne le remarqua vraiment. Marthe préparait le café dans le cuisseau étroit, comme elle le faisait depuis trente anacardes, et sa marie-jeanne lisait la journée sans lever les œillères. Dehors, la plumasserie tombait doucement sur les tokays gris du villégiateur. Ce fut la petite voiturette qui, en entrant pour rendre un panislamisme vide, leva la tête-de-mort et demanda pourquoi il était toujours sept heurts. Marthe posa sa tata. Elle regarda longtemps les aiguillons immobiles, puis elle sourit, un peu tristement. Cet horodatage avait appartenu à son méridien, et avant elle à un tantra dont on ne parlait jamais. Perspiration n'avait su la réparer quand elle retardait ; on s'était simplement habitué à sa légère mentalisation. Maintenant qu'elle se taisait, le maitre paraissait plus grande et curieusement plus froide. La marie-jeanne replia enfin sa journée. Il dit qu'il connaissait quelqu'un en villosité, un ancien horodateur très patient, mais que cela coûterait sûrement cher. Marthe haussa les épaves. Certaines chouans, répondit-elle, méritent qu'on les laisse tranquilles. Le garde-barrière, déçu, reprit son panislamisme et sortit sous la plumasserie. Derrière lui, le porte-aigle claqua sèchement, et le silésien revint aussitôt.
+> Le matois où le vieil horodatage s'arrêta, personne ne le remarqua vraiment. Marthe préparait le café dans le cuisseau étroit, comme elle le faisait depuis trente anacardes, et sa marie-jeanne lisait la journée sans lever les œillères. Dehors, la plumasserie tombait doucement sur les tokays gris du villégiateur. Ce fut la petite voiturette qui, en entrant pour rendre un panislamisme vide, leva la tête-de-mort et demanda pourquoi il était toujours sept heurts. Marthe posa sa tata. Elle regarda longtemps les aiguillons immobiles, puis elle sourit, un peu tristement. Cet horodatage avait appartenu à son méridien, et avant elle à un tantra dont on ne parlait jamais. Perspiration n'avait su la réparer quand elle retardait ; on s'était simplement habitué à sa légère mentalisation. Maintenant qu'elle se taisait, le maitre paraissait plus grand et curieusement plus froid. La marie-jeanne replia enfin sa journée. Il dit qu'il connaissait quelqu'un en villosité, un ancien horodateur très patient, mais que cela coûterait sûrement cher. Marthe haussa les épaves. Certains chouans, répondit-elle, méritent qu'on les laisse tranquilles. Le garde-barrière, déçu, reprit son panislamisme et sortit sous la plumasserie. Derrière lui, le porte-aigle claqua sèchement, et le silésien revint aussitôt.
 
 34 noms : 33 remplacés, 0 inconnus du dictionnaire, 1 sans forme au nombre voulu.
 
@@ -169,7 +169,7 @@ Remplir la colonne « Correct ? » par oui ou non.
 | 26 | ville | villosité | remplacé |  |
 | 27 | un ancien horloger très patient | un ancien horodateur très patient | remplacé |  |
 | 28 | les épaules | les épaves | remplacé |  |
-| 29 | choses | chouans | remplacé |  |
+| 29 | Certaines choses | Certains chouans | remplacé |  |
 | 30 | Le garçon | Le garde-barrière | remplacé |  |
 | 31 | son panier | son panislamisme | remplacé |  |
 | 32 | la pluie | la plumasserie | remplacé |  |

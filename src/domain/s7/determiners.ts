@@ -5,9 +5,12 @@ import type { ConcreteGender, ConcreteNumber } from './types.ts';
  * Table des déterminants que le moteur sait réaccorder et élider. `de-definite` et
  * `a-definite` sont les articles contractés (du, de la, de l', des ; au, à la, à l', aux) ;
  * `de` est la préposition nue devant un nom sans article (« beaucoup de », « d'habitants »).
+ * `variable` : déterminant à quatre formes (certain, quel, tout…). `invariable` : même forme aux
+ * deux genres (plusieurs, chaque, notre…), reconnu pour le nombre qu'il indique.
  */
 export const DeterminerKindSchema = z.enum([
   'definite', 'indefinite', 'de-definite', 'a-definite', 'demonstrative', 'possessive', 'de',
+  'variable', 'invariable',
 ]);
 export type DeterminerKind = z.infer<typeof DeterminerKindSchema>;
 
@@ -19,6 +22,8 @@ export const DeterminerSchema = z.object({
   gender: z.enum(['m', 'f']).optional(),
   /** Possessif : m (mon), t (ton), s (son). */
   owner: z.enum(['m', 't', 's']).optional(),
+  /** `variable` : l'entrée de la table des formes. `invariable` : le mot lui-même. */
+  lemma: z.string().optional(),
 });
 export type Determiner = z.infer<typeof DeterminerSchema>;
 
@@ -39,7 +44,35 @@ const SINGLE: Record<string, Determiner> = {
   de: d('de'), "d'": d('de'),
 };
 
+/** Déterminants variables : masculin singulier, féminin singulier, masculin pluriel, féminin pluriel. */
+export const VARIABLE_FORMS: Record<string, readonly [string, string, string, string]> = {
+  certain: ['certain', 'certaine', 'certains', 'certaines'],
+  quel: ['quel', 'quelle', 'quels', 'quelles'],
+  tout: ['tout', 'toute', 'tous', 'toutes'],
+  aucun: ['aucun', 'aucune', 'aucuns', 'aucunes'],
+  nul: ['nul', 'nulle', 'nuls', 'nulles'],
+  tel: ['tel', 'telle', 'tels', 'telles'],
+  maint: ['maint', 'mainte', 'maints', 'maintes'],
+  divers: ['divers', 'diverse', 'divers', 'diverses'],
+  différent: ['différent', 'différente', 'différents', 'différentes'],
+};
+for (const [lemma, forms] of Object.entries(VARIABLE_FORMS)) {
+  forms.forEach((form, i) => {
+    // « divers » : même forme au masculin singulier et pluriel ; on retient le pluriel, seul emploi comme déterminant.
+    SINGLE[form] = { kind: 'variable', lemma, number: i < 2 ? 's' : 'p', gender: i % 2 ? 'f' : 'm' };
+  });
+}
+const INVARIABLE: Record<string, ConcreteNumber> = {
+  notre: 's', votre: 's', leur: 's', chaque: 's', nos: 'p', vos: 'p', leurs: 'p', quelques: 'p', plusieurs: 'p',
+};
+for (const [form, number] of Object.entries(INVARIABLE)) SINGLE[form] = { kind: 'invariable', lemma: form, number };
+
 const normalize = (word: string) => word.toLowerCase().replace('’', "'");
+
+/** « tout » devant un autre déterminant (« toute la ville ») : forme au genre et au nombre voulus. */
+export function isTout(word: string): boolean {
+  return VARIABLE_FORMS['tout']!.includes(normalize(word));
+}
 
 export interface IdentifiedDeterminer {
   determiner: Determiner;

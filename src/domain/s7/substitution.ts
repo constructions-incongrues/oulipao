@@ -16,6 +16,8 @@ export interface NounChoice {
   /** Genre et nombre du groupe après substitution. */
   gender: ConcreteGender;
   number: ConcreteNumber;
+  /** Genre du nom d'origine dans la phrase. */
+  originalGender: ConcreteGender;
 }
 
 // Position de chaque lemme dans la liste triée ; calculée une fois par dictionnaire.
@@ -62,7 +64,7 @@ export function substituteNoun(
   morphology: MorphologyRepository,
 ): NounChoice {
   const unchanged = (status: SubstitutionStatus, gender: ConcreteGender = hints.gender ?? 'm', number: ConcreteNumber = hints.number ?? 's') =>
-    ({ status, replacement: word.toLowerCase(), gender, number });
+    ({ status, replacement: word.toLowerCase(), gender, number, originalGender: gender });
 
   const reading = pickReading(word, hints, morphology);
   const lemmas = morphology.nounLemmas();
@@ -86,5 +88,5 @@ export function substituteNoun(
   const exact = (f: NounForm) => Number(f.number !== number) + Number(wanted !== undefined && f.gender !== wanted);
   const [best] = [...candidates].sort((a, b) => exact(a) - exact(b) || collator.compare(a.form, b.form));
   if (!best) return unchanged('missing-form', gender, number);
-  return { status: 'replaced', replacement: best.form, gender: best.gender === 'e' ? gender : best.gender, number };
+  return { status: 'replaced', replacement: best.form, gender: best.gender === 'e' ? gender : best.gender, number, originalGender: gender };
 }

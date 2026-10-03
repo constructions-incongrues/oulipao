@@ -14,7 +14,7 @@ Remplir la colonne « Correct ? » par oui ou non.
 
 | # | Avant | Après | Statut | Correct ? |
 |---|---|---|---|---|
-| 1 | années | annexites | remplacé |  |
+| 1 | quelques années | quelques annexites | remplacé |  |
 | 2 | les bibliothèques municipales | les bichonneuses municipales | remplacé |  |
 | 3 | de visage | de visiocasque | remplacé |  |
 | 4 | des romans | des romanches | remplacé |  |
@@ -23,7 +23,7 @@ Remplir la colonne « Correct ? » par oui ou non.
 | 7 | Cette évolution | Cette exactitude | remplacé |  |
 | 8 | une demande réelle | une démarche réelle | remplacé |  |
 | 9 | d'habitants | de hache-fourrages | remplacé |  |
-| 10 | un lieu gratuit | un lieu gratuit | forme manquante |  |
+| 10 | un lieu gratuit, chauffé et ouvert | un lieu gratuit, chauffé et ouvert | forme manquante |  |
 | 11 | Les bibliothécaires | Les bicamérismes | remplacé |  |
 | 12 | un métier devenu plus social | un métreur devenu plus social | remplacé |  |
 | 13 | des étudiants pressés | des étymologues pressés | remplacé |  |
@@ -45,26 +45,26 @@ Remplir la colonne « Correct ? » par oui ou non.
 | 29 | la question principale | la quetsche principale | remplacé |  |
 | 30 | les horaires | les horodatages | remplacé |  |
 | 31 | les budgets culturels | les bufflons culturels | remplacé |  |
-| 32 | maires | maires | forme manquante |  |
+| 32 | Plusieurs maires | Plusieurs maires | forme manquante |  |
 | 33 | ces dépenses | ces déphosphorylations | remplacé |  |
-| 34 | la ville | la vinaigrerie | remplacé |  |
+| 34 | toute la ville | toute la vinaigrerie | remplacé |  |
 | 35 | une inquiétude sourde | une insanité sourde | remplacé |  |
 | 36 | ces nouveaux services | ces nouveaux sésames | remplacé |  |
 | 37 | des bénévoles | des béninois | remplacé |  |
 | 38 | des contrats courts | des contre-appels courts | remplacé |  |
 | 39 | les équipes | les équiprobabilités | remplacé |  |
 | 40 | l'élan actuel | l'élasthanne actuel | remplacé |  |
-| 41 | directrices | dirlos | remplacé |  |
+| 41 | plusieurs directrices | plusieurs dirlos | remplacé |  |
 
 ## Mode « réaccord », étiquettes de référence
 
-> Depuis quelques annexionnismes, les bicamérismes municipaux changent profondément de viscoréduction. On y vient encore pour emprunter des romanches, naturellement, mais aussi pour réparer un vélociraptor, apprendre à coudre ou suivre un athanor numérique. Cet ex-libris répond à une démarcation réelle : beaucoup de hâbleries cherchent un lieutenant-colonel gratuit, chauffé et ouvert tard, où personne ne leur demande de consommer. Les BiC₆H₅O₇ décrivent un métrage devenu plus social que documentaire. Ils accueillent des étuvistes pressés, des rétrécissements bavards, des fanaux entiers la merde. Certains regrettent le silésien ancien et craignent que le llano devienne secondaire. D'autres estiment à la contraposée que le légat progresse quand les gentilés se sentent chez eux. Les chiismes restent fragiles, car peu de communautariens mesurent sérieusement le fret. Un étuveur récent montre pourtant que les prétendants augmentent légèrement dans les étains rénovés. Le finassier demeure la quête principale : agrandir les horizontalités coûte cher, et les buffles culturels baissent souvent avant les autres. Plusieurs maisons défendent néanmoins ces déphasages, qu'ils jugent utiles à toute la villosité. Reste une insalivation sourde : ces nouveaux serviteurs reposent largement sur des bénignités et sur des contres courts. Si les équipotentialités s'épuisent, l'élargissure actuelle retombera vite, préviennent déjà plusieurs directorats.
+> Depuis quelques annexionnismes, les bicamérismes municipaux changent profondément de viscoréduction. On y vient encore pour emprunter des romanches, naturellement, mais aussi pour réparer un vélociraptor, apprendre à coudre ou suivre un athanor numérique. Cet ex-libris répond à une démarcation réelle : beaucoup de hâbleries cherchent un lieutenant-colonel gratuit, chauffé et ouvert tard, où personne ne leur demande de consommer. Les BiC₆H₅O₇ décrivent un métrage devenu plus social que documentaire. Ils accueillent des étuvistes pressés, des rétrécissements bavards, des fanaux entiers la merde. Certains regrettent le silésien ancien et craignent que le llano devienne secondaire. D'autres estiment à la contraposée que le légat progresse quand les gentilés se sentent chez eux. Les chiismes restent fragiles, car peu de communautariens mesurent sérieusement le fret. Un étuveur récent montre pourtant que les prétendants augmentent légèrement dans les étains rénovés. Le finassier demeure la quête principale : agrandir les horizontalités coûte cher, et les buffles culturels baissent souvent avant les autres. Plusieurs maisons défendent néanmoins ces déphasages, qu'elles jugent utiles à toute la villosité. Reste une insalivation sourde : ces nouveaux serviteurs reposent largement sur des bénignités et sur des contres courts. Si les équipotentialités s'épuisent, l'élargissure actuelle retombera vite, préviennent déjà plusieurs directorats.
 
 41 noms : 41 remplacés, 0 inconnus du dictionnaire, 0 sans forme au nombre voulu.
 
 | # | Avant | Après | Statut | Correct ? |
 |---|---|---|---|---|
-| 1 | années | annexionnismes | remplacé |  |
+| 1 | quelques années | quelques annexionnismes | remplacé |  |
 | 2 | les bibliothèques municipales | les bicamérismes municipaux | remplacé |  |
 | 3 | de visage | de viscoréduction | remplacé |  |
 | 4 | des romans | des romanches | remplacé |  |
@@ -73,7 +73,7 @@ Remplir la colonne « Correct ? » par oui ou non.
 | 7 | Cette évolution | Cet ex-libris | remplacé |  |
 | 8 | une demande réelle | une démarcation réelle | remplacé |  |
 | 9 | d'habitants | de hâbleries | remplacé |  |
-| 10 | un lieu gratuit | un lieutenant-colonel gratuit | remplacé |  |
+| 10 | un lieu gratuit, chauffé et ouvert | un lieutenant-colonel gratuit, chauffé et ouvert | remplacé |  |
 | 11 | Les bibliothécaires | Les BiC₆H₅O₇ | remplacé |  |
 | 12 | un métier devenu plus social | un métrage devenu plus social | remplacé |  |
 | 13 | des étudiants pressés | des étuvistes pressés | remplacé |  |
@@ -95,16 +95,16 @@ Remplir la colonne « Correct ? » par oui ou non.
 | 29 | la question principale | la quête principale | remplacé |  |
 | 30 | les horaires | les horizontalités | remplacé |  |
 | 31 | les budgets culturels | les buffles culturels | remplacé |  |
-| 32 | maires | maisons | remplacé |  |
+| 32 | Plusieurs maires | Plusieurs maisons | remplacé |  |
 | 33 | ces dépenses | ces déphasages | remplacé |  |
-| 34 | la ville | la villosité | remplacé |  |
+| 34 | toute la ville | toute la villosité | remplacé |  |
 | 35 | une inquiétude sourde | une insalivation sourde | remplacé |  |
 | 36 | ces nouveaux services | ces nouveaux serviteurs | remplacé |  |
 | 37 | des bénévoles | des bénignités | remplacé |  |
 | 38 | des contrats courts | des contres courts | remplacé |  |
 | 39 | les équipes | les équipotentialités | remplacé |  |
 | 40 | l'élan actuel | l'élargissure actuelle | remplacé |  |
-| 41 | directrices | directorats | remplacé |  |
+| 41 | plusieurs directrices | plusieurs directorats | remplacé |  |
 
 ## Mode « même genre », étiquettes du modèle neuronal
 
@@ -114,7 +114,7 @@ Remplir la colonne « Correct ? » par oui ou non.
 
 | # | Avant | Après | Statut | Correct ? |
 |---|---|---|---|---|
-| 1 | années | annexites | remplacé |  |
+| 1 | quelques années | quelques annexites | remplacé |  |
 | 2 | les bibliothèques municipales | les bichonneuses municipales | remplacé |  |
 | 3 | de visage | de visiocasque | remplacé |  |
 | 4 | des romans | des romanches | remplacé |  |
@@ -146,26 +146,26 @@ Remplir la colonne « Correct ? » par oui ou non.
 | 30 | la question principale | la quetsche principale | remplacé |  |
 | 31 | les horaires | les horodatages | remplacé |  |
 | 32 | les budgets culturels | les bufflons culturels | remplacé |  |
-| 33 | maires | maires | forme manquante |  |
+| 33 | Plusieurs maires | Plusieurs maires | forme manquante |  |
 | 34 | ces dépenses | ces déphosphorylations | remplacé |  |
-| 35 | la ville | la vinaigrerie | remplacé |  |
+| 35 | toute la ville | toute la vinaigrerie | remplacé |  |
 | 36 | une inquiétude sourde | une insanité sourde | remplacé |  |
 | 37 | ces nouveaux services | ces nouveaux sésames | remplacé |  |
 | 38 | des bénévoles | des béninois | remplacé |  |
 | 39 | des contrats courts | des contre-appels courts | remplacé |  |
 | 40 | les équipes | les équiprobabilités | remplacé |  |
 | 41 | l'élan actuel | l'élasthanne actuel | remplacé |  |
-| 42 | directrices | dirlos | remplacé |  |
+| 42 | plusieurs directrices | plusieurs dirlos | remplacé |  |
 
 ## Mode « réaccord », étiquettes du modèle neuronal
 
-> Depuis quelques annexionnismes, les bicamérismes municipaux changent profondément de viscoréduction. On y vient encore pour emprunter des romanches, naturellement, mais aussi pour réparer un vélociraptor, apprendre à coudre ou suivre un athanor numérique. Cet ex-libris répond à une démarcation réelle : beaucoup de hâbleries cherchent un lieutenant-colonel gratuit, chauffé et ouvert tard, où personne ne leur demande de consommer. Les BiC₆H₅O₇ décrivent un métrage devenu plus social que dodécagone. Ils accueillent des étuvistes pressés, des rétrécissements bavards, des fanaux entiers la merde. Certains regrettent le silésien ancien et craignent que le llano devienne secondaire. D'autres estiment à la contraposée que le légat progresse quand les gentilés se sentent chez eux. Les chiismes restent fragiles, car peu de communautariens mesurent sérieusement le fret. Un étuveur récent montre pourtant que les prétendants augmentent légèrement dans les étains rénovés. Le finassier demeure la quête principale : agrandir les horizontalités coûte cher, et les buffles culturels baissent souvent avant les autres. Plusieurs maisons défendent néanmoins ces déphasages, qu'ils jugent utiles à toute la villosité. Reste une insalivation sourde : ces nouveaux serviteurs reposent largement sur des bénignités et sur des contres courts. Si les équipotentialités s'épuisent, l'élargissure actuelle retombera vite, préviennent déjà plusieurs directorats.
+> Depuis quelques annexionnismes, les bicamérismes municipaux changent profondément de viscoréduction. On y vient encore pour emprunter des romanches, naturellement, mais aussi pour réparer un vélociraptor, apprendre à coudre ou suivre un athanor numérique. Cet ex-libris répond à une démarcation réelle : beaucoup de hâbleries cherchent un lieutenant-colonel gratuit, chauffé et ouvert tard, où personne ne leur demande de consommer. Les BiC₆H₅O₇ décrivent un métrage devenu plus social que dodécagone. Ils accueillent des étuvistes pressés, des rétrécissements bavards, des fanaux entiers la merde. Certains regrettent le silésien ancien et craignent que le llano devienne secondaire. D'autres estiment à la contraposée que le légat progresse quand les gentilés se sentent chez eux. Les chiismes restent fragiles, car peu de communautariens mesurent sérieusement le fret. Un étuveur récent montre pourtant que les prétendants augmentent légèrement dans les étains rénovés. Le finassier demeure la quête principale : agrandir les horizontalités coûte cher, et les buffles culturels baissent souvent avant les autres. Plusieurs maisons défendent néanmoins ces déphasages, qu'elles jugent utiles à toute la villosité. Reste une insalivation sourde : ces nouveaux serviteurs reposent largement sur des bénignités et sur des contres courts. Si les équipotentialités s'épuisent, l'élargissure actuelle retombera vite, préviennent déjà plusieurs directorats.
 
 42 noms : 42 remplacés, 0 inconnus du dictionnaire, 0 sans forme au nombre voulu.
 
 | # | Avant | Après | Statut | Correct ? |
 |---|---|---|---|---|
-| 1 | années | annexionnismes | remplacé |  |
+| 1 | quelques années | quelques annexionnismes | remplacé |  |
 | 2 | les bibliothèques municipales | les bicamérismes municipaux | remplacé |  |
 | 3 | de visage | de viscoréduction | remplacé |  |
 | 4 | des romans | des romanches | remplacé |  |
@@ -197,13 +197,13 @@ Remplir la colonne « Correct ? » par oui ou non.
 | 30 | la question principale | la quête principale | remplacé |  |
 | 31 | les horaires | les horizontalités | remplacé |  |
 | 32 | les budgets culturels | les buffles culturels | remplacé |  |
-| 33 | maires | maisons | remplacé |  |
+| 33 | Plusieurs maires | Plusieurs maisons | remplacé |  |
 | 34 | ces dépenses | ces déphasages | remplacé |  |
-| 35 | la ville | la villosité | remplacé |  |
+| 35 | toute la ville | toute la villosité | remplacé |  |
 | 36 | une inquiétude sourde | une insalivation sourde | remplacé |  |
 | 37 | ces nouveaux services | ces nouveaux serviteurs | remplacé |  |
 | 38 | des bénévoles | des bénignités | remplacé |  |
 | 39 | des contrats courts | des contres courts | remplacé |  |
 | 40 | les équipes | les équipotentialités | remplacé |  |
 | 41 | l'élan actuel | l'élargissure actuelle | remplacé |  |
-| 42 | directrices | directorats | remplacé |  |
+| 42 | plusieurs directrices | plusieurs directorats | remplacé |  |

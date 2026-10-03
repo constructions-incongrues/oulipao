@@ -38,12 +38,32 @@ The system SHALL, in same-gender mode, count only lemmas of the same gender as t
 - **THEN** le nouveau nom est le septième lemme féminin suivant
 
 ### Requirement: Mode réaccord
-The system SHALL, in re-agreement mode, give the determiner and the adjectives contiguous to the noun the gender of the new noun.
+The system SHALL, in re-agreement mode, give the gender of the new noun to its determiner, to the adjectives contiguous, coordinated or apposed to the noun, to the subject complement after a linking verb, to the participle after être, and to a subject pronoun whose only possible antecedent in the sentence is that noun.
 
 #### Scenario: Changement de genre
 - **GIVEN** un groupe « la vieille ferme » et un nouveau nom masculin
 - **WHEN** le texte est transformé en mode « réaccord »
 - **THEN** le déterminant et l'adjectif sont au masculin
+
+#### Scenario: Déterminant variable
+- **GIVEN** un groupe « Certaines choses » et un nouveau nom masculin
+- **WHEN** le texte est transformé en mode « réaccord »
+- **THEN** le déterminant devient « Certains »
+
+#### Scenario: Attribut du sujet
+- **GIVEN** la phrase « la maison paraissait plus grande » et un nouveau nom masculin
+- **WHEN** le texte est transformé en mode « réaccord »
+- **THEN** l'attribut devient « grand »
+
+#### Scenario: Pronom de reprise sans ambiguïté
+- **GIVEN** la phrase « Ma tante est triste, elle a été heureuse » et un nouveau nom masculin
+- **WHEN** le texte est transformé en mode « réaccord »
+- **THEN** le pronom devient « il » et son attribut « heureux »
+
+#### Scenario: Pronom de reprise ambigu
+- **GIVEN** un pronom sujet dont l'antécédent peut être un nom propre ou un nom d'une autre phrase
+- **WHEN** le texte est transformé
+- **THEN** le pronom est laissé tel quel
 
 ### Requirement: Élision et contraction
 The system SHALL, in both modes, recompute elision and contraction from the initial of the new first word of the noun group, respecting aspirated h.

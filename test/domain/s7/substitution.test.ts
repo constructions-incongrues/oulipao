@@ -6,7 +6,11 @@ import type { S7Mode } from '../../../src/domain/s7/types.ts';
 import { morphology, NOUNS } from '../../support/morphology.ts';
 
 const m = morphology();
-const sub = (word: string, offset: number, mode: S7Mode, hints: NounHints = {}) => substituteNoun(word, hints, { offset, mode }, m);
+// Le genre d'origine est vérifié à part : on le retire des comparaisons d'ensemble.
+const sub = (word: string, offset: number, mode: S7Mode, hints: NounHints = {}) => {
+  const { originalGender: _, ...choice } = substituteNoun(word, hints, { offset, mode }, m);
+  return choice;
+};
 
 test('S+n strict : n-ième lemme suivant, genre de l’entrée du dictionnaire', () => {
   assert.deepEqual(sub('ferme', 1, 'reagree'), { status: 'replaced', replacement: 'fermoir', gender: 'm', number: 's' });
@@ -15,6 +19,12 @@ test('S+n strict : n-ième lemme suivant, genre de l’entrée du dictionnaire',
   assert.equal(sub('ferme', -1, 'reagree').replacement, 'école');
   assert.equal(sub('ferme', 0, 'reagree').replacement, 'ferme');
   assert.equal(sub('ville', 1, 'reagree').replacement, 'voisin'); // forme égale au lemme, pas « voisine »
+});
+
+test('le genre d’origine est rendu avec le choix', () => {
+  assert.equal(substituteNoun('ferme', {}, { offset: 1, mode: 'reagree' }, m).originalGender, 'f');
+  assert.equal(substituteNoun('livre', { gender: 'f' }, { offset: 1, mode: 'reagree' }, m).originalGender, 'f');
+  assert.equal(substituteNoun('zorglub', { gender: 'f' }, { offset: 1, mode: 'reagree' }, m).originalGender, 'f');
 });
 
 test('le dictionnaire boucle', () => {

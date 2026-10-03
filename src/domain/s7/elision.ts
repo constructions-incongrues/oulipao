@@ -1,5 +1,5 @@
 import type { MorphologyRepository } from '../../ports/morphology.ts';
-import type { Determiner } from './determiners.ts';
+import { VARIABLE_FORMS, type Determiner } from './determiners.ts';
 import type { ConcreteGender, ConcreteNumber } from './types.ts';
 
 const VOWEL_OR_H = /^[aeiouyhàâäéèêëîïôöùûüœæ]/i;
@@ -51,5 +51,9 @@ export function realizeDeterminer(determiner: Determiner, realization: Realizati
     }
     case 'de':
       return [nextElides ? `d${apostrophe}` : 'de'];
+    case 'variable':
+      return [VARIABLE_FORMS[determiner.lemma!]![(plural ? 2 : 0) + (masculine ? 0 : 1)]!];
+    case 'invariable':
+      return [determiner.lemma!];
   }
 }

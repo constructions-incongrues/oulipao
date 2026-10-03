@@ -45,14 +45,15 @@ export const morphology = () => new InMemoryMorphology({ nouns: NOUNS, adjective
 
 const NOUN_FORMS = new Set(NOUNS.map((x) => x.form));
 const ADJECTIVE_FORMS = new Set(ADJECTIVES.map((x) => x.form));
-const ADVERBS = new Set(['très', 'pas']);
+const ADVERBS = new Set(['très', 'pas', 'plus', 'ne', "n'", 'vite', 'ici']);
+const VERBS = new Set(['est', 'sont', 'a', 'été', 'paraissait', 'reste', 'devient', 'voit', 'dort']);
 
 /** Étiquette un texte de test d'après le petit dictionnaire ; `extra` force certaines catégories. */
 export function tag(text: string, extra: Record<string, Category> = {}): TaggedWord[] {
   return tokenize(text).map(({ word }) => {
     const lower = word.toLowerCase();
     const category: Category =
-      extra[word] ?? (NOUN_FORMS.has(lower) ? 'noun' : ADJECTIVE_FORMS.has(lower) ? 'adjective' : ADVERBS.has(lower) ? 'adverb' : 'other');
+      extra[word] ?? (NOUN_FORMS.has(lower) ? 'noun' : ADJECTIVE_FORMS.has(lower) ? 'adjective' : ADVERBS.has(lower) ? 'adverb' : VERBS.has(lower) ? 'verb' : 'other');
     return { word, category };
   });
 }

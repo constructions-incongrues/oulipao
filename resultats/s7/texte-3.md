@@ -8,7 +8,7 @@ Remplir la colonne « Correct ? » par oui ou non.
 
 ## Mode « même genre », étiquettes de référence
 
-> Salut Camille, je t'écris vite parce que la férocité de mon ondinisme a enfin trouvé un aciclovir. On déménage tout samoussa prochain et franchement on manque de brassage. Tu serais libre ? Il faut vider la granulite, trier les vieux outrages et porter trois armureries énormes jusqu'au camouflage. La porteuse du grésoir ferme mal, alors méfie-toi si tu montes. J'ai retrouvé là-haut un ln que ton perforage m'avait prêté l'éternuement dernier ; il a un peu pris l'ébarbure, désolé. Ma tanzanite est triste, évidemment, elle a été heureuse ici pendant quarante anacardiers. Elle livre encore ses offenseurs au marcottage jusqu'à la financeuse du moka, par fignoleuse je crois. Mon ondinisme, lui, reste ferme : il ne veut plus entendre parler de vacuoles. Si tu viens, apporte des garages solides et de bonnes chavilloises, le soléaire est boueux vers l'estampeur du terre-neuvien. On mangera ensemble le soixante-dixième, ma couvade prépare une sourate et des Tasmanie. Elle demande seulement si tu manges toujours aussi peu de vice-championne. Apporte aussi ta gustation, le vieux piaulement du salopiot part demain chez un brocheur et la maîtresse sera muette. Réponds-moi vite, même brièvement. Je t'embrasse fort. Louis
+> Salut Camille, je t'écris vite parce que la férocité de mon ondinisme a enfin trouvé un aciclovir. On déménage tout samoussa prochain et franchement on manque de brassage. Tu serais libre ? Il faut vider la granulite, trier les vieux outrages et porter trois armureries énormes jusqu'au camouflage. La porteuse du grésoir ferme mal, alors méfie-toi si tu montes. J'ai retrouvé là-haut un ln que ton perforage m'avait prêté l'éternuement dernier ; il a un peu pris l'ébarbure, désolée. Ma tanzanite est triste, évidemment, elle a été heureuse ici pendant quarante anacardiers. Elle livre encore ses offenseurs au marcottage jusqu'à la financeuse du moka, par fignoleuse je crois. Mon ondinisme, lui, reste ferme : il ne veut plus entendre parler de vacuoles. Si tu viens, apporte des garages solides et de bonnes chavilloises, le soléaire est boueux vers l'estampeur du terre-neuvien. On mangera ensemble le soixante-dixième, ma couvade prépare une sourate et des Tasmanie. Elle demande seulement si tu manges toujours aussi peu de vice-championne. Apporte aussi ta gustation, le vieux piaulement du salopiot part demain chez un brocheur et la maîtresse sera muette. Réponds-moi vite, même brièvement. Je t'embrasse fort. Louis
 
 39 noms : 39 remplacés, 0 inconnus du dictionnaire, 0 sans forme au nombre voulu.
 
@@ -17,7 +17,7 @@ Remplir la colonne « Correct ? » par oui ou non.
 | 1 | la ferme | la férocité | remplacé |  |
 | 2 | mon oncle | mon ondinisme | remplacé |  |
 | 3 | un acheteur | un aciclovir | remplacé |  |
-| 4 | samedi prochain | samoussa prochain | remplacé |  |
+| 4 | tout samedi prochain | tout samoussa prochain | remplacé |  |
 | 5 | de bras | de brassage | remplacé |  |
 | 6 | la grange | la granulite | remplacé |  |
 | 7 | les vieux outils | les vieux outrages | remplacé |  |
@@ -28,7 +28,7 @@ Remplir la colonne « Correct ? » par oui ou non.
 | 12 | un livre | un ln | remplacé |  |
 | 13 | ton père | ton perforage | remplacé |  |
 | 14 | l'été dernier | l'éternuement dernier | remplacé |  |
-| 15 | l'eau | l'ébarbure | remplacé |  |
+| 15 | l'eau, désolé | l'ébarbure, désolée | remplacé |  |
 | 16 | Ma tante | Ma tanzanite | remplacé |  |
 | 17 | ans | anacardiers | remplacé |  |
 | 18 | ses œufs | ses offenseurs | remplacé |  |
@@ -56,7 +56,7 @@ Remplir la colonne « Correct ? » par oui ou non.
 
 ## Mode « réaccord », étiquettes de référence
 
-> Salut Camille, je t'écris vite parce que le fermi de mon oncologue a enfin trouvé un achoppement. On déménage tout samouraï prochain et franchement on manque de brasque. Tu serais libre ? Il faut vider le granoclassement, trier les vieux outrages et porter trois armoristes énormes jusqu'à la camisole. Le porte-aigle du grès ferme mal, alors méfie-toi si tu montes. J'ai retrouvé là-haut un llano que ta perestroïka m'avait prêté l'éternalisme dernier ; il a un peu pris l'ébarbage, désolé. Mon tantra est triste, évidemment, elle a été heureuse ici pendant quarante anacardes. Elle livre encore ses offenses au marcotage jusqu'à la finaliste de la moisson, par fifrelin je crois. Mon oncologue, lui, reste ferme : il ne veut plus entendre parler de vacives. Si tu viens, apporte des gaps solides et de bonnes chaux, le solarium est boueux vers l'estafilade de la terre. On mangera ensemble le soixante-dix-neuvième, mon coût prépare un soupirant et des tartrates. Elle demande seulement si tu manges toujours aussi peu de vibraphoniste. Apporte aussi ton gulden, la vieille piastre de la saloperie part demain chez une broche et le maitre sera muette. Réponds-moi vite, même brièvement. Je t'embrasse fort. Louis
+> Salut Camille, je t'écris vite parce que le fermi de mon oncologue a enfin trouvé un achoppement. On déménage tout samouraï prochain et franchement on manque de brasque. Tu serais libre ? Il faut vider le granoclassement, trier les vieux outrages et porter trois armoristes énormes jusqu'à la camisole. Le porte-aigle du grès ferme mal, alors méfie-toi si tu montes. J'ai retrouvé là-haut un llano que ta perestroïka m'avait prêté l'éternalisme dernier ; il a un peu pris l'ébarbage, désolé. Mon tantra est triste, évidemment, il a été heureux ici pendant quarante anacardes. Elle livre encore ses offenses au marcotage jusqu'à la finaliste de la moisson, par fifrelin je crois. Mon oncologue, lui, reste ferme : il ne veut plus entendre parler de vacives. Si tu viens, apporte des gaps solides et de bonnes chaux, le solarium est boueux vers l'estafilade de la terre. On mangera ensemble le soixante-dix-neuvième, mon coût prépare un soupirant et des tartrates. Elle demande seulement si tu manges toujours aussi peu de vibraphoniste. Apporte aussi ton gulden, la vieille piastre de la saloperie part demain chez une broche et le maitre sera muet. Réponds-moi vite, même brièvement. Je t'embrasse fort. Louis
 
 39 noms : 39 remplacés, 0 inconnus du dictionnaire, 0 sans forme au nombre voulu.
 
@@ -65,7 +65,7 @@ Remplir la colonne « Correct ? » par oui ou non.
 | 1 | la ferme | le fermi | remplacé |  |
 | 2 | mon oncle | mon oncologue | remplacé |  |
 | 3 | un acheteur | un achoppement | remplacé |  |
-| 4 | samedi prochain | samouraï prochain | remplacé |  |
+| 4 | tout samedi prochain | tout samouraï prochain | remplacé |  |
 | 5 | de bras | de brasque | remplacé |  |
 | 6 | la grange | le granoclassement | remplacé |  |
 | 7 | les vieux outils | les vieux outrages | remplacé |  |
@@ -76,7 +76,7 @@ Remplir la colonne « Correct ? » par oui ou non.
 | 12 | un livre | un llano | remplacé |  |
 | 13 | ton père | ta perestroïka | remplacé |  |
 | 14 | l'été dernier | l'éternalisme dernier | remplacé |  |
-| 15 | l'eau | l'ébarbage | remplacé |  |
+| 15 | l'eau, désolé | l'ébarbage, désolé | remplacé |  |
 | 16 | Ma tante | Mon tantra | remplacé |  |
 | 17 | ans | anacardes | remplacé |  |
 | 18 | ses œufs | ses offenses | remplacé |  |
@@ -114,7 +114,7 @@ Remplir la colonne « Correct ? » par oui ou non.
 | 2 | la ferme | la férocité | remplacé |  |
 | 3 | mon oncle | mon ondinisme | remplacé |  |
 | 4 | un acheteur | un aciclovir | remplacé |  |
-| 5 | samedi prochain | samoussa prochain | remplacé |  |
+| 5 | tout samedi prochain | tout samoussa prochain | remplacé |  |
 | 6 | de bras | de brassage | remplacé |  |
 | 7 | la grange | la granulite | remplacé |  |
 | 8 | les vieux outils | les vieux outrages | remplacé |  |
@@ -158,7 +158,7 @@ Remplir la colonne « Correct ? » par oui ou non.
 
 ## Mode « réaccord », étiquettes du modèle neuronal
 
-> Samare Camille, je t'écris vite parce que le fermi de mon oncologue a enfin trouvé un achoppement. On déménage tout samouraï prochain et franchement on manque de brasque. Tu serais libre ? Il faut vider le granoclassement, trier les vieux outrages et porter trois armoristes énormes jusqu'à la camisole. Le porte-aigle du grès ferme mal, alors méfie-toi si tu montes. J'ai retrouvé là-haut un llano que ta perestroïka m'avait prêté l'éternalisme dernier ; il a un peu pris l'ébarbage, désolé. Mon tantra est triste, évidemment, elle a été heureuse ici pendant quarante anacardes. Elle livre encore ses offenses au marcotage jusqu'à la finaliste de la moisson, par fifrelin je crois. Mon oncologue, lui, reste fermi : il ne veut plus entendre parler de vacives. Si tu viens, apporte des gaps solides et de bonnes chaux, le solarium est boueux vers l'est de la terre. On mangera ensemble le soixante-dix-neuvième, mon coût prépare un soupirant et des tartrates. Elle demande seulement si tu manges toujours aussi peu de vibraphoniste. Apporte aussi ta gulden, la vieille piastre de la saloperie part demain chez une broche et le maitre sera muette. Réponds-moi vite, même brièvement. Je t'embrasse fort. Louis
+> Samare Camille, je t'écris vite parce que le fermi de mon oncologue a enfin trouvé un achoppement. On déménage tout samouraï prochain et franchement on manque de brasque. Tu serais libre ? Il faut vider le granoclassement, trier les vieux outrages et porter trois armoristes énormes jusqu'à la camisole. Le porte-aigle du grès ferme mal, alors méfie-toi si tu montes. J'ai retrouvé là-haut un llano que ta perestroïka m'avait prêté l'éternalisme dernier ; il a un peu pris l'ébarbage, désolé. Mon tantra est triste, évidemment, il a été heureux ici pendant quarante anacardes. Elle livre encore ses offenses au marcotage jusqu'à la finaliste de la moisson, par fifrelin je crois. Mon oncologue, lui, reste fermi : il ne veut plus entendre parler de vacives. Si tu viens, apporte des gaps solides et de bonnes chaux, le solarium est boueux vers l'est de la terre. On mangera ensemble le soixante-dix-neuvième, mon coût prépare un soupirant et des tartrates. Elle demande seulement si tu manges toujours aussi peu de vibraphoniste. Apporte aussi ta gulden, la vieille piastre de la saloperie part demain chez une broche et le maitre sera muet. Réponds-moi vite, même brièvement. Je t'embrasse fort. Louis
 
 45 noms : 40 remplacés, 5 inconnus du dictionnaire, 0 sans forme au nombre voulu.
 
@@ -168,7 +168,7 @@ Remplir la colonne « Correct ? » par oui ou non.
 | 2 | la ferme | le fermi | remplacé |  |
 | 3 | mon oncle | mon oncologue | remplacé |  |
 | 4 | un acheteur | un achoppement | remplacé |  |
-| 5 | samedi prochain | samouraï prochain | remplacé |  |
+| 5 | tout samedi prochain | tout samouraï prochain | remplacé |  |
 | 6 | de bras | de brasque | remplacé |  |
 | 7 | la grange | le granoclassement | remplacé |  |
 | 8 | les vieux outils | les vieux outrages | remplacé |  |

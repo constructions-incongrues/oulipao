@@ -1,6 +1,6 @@
 # Tasks: Moteur S+7 accordé sur les noms
 
-Build Plan — 9 tasks across 5 waves
+Build Plan — 11 tasks across 5 waves (deux tâches ajoutées le 2026-10-03, voir section 6)
 
 - Wave 0 (foundation, build first, then merge): Task 1
 - Wave 1 (after Wave 0): Task 2
@@ -78,6 +78,23 @@ Contraintes du projet (voir `openspec/config.yaml`) : TypeScript strict, archite
   - S'appuie sur la signature de `engine.ts` fixée en 2.1 et sur l'adaptateur de morphologie ; aucune autre interface nouvelle.
   - Acceptance : Le texte transformé s'affiche et suit les changements de n et de mode.
   - GUI test (automatique si un outil de test de navigateur est disponible, sinon vérification manuelle) : 1. Ouvrir la page d'essai. 2. Coller un texte et lancer l'étiquetage. 3. Vérifier qu'un texte transformé s'affiche sous le texte étiqueté. 4. Passer n de 7 à 3 et vérifier que le texte transformé change. 5. Changer de mode et vérifier que le texte transformé change. 6. Vérifier dans l'onglet réseau qu'aucune requête ne contient le texte collé.
+
+## 6. Wave 3 bis — Extensions décidées le 2026-10-03
+
+Décisions du fondateur après la première mesure : le dictionnaire n'est pas filtré ; la table des déterminants et le réaccord sont étendus. Les grilles de la tâche 5.1 sont régénérées ensuite.
+
+- [x] 6.1 Table des déterminants étendue (S, dépend de : 4.1 ; exigences 5, 6)
+  - Domaine : `src/domain/s7/determiners.ts`, `elision.ts` et leurs tests.
+  - Déterminants variables en genre : certain, quel, tout, aucun, nul, tel, maint, divers, différents — réaccordés au genre du nouveau nom.
+  - Déterminants invariables reconnus pour le nombre qu'ils indiquent : notre, votre, leur, nos, vos, leurs, quelques, plusieurs, chaque.
+  - « tout » placé avant un autre déterminant (« toute la ville ») est réaccordé avec lui.
+  - Acceptance : « Certaines choses » avec un nom masculin donne « Certains … » ; « toute la ferme » donne « tout le … » ; « plusieurs héros » est lu au pluriel.
+- [x] 6.2 Réaccord étendu au-delà du groupe nominal (M, dépend de : 4.1 ; exigence 5)
+  - Domaine : `src/domain/s7/syntax.ts` (nouveau), `engine.ts`, `substitution.ts` et leurs tests.
+  - Adjectifs coordonnés ou apposés après le nom (« un lieu gratuit, chauffé et ouvert »).
+  - Attribut du sujet après être, sembler, paraître, devenir, rester, demeurer (« la maison paraissait plus grande et plus froide ») ; participe après être (« la porte est ouverte »). Dans une suite « nom de nom », l'attribut suit le premier nom.
+  - Pronom sujet de reprise (il, elle, ils, elles), seulement quand un seul nom de la même phrase peut en être l'antécédent et qu'aucun nom propre ne le précède ; son attribut suit.
+  - Acceptance : en mode « réaccord », « la maison paraissait plus grande » avec un nom masculin donne « … paraissait plus grand » ; « Ma tante est triste, elle a été heureuse » donne « …, il a été heureux » ; « Marthe posa sa tasse. Elle regarda » reste inchangé.
 
 ## 5. Wave 4 — Mesure
 

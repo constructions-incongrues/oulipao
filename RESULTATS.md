@@ -107,7 +107,8 @@ l'annotation de référence telle quelle, sans relecture :
 
 # Moteur S+7
 
-Mesures du 2026-10-03, décalage 7, sur les trois textes de référence. Pour les refaire :
+Mesures du 2026-10-03, décalage 7, sur les trois textes de référence, après extension de la table
+des déterminants et du réaccord (décisions du fondateur du même jour). Pour les refaire :
 `npm run transform:references` (écrit les grilles de relecture dans `resultats/s7/`).
 
 ## Ce que le moteur a fait
@@ -136,7 +137,7 @@ se lit sans faute.
 | Texte | Mode | Lecture préliminaire de l'assistant | Décompte du fondateur |
 |---|---|---|---|
 | 1 | même genre | 33 sur 33 | à faire |
-| 1 | réaccord | 31 sur 32 | à faire |
+| 1 | réaccord | 32 sur 32 | à faire |
 | 2 | même genre | 37 sur 38 | à faire |
 | 2 | réaccord | 40 sur 41 | à faire |
 | 3 | même genre | 37 sur 39 | à faire |
@@ -149,20 +150,47 @@ Fautes relevées à cette lecture :
 
 - **Bruit du dictionnaire** (4 cas) : « Les BiC₆H₅O₇ » (une formule chimique rangée parmi les
   noms), « le ln » et « un ln » (une abréviation), « des Tasmanie » (un nom propre). Le lexique
-  compte 1 649 formes de noms contenant un chiffre.
-- **Déterminant hors table** (1 cas) : « Certaines choses » devient « Certaines chouans » ; le
-  moteur ne connaît pas « certains ».
+  compte 1 649 formes de noms contenant un chiffre. Le fondateur a décidé de ne pas filtrer le
+  dictionnaire : ces cas resteront.
 
-## Ce que le critère ne voit pas
+La faute de déterminant de la première mesure est corrigée : « Certaines choses » donne
+maintenant « Certains chouans ».
 
-- **Hors du groupe nominal**, rien n'est réaccordé en mode « réaccord » : « le maitre
-  paraissait plus grande », « Mon tantra est triste […] elle a été heureuse ». Le critère du PRD
-  porte sur le groupe nominal ; à la lecture du texte entier, ces phrases sont fautives.
+## Au-delà du groupe nominal
+
+Depuis l'extension, le mode « réaccord » accorde aussi, à la lecture des trois textes :
+
+- l'attribut : « le maitre paraissait plus grand et curieusement plus froid », « le maitre sera
+  muet », « le solarium est boueux » ;
+- les adjectifs apposés ou coordonnés : « un lieutenant-colonel gratuit, chauffé et ouvert tard »,
+  « Le garde-barrière, déçu, reprit… » ;
+- le pronom de reprise quand son antécédent est sûr : « Mon tantra est triste, évidemment, il a
+  été heureux ici », « Plusieurs maisons défendent ces déphasages, qu'elles jugent utiles ».
+
+Restent fautifs, parce que le moteur ne peut pas en être sûr et les laisse :
+
+- les pronoms dont l'antécédent est dans une autre phrase : « Elle livre encore ses offenses »
+  (c'était la tante, devenue « mon tantra »), « quand elle retardait », « qu'elle se taisait »
+  (c'était l'horloge, devenue « le vieil horodatage ») ;
+- le pronom à deux antécédents possibles : « à son méridien, et avant elle à un tantra » ;
+- les pronoms compléments : « su la réparer ».
+
+Aucune faute nouvelle n'a été relevée à cette lecture ; elle reste celle de l'assistant.
+
+## Ce que le dictionnaire donne
+
+Non filtré, par décision du fondateur :
+
 - **Mots rares.** Le septième nom suivant est très souvent un mot inconnu du lecteur
-  (« mériédrie », « panlogisme », « viscoréduction »). Le dictionnaire par défaut contient les
-  54 233 noms du lexique, sans filtre.
-- **Mots grossiers.** Le dictionnaire en contient et ils sortent (« le mercredi » devient
-  « la merde », « du salon » devient « de la saloperie »).
+  (« mériédrie », « panlogisme », « viscoréduction »).
+- **Mots grossiers.** « le mercredi » devient « la merde », « du salon » devient « de la
+  saloperie ».
+
+## De bout en bout
+
+Avec les étiquettes du modèle neuronal, les erreurs d'étiquetage deviennent des fautes de
+texte : « Personne n'avait su » devient « Perspiration n'avait su », « Salut Camille » devient
+« Samare Camille », « reste ferme » devient « reste fermi », « ta guitare » devient « ta gulden ».
 
 ## Mode par défaut
 

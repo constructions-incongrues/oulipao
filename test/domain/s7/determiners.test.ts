@@ -1,8 +1,11 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { DeterminerSchema, identifyDeterminer } from '../../../src/domain/s7/determiners.ts';
+import { DeterminerSchema, identifyDeterminer, isTout } from '../../../src/domain/s7/determiners.ts';
 import { elides, realizeDeterminer } from '../../../src/domain/s7/elision.ts';
 import { morphology } from '../../support/morphology.ts';
+
+const realize = (words: string[], gender: 'm' | 'f', nextElides: boolean, number: 's' | 'p' = 's', apostrophe?: string) =>
+  realizeDeterminer(identifyDeterminer(words)!.determiner, { gender, number, nextElides, apostrophe }).join(' ');
 
 const kindOf = (...words: string[]) => identifyDeterminer(words)?.determiner.kind;
 
@@ -29,9 +32,23 @@ test('articles contractés écrits en deux mots', () => {
   assert.equal(identifyDeterminer(['de', 'les'])?.consumed, 1);
 });
 
+test('déterminants variables et invariables', () => {
+  assert.deepEqual(identifyDeterminer(['Certaines'])?.determiner, { kind: 'variable', lemma: 'certain', number: 'p', gender: 'f' });
+  assert.deepEqual(identifyDeterminer(['divers'])?.determiner, { kind: 'variable', lemma: 'divers', number: 'p', gender: 'm' });
+  assert.deepEqual(identifyDeterminer(['plusieurs'])?.determiner, { kind: 'invariable', lemma: 'plusieurs', number: 'p' });
+  assert.equal(isTout('Toutes'), true);
+  assert.equal(isTout('toux'), false);
+  assert.equal(realize(['certaines'], 'm', false), 'certains');
+  assert.equal(realize(['quel'], 'f', true), 'quelle');
+  assert.equal(realize(['tous'], 'f', false), 'toutes');
+  assert.equal(realize(['aucune'], 'm', false), 'aucun');
+  assert.equal(realize(['chaque'], 'f', true), 'chaque');
+  assert.equal(realize(['leurs'], 'm', false), 'leurs');
+});
+
 test('ce qui n’est pas un déterminant connu', () => {
   assert.equal(identifyDeterminer([]), undefined);
-  assert.equal(identifyDeterminer(['quelques']), undefined);
+  assert.equal(identifyDeterminer(['trois']), undefined);
   assert.equal(identifyDeterminer(['la', 'vers']), undefined);
 });
 
@@ -44,9 +61,6 @@ test('elides : voyelle ou h muet, sauf interdiction du lexique', () => {
   assert.equal(elides('Héros', m), false);
   assert.equal(elides('chat', m), false);
 });
-
-const realize = (words: string[], gender: 'm' | 'f', nextElides: boolean, number: 's' | 'p' = 's', apostrophe?: string) =>
-  realizeDeterminer(identifyDeterminer(words)!.determiner, { gender, number, nextElides, apostrophe }).join(' ');
 
 test('realizeDeterminer : genre, élision, contraction', () => {
   assert.equal(realize(['le'], 'f', false), 'la');

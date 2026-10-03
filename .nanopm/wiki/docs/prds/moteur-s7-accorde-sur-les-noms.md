@@ -106,8 +106,8 @@ Quel mode est le S+7 « par défaut » de Potao ? Option A : le S+7 strict avec 
 | Question | Owner | Blocks | By when |
 |----------|-------|--------|---------|
 | ~~Le lexique distingue-t-il le h aspiré du h muet ?~~ Levée le 2026-10-03 : oui (note `pel` pour « héros », `hm` pour « horloge »). | — | — | — |
-| Faut-il écarter du dictionnaire les noms très rares ? Avec 54 233 lemmes, le 7e suivant est souvent un mot inconnu du lecteur ; le lexique fournit un indice de fréquence par forme. | Tristan | Le dictionnaire par défaut | 24 octobre 2026 |
-| Jusqu'où va le réaccord : adjectifs contigus seulement, ou aussi attributs, participes et pronoms de reprise (« elle est grande ») ? Cette version s'arrête aux contigus. | Tristan | Le décompte du mode « réaccord » | 24 octobre 2026 |
+| ~~Faut-il écarter du dictionnaire les noms très rares ?~~ Tranchée le 2026-10-03 : non, le dictionnaire n'est pas filtré. | — | — | — |
+| ~~Jusqu'où va le réaccord ?~~ Tranchée le 2026-10-03 : étendu aux adjectifs coordonnés, attributs, participes après être et pronoms de reprise sans ambiguïté ; table des déterminants étendue. | — | — | — |
 | Quel ordre alphabétique : celui du dictionnaire français (accents ignorés au premier niveau) ou l'ordre brut des caractères ? | Tristan | La reproductibilité de la règle | 17 octobre 2026 |
 | Que fait-on d'un nom mal étiqueté en amont (le modèle neuronal se trompe sur environ 1 mot sur 30) ? | Tristan | La justesse de bout en bout | 8 novembre 2026 |
 

@@ -30,13 +30,13 @@ Le domaine reçoit la morphologie par le port `MorphologyRepository` et des mots
 - Données : un fichier dérivé du lexique Grammalecte v7.7 (MPL 2.0) pour les noms et adjectifs ; la table des déterminants est écrite à la main, elle est petite et fermée.
 - H aspiré : vérifié le 2026-10-03, le lexique le distingue (note `pel` pour « héros », `hm` pour « horloge »).
 - Ordre alphabétique : celui du dictionnaire français, `Intl.Collator('fr')`. Choix de l'assistant, à confirmer.
-- Dictionnaire par défaut : tous les noms du lexique (54 233 lemmes), sans filtre de fréquence. Choix de l'assistant, à confirmer.
+- Dictionnaire par défaut : tous les noms du lexique (54 233 lemmes), sans filtre. Confirmé par le fondateur le 2026-10-03, y compris pour les mots rares, grossiers ou mal formés.
 - Tout s'exécute dans le navigateur ; aucune requête ne contient le texte. Pas de modèle génératif, pas de tirage aléatoire.
-- Le réaccord s'arrête aux mots contigus : pas d'attributs, de participes ni de pronoms de reprise.
+- Réaccord étendu (décision du fondateur du 2026-10-03) : adjectifs coordonnés ou apposés, attribut du sujet après un verbe d'état, participe après être, pronom sujet de reprise quand l'antécédent est sans ambiguïté dans la phrase. Sans analyse syntaxique : ce sont des règles de voisinage (`src/domain/s7/syntax.ts`), prudentes là où une erreur créerait une faute absente de l'original.
+- Table des déterminants étendue aux déterminants variables en genre (certain, quel, tout, aucun, nul, tel…).
 
 ## Open questions
 
-- Faut-il écarter les noms très rares du dictionnaire par défaut ? Le lexique fournit un indice de fréquence par forme.
 - Le réaccord limité aux contigus suffit-il à tenir 90 % ? C'est le pari que la mesure doit trancher ; sinon le S+7 strict est reporté.
 - Que faire d'un nom mal étiqueté en amont (environ 1 mot sur 30 avec le modèle neuronal) ?
 - Effort : 7,5 jours estimés avec la migration, contre une taille M dans la roadmap.
