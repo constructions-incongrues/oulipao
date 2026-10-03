@@ -66,7 +66,7 @@ pendant 6 semaines.
 | 4 | `#flexible` **Ajouter une contrainte** | Une nouvelle contrainte s'ajoute dans son propre répertoire de `src/domain/` et dans le registre des plugins (`installedPlugins`, tenu par l'Interface dans `src/ui/tracks/mixer-state.ts`), sans modifier l'étiquetage, les ports ni les adaptateurs existants. `npm test` impose une couverture d'au moins 90 % en lignes, branches et fonctions. *Atteint depuis la PR #9 (commit `a265b4f`) : trois contraintes (tri par piste, bord, mise en vers) ont été ajoutées dans leurs répertoires de `src/domain/`, avec le contrat partagé, le registre et les recettes de l'Interface, sans toucher ni aux ports ni aux adaptateurs. Avant elles, le lipogramme (commit `9085451`) avait dû étendre un port et deux adaptateurs : une contrainte qui demande des données nouvelles au dictionnaire le fera encore.* |
 | 5 | `#usable` **Accessible** | Tous les couples texte/fond de la palette atteignent un contraste d'au moins 4,5:1 (WCAG 2.2), dans les thèmes clair et sombre. Les pistes restent distinctes en daltonisme (ΔE ≥ 20, simulations de Machado 2009). `npm run check:palette` échoue en nommant chaque paire fautive. Tous les gestes de la table sont faisables au clavier, et la page ne défile jamais à l'horizontale à 375 px. *En partie vérifié : `check:palette` passe pour les contrastes et le daltonisme ; l'usage au clavier et l'affichage à 375 px n'ont pas été revérifiés depuis `DESIGN.md`.* |
 
-Les scénarios détaillés iront dans la section 10, quand elle existera.
+Les scénarios détaillés (QS-01 à QS-13) sont dans la section 10.
 
 ---
 
