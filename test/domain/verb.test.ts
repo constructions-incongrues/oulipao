@@ -62,6 +62,8 @@ test('neighbourVerb : le premier verbe suivant sans la lettre, aux mêmes traits
   assert.deepEqual(neighbourVerb('aime', ['je'], 'a', V), { form: 'dors' });
   assert.deepEqual(neighbourVerb('est', ['il'], 'e', V), { reason: AUXILIARY });
   assert.deepEqual(neighbourVerb('mangeons', ['nous'], 'o', V), { reason: 'aucun voisin sans la lettre' });
+  // Plusieurs lettres bannies (lipogrammes enchaînés) : « adorait » a un « o », « aimait » non.
+  assert.deepEqual(neighbourVerb('mangeait', ['elle'], 'eo', V), { form: 'aimait' });
 });
 
 const out = (...words: string[]): OutputWord[] => words.map((output, index) => ({ index, output, gap: index ? ' ' : '' }));

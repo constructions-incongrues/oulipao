@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { VerbRepository } from '../ports/verbs.ts';
+import { containsLetter } from './lipogram/neighbour.ts';
 import type { WordMark } from './plugin.ts';
 import { GenderSchema, GrammaticalNumberSchema, type OutputWord } from './s7/types.ts';
 import type { TaggedWord } from './tagged-word.ts';
@@ -128,7 +129,7 @@ export function nthVerb(word: string, previous: readonly string[], offset: numbe
 
 /** Le premier verbe qui suit dans le dictionnaire et qui a, aux mêmes traits, une forme sans la lettre. */
 export const neighbourVerb = (word: string, previous: readonly string[], letter: string, verbs: VerbRepository): VerbShift =>
-  nthVerb(word, previous, 1, (form) => !form.toLowerCase().includes(letter), verbs, 'aucun voisin sans la lettre');
+  nthVerb(word, previous, 1, (form) => !containsLetter(form, letter), verbs, 'aucun voisin sans la lettre');
 
 const FULL_PRONOUN: Record<string, string> = { j: 'je', m: 'me', t: 'te', s: 'se', n: 'ne', l: 'le' };
 
