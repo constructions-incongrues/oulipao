@@ -2,49 +2,55 @@
 type: overview
 section: define
 generated: 2026-10-03
-sources: [vision-mission.md, business-model.md, product.md, org.md]
+sources: [vision-mission.md, business-model.md, org.md, product.md, personas.md, feedback.md]
 ---
 
 # PM Context Brief
-Généré 2026-10-03 · Project: oulipao · Sources: 4 Define docs
+Généré 2026-10-03 · Project: oulipao · Sources: vision-mission.md, business-model.md, org.md, product.md, personas.md, feedback.md
 
 ## What we do
 
-Oulipao est un outil web qui découpe un texte en pistes linguistiques (noms, adjectifs, verbes, adverbes…) et laisse l'utilisateur brancher des plugins de contrainte oulipienne (par exemple S+7) alimentés par des ressources lexicales, pour réécrire le texte en direct. Oulipao signifie « Ouvroir de Littérature Potentielle Assistée par Ordinateur ». La métaphore est celle d'un logiciel de MAO : « comme Ableton, sauf que les pistes ne sont pas sonores, mais linguistiques ». La contrainte est toujours une règle énoncée, jamais une génération opaque.
+Oulipao est un outil web qui découpe un texte en pistes linguistiques (noms, adjectifs, verbes, adverbes…) et laisse brancher et enchaîner des contraintes oulipiennes (S+7, lipogramme…) alimentées par des textbanks, pour réécrire le texte en direct. Le nom veut dire « Ouvroir de Littérature Potentielle Assistée par Ordinateur » ; la métaphore est celle d'un logiciel de MAO. La contrainte est toujours une règle énoncée, jamais une génération opaque. Le site est en ligne (oulipao.incongru.org).
 
 _Plus de détails : `.nanopm/wiki/docs/product.md`_
 
 ## Who it's for
-Persona principal : le lecteur de Queneau ou de Perec, qui connaît le S+7 de nom et n'a jamais essayé ; il veut voir ce qu'une contrainte fait à un texte qu'il connaît et avoir un résultat à montrer. Persona secondaire : la développeuse creative coding qui écrit et publie ses propres plugins. Anti-persona : celui qui veut que l'IA écrive à sa place.
-_More detail: `.nanopm/wiki/docs/personas.md`_
+
+Persona principal : le fondateur, Tristan, qui s'en sert pour jouer avec ses textes (« je suis le persona », 2026-10-03) ; Oulipao est son outil, ouvert en passant. Aucune fonction n'est construite pour d'autres. Publics non ciblés : miasmes, qui joue pour rire (personne réelle, observée le 2026-10-03, a envoyé par mail un poème transformé avec l'original) et la dev-joueuse Jade (aucune manifestation). Anti-persona : celui qui veut que l'IA écrive à sa place. Le profil imaginé « Lecteur-de-Perec Léo » est remplacé.
+
+_Plus de détails : `.nanopm/wiki/docs/personas.md`_
 
 ## How we make money
 
-Aucun revenu. Oulipao est un projet open source bénévole dont les coûts sont financés par son fondateur. Gratuit, pas d'abonnement, ni dons ni subventions prévus. GTM par les créations : chaque texte transformé est partageable et ramène vers l'outil ; la découverte vient des textes produits, pas d'une promotion. Ce canal reste non prouvé (rien n'existe encore à partager).
+Aucun revenu : projet open source bénévole, gratuit, coûts payés par le fondateur ; ni abonnement, ni dons, ni subventions prévus. Diffusion par les créations : les textes transformés circulent. Premier indice le 2026-10-03 (un texte envoyé par mail, en copier-coller), très loin d'une preuve.
 
 _Plus de détails : `.nanopm/wiki/docs/business-model.md`_
 
 ## Why we exist
 
-**Mission :** Rendre la littérature potentielle jouable par n'importe qui — on charge un texte, on tourne des boutons, on voit ce qu'il aurait pu être.
+**Mission :** Oulipao est l'instrument de son fondateur pour jouer de la littérature potentielle : charger un texte, enchaîner des contraintes sur ses pistes, garder ce que le texte aurait pu être. Le code est ouvert.
 
-**Vision (3–5 ans) :** Un écosystème ouvert où la communauté publie ses propres plugins de contraintes et ses propres textbanks. On saura qu'on y est quand la majorité des plugins et textbanks utilisés n'auront pas été écrits par l'équipe d'origine.
+**Vision (3-5 ans) :** un écosystème ouvert de plugins et de textbanks, écrits en majorité par d'autres. C'est un horizon, pas la cible actuelle.
 
-**Stage :** Idée — rien de construit, aucun utilisateur, aucune preuve. Le dépôt est vide au 2026-10-03.
+**Valeurs :** la contrainte est explicite ; ouvert et bidouillable ; le texte reste à l'auteur.
 
-**Valeurs cœur :** La contrainte est explicite (jamais une boîte noire) ; ouvert et bidouillable (formats ouverts que n'importe qui peut écrire) ; le texte reste à l'auteur (pas de stockage, d'exploitation ni d'entraînement sur les textes chargés).
+**Stage :** prototype en ligne ; une seule personne extérieure s'en est servie (2026-10-03).
 
 _Plus de détails : `.nanopm/wiki/docs/vision-mission.md`_
 
 ## Who decides
 
-Tristan (fondateur) décide de tout seul : direction produit, budget, ship / no-ship, tout le reste. Aucun autre décideur. Il travaille seul, soirs et week-ends, épaulé par des agents IA pour l'exécution du code. Pas de cadence, méthodologie ad hoc (NOW / NEXT / LATER sans dates), pas de système de record formalisé.
+Tristan décide seul (produit, budget, ship / no-ship), soirs et week-ends, avec des agents IA pour l'exécution. Pas de cadence ; feuille de route NOW / NEXT / LATER sans dates.
 
 _Plus de détails : `.nanopm/wiki/docs/org.md`_
 
 ## What's NOT known yet
 
-- **Problème non validé** : Le fondateur rapporte qu'il n'y a pas de douleur identifiée — seulement l'hypothèse « les gens voudront ceci une fois qu'ils le verront ». **Hiatus critique :** Aucun utilisateur précoce identifié à ce jour, alors que le risque principal est l'absence de retour rapide. La seule compréhension de ce qui motive le retour utilisateur vient du parti pris du fondateur, pas de données utilisateur.
-- **Composantes linguistiques non testées** : L'étiquetage grammatical du français dans le navigateur, le réaccord post-substitution, la qualité d'un lexique français ouvert, le format des plugins et textbanks — tous des paris technologiques, aucun éprouvé.
-- **Go-to-market non prouvé** : « Les textes transformés circulent » est une stratégie, pas une preuve.
-- **Pérennité** : Repose entièrement sur le temps et la motivation du fondateur seul ; s'il n'y a pas de signal rapide, le projet s'arrête.
+- **`product.md` est en retard sur le construit** : il dit « rien n'est construit » et décrit le persona principal comme le lecteur de Perec. Le stade n'est plus « rien de construit » : le site est en ligne et une personne extérieure l'a utilisé. À régénérer avant de s'y fier.
+- **Aucun texte gardé par le fondateur** à ce jour : le pari « il en tire des textes qu'il relit » n'est pas vérifié.
+- **Un seul signal extérieur** : un échange (miasmes), pas une tendance. Un texte gardé par un autre compte-t-il pour les objectifs ? Non tranché.
+- **Pas de douleur identifiée** : Oulipao répond à une envie, pas à un problème déclaré.
+- **Paris techniques** (étiquetage du français, réaccord, qualité du lexique, format de plugin) : état d'avancement non couvert par les docs Define (assumed : en partie éprouvés, puisque l'outil tourne en ligne).
+- **Pérennité** : repose sur le temps et l'envie du fondateur seul.
+
+_Plus de détails : `.nanopm/wiki/docs/feedback.md`_

@@ -5,56 +5,41 @@ generated: 2026-10-03
 sources: [objectives.md, strategy.md, roadmap.md]
 ---
 # Plan Brief
-Generated 2026-10-03 · Project: oulipao · Sources: objectives.md, strategy.md, roadmap.md (les trois existent)
-
-> La roadmap (révisée aujourd'hui, deuxième passe) fait foi là où elle diverge de la stratégie : la mise en ligne et les verbes, encore présentés comme « non » dans la stratégie, sont faits.
+Generated 2026-10-03 · Project: oulipao · Sources: objectives.md, strategy.md, roadmap.md
 
 ## What we're betting on
-
-Oulipao est l'instrument personnel du fondateur pour jouer de la littérature potentielle en français, entièrement dans le navigateur, sans compte. Le pari : des contraintes traitées comme des filtres instanciables, ciblables et enchaînables lui donnent chaque semaine des textes qu'il garde (au moins 5 en 6 semaines, dont 3 issus d'une chaîne de plusieurs filtres). Avantages visés : le rack de filtres, un français juste (accords, élision), et l'auteur qui est l'utilisateur.
-
-**Risque.** Construire au lieu d'écrire. Garde : trois semaines sans texte gardé alors que des commits continuent, on s'arrête et on relit ce qui manque. Falsification fixée au 14 novembre 2026. Le test « carnet de trois soirs » a été écarté par le fondateur.
-
+Un carnet qui range chaque texte avec son original, son résultat et sa chaîne, plus la garde « pas de nouvelle contrainte la semaine qui suit une semaine sans séance d'écriture », suffit à faire de la construction une source de textes : au moins 5 au carnet avant le 31 décembre 2026, dont au moins 3 du fondateur et au moins un envoyé par une autre personne sans relance. Le fondateur assume de revenir autant pour construire que pour écrire ; les textes des autres comptent. Risque nommé : la construction mange l'écriture malgré la garde. Test le 18 octobre : pari confirmé si au moins 2 textes du fondateur au carnet et moins de 5 commits `feat` sur la période.
 _More detail: `.nanopm/wiki/docs/strategy.md`_
 
 ## What we're aiming for
+Période : octobre – décembre 2026.
+- **O1 — L'instrument : des contraintes justes, des résultats qu'on peut montrer.** KR1 : le carnet existe et range un premier texte avant le 12 octobre. KR2 : tout défaut de contrainte connu corrigé sous 7 jours. KR3 : chaque contrainte livrée apparaît dans la chaîne d'au moins un texte du carnet sous 14 jours, sinon notée « inutilisée ».
+- **O2 — Des textes gardés ou montrés, par le fondateur ou par d'autres.** KR1 : au moins 5 textes au carnet avant le 31 décembre, dont 3 du fondateur. KR2 : au moins une séance d'écriture par semaine pendant 6 semaines. KR3 : au moins 2 personnes envoient un texte sans relance. KR4 : au moins 3 textes enchaînent plusieurs contraintes.
 
-Période : octobre à décembre 2026.
-
-- **O1 : un prototype à pistes avec un S+7 français correct.** Les trois résultats clés sont atteints (pistes par catégorie, accords au moins 9 sur 10, texte qui ne quitte pas le navigateur).
-- **O2 : que le fondateur se serve d'Oulipao pour écrire.** Au moins 5 textes gardés avant le 31 décembre ; au moins une séance par semaine pendant 6 semaines ; au moins 3 textes enchaînant plusieurs filtres. Aucun texte gardé à ce jour. Si aucun n'est gardé fin décembre, comprendre ce qui bloque avant d'ajouter des contraintes.
-
-Les seuils chiffrés sont proposés par l'assistant, non validés par le fondateur.
-
+État au 3 octobre : 1 texte montré (miasmes, avant le carnet) ; 0 texte du fondateur.
 _More detail: `.nanopm/wiki/docs/objectives.md`_
 
 ## What we're building now
+**NOW (4-8 semaines)**
+1. Carnet (original, résultat, chaîne, copie d'un bloc), livré au plus tard le 11 octobre ; au moins 2 textes du fondateur le 18 octobre. Seul item de code (S).
+2. Écrire chaque semaine du 12 octobre au 22 novembre ; lecture du 18 octobre (export du carnet à côté du journal git).
+3. Le 25 octobre, au moins 80 % des contraintes livrées le 3 octobre apparaissent dans une chaîne ; les autres sont listées « inutilisées ».
 
-Déjà livré aujourd'hui : filtres instanciables/ciblables/chaînables, inspecteur de chaîne, instrument perforé (design, grille de pas, verrous), verbes et V+7, lipogramme, mise en ligne GitHub Pages.
+Ordre : aucune nouvelle contrainte dans `main` tant que le carnet ne contient pas un texte ; les correctifs de justesse restent permis.
 
-**NOW (4 à 8 semaines)**
-1. **Carnet de textes gardés** (S) : ranger chaque texte avec sa date et sa chaîne. Cible : 1 texte avant le 12 octobre, 5 avant le 31 décembre. Passe en premier : sans lui, rien ne se mesure.
-2. **Textbank phonétique et premier filtre de rime** (L) : au moins 2 textes gardés faits avec ce filtre, dans une chaîne d'au moins 2 filtres, avant le 30 novembre. Pièges : licence de Lexique.org (CC BY-SA) face au MIT et à la MPL, chargement à la demande, définition de la rime.
-3. **Écrire chaque semaine** (sans code) : une séance par semaine du 5 octobre au 14 novembre.
-
-Le temps de code n'est plus la limite ; le temps d'écriture l'est. Un chantier L passe devant un premier texte inexistant : la garde du risque s'applique.
-
-**NEXT (1 à 3 mois), d'un coup d'œil** : autres filtres phonétiques (homophonies, monorime, antirime) ; élagage et mode témoin ; lipogramme à plusieurs lettres et accentuées ; paramètre texte libre (E1).
-
+**NEXT (1-3 mois)** : élagage et mode témoin ; paramètre texte libre (E1) ; héberger le modèle d'étiquetage et trancher sa licence. Chaque item attend que la garde soit levée.
 _More detail: `.nanopm/wiki/docs/roadmap.md`_
 
 ## What we're saying no to
-
-- Génération de texte par IA (pas de réouverture).
-- Comptes et sauvegarde serveur (rouvrir si le fondateur perd un texte).
-- Autres langues que le français.
+- Une nouvelle contrainte quand la garde « parts égales » est déclenchée.
+- Le partage en un clic (lien, image).
+- Le filtrage des mots crus du lexique.
+- Un format de plugin publié, un bac à sable tiers.
+- Les comptes, la sauvegarde sur serveur, les autres langues que le français.
 - Une chaîne par piste.
-- Nouvelle fiche du séquenceur tant qu'aucun texte n'est gardé (rouvrir à 3 textes dans le carnet).
-- Pour l'instant, avec condition de réouverture : format de plugin publié et bac à sable tiers, partage en un clic, cinq testeurs, mise en ligne comme condition.
+- Toute génération de texte par IA (pas de réouverture).
 
 ## Not yet planned
-
-- LATER sans date : sortie libre et structure en vers (E3), textbanks sémantiques (E5), hébergement du modèle d'étiquetage et sa licence (`TODOS.md`).
-- Pas de mesure en place de la régularité (séances par semaine) hors carnet, qui n'existe pas encore (assumed).
-- `product.md` n'a pas suivi ce qui est construit, et il n'y a pas de connecteur (Linear, Notion, GitHub) : aucune source externe dans le plan.
-- Question ouverte de la stratégie : si les textes ne viennent pas, est-ce l'outil, l'envie ou le choix des contraintes ?
+- Rien ne manque côté objectifs, stratégie, roadmap.
+- La base d'opportunités (`.nanopm/wiki/entities/opportunities/INDEX.md`) n'a pas d'index : le signal « ce qu'on entend » n'est pas synthétisé ici.
+- `product.md` n'a pas suivi ce qui est construit (note de la roadmap).

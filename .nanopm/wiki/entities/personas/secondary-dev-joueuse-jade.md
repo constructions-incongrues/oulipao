@@ -1,12 +1,12 @@
 ---
 id: secondary-dev-joueuse-jade
 type: persona
-title: "Secondary — Dev-joueuse Jade"
+title: "Public non ciblé — Dev-joueuse Jade"
 status: draft
 provenance: user-stated
 sources: [personas.md]
 relates_to:
-  - page: personas/primary-lecteur-de-perec-leo
+  - page: personas/fondateur-tristan
     rel: extends
 last_updated: 2026-10-03
 ---
