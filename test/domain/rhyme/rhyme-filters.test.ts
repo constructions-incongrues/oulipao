@@ -91,6 +91,16 @@ test('monorime en /ɔ̃/ : chaque fin de vers visée finit en /ɔ̃/, celle qui 
   assert.ok(monorhymePlugin.acts({}));
 });
 
+test('sonnet monorime alterné : la rime ne change pas, le genre alterne de vers en vers', () => {
+  const alternate = run(monorhymePlugin, 'le vert\nle chat\nle ver', { rhyme: 'ɛʁ', gender: 'alternate' }, ALL);
+  assert.equal(alternate.text, 'le vert\nle verre\nle ver'); // masculine, féminine, masculine
+  assert.equal(run(monorhymePlugin, 'le chat', { rhyme: 'ɛʁ' }, ALL).text, 'le vair'); // sans genre, le premier voisin en /ɛʁ/
+  assert.deepEqual(reasons(run(monorhymePlugin, 'la chaise', { rhyme: 'ɛʁ', gender: 'feminine' }, ALL).marks), ['chaise : aucun mot sur cette rime, en rime féminine']);
+  assert.deepEqual(reasons(run(monorhymePlugin, 'le vert', { rhyme: 'ɛʁ', gender: 'feminine' }, ALL).marks), []); // « verre » : la rime féminine suit
+  assert.equal(monorhymePlugin.label(monorhymePlugin.parse({ rhyme: 'ɛʁ', gender: 'alternate' })).endsWith(', rimes alternées'), true);
+  assert.match(monorhymePlugin.help({ rhyme: 'ɛʁ', gender: 'feminine' }), /\(rimes féminines\)/);
+});
+
 test('antirime : dans un quatrain à rimes plates, les vers 2 et 4 changent et plus rien ne rime', () => {
   const { text, marks } = run(antirhymePlugin, 'la table\nla fable\nla rose\nla chose', {}, ALL);
   assert.equal(text, 'la table\nla fraise\nla rose\nla maison');
