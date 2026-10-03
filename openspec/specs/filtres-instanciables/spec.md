@@ -75,7 +75,7 @@ The system SHALL describe each active instance in the summary and in the note ap
 #### Scenario: Copie
 - **GIVEN** un S+7 sur les noms, un S+3 sur les adjectifs et un lipogramme en e
 - **WHEN** le texte résultant est copié
-- **THEN** la mention est « — S+7 sur les noms · S+3 sur les adjectifs · lipogramme en e (Potao) », le lipogramme visant toutes ses pistes
+- **THEN** la mention est « — S+7 sur les noms · S+3 sur les adjectifs · lipogramme en e (Oulipao) », le lipogramme visant toutes ses pistes
 
 #### Scenario: Lipogramme ciblé dans la mention
 - **GIVEN** un lipogramme en « e » visant les seuls noms

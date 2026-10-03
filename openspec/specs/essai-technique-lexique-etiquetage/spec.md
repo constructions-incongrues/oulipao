@@ -1,7 +1,7 @@
 # Essai technique : lexique libre et étiquetage dans le navigateur
 
 ## Purpose
-Décider, chiffres à l'appui, si l'étiquetage grammatical du français dans le navigateur et un lexique libre permettent de construire l'interface à pistes de Potao.
+Décider, chiffres à l'appui, si l'étiquetage grammatical du français dans le navigateur et un lexique libre permettent de construire l'interface à pistes d'Oulipao.
 
 ## Requirements
 

@@ -1,4 +1,4 @@
-// Déclaration minimale de fr-compromise 0.3.1 : seulement ce que Potao utilise.
+// Déclaration minimale de fr-compromise 0.3.1 : seulement ce qu'Oulipao utilise.
 export interface FrCompromiseTerm {
   text: string;
   tags: string[];

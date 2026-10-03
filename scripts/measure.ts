@@ -17,7 +17,7 @@ const references = readdirSync(directory)
   .sort()
   .map((file) => ({ file, reference: ReferenceTextSchema.parse(JSON.parse(readFileSync(new URL(file, directory), 'utf8'))) }));
 
-const lexicon = new LexiconLookupTagger(fileTextSource(new URL('../data/lexique-potao.tsv', import.meta.url)));
+const lexicon = new LexiconLookupTagger(fileTextSource(new URL('../data/lexique-oulipao.tsv', import.meta.url)));
 const taggers: Tagger[] = [new CamembertTagger(createCamembertClassifier()), new FrCompromiseTagger(), lexicon];
 const isAmbiguous = await lexicon.ambiguityPredicate();
 const ratio = (a: number, b: number) => `${a}/${b} (${((100 * a) / b).toFixed(1)} %)`;

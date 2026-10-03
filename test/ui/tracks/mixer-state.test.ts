@@ -53,7 +53,7 @@ test('ajouter, dupliquer, retirer : chaque instance a son identifiant et ses ré
 test('pistes visées : parmi celles du type, dans l’ordre de la table, au moins une', () => {
   assert.deepEqual(instance(after({ type: 'set-targets', id: 's7-1', targets: ['adjective', 'noun', 'noun'] }), 's7-1').targets, ['noun', 'adjective']);
   assert.deepEqual(instance(after({ type: 'set-targets', id: 'lipogram-1', targets: ['noun'] }), 'lipogram-1').targets, ['noun']);
-  assert.throws(() => reduce(initialState, { type: 'set-targets', id: 's7-1', targets: ['verb'] }), /S\+7 ne traite pas : verb/);
+  assert.throws(() => reduce(initialState, { type: 'set-targets', id: 's7-1', targets: ['adverb'] }), /S\+7 ne traite pas : adverb/);
   assert.throws(() => reduce(initialState, { type: 'set-targets', id: 's7-1', targets: [] }));
 });
 
@@ -90,4 +90,45 @@ test('refuse un geste non conforme', () => {
   assert.throws(() => reduce(initialState, { type: 'add-instance', plugin: 'inconnu' }), /plugin inconnu/);
   assert.throws(() => reduce(initialState, { type: 'toggle-mute', category: 'pronom' as never }));
   assert.throws(() => reduce(initialState, { type: 'danser' } as never));
+});
+
+test('pas bouchés : un clic bouche, un second rouvre ; valable pour toute la chaîne', () => {
+  assert.deepEqual(after({ type: 'toggle-step', index: 5 }).closed, [5]);
+  assert.deepEqual(after({ type: 'toggle-step', index: 5 }, { type: 'toggle-step', index: 2 }, { type: 'toggle-step', index: 5 }).closed, [2]);
+  // Un filtre ajouté après coup trouve le pas toujours bouché : l'état n'appartient à aucune instance.
+  assert.deepEqual(after({ type: 'toggle-step', index: 5 }, { type: 'add-instance', plugin: 'lipogram' }).closed, [5]);
+});
+
+test('verrous : posés par instance et par mot, validés comme un réglage, retirés quand le champ se vide', () => {
+  const locked = after({ type: 'set-lock', id: 's7-1', index: 3, key: 'offset', value: 3 });
+  assert.deepEqual(instance(locked, 's7-1').locks, [{ index: 3, key: 'offset', value: 3 }]);
+  // Un second verrou sur le même mot remplace le premier.
+  const twice = after({ type: 'set-lock', id: 's7-1', index: 3, key: 'offset', value: 3 }, { type: 'set-lock', id: 's7-1', index: 3, key: 'offset', value: 2 });
+  assert.deepEqual(instance(twice, 's7-1').locks, [{ index: 3, key: 'offset', value: 2 }]);
+  // Hors bornes, ou sur un paramètre qui n'est pas entier : refusé.
+  assert.throws(() => after({ type: 'set-lock', id: 's7-1', index: 3, key: 'offset', value: 120 }));
+  assert.throws(() => after({ type: 'set-lock', id: 's7-1', index: 3, key: 'mode', value: 1 }));
+  assert.throws(() => after({ type: 'set-lock', id: 'lipogram-1', index: 3, key: 'letter', value: 1 }));
+  // Vider le champ retire le verrou.
+  const cleared = after({ type: 'set-lock', id: 's7-1', index: 3, key: 'offset', value: 3 }, { type: 'clear-lock', id: 's7-1', index: 3, key: 'offset' });
+  assert.deepEqual(instance(cleared, 's7-1').locks, []);
+  assert.deepEqual(instance(after({ type: 'clear-lock', id: 's7-1', index: 3, key: 'offset' }), 's7-1').locks, []);
+});
+
+test('verrous : une autre instance garde sa valeur, un double porte les verrous, un retrait les emporte', () => {
+  const state = after(
+    { type: 'add-instance', plugin: 's7' },
+    { type: 'set-lock', id: 's7-1', index: 3, key: 'offset', value: 3 },
+    { type: 'duplicate-instance', id: 's7-1' },
+  );
+  assert.deepEqual(instance(state, 's7-2').locks, undefined);
+  assert.deepEqual(instance(state, 's7-3').locks, [{ index: 3, key: 'offset', value: 3 }]);
+  const removed = reduce(state, { type: 'remove-instance', id: 's7-1' });
+  assert.equal(removed.instances.flatMap((candidate) => candidate.locks ?? []).length, 1);
+});
+
+test('nouveau texte : tous les pas rouverts, aucun verrou', () => {
+  const state = after({ type: 'toggle-step', index: 5 }, { type: 'set-lock', id: 's7-1', index: 3, key: 'offset', value: 3 }, { type: 'reset-steps' });
+  assert.deepEqual(state.closed, []);
+  assert.ok(state.instances.every((candidate) => candidate.locks?.length === 0));
 });

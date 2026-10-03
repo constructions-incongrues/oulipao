@@ -3,9 +3,10 @@ import { test } from 'node:test';
 import { CATEGORIES } from '../../src/domain/categories.ts';
 import { plainWords } from '../../src/domain/mixing.ts';
 import { definePlugin, WordMarkSchema, type ConstraintPlugin } from '../../src/domain/plugin.ts';
-import { runChain } from '../../src/domain/plugin-chain.ts';
+import { runChain, type ChainStep } from '../../src/domain/plugin-chain.ts';
+import { lipogramPlugin } from '../../src/domain/lipogram/plugin.ts';
 import { s7Plugin } from '../../src/domain/s7/plugin.ts';
-import { morphology, tag } from '../support/morphology.ts';
+import { morphology, tag, verbs } from '../support/morphology.ts';
 
 const resources = { morphology: morphology() };
 /** Une instance de la chaîne, sur les pistes par défaut de son type. */
@@ -113,4 +114,35 @@ test('contrat : portée « toutes les pistes » et mot retiré', () => {
   assert.deepEqual(without('e').tracks, [...CATEGORIES]);
   assert.equal(WordMarkSchema.parse({ index: 0, original: 'le', removed: true }).removed, true);
   assert.throws(() => WordMarkSchema.parse({ index: 0, original: 'le', removed: false }));
+});
+
+test('portée par mot : pas bouchés et verrous traduits en positions du texte relu', () => {
+  const received: unknown[] = [];
+  const recorder: ConstraintPlugin = definePlugin({
+    ...without('x'),
+    id: 'enregistreur',
+    apply(text, _tagged, _values, _resources, _targets, scope) {
+      received.push(scope);
+      return { ...plainWords(text), marks: [] };
+    },
+  });
+  const text = 'La ferme du village.';
+  const locks = new Map([[3, { offset: 1 }]]);
+  // « du » devient « de la » au premier pas : relu en deux mots, tous deux sautés.
+  runChain(text, tag(text), [step(expand, {}), { ...step(recorder, {}), closed: new Set([2]), locks }], resources);
+  assert.deepEqual(received.at(-1), { skip: [2, 3], overrides: [{ index: 4, values: { offset: 1 } }] });
+  // Sans pas bouché ni verrou : une portée vide.
+  runChain(text, tag(text), [step(recorder, {})], resources);
+  assert.deepEqual(received.at(-1), { skip: [], overrides: [] });
+});
+
+test('S+7 sur les verbes puis lipogramme en e : un verbe sans « e », au même temps', () => {
+  const text = 'je dors';
+  const steps: ChainStep[] = [
+    { id: 'v7', plugin: s7Plugin, values: { offset: -1 }, targets: new Set(['verb'] as const) },
+    { id: 'lipo', plugin: lipogramPlugin, values: { letter: 'e' }, targets: new Set(['verb'] as const) },
+  ];
+  // dormir −1 → chanter (« chante », avec un « e »), puis le premier verbe suivant sans « e » à la 1re personne : dormir.
+  const chain = runChain(text, tag(text, { je: 'other', dors: 'verb' }), steps, { ...resources, verbs: verbs() });
+  assert.deepEqual(chain.stages.map((stage) => stage[1]), ['chante', 'dors']);
 });

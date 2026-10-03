@@ -1,4 +1,4 @@
-// Dérivation de data/morpho-potao.tsv à partir du lexique Grammalecte v7.7 (MPL 2.0) :
+// Dérivation de data/morpho-oulipao.tsv à partir du lexique Grammalecte v7.7 (MPL 2.0) :
 // les noms communs et les adjectifs (participes adjectivés compris) avec forme, lemme, genre,
 // nombre, et l'interdiction d'élision (note « pel » du lexique : h aspiré, « onze », « yaourt ») ;
 // les adverbes, invariables, avec leur seule forme.
@@ -37,7 +37,7 @@ export const DERIVED_MORPHOLOGY_HEADER = [
   '# file, You can obtain one at http://mozilla.org/MPL/2.0/.',
   '#',
   '# Dérivé du « Lexique des formes fléchies du français », Grammalecte v7.7 (Olivier R.,',
-  '# https://grammalecte.net/). Modifié le 2026-10-03 pour Potao : noms, adjectifs et adverbes',
+  '# https://grammalecte.net/). Modifié le 2026-10-03 pour Oulipao : noms, adjectifs et adverbes',
   '# seulement ; colonnes : N|A|R, forme, lemme, genre (m f e), nombre (s p i), pas d\'élision (0 1).',
   '# Les adverbes (R) sont invariables : lemme = forme, genre e, nombre i.',
 ];

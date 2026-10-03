@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { initialState, reduce } from '../../../src/ui/tracks/mixer-state.ts';
-import { buildView, changedWords, describeInstance, inspectorWindow, ruleMention, summarize } from '../../../src/ui/tracks/view-model.ts';
-import { morphology, tag } from '../../support/morphology.ts';
+import { buildView, changedWords, describeInstance, gridSteps, inspectorLocks, inspectorWindow, pageOf, ruleMention, stepsPerPage, summarize } from '../../../src/ui/tracks/view-model.ts';
+import { morphology, tag, verbs } from '../../support/morphology.ts';
 import { sansPlugin } from '../../support/plugins.ts';
 import { s7Plugin } from '../../../src/domain/s7/plugin.ts';
 import { CATEGORIES } from '../../../src/domain/categories.ts';
@@ -83,13 +83,13 @@ test('résumé annoncé après chaque geste', () => {
 
 test('mention de la règle (D11) : seulement ce qui a changé le texte', () => {
   const all = new Set(['noun', 'verb', 'adjective', 'adverb', 'other'] as const);
-  assert.equal(ruleMention(initialState, all), '\n\n— S+7 sur les noms (Potao)');
-  assert.equal(ruleMention(reduce(initialState, { type: 'set-param', id: 's7-1', key: 'offset', value: -3 }), all), '\n\n— S−3 sur les noms (Potao)');
-  assert.equal(ruleMention(reduce(initialState, { type: 'set-param', id: 's7-1', key: 'mode', value: 'same-gender' }), all), '\n\n— S+7, parmi les noms du même genre, sur les noms (Potao)');
+  assert.equal(ruleMention(initialState, all), '\n\n— S+7 sur les noms (Oulipao)');
+  assert.equal(ruleMention(reduce(initialState, { type: 'set-param', id: 's7-1', key: 'offset', value: -3 }), all), '\n\n— S−3 sur les noms (Oulipao)');
+  assert.equal(ruleMention(reduce(initialState, { type: 'set-param', id: 's7-1', key: 'mode', value: 'same-gender' }), all), '\n\n— S+7, parmi les noms du même genre, sur les noms (Oulipao)');
   assert.equal(ruleMention(reduce(initialState, { type: 'toggle-instance', id: 's7-1' }), all), ''); // plugin coupé : texte d'origine
   assert.equal(ruleMention(reduce(initialState, { type: 'set-param', id: 's7-1', key: 'offset', value: 0 }), all), ''); // S+0
-  assert.equal(ruleMention(initialState, new Set(['noun', 'other'])), '\n\n— S+7 sur les noms · pistes coupées : verbes, adjectifs, adverbes (Potao)');
-  assert.equal(ruleMention(reduce(initialState, { type: 'toggle-instance', id: 's7-1' }), new Set(['verb'])), '\n\n— pistes coupées : noms, adjectifs, adverbes, autres (Potao)');
+  assert.equal(ruleMention(initialState, new Set(['noun', 'other'])), '\n\n— S+7 sur les noms · pistes coupées : verbes, adjectifs, adverbes (Oulipao)');
+  assert.equal(ruleMention(reduce(initialState, { type: 'toggle-instance', id: 's7-1' }), new Set(['verb'])), '\n\n— pistes coupées : noms, adjectifs, adverbes, autres (Oulipao)');
 });
 
 test('mots changés : ceux dont le texte diffère d’une vue à l’autre', () => {
@@ -114,7 +114,7 @@ test('chaîne avec un plugin sur toutes les pistes : résumé, mention, mots ret
   // trois bandes : l'origine, puis chaque filtre actif dans l'ordre de la chaîne
   assert.deepEqual(view.stages.map((stage) => [stage.label, stage.words[2]]), [['Origine', 'ferme'], ['S+1 sur les noms', 'fermoir'], ['sans e', '']]);
   assert.equal(summarize(mixer, view, lookup), 'S+1 sur les noms : 1 nom remplacé sur 1. sans e : 0 mot remplacé, 3 retirés, 0 laissé tel quel.');
-  assert.equal(ruleMention(mixer, view.audible, lookup), '\n\n— S+1 sur les noms · sans e (Potao)');
+  assert.equal(ruleMention(mixer, view.audible, lookup), '\n\n— S+1 sur les noms · sans e (Oulipao)');
   const verbs = buildView({ text: 'Le chat est vite.', tagged: tag('Le chat est vite.') }, mixer, m, lookup);
   assert.match(summarize(mixer, verbs, lookup), /3 retirés, 1 laissé tel quel\.$/); // « Le cheval » et « vite » retirés, « est » laissé
   // tous coupés
@@ -124,13 +124,74 @@ test('chaîne avec un plugin sur toutes les pistes : résumé, mention, mots ret
 
 test('instances : pistes nommées sauf quand elles couvrent le type ; phrase à trois comptes sur plusieurs pistes', () => {
   const both = reduce(offsetOne, { type: 'set-targets', id: 's7-1', targets: ['noun', 'adjective'] });
-  assert.equal(describeInstance(both.instances[0]!), 'S+1'); // le S+n traite noms et adjectifs : rien à préciser
+  assert.equal(describeInstance(both.instances[0]!), 'S+1 sur les noms et les adjectifs');
+  const all = reduce(offsetOne, { type: 'set-targets', id: 's7-1', targets: ['noun', 'adjective', 'verb'] });
+  assert.equal(describeInstance(all.instances[0]!), 'S+1'); // le S+n traite noms, adjectifs et verbes : rien à préciser
   const lipo = reduce(reduce(offsetOne, { type: 'toggle-instance', id: 'lipogram-1' }), { type: 'set-targets', id: 'lipogram-1', targets: ['noun', 'verb', 'adjective'] });
   assert.equal(describeInstance(lipo.instances[1]!), 'lipogramme en e sur les noms, les verbes et les adjectifs');
   const view = buildView(session, both, m);
   assert.equal(view.result, 'Le beau fermoir de la ville est petit, et la Zorglub aussi.'); // « vieille », « grise » décalés aussi
-  assert.equal(summarize(both, view), 'S+1 : 4 mots remplacés, 0 retiré, 1 laissé tel quel.');
+  assert.equal(summarize(both, view), 'S+1 sur les noms et les adjectifs : 4 mots remplacés, 0 retiré, 1 laissé tel quel.');
   const none = { ...offsetOne, instances: [] };
   assert.equal(summarize(none, buildView(session, none, m)), 'Aucun filtre : texte d’origine.');
   assert.equal(ruleMention(none, new Set(CATEGORIES)), '');
+});
+
+test('pas bouché : le mot reste tel quel, les autres noms changent', () => {
+  const open = buildView(session, offsetOne, m);
+  const closed = buildView(session, reduce(offsetOne, { type: 'toggle-step', index: 2 }), m);
+  assert.notEqual(open.stages.at(-1)!.words[2], 'ferme');
+  assert.equal(closed.stages.at(-1)!.words[2], 'ferme');
+  assert.equal(closed.stages.at(-1)!.words[4], open.stages.at(-1)!.words[4]);
+  assert.match(closed.result, /vieille ferme/);
+});
+
+test('verrou : le mot verrouillé prend sa valeur, les autres suivent l’instance', () => {
+  const s2 = buildView(session, reduce(initialState, { type: 'set-param', id: 's7-1', key: 'offset', value: 2 }), m);
+  const locked = buildView(session, reduce(offsetOne, { type: 'set-lock', id: 's7-1', index: 4, key: 'offset', value: 2 }), m);
+  const open = buildView(session, offsetOne, m);
+  assert.equal(locked.stages.at(-1)!.words[4], s2.stages.at(-1)!.words[4]);
+  assert.equal(locked.stages.at(-1)!.words[2], open.stages.at(-1)!.words[2]);
+});
+
+test('grille : percé si un filtre agit sur la piste, contour sinon, bouché, et verrous', () => {
+  const view = buildView(session, offsetOne, m);
+  const words = view.stages[0]!.words;
+  const mixer = reduce(reduce(offsetOne, { type: 'toggle-step', index: 2 }), { type: 'set-lock', id: 's7-1', index: 4, key: 'offset', value: 3 });
+  const steps = gridSteps(mixer, view.tracks, words);
+  assert.equal(steps.length, words.length);
+  assert.deepEqual(steps[2], { index: 2, word: 'ferme', track: 'noun', state: 'closed', locks: [] });
+  assert.deepEqual(steps[4], { index: 4, word: 'village', track: 'noun', state: 'punched', locks: [{ id: 's7-1', key: 'offset', value: 3 }] });
+  assert.equal(steps[5]!.state, 'outline'); // « est » : aucun filtre ne vise les verbes
+  // Filtre coupé : plus rien n'est percé.
+  assert.ok(gridSteps(reduce(offsetOne, { type: 'toggle-instance', id: 's7-1' }), view.tracks, words).every((step) => step.state === 'outline'));
+});
+
+test('pages de pas : 16, 8 ou 4 selon la largeur', () => {
+  assert.deepEqual([1200, 1024, 1023, 640, 639, 375].map(stepsPerPage), [16, 16, 8, 8, 4, 4]);
+  assert.deepEqual([0, 15, 16, 43].map((index) => pageOf(index, 16)), [0, 0, 1, 2]);
+});
+
+test('inspecteur : un champ de verrou par paramètre entier, pour les instances en marche qui visent la piste', () => {
+  const locked = reduce(offsetOne, { type: 'set-lock', id: 's7-1', index: 4, key: 'offset', value: 3 });
+  assert.deepEqual(inspectorLocks(locked, 4, 'noun'), [
+    { id: 's7-1', fields: [{ key: 'offset', label: 'Décalage', min: -99, max: 99, value: 3 }], note: 'S+3 sur ce mot' },
+  ]);
+  assert.deepEqual(inspectorLocks(locked, 2, 'noun'), [{ id: 's7-1', fields: [{ key: 'offset', label: 'Décalage', min: -99, max: 99, value: undefined }] }]);
+  // Le lipogramme n'a pas de paramètre entier ; un verbe n'est visé par aucun filtre.
+  const both = reduce(locked, { type: 'toggle-instance', id: 'lipogram-1' });
+  assert.deepEqual(inspectorLocks(both, 4, 'noun').map((entry) => entry.id), ['s7-1']);
+  assert.deepEqual(inspectorLocks(both, 5, 'verb'), []);
+  // Filtre coupé : pas de verrou à poser.
+  assert.deepEqual(inspectorLocks(reduce(locked, { type: 'toggle-instance', id: 's7-1' }), 4, 'noun'), []);
+});
+
+test('S+7 sur les verbes : mention par instance, verbes servis à la chaîne, auxiliaire compté parmi les laissés', () => {
+  const twice = reduce(reduce(initialState, { type: 'add-instance', plugin: 's7' }), { type: 'set-targets', id: 's7-2', targets: ['verb'] });
+  assert.equal(ruleMention(twice, new Set(CATEGORIES)), '\n\n— S+7 sur les noms · S+7 sur les verbes (Oulipao)');
+  const verbsOnly = { ...twice, instances: twice.instances.filter((instance) => instance.id === 's7-2') };
+  const sleeping = { text: 'Le chat dort, il est là.', tagged: tag('Le chat dort, il est là.') };
+  const view = buildView(sleeping, verbsOnly, m, undefined, verbs());
+  assert.equal(view.result, 'Le chat chante, il est là.');
+  assert.equal(summarize(verbsOnly, view), 'S+7 sur les verbes : 1 verbe remplacé sur 2.'); // « est », auxiliaire, reste
 });

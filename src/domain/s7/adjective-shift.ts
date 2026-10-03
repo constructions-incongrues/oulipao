@@ -46,18 +46,20 @@ function fixElision(words: OutputWord[], index: number, gender: ConcreteGender, 
 
 /**
  * Applique le S+n aux adjectifs d'une sortie mot par mot (modifiée en place) et rend les marques.
- * Le genre retenu est celui de la forme en place, déjà accordée au nom.
+ * Le genre retenu est celui de la forme en place, déjà accordée au nom. `offsetAt` donne le
+ * décalage d'un adjectif d'après sa position (verrou) ; `undefined` le laisse (pas bouché).
  */
 export function shiftAdjectives(
   words: OutputWord[],
   tagged: readonly TaggedWord[],
-  offset: number,
+  offsetAt: (index: number) => number | undefined,
   apostrophe: string,
   morphology: MorphologyRepository,
 ): WordMark[] {
   const marks: WordMark[] = [];
   words.forEach((word, index) => {
-    if (tagged[index]!.category !== 'adjective' || !word.output) return;
+    const offset = offsetAt(index);
+    if (tagged[index]!.category !== 'adjective' || !word.output || offset === undefined) return;
     const next = words[index + 1];
     // Placé juste avant un mot (sans ponctuation entre eux) : la forme dépend de son initiale.
     const nextElides = next?.output && /^\s+$/.test(next.gap) ? elides(next.output, morphology) : undefined;

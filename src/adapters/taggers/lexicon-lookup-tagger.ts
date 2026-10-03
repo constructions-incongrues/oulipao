@@ -13,7 +13,7 @@ const LexiconEntrySchema = z.object({
   codes: z.string().regex(/^[nvaro]+$/),
 });
 
-/** Lit data/lexique-potao.tsv ; lève si une ligne n'est pas conforme. */
+/** Lit data/lexique-oulipao.tsv ; lève si une ligne n'est pas conforme. */
 export function parseLexicon(tsv: string): Map<string, string> {
   const lexicon = new Map<string, string>();
   for (const line of tsv.split('\n')) {

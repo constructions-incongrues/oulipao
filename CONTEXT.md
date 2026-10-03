@@ -3,7 +3,7 @@
 # Lines marked [auto] were pre-filled — verify they're accurate.
 
 1. What are you building? (one sentence, no jargon)
-   [auto from product.md] Potao (« Potentialité Assistée par Ordinateur ») : un outil en ligne qui découpe un texte en pistes linguistiques (noms, adjectifs, verbes, adverbes) et y branche des plugins de contrainte oulipienne (S+7…) alimentés par des textbanks, dans une interface de type Ableton.
+   [auto from product.md] Oulipao (« Ouvroir de Littérature Potentielle Assistée par Ordinateur ») : un outil en ligne qui découpe un texte en pistes linguistiques (noms, adjectifs, verbes, adverbes) et y branche des plugins de contrainte oulipienne (S+7…) alimentés par des textbanks, dans une interface de type Ableton.
 
 2. Who is the primary user? (job title, company size, situation)
    [auto from personas.md] Le lecteur de Queneau ou de Perec, qui connaît le S+7 de nom et n'a jamais essayé. Secondaire : la développeuse creative coding qui écrit des plugins.

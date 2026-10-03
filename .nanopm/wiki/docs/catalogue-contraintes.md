@@ -7,7 +7,7 @@ sources: [oulipo.net/contraintes (153 fiches), src/domain/plugin.ts, src/domain/
 ---
 # Catalogue des contraintes oulipiennes, vu comme des filtres
 
-Pour chaque contrainte du site de l'Oulipo : peut-elle devenir un filtre de Potao, et sinon, qu'est-ce qui manque ? Ce classement doit servir à choisir les prochains filtres.
+Pour chaque contrainte du site de l'Oulipo : peut-elle devenir un filtre d'Oulipao, et sinon, qu'est-ce qui manque ? Ce classement doit servir à choisir les prochains filtres.
 
 ## Le contrat jugé
 
@@ -238,7 +238,7 @@ Deux réserves valent pour tout le niveau A :
 
 **Règle.** L'auteur écrit un texte dont le S+7 forme la seconde partie.
 
-**Verdict.** Le S+7 existe ; l'auteur écrit la première partie et Potao lui donne la seconde. Juxtaposer les deux dans une seule sortie demanderait E3, mais ce n'est pas l'essentiel.
+**Verdict.** Le S+7 existe ; l'auteur écrit la première partie et Oulipao lui donne la seconde. Juxtaposer les deux dans une seule sortie demanderait E3, mais ce n'est pas l'essentiel.
 
 ### Haï-kaïsation
 
@@ -592,7 +592,7 @@ Deux réserves valent pour tout le niveau A :
 
 **Règle.** Typologie des alexandrins selon la place de leurs e muets comptés (64 types).
 
-**Verdict.** C'est une classification de vers à écrire. Avec la phonétique (E2), Potao pourrait dire de quel type est chaque vers (E8), sans le produire. Évolutions : E2, E8.
+**Verdict.** C'est une classification de vers à écrire. Avec la phonétique (E2), Oulipao pourrait dire de quel type est chaque vers (E8), sans le produire. Évolutions : E2, E8.
 
 ### Alexandrin oral
 
@@ -802,7 +802,7 @@ Deux réserves valent pour tout le niveau A :
 
 **Règle.** Un texte qui se lit en français et en anglais, avec un sens différent.
 
-**Verdict.** Composition bilingue. Avec un lexique anglais (E5), Potao pourrait contrôler qu'un mot existe dans les deux langues (E8). Évolutions : E5, E8.
+**Verdict.** Composition bilingue. Avec un lexique anglais (E5), Oulipao pourrait contrôler qu'un mot existe dans les deux langues (E8). Évolutions : E5, E8.
 
 ### Leiris
 
@@ -892,7 +892,7 @@ Deux réserves valent pour tout le niveau A :
 
 **Règle.** Un texte où une série de mots imposés apparaît dans un ordre donné.
 
-**Verdict.** Composition. Avec la liste de mots en paramètre (E1), Potao contrôlerait leur présence et leur ordre (E8). Évolutions : E1, E8.
+**Verdict.** Composition. Avec la liste de mots en paramètre (E1), Oulipao contrôlerait leur présence et leur ordre (E8). Évolutions : E1, E8.
 
 ### Petite boîte
 
@@ -1176,7 +1176,7 @@ Améliore ou outille aussi : [Abécédaire](https://oulipo.net/contraintes/abece
 
 ### 7. E8 — Mode contrôle (1 B, 6 autres)
 
-Pour les contraintes d'écriture (composer un texte, pas en transformer un), Potao peut au moins dire où un texte écrit à la main enfreint la règle. Le contrat le permet déjà : une marque avec une `reason`, sans remplacement. C'est l'hôte qui manque : il faudrait un filtre « vérificateur » affiché comme tel, qui ne touche pas au texte.
+Pour les contraintes d'écriture (composer un texte, pas en transformer un), Oulipao peut au moins dire où un texte écrit à la main enfreint la règle. Le contrat le permet déjà : une marque avec une `reason`, sans remplacement. C'est l'hôte qui manque : il faudrait un filtre « vérificateur » affiché comme tel, qui ne touche pas au texte.
 
 Débloque : [Belle absente](https://oulipo.net/contraintes/belle-absente).
 

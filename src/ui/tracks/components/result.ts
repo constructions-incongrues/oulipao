@@ -24,22 +24,24 @@ export interface ResultProps {
   audibleCount: number;
   /** Le texte saisi a changé depuis : le résultat est estompé et ne se copie pas. */
   stale: boolean;
+  /** Collée en haut de l'écran : la bande se fait compacte. */
+  pinned?: boolean;
   copyMessage: string;
   onCopy: () => void;
 }
 
-/** Le texte résultant, en tête de page, et sa copie. */
-export function Result({ segments, empty, marks, tracks, selected, onSelect, changed, generation, audibleCount, stale, copyMessage, onCopy }: ResultProps): VNode {
+/** Le texte résultant, en tête de page et collé en haut de l'écran quand on descend, et sa copie. */
+export function Result({ segments, empty, marks, tracks, selected, onSelect, changed, generation, audibleCount, stale, pinned = false, copyMessage, onCopy }: ResultProps): VNode {
   return html`
-    <section class=${`result ${stale ? 'stale' : ''}`.trim()} aria-label="Texte résultant">
+    <section class=${['result', stale ? 'stale' : '', pinned ? 'stuck' : ''].filter(Boolean).join(' ')} aria-label="Texte résultant">
       <div class="result-header">
-        <h2>Texte résultant</h2>
-        <button type="button" class="copy" disabled=${empty || stale} onClick=${onCopy}>Copier</button>
+        <h2 class="silk">Texte résultant</h2>
+        <button type="button" class="key copy" disabled=${empty || stale} onClick=${onCopy}>Copier</button>
         <span class="copy-message" role="status" aria-live="polite">${copyMessage}</span>
       </div>
       ${empty
         ? html`<p class="result-empty">Toutes les pistes sont coupées.</p>`
-        : html`<p class="result-text">${segments.map((segment) => {
+        : html`<div class="result-scroll"><p class="result-text">${segments.map((segment) => {
             const { index, text } = segment;
             if (index === undefined) return text;
             const mark = marks.get(index);
@@ -58,7 +60,7 @@ export function Result({ segments, empty, marks, tracks, selected, onSelect, cha
               tabindex=${replaced ? 0 : undefined} title=${title}
               onClick=${() => onSelect(index)}
               onKeyDown=${(event: KeyboardEvent) => event.key === 'Enter' && onSelect(index)}>${text}</span>`;
-          })}</p>`}
+          })}</p></div>`}
       ${!empty && audibleCount < 5 && html`<p class="notice">Pistes coupées : le texte est rendu tel quel, sans réparer la phrase.</p>`}
     </section>
   ` as VNode;

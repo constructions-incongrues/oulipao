@@ -9,7 +9,7 @@ Pour refaire les mesures : `npm run measure -- --errors`.
 
 Lexique retenu : **Grammalecte / Dicollecte v7.7**, licence MPL 2.0.
 
-- Redistribution permise dans un dépôt public ; le fichier dérivé `data/lexique-potao.tsv`
+- Redistribution permise dans un dépôt public ; le fichier dérivé `data/lexique-oulipao.tsv`
   reste sous MPL 2.0 et porte sa notice. Le reste du dépôt peut avoir une autre licence.
 - 115 184 formes de noms communs portant un genre, pour 54 233 lemmes distincts (seuil du
   PRD : 20 000).
@@ -39,7 +39,7 @@ Poids téléchargé par le navigateur :
 | Approche | Poids | Détail |
 |---|---|---|
 | CamemBERT | environ 141 Mo au premier chargement | poids du modèle 111,3 Mo ; moteur WebAssembly 26,9 Mo (5,5 Mo transférés) ; découpeur 2,4 Mo ; bibliothèque 0,6 Mo. Mis en cache ensuite. |
-| Lexique | 6,6 Mo (1,3 Mo compressé) | `data/lexique-potao.tsv` |
+| Lexique | 6,6 Mo (1,3 Mo compressé) | `data/lexique-oulipao.tsv` |
 | fr-compromise | 0,27 Mo (0,10 Mo compressé) | `vendor/fr-compromise.mjs` |
 
 Temps observé dans le navigateur sur le texte 3 (non optimisé, noté pour mémoire) : CamemBERT
@@ -218,7 +218,7 @@ Les huit étapes du test d'interface (tâche 3.1 de `tasks.md`) :
 | 4. Couper puis rétablir le plugin | Coupé : le texte d'origine, à l'identique ; rétabli : le même texte qu'avant |
 | 5. Changer « Parmi » | Le texte change |
 | 6. Muet sur les adjectifs, Seul sur les verbes | Les adjectifs disparaissent, leurs 11 pistes sont estompées, la ligne « Pistes coupées : le texte est rendu tel quel… » s'affiche ; en solo, il ne reste que les verbes ; tout rétabli, le texte revient à l'identique |
-| 7. Copier | Le texte remis au presse-papiers est le texte résultant, puis une ligne vide et « — S+7, parmi tous les noms (Potao) » ; « Copié. » à côté du bouton |
+| 7. Copier | Le texte remis au presse-papiers est le texte résultant, puis une ligne vide et « — S+7, parmi tous les noms (Oulipao) » ; « Copié. » à côté du bouton |
 | 8. Réseau | 11 requêtes, aucune ne contient le texte ; hôtes : la page et `cdn.jsdelivr.net` (la bibliothèque du modèle) |
 
 Autres vérifications :
@@ -284,7 +284,7 @@ navigateur, sur le texte 1, avec l'étiqueteur neuronal (fenêtre de 1280 × 900
 | Le réglage reste en direct | Dans le navigateur, rendu compris : mettre le lipogramme en marche 106 ms, brancher le S+7 37 ms, changer de lettre 157 ms, inverser l'ordre 65 ms ; sans nouvel étiquetage |
 | Le contrat tient | Le lipogramme est écrit contre `ConstraintPlugin` ; deux ajouts au contrat (portée « toutes les pistes », mot retiré), consignés dans `docs/plugins.md` ; la chaîne est tenue par la page |
 | Le texte reste dans le navigateur | Hôtes contactés : la page et `cdn.jsdelivr.net` (la bibliothèque du modèle) ; aucune requête ne contient le texte |
-| La mention copiée décrit la chaîne | « — S+7, parmi tous les noms · lipogramme en e (Potao) » |
+| La mention copiée décrit la chaîne | « — S+7, parmi tous les noms · lipogramme en e (Oulipao) » |
 
 Extrait du texte 1, S+7 puis lipogramme : « Un matois où un vif hors-bilan s'arrêta néanmoins
 un remarqua vulgo Préparait un café dans un cuissot étroit, quand on un faisait dès anacondas,
@@ -293,7 +293,7 @@ ou sa marihuana lisait la jovialité sans lever nos officialisations. »
 ## Écarts et limites
 
 - **Copie périmée du dictionnaire.** Pendant la vérification, le navigateur servait une copie en
-  cache de `data/morpho-potao.tsv` d'avant l'ajout des adverbes : les adverbes gardaient leur
+  cache de `data/morpho-oulipao.tsv` d'avant l'ajout des adverbes : les adverbes gardaient leur
   « e ». L'adresse du fichier porte désormais une version (`MORPHOLOGY_VERSION` dans
   `src/ui/composition.ts`), à changer à chaque reconstruction.
 - **Les verbes** gardent leur « e » (v1) ; un second PRD les traitera.
@@ -319,7 +319,7 @@ Capture : `resultats/filtres/texte-1-cinq-filtres.jpg`.
 | Instancier | Deux S+n indépendants dans la page : S+7 sur les noms, S+3 puis S+2 sur les adjectifs. Navigateur, texte 1 : « S+7 sur les noms : 33 noms remplacés sur 34. S+3 sur les adjectifs : 13 adjectifs remplacés sur 13. » Sous Node (S+7 noms, S+3 adjectifs) : 32 + 13, 41 + 24, 39 + 14 mots remplacés sur les textes 1, 2, 3 |
 | Cibler | Lipogramme en « e » sur les seuls noms, sous Node : 22, 33 et 24 noms remplacés, 0 nom gardant un « e » ; aucun mot des autres pistes ne change, sauf un adjectif réaccordé au nom remplacé (texte 3 : « l'eau désolé » → « l'ébriété désolée »), comme le prévoit l'exigence ; les « e » des autres pistes restent (47 mots-outils, 16 verbes, 11 adjectifs, 15 adverbes dans le texte 1) |
 | Chaîner | Trois filtres réordonnés (S+3 adjectifs monté de la 3e à la 1re place) : le résumé et le texte suivent l'ordre affiché (« S+3 sur les adjectifs : 12 adjectifs remplacés sur 13. S+7 sur les noms … »), sans nouvel étiquetage. Avec cinq filtres, geste et rendu compris : ajouter 7 à 37 ms, changer un décalage 6 à 7 ms, changer de lettre 8 à 12 ms, monter ou descendre 7 à 11 ms, couper ou rallumer 8 à 31 ms, Muet 9 à 10 ms ; tout sous la demi-seconde |
-| La mention copiée | « — S+2 sur les adjectifs · S+7 sur les noms · lipogramme en e sur les noms · S+1 sur les noms · lipogramme en a (Potao) » |
+| La mention copiée | « — S+2 sur les adjectifs · S+7 sur les noms · lipogramme en e sur les noms · S+1 sur les noms · lipogramme en a (Oulipao) » |
 | Les filtres servent | Non mesuré : attend le carnet de textes gardés (roadmap, NOW, item 2) et le 14 novembre 2026 |
 
 Extrait du texte 1, chaîne S+2 adjectifs · S+7 noms · lipogramme en e sur les noms · S+1 noms ·

@@ -57,7 +57,7 @@ Preact ; les composants (`components/`, `app.ts`) sont des fonctions de cet éta
   c'est le réaccord au nom remplacé.
 - **La copie dit d'où vient le texte.** Le texte copié est suivi, après une ligne vide, de ce qui
   l'a changé, filtre par filtre dans l'ordre de la chaîne : « — S+2 sur les adjectifs · S+7 sur
-  les noms · lipogramme en a (Potao) », avec « · pistes coupées : … » s'il y en a. Les pistes
+  les noms · lipogramme en a (Oulipao) », avec « · pistes coupées : … » s'il y en a. Les pistes
   d'un filtre sont nommées, sauf quand il vise toutes celles que son type sait traiter. Rien
   quand le texte copié est le texte d'origine (filtres coupés ou sans effet, toutes les pistes
   entendues). Décision D11 de la revue d'ingénierie.

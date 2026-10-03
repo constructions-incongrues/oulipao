@@ -1,23 +1,31 @@
-/* Variables partagées par les pages de Potao. Les valeurs et leurs raisons : DESIGN.md. */
+/* Variables partagées par les pages d'Oulipao : « l'instrument perforé ». Les valeurs et leurs
+   raisons : DESIGN.md (front matter et sections Colors, Typography). Une page n'écrit aucune
+   couleur, police ou taille en dur. */
 
-@font-face { font-family: "Source Serif 4"; font-weight: 400; font-display: swap; src: url("../fonts/source-serif-4-latin-400-normal.woff2") format("woff2"); }
-@font-face { font-family: "Source Serif 4"; font-weight: 600; font-display: swap; src: url("../fonts/source-serif-4-latin-600-normal.woff2") format("woff2"); }
-@font-face { font-family: "IBM Plex Sans"; font-weight: 400; font-display: swap; src: url("../fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2"); }
-@font-face { font-family: "IBM Plex Sans"; font-weight: 600; font-display: swap; src: url("../fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2"); }
-@font-face { font-family: "IBM Plex Mono"; font-weight: 400; font-display: swap; src: url("../fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Spectral"; font-weight: 400; font-style: normal; font-display: swap; src: url("../fonts/spectral-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Spectral"; font-weight: 600; font-style: normal; font-display: swap; src: url("../fonts/spectral-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Spectral"; font-weight: 400; font-style: italic; font-display: swap; src: url("../fonts/spectral-latin-400-italic.woff2") format("woff2"); }
+@font-face { font-family: "Archivo"; font-weight: 100 900; font-stretch: 62% 125%; font-style: normal; font-display: swap; src: url("../fonts/archivo-latin-wdth-normal.woff2") format("woff2-variations"); }
+@font-face { font-family: "Martian Mono"; font-weight: 100 800; font-stretch: 75% 112.5%; font-style: normal; font-display: swap; src: url("../fonts/martian-mono-latin-wdth-normal.woff2") format("woff2-variations"); }
+@font-face { font-family: "Big Shoulders Stencil Display"; font-weight: 100 900; font-style: normal; font-display: swap; src: url("../fonts/big-shoulders-stencil-display-latin-wght-normal.woff2") format("woff2-variations"); }
 
 :root {
   /* Polices */
-  --font-read: "Source Serif 4", Georgia, serif;
-  --font-ui: "IBM Plex Sans", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --font-read: "Spectral", Georgia, serif;
+  --font-ui: "Archivo", Arial, sans-serif;
+  --font-mono: "Martian Mono", Menlo, monospace;
+  --font-mark: "Big Shoulders Stencil Display", "Archivo", sans-serif;
+  /* La sérigraphie : Archivo étroit, en capitales */
+  --silk-stretch: 75%;
 
   /* Tailles */
+  --size-label: 12px;
   --size-small: 13px;
   --size-ui: 15px;
-  --size-read: 19px;
-  --size-title: 24px;
-  --measure: 65ch;
+  --size-read: 22px;
+  --size-read-compact: 17px;
+  --size-mark: 44px;
+  --measure: 62ch;
 
   /* Espacements : multiples de 4 px */
   --space-1: 4px;
@@ -26,44 +34,64 @@
   --space-4: 16px;
   --space-6: 24px;
   --space-8: 32px;
+  --space-12: 48px;
 
-  /* Rayon et filets */
-  --radius: 4px;
+  /* Rayon et filets : pas d'ombre, pas de dégradé, pas de carte */
+  --radius: 2px;
   --rule: 1px;
 
-  /* Couleurs neutres : la couleur n'apparaît que sur les pistes */
-  --bg: #fbfaf7;
-  --fg: #1d1c1a;
-  --muted: #5f5b54;
-  --line: #d9d5cc;
-  --panel: #f1eee7;
-  --focus: #103193;
-  --error: #b3261e;
+  /* Mouvement : le moment signé */
+  --signature: 300ms;
 
-  /* Pistes : contraste ≥ 4,5:1 sur le fond, distinctes en cas de daltonisme (DESIGN.md) */
-  --noun: #9b3908;
-  --verb: #103193;
-  --adjective: #0b8447;
-  --adverb: #6f206f;
-  --other: #56524d;
+  /* Couleurs, clair : façade, papier, encre ; la couleur ne sert qu'aux pistes */
+  --panel: #d6d5d0;
+  --paper: #fbfbf8;
+  --ink: #17171a;
+  --muted: #4e4e54;
+  --line: #b4b3ad;
+  --error: #a5231b;
+  --noun: #005f9b;
+  --verb: #983a08;
+  --adjective: #004220;
+  --adverb: #883866;
+  --other: #24242d;
+  color-scheme: light;
 }
 
+/* Sombre : celui du système, sauf choix contraire sur la page (data-theme) */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #171614;
-    --fg: #ece9e2;
-    --muted: #a8a399;
-    --line: #3a3833;
-    --panel: #22201d;
-    --focus: #6c8def;
+  :root:not([data-theme="light"]) {
+    --panel: #1c1c1f;
+    --paper: #26262a;
+    --ink: #ecebe6;
+    --muted: #a9a8a2;
+    --line: #3a3a3f;
     --error: #f2948c;
-    --noun: #f46a25;
-    --verb: #6c8def;
-    --adjective: #a8f0cc;
-    --adverb: #e8b0e8;
-    --other: #9f9993;
+    --noun: #33a7e9;
+    --verb: #f0a23a;
+    --adjective: #5fe5b2;
+    --adverb: #eaa8d5;
+    --other: #96928d;
+    color-scheme: dark;
   }
 }
+:root[data-theme="dark"] {
+  --panel: #1c1c1f;
+  --paper: #26262a;
+  --ink: #ecebe6;
+  --muted: #a9a8a2;
+  --line: #3a3a3f;
+  --error: #f2948c;
+  --noun: #33a7e9;
+  --verb: #f0a23a;
+  --adjective: #5fe5b2;
+  --adverb: #eaa8d5;
+  --other: #96928d;
+  color-scheme: dark;
+}
 
-body { margin: 0; background: var(--bg); color: var(--fg); font: var(--size-ui)/1.5 var(--font-ui); }
-:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+body { margin: 0; background: var(--panel); color: var(--ink); font: var(--size-ui)/1.45 var(--font-ui); }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+/* Étiquette de façade */
+.silk { font-family: var(--font-ui); font-stretch: var(--silk-stretch); font-weight: 600; font-size: var(--size-label); text-transform: uppercase; letter-spacing: 0.02em; color: var(--muted); }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }

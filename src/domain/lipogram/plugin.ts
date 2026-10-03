@@ -1,13 +1,13 @@
 import { z } from 'zod';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
-import { definePlugin, type ParameterValues, type WordMark } from '../plugin.ts';
-import { rewriteNouns } from '../s7/engine.ts';
+import { definePlugin, FULL_SCOPE, type ParameterValues, type WordMark } from '../plugin.ts';
+import { keepNoun, rewriteNouns } from '../s7/engine.ts';
 import { elides } from '../s7/elision.ts';
-import type { NounChoice } from '../s7/substitution.ts';
 import type { OutputWord } from '../s7/types.ts';
 import type { TaggedWord } from '../tagged-word.ts';
 import { tokenize } from '../tokenizer.ts';
 import { CATEGORIES } from '../categories.ts';
+import { neighbourVerb, rewriteVerbs } from '../verb.ts';
 import { functionWordWithout } from './function-words.ts';
 import { containsLetter, neighbourAdjective, neighbourAdverb, neighbourNoun } from './neighbour.ts';
 
@@ -22,20 +22,16 @@ const matchCase = (original: string, replacement: string) =>
 
 const NO_NEIGHBOUR = 'aucun voisin sans la lettre';
 
-/** Un nom laissé tel quel par la réécriture des noms. */
-const untouched = (word: string): NounChoice => ({ status: 'unknown-noun', replacement: word.toLowerCase(), gender: 'm', number: 's', originalGender: 'm' });
 
 /** Un mot de la sortie, une fois passé au lipogramme : remplacé, retiré, ou laissé et pourquoi. */
 type Fate = { replacement: string } | { removed: true } | { reason: string };
 
-/** Ce que devient un mot qui contient la lettre, selon sa piste. */
-function fateOf(output: string, category: TaggedWord['category'], letter: string, morphology: MorphologyRepository): Fate {
+/** Ce que devient un mot qui contient la lettre, selon sa piste (les verbes ont leur propre passe). */
+function fateOf(output: string, category: Exclude<TaggedWord['category'], 'verb'>, letter: string, morphology: MorphologyRepository): Fate {
   switch (category) {
     case 'noun':
       // Les noms ont été remplacés avant, avec leur groupe ; il reste ceux qui n'ont pas de voisin.
       return { reason: NO_NEIGHBOUR };
-    case 'verb':
-      return { reason: 'verbe, laissé en v1' };
     case 'adjective': {
       const reading = morphology.adjectiveReadings(output.toLowerCase())[0];
       const gender = reading && reading.gender !== 'e' ? reading.gender : undefined;
@@ -73,7 +69,7 @@ function elide(words: OutputWord[], index: number, apostrophe: string, morpholog
  * Le lipogramme : chaque mot qui contient la lettre interdite devient le premier mot qui le suit
  * dans le dictionnaire, de même catégorie et de mêmes traits, sans la lettre. Les noms passent par
  * la réécriture du S+7 (déterminants et adjectifs réaccordés) ; les mots-outils par une table
- * d'équivalents, ou sont retirés ; les verbes restent tels quels en v1. Seuls les mots des pistes
+ * d'équivalents, ou sont retirés ; les verbes gardent leur temps et leur personne. Seuls les mots des pistes
  * visées sont touchés.
  */
 export const lipogramPlugin = definePlugin({
@@ -89,10 +85,11 @@ export const lipogramPlugin = definePlugin({
   label: (values) => `lipogramme en ${params(values).letter}`,
   help: (values) => {
     const { letter } = params(values);
-    return `Chaque mot qui contient « ${letter} » devient le premier mot qui le suit dans le dictionnaire sans cette lettre ; les verbes restent tels quels.`;
+    return `Chaque mot qui contient « ${letter} » devient le premier mot qui le suit dans le dictionnaire sans cette lettre ; les verbes gardent leur temps et leur personne, « être » et « avoir » restent.`;
   },
-  apply(text, tagged, values, { morphology }, targets) {
+  apply(text, tagged, values, { morphology, verbs }, targets, scope = FULL_SCOPE) {
     const { letter } = params(values);
+    const skip = new Set(scope.skip);
     const tokens = tokenize(text);
     const apostrophe = text.includes('’') ? '’' : "'";
 
@@ -101,7 +98,8 @@ export const lipogramPlugin = definePlugin({
       text,
       tagged,
       // Un nom sans la lettre n'est pas touché : la réécriture laisse son groupe tel quel.
-      (word, hints) => (targets.has('noun') && containsLetter(word, letter) ? neighbourNoun(word, hints, letter, morphology) : untouched(word)),
+      (word, hints, index) =>
+        targets.has('noun') && !skip.has(index) && containsLetter(word, letter) ? neighbourNoun(word, hints, letter, morphology) : keepNoun(word),
       morphology,
     );
     const words = nouns.words.map((word) => ({ ...word }));
@@ -114,9 +112,10 @@ export const lipogramPlugin = definePlugin({
     const touched = new Set(marks.map((mark) => mark.index));
     words.forEach((word, index) => {
       // Seulement les pistes visées ; le réaccord d'un nom remplacé reste la seule exception.
-      if (touched.has(index) || !targets.has(tagged[index]!.category) || !containsLetter(word.output, letter)) return;
+      const category = tagged[index]!.category;
+      if (category === 'verb' || touched.has(index) || skip.has(index) || !targets.has(category) || !containsLetter(word.output, letter)) return;
       const original = tokens[index]!.word;
-      const fate = fateOf(word.output, tagged[index]!.category, letter, morphology);
+      const fate = fateOf(word.output, category, letter, morphology);
       if ('replacement' in fate) {
         word.output = fate.replacement;
         marks.push({ index, original, replacement: fate.replacement });
@@ -132,7 +131,22 @@ export const lipogramPlugin = definePlugin({
       }
     });
 
-    // 3. Élision des articles remplacés devant une voyelle : « une horloge » → « l’horloge ».
+    // 3. Les verbes, au même temps et à la même personne ; le pronom élidé suit le verbe nouveau.
+    if (targets.has('verb')) {
+      marks.push(
+        ...rewriteVerbs(
+          words,
+          tagged,
+          (index) => !skip.has(index) && containsLetter(words[index]!.output, letter),
+          (word, previous, repository) => neighbourVerb(word, previous, letter, repository),
+          verbs,
+          apostrophe,
+          (word) => elides(word, { blocksElision: (form) => !!verbs?.blocksElision(form) || morphology.blocksElision(form) }),
+        ),
+      );
+    }
+
+    // 4. Élision des articles remplacés devant une voyelle : « une horloge » → « l’horloge ».
     for (const mark of marks) if (mark.replacement !== undefined) elide(words, mark.index, apostrophe, morphology);
     for (const mark of marks) if (mark.replacement !== undefined) mark.replacement = words[mark.index]!.output;
 

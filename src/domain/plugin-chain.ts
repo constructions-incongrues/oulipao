@@ -1,6 +1,6 @@
 import type { Category } from './categories.ts';
 import { plainWords } from './mixing.ts';
-import type { ConstraintPlugin, ParameterValues, PluginResources, WordMark } from './plugin.ts';
+import type { ConstraintPlugin, ParameterValues, PluginResources, WordMark, WordScope } from './plugin.ts';
 import type { OutputWord } from './s7/types.ts';
 import type { TaggedWord } from './tagged-word.ts';
 import { tokenize } from './tokenizer.ts';
@@ -12,6 +12,10 @@ export interface ChainStep {
   plugin: ConstraintPlugin;
   values: ParameterValues;
   targets: ReadonlySet<Category>;
+  /** Les mots d'origine qu'aucun filtre ne touche (pas bouchés), communs à toute la chaîne. */
+  closed?: ReadonlySet<number>;
+  /** Les valeurs propres à certains mots d'origine pour cette instance (verrous). */
+  locks?: ReadonlyMap<number, ParameterValues>;
 }
 
 /** Ce qu'un plugin a fait, une fois ses marques ramenées aux mots d'origine. */
@@ -67,6 +71,20 @@ function reread(words: readonly OutputWord[], tail: string, tagged: readonly Tag
   return { text, tagged: tokens.map((token, k) => ({ word: token.word, category: tagged[origin[k]!]!.category })), origin };
 }
 
+/**
+ * Traduit la portée par mot d'origine en positions du texte relu : un mot d'origine relu en deux
+ * mots (« du » → « de la ») les fait tous deux sauter ou verrouiller.
+ */
+function scopeOf(origin: readonly number[], closed: ReadonlySet<number>, locks: ReadonlyMap<number, ParameterValues>): WordScope {
+  const scope: WordScope = { skip: [], overrides: [] };
+  origin.forEach((index, k) => {
+    if (closed.has(index)) scope.skip.push(k);
+    const values = locks.get(index);
+    if (values) scope.overrides.push({ index: k, values });
+  });
+  return scope;
+}
+
 /** Ramène la sortie d'un plugin, mot relu par mot relu, aux mots d'origine. */
 function fold(output: readonly OutputWord[], origin: readonly number[], count: number): OutputWord[] {
   const words: OutputWord[] = Array.from({ length: count }, (_, index) => ({ index, output: '', gap: '' }));
@@ -94,9 +112,9 @@ export function runChain(text: string, tagged: readonly TaggedWord[], steps: rea
   const marks = new Map<number, WordMark>();
   const reports: StepReport[] = [];
   const stages: string[][] = [];
-  for (const { id, plugin, values, targets } of steps) {
+  for (const { id, plugin, values, targets, closed = new Set<number>(), locks = new Map<number, ParameterValues>() } of steps) {
     const current = reread(words, tail, tagged);
-    const result = plugin.apply(current.text, current.tagged, values, resources, targets);
+    const result = plugin.apply(current.text, current.tagged, values, resources, targets, scopeOf(current.origin, closed, locks));
     if (result.words.length !== current.origin.length) throw new Error(`${plugin.id} : la sortie ne suit pas les mots du texte`);
     words = fold(result.words, current.origin, tagged.length);
     tail = result.tail;

@@ -32,8 +32,20 @@ function matchCase(original: string, replacement: string): string {
   return capitalized ? replacement[0]!.toUpperCase() + replacement.slice(1) : replacement;
 }
 
-/** Choisit le remplaçant d'un nom, d'après ce que la phrase dit de son genre et de son nombre. */
-export type NounChooser = (word: string, hints: NounHints) => NounChoice;
+/**
+ * Choisit le remplaçant d'un nom, d'après ce que la phrase dit de son genre et de son nombre ;
+ * `index` est sa position dans le texte, pour une portée par mot.
+ */
+export type NounChooser = (word: string, hints: NounHints, index: number) => NounChoice;
+
+/** Un nom laissé tel quel : la réécriture laisse aussi son groupe (déterminant, adjectifs). */
+export const keepNoun = (word: string): NounChoice => ({ status: 'unknown-noun', replacement: word.toLowerCase(), gender: 'm', number: 's', originalGender: 'm' });
+
+/** La portée par mot du S+n : les noms à laisser, et le décalage de chaque nom (verrous). */
+export interface NounScope {
+  skip: ReadonlySet<number>;
+  offsetAt: (index: number) => number;
+}
 
 /**
  * Applique la contrainte : chaque nom est remplacé par le n-ième suivant du dictionnaire, puis
@@ -47,9 +59,12 @@ export function applyS7(
   tagged: readonly TaggedWord[],
   options: S7OptionsInput,
   morphology: MorphologyRepository,
+  scope?: NounScope,
 ): S7Result {
   const { offset, mode, category } = S7OptionsSchema.parse(options);
-  return rewriteNouns(text, tagged, (word, hints) => substituteNoun(word, hints, { offset, mode }, morphology), morphology, category);
+  const choose: NounChooser = (word, hints, index) =>
+    scope?.skip.has(index) ? keepNoun(word) : substituteNoun(word, hints, { offset: scope?.offsetAt(index) ?? offset, mode }, morphology);
+  return rewriteNouns(text, tagged, choose, morphology, category);
 }
 
 /**
@@ -121,7 +136,7 @@ export function rewriteNouns(
     // « toute la ville » : « tout » placé avant le déterminant s'accorde avec lui.
     const tout = identified && view.follows(from) && !claimed.has(from - 1) && isTout(tokens[from - 1]!.word) ? from - 1 : undefined;
 
-    const choice = choose(token.word, { gender: identified?.determiner.gender, number: identified?.determiner.number });
+    const choice = choose(token.word, { gender: identified?.determiner.gender, number: identified?.determiner.number }, index);
 
     // Complément du nom précédent ? Par un article contracté ou une préposition, sans rien entre les deux.
     const previous = groups.at(-1);

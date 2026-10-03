@@ -5,16 +5,16 @@ generated: 2026-10-03
 sources: [objectives.md, strategy.md, roadmap.md]
 ---
 # Plan Brief
-Generated 2026-10-03 · Project: potao · Sources: objectives, strategy, roadmap
+Generated 2026-10-03 · Project: oulipao · Sources: objectives, strategy, roadmap
 
 ## What we're betting on
-Potao est l'instrument personnel du fondateur pour jouer de la littérature potentielle en français, entièrement dans le navigateur, sans compte. Le pari : des contraintes traitées comme des filtres instanciables plusieurs fois, ciblables par piste et enchaînables lui donnent chaque semaine des textes qu'il garde (au moins 5 en 6 semaines, dont 3 issus d'une chaîne de plusieurs filtres). Hypothèse centrale, contestée par la revue contradictoire : ce qui limite son écriture est l'outil, pas l'envie. Risque : construire au lieu d'écrire (déclencheur : trois semaines sans texte gardé alors que des commits continuent).
+Oulipao est l'instrument personnel du fondateur pour jouer de la littérature potentielle en français, entièrement dans le navigateur, sans compte. Le pari : des contraintes traitées comme des filtres instanciables plusieurs fois, ciblables par piste et enchaînables lui donnent chaque semaine des textes qu'il garde (au moins 5 en 6 semaines, dont 3 issus d'une chaîne de plusieurs filtres). Hypothèse centrale, contestée par la revue contradictoire : ce qui limite son écriture est l'outil, pas l'envie. Risque : construire au lieu d'écrire (déclencheur : trois semaines sans texte gardé alors que des commits continuent).
 _More detail: `.nanopm/wiki/docs/strategy.md`_
 
 ## What we're aiming for
 Période : octobre – décembre 2026.
 - **O1, prototype à pistes avec un S+7 français correct** : KR1 découpage en pistes (atteint), KR2 au moins 9 substitutions sur 10 accordées (atteint), KR3 le texte ne quitte pas le navigateur (atteint).
-- **O2, le fondateur se sert de Potao pour écrire** : KR1 au moins 5 textes gardés avant le 31 décembre ; KR2 au moins une séance par semaine pendant 6 semaines ; KR3 au moins 3 textes gardés enchaînant plusieurs contraintes.
+- **O2, le fondateur se sert d'Oulipao pour écrire** : KR1 au moins 5 textes gardés avant le 31 décembre ; KR2 au moins une séance par semaine pendant 6 semaines ; KR3 au moins 3 textes gardés enchaînant plusieurs contraintes.
 Les seuils chiffrés sont proposés par l'assistant, non validés par le fondateur.
 _More detail: `.nanopm/wiki/docs/objectives.md`_
 

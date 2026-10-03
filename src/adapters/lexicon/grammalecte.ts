@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-// Dérivation du lexique Grammalecte v7.7 (MPL 2.0) vers data/lexique-potao.tsv.
+// Dérivation du lexique Grammalecte v7.7 (MPL 2.0) vers data/lexique-oulipao.tsv.
 // Une ligne « forme<TAB>codes », codes ∈ n v a r o, sans doublon, dans l'ordre de préférence
 // fixé AVANT toute mesure :
 //   mot grammatical > auxiliaire être/avoir > adverbe > nom > verbe > adjectif > autre.
@@ -78,5 +78,5 @@ export const DERIVED_LEXICON_HEADER = [
   '# file, You can obtain one at http://mozilla.org/MPL/2.0/.',
   '#',
   '# Dérivé du « Lexique des formes fléchies du français », Grammalecte v7.7 (Olivier R.,',
-  '# https://grammalecte.net/). Modifié le 2026-10-03 pour Potao : réduit à forme + catégories.',
+  '# https://grammalecte.net/). Modifié le 2026-10-03 pour Oulipao : réduit à forme + catégories.',
 ];

@@ -88,6 +88,7 @@ export function reduce(state: MixerState, action: MixerAction): MixerState {
       return { ...state, instances: [...state.instances, freshInstance(plugin, nextId(state.instances, plugin.id))] };
     }
     case 'duplicate-instance': {
+      // Le double porte les verrous de l'original ; il va en fin de chaîne.
       const instance = instanceOf(state, checked.id);
       return { ...state, instances: [...state.instances, { ...instance, id: nextId(state.instances, instance.type) }] };
     }
@@ -101,5 +102,26 @@ export function reduce(state: MixerState, action: MixerAction): MixerState {
       instances.splice(Math.min(checked.position, instances.length), 0, instance);
       return { ...state, instances };
     }
+    case 'toggle-step': {
+      const closed = state.closed ?? [];
+      return { ...state, closed: closed.includes(checked.index) ? closed.filter((index) => index !== checked.index) : [...closed, checked.index] };
+    }
+    case 'set-lock': {
+      const instance = instanceOf(state, checked.id);
+      const plugin = pluginById(instance.type);
+      const parameter = plugin.parameters.find((candidate) => candidate.key === checked.key);
+      if (parameter?.kind !== 'integer') throw new Error(`paramètre entier inconnu : ${checked.key}`);
+      // Le verrou passe par la même validation qu'un réglage : hors bornes, il est refusé.
+      plugin.parse({ ...instance.params, [checked.key]: checked.value });
+      const others = (instance.locks ?? []).filter((lock) => lock.index !== checked.index || lock.key !== checked.key);
+      return replace(state, { ...instance, locks: [...others, { index: checked.index, key: checked.key, value: checked.value }] });
+    }
+    case 'clear-lock': {
+      const instance = instanceOf(state, checked.id);
+      const locks = (instance.locks ?? []).filter((lock) => lock.index !== checked.index || lock.key !== checked.key);
+      return replace(state, { ...instance, locks });
+    }
+    case 'reset-steps':
+      return { ...state, closed: [], instances: state.instances.map((instance) => ({ ...instance, locks: [] })) };
   }
 }

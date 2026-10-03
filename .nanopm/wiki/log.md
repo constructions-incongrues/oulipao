@@ -20,3 +20,6 @@
 ## [2026-10-03] ingest | pm-roadmap: wrote docs/roadmap.md (révision : le fondateur est le persona)
 ## [2026-10-03] ingest | pm-prd: wrote docs/prds/filtres-instanciables.md
 ## [2026-10-03] ingest | pm-prd: wrote docs/prds/inspecteur-de-chaine.md
+## [2026-10-03] ingest | recherche: wrote docs/sequenceur.md (le séquenceur comme modèle d'écriture)
+## [2026-10-03] ingest | pm-prd: wrote docs/prds/mise-en-ligne-de-potao.md
+## [2026-10-03] rename | le projet s'appelle désormais Oulipao (« Ouvroir de Littérature Potentielle Assistée par Ordinateur ») ; les entrées ci-dessus gardent l'ancien nom

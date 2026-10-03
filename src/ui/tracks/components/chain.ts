@@ -1,0 +1,127 @@
+import { html } from 'htm/preact';
+import type { VNode } from 'preact';
+import type { ConstraintPlugin } from '../../../domain/plugin.ts';
+import { TRACK_NAMES, type Instance, type MixerAction } from '../types.ts';
+import { Control } from './control.ts';
+import { Shape } from './shape.ts';
+
+export interface ChainProps {
+  /** Les instances, dans l'ordre de la chaîne. */
+  instances: readonly Instance[];
+  /** Les types qu'on peut ajouter. */
+  plugins: readonly ConstraintPlugin[];
+  lookup: (type: string) => ConstraintPlugin;
+  dispatch: (action: MixerAction) => void;
+}
+
+/**
+ * La position où placer une instance lâchée avant ou après une autre, comptée dans la chaîne
+ * privée de l'instance déplacée (c'est ce qu'attend `move-instance`).
+ */
+export function dropPosition(ids: readonly string[], dragged: string, target: string, before: boolean): number {
+  const rest = ids.filter((id) => id !== dragged);
+  const at = rest.indexOf(target);
+  return before ? at : at + 1;
+}
+
+const DRAG_MARKS = ['dragging', 'drop-before', 'drop-after'];
+const clearMarks = (row: Element) => row.closest('.slots')?.querySelectorAll('.slot').forEach((slot) => slot.classList.remove(...DRAG_MARKS));
+
+/** Une ligne de la chaîne : poignée, numéro, nom, réglages, pistes visées, marche, gestes. */
+function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance; position: number; ids: readonly string[]; plugin: ConstraintPlugin; dispatch: ChainProps['dispatch'] }): VNode {
+  const { id, targets, enabled, params } = instance;
+  const rank = position + 1;
+  const last = ids.length - 1;
+  // Glisser-déposer natif : seule la poignée rend la ligne déplaçable, les champs restent utilisables.
+  const onDragStart = (event: DragEvent) => {
+    event.dataTransfer?.setData('text/plain', id);
+    if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move';
+    (event.currentTarget as HTMLElement).classList.add('dragging');
+  };
+  const onDragOver = (event: DragEvent) => {
+    event.preventDefault();
+    const row = event.currentTarget as HTMLElement;
+    const box = row.getBoundingClientRect();
+    const before = event.clientY < box.top + box.height / 2;
+    row.classList.toggle('drop-before', before);
+    row.classList.toggle('drop-after', !before);
+  };
+  const onDrop = (event: DragEvent) => {
+    event.preventDefault();
+    const row = event.currentTarget as HTMLElement;
+    const dragged = event.dataTransfer?.getData('text/plain') ?? '';
+    const before = row.classList.contains('drop-before');
+    clearMarks(row);
+    if (dragged && dragged !== id && ids.includes(dragged)) {
+      dispatch({ type: 'move-instance', id: dragged, position: dropPosition(ids, dragged, id, before) });
+    }
+  };
+  const release = (event: Event) => {
+    const row = event.currentTarget as HTMLElement;
+    clearMarks(row);
+    row.removeAttribute('draggable');
+  };
+  return html`
+    <li class=${`slot ${enabled ? 'on' : 'off'}`} aria-label=${`Filtre ${rank} : ${plugin.name}`}
+      onDragStart=${onDragStart} onDragOver=${onDragOver} onDragLeave=${(event: DragEvent) => (event.currentTarget as HTMLElement).classList.remove('drop-before', 'drop-after')}
+      onDrop=${onDrop} onDragEnd=${release} onPointerUp=${release}>
+      <span class="grip" aria-hidden="true" title="Glisser pour réordonner"
+        onPointerDown=${(event: PointerEvent) => ((event.currentTarget as HTMLElement).closest('.slot') as HTMLElement).setAttribute('draggable', 'true')}></span>
+      <span class="pos mono" aria-hidden="true">${rank}</span>
+      <span class="name">${plugin.name}</span>
+      <span class="param">
+        ${plugin.parameters.map(
+          (parameter) => html`<label class="silk">${parameter.label}<${Control} parameter=${parameter} value=${params[parameter.key]}
+            onParam=${(key: string, value: number | string) => dispatch({ type: 'set-param', id, key, value })} /></label>`,
+        )}
+      </span>
+      <span class="targets" role="group" aria-label="Pistes visées">
+        <span class="silk" aria-hidden="true">Pistes visées</span>
+        ${plugin.tracks.map((track) => {
+          const on = targets.includes(track);
+          return html`<button type="button" class=${`chip ${track}`} aria-pressed=${on} disabled=${on && targets.length === 1}
+            onClick=${() => dispatch({ type: 'set-targets', id, targets: on ? targets.filter((t) => t !== track) : [...targets, track] })}
+          ><${Shape} track=${track} />${TRACK_NAMES[track]}</button>`;
+        })}
+      </span>
+      <button type="button" class="key power" aria-pressed=${enabled} aria-label=${`${plugin.title(params)} ${enabled ? 'actif' : 'coupé'}`}
+        onClick=${() => dispatch({ type: 'toggle-instance', id })}>${enabled ? 'Actif' : 'Coupé'}</button>
+      <span class="slot-keys">
+        <button type="button" class="key up" aria-label=${`Monter le filtre ${rank}`} disabled=${position === 0}
+          onClick=${() => dispatch({ type: 'move-instance', id, position: position - 1 })}>↑</button>
+        <button type="button" class="key down" aria-label=${`Descendre le filtre ${rank}`} disabled=${position === last}
+          onClick=${() => dispatch({ type: 'move-instance', id, position: position + 1 })}>↓</button>
+        <button type="button" class="key duplicate" onClick=${() => dispatch({ type: 'duplicate-instance', id })}>Dupliquer</button>
+        <button type="button" class="key remove" onClick=${() => dispatch({ type: 'remove-instance', id })}>Retirer</button>
+      </span>
+      <p class="help">${enabled ? plugin.help(params, new Set(targets)) : 'Filtre coupé : le texte passe tel quel.'}</p>
+    </li>
+  ` as VNode;
+}
+
+/**
+ * La chaîne, au-dessus des pistes : les filtres dans l'ordre où le texte les traverse, une ligne
+ * de même largeur chacun ; en dessous, de quoi en ajouter un en fin de chaîne.
+ */
+export function Chain({ instances, plugins, lookup, dispatch }: ChainProps): VNode {
+  const ids = instances.map((instance) => instance.id);
+  return html`
+    <section class="chain" aria-labelledby="chain-title">
+      <h2 class="silk" id="chain-title">Filtres</h2>
+      ${instances.length
+        ? html`<ol class="slots">
+            ${instances.map(
+              (instance, position) => html`<${Row} key=${instance.id} instance=${instance} position=${position} ids=${ids}
+                plugin=${lookup(instance.type)} dispatch=${dispatch} />`,
+            )}
+          </ol>`
+        : html`<p class="more">Aucun filtre : le texte passe tel quel.</p>`}
+      <div class="adder">
+        <span class="silk">Ajouter</span>
+        ${plugins.map(
+          (plugin) => html`<button type="button" class="key add-instance" onClick=${() => dispatch({ type: 'add-instance', plugin: plugin.id })}>+ ${plugin.name}</button>`,
+        )}
+      </div>
+    </section>
+  ` as VNode;
+}

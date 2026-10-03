@@ -67,7 +67,7 @@ The system SHALL describe the whole active chain in the summary and in the note 
 #### Scenario: Copie
 - **GIVEN** le S+7 et le lipogramme en « e » en marche
 - **WHEN** le texte résultant est copié
-- **THEN** la mention est « — S+7, parmi tous les noms · lipogramme en e (Potao) »
+- **THEN** la mention est « — S+7, parmi tous les noms · lipogramme en e (Oulipao) »
 
 ### Requirement: Emplacement « Toutes les pistes »
 The system SHALL show a plugin slot for all tracks below the mixer's five tracks, where the lipogram is plugged.

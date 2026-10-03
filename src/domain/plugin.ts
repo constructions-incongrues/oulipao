@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { MorphologyRepository } from '../ports/morphology.ts';
+import type { VerbRepository } from '../ports/verbs.ts';
 import { CategorySchema, type Category } from './categories.ts';
 import type { OutputWord } from './s7/types.ts';
 import type { TaggedWord } from './tagged-word.ts';
@@ -44,6 +45,19 @@ export const WordMarkSchema = z.object({
 });
 export type WordMark = z.infer<typeof WordMarkSchema>;
 
+/**
+ * La portée d'une contrainte mot par mot, en positions du texte qu'elle reçoit : les mots qu'elle
+ * laisse (pas bouchés) et les valeurs propres à certains mots (verrous).
+ */
+export const WordScopeSchema = z.object({
+  skip: z.array(z.number().int().nonnegative()),
+  overrides: z.array(z.object({ index: z.number().int().nonnegative(), values: ParameterValuesSchema })),
+});
+export type WordScope = z.infer<typeof WordScopeSchema>;
+
+/** Aucune exception : la contrainte traite tous les mots de ses pistes avec ses réglages. */
+export const FULL_SCOPE: WordScope = { skip: [], overrides: [] };
+
 /** Le texte transformé, mot par mot, et ce que la contrainte a fait des mots qu'elle a touchés. */
 export interface PluginResult {
   /** Un élément par mot du texte d'origine, comme `plainWords`. */
@@ -52,9 +66,10 @@ export interface PluginResult {
   marks: WordMark[];
 }
 
-/** Ce que l'hôte prête à une contrainte : ses textbanks. */
+/** Ce que l'hôte prête à une contrainte : ses textbanks. Les verbes arrivent après, à la demande. */
 export interface PluginResources {
   morphology: MorphologyRepository;
+  verbs?: VerbRepository;
 }
 
 export interface ConstraintPlugin {
@@ -82,7 +97,8 @@ export interface ConstraintPlugin {
   /**
    * Applique la contrainte au texte étiqueté, sur les pistes visées (parmi `tracks`). Dans une
    * chaîne, la page lui passe la sortie de l'instance précédente, relue comme un texte (voir
-   * `plugin-chain.ts`).
+   * `plugin-chain.ts`). `scope` dit quels mots laisser et lesquels traiter avec leurs propres
+   * valeurs ; une valeur propre se complète des réglages de l'instance et passe par `parse`.
    */
   apply(
     text: string,
@@ -90,6 +106,7 @@ export interface ConstraintPlugin {
     values: ParameterValues,
     resources: PluginResources,
     targets: ReadonlySet<Category>,
+    scope?: WordScope,
   ): PluginResult;
 }
 

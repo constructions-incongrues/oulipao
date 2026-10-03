@@ -10,7 +10,7 @@ last_updated: 2026-10-03
 ---
 
 ## Summary
-Public que Potao ne sert pas : celui qui attend de l'IA qu'elle écrive à sa place. Tentant (demande dominante autour du texte), mais contraire à la valeur « la contrainte est explicite ».
+Public qu'Oulipao ne sert pas : celui qui attend de l'IA qu'elle écrive à sa place. Tentant (demande dominante autour du texte), mais contraire à la valeur « la contrainte est explicite ».
 
 ## What we know
 **Pourquoi tentant**

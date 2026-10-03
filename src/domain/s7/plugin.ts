@@ -1,8 +1,10 @@
 import { z } from 'zod';
 import { plainWords } from '../mixing.ts';
-import { definePlugin, type ParameterValues, type WordMark } from '../plugin.ts';
+import { definePlugin, FULL_SCOPE, type ParameterValues, type WordMark } from '../plugin.ts';
 import { shiftAdjectives } from './adjective-shift.ts';
+import { rewriteVerbs, shiftVerb } from '../verb.ts';
 import { applyS7 } from './engine.ts';
+import { elides } from './elision.ts';
 import { S7ModeSchema, type SubstitutionStatus } from './types.ts';
 
 /** Bornes du décalage. */
@@ -22,6 +24,9 @@ const REASONS: Record<Exclude<SubstitutionStatus, 'replaced'>, string> = {
   'missing-form': 'aucun nom au bon genre et au bon nombre',
 };
 
+/** La raison d'un mot laissé parce que son pas est bouché. */
+export const CLOSED = 'pas bouché';
+
 /** « S+7 », « S−3 » : avec un vrai signe moins. */
 const title = (values: ParameterValues) => {
   const { offset } = params(values);
@@ -32,8 +37,9 @@ const title = (values: ParameterValues) => {
 export const s7Plugin = definePlugin({
   id: 's7',
   name: 'S+7',
-  // Les noms, et les adjectifs : le n-ième adjectif suivant, au même genre et au même nombre.
-  tracks: ['noun', 'adjective'],
+  // Les noms, les adjectifs (au même genre et au même nombre) et les verbes (au même temps et à la
+  // même personne : le V+7).
+  tracks: ['noun', 'adjective', 'verb'],
   defaultTargets: ['noun'],
   parameters: [
     { kind: 'integer', key: 'offset', label: 'Décalage', min: MIN_OFFSET, max: MAX_OFFSET },
@@ -58,31 +64,55 @@ export const s7Plugin = definePlugin({
     if (offset === 0) return 'S+0 : aucun changement.';
     const rank = `${Math.abs(offset)}${Math.abs(offset) === 1 ? 'er' : 'e'}`;
     const direction = offset > 0 ? 'suit' : 'précède';
-    const adjectives = `adjectif devient le ${rank} adjectif qui le ${direction} dans le dictionnaire, au même genre et au même nombre.`;
-    if (!targets.has('noun')) return `Chaque ${adjectives}`;
-    const nouns =
-      mode === 'reagree'
-        ? `Chaque nom devient le ${rank} nom qui le ${direction} dans le dictionnaire ; la phrase est réaccordée.`
-        : `Chaque nom devient le ${rank} nom de même genre qui le ${direction} dans le dictionnaire.`;
-    return targets.has('adjective') ? `${nouns} Chaque ${adjectives}` : nouns;
+    const sentences: string[] = [];
+    if (targets.has('noun'))
+      sentences.push(
+        mode === 'reagree'
+          ? `Chaque nom devient le ${rank} nom qui le ${direction} dans le dictionnaire ; la phrase est réaccordée.`
+          : `Chaque nom devient le ${rank} nom de même genre qui le ${direction} dans le dictionnaire.`,
+      );
+    if (targets.has('adjective')) sentences.push(`Chaque adjectif devient le ${rank} adjectif qui le ${direction} dans le dictionnaire, au même genre et au même nombre.`);
+    if (targets.has('verb')) sentences.push(`Chaque verbe devient le ${rank} verbe qui le ${direction} dans le dictionnaire, au même temps et à la même personne ; « être » et « avoir » restent.`);
+    return sentences.join(' ');
   },
-  apply(text, tagged, values, { morphology }, targets) {
+  apply(text, tagged, values, { morphology, verbs }, targets, scope = FULL_SCOPE) {
     const settings = params(values);
+    const skip = new Set(scope.skip);
+    // Un verrou se complète des réglages de l'instance et passe par la même validation.
+    const locked = new Map(scope.overrides.map(({ index, values: own }) => [index, params({ ...values, ...own }).offset]));
+    const offsetAt = (index: number) => locked.get(index) ?? settings.offset;
     let words;
     let tail;
     const marks: WordMark[] = [];
     // Les noms d'abord : leur remplacement réaccorde les adjectifs, que le décalage lit ensuite.
     if (targets.has('noun')) {
-      const s7 = applyS7(text, tagged, settings, morphology);
+      const s7 = applyS7(text, tagged, settings, morphology, { skip, offsetAt });
       ({ words, tail } = s7);
       for (const { index, original, replacement, status } of s7.substitutions) {
-        marks.push(status === 'replaced' ? { index, original, replacement } : { index, original, reason: REASONS[status] });
+        if (skip.has(index)) marks.push({ index, original, reason: CLOSED });
+        else marks.push(status === 'replaced' ? { index, original, replacement } : { index, original, reason: REASONS[status] });
       }
     } else {
       ({ words, tail } = plainWords(text));
     }
+    const apostrophe = text.includes('’') ? '’' : "'";
     if (targets.has('adjective')) {
-      marks.push(...shiftAdjectives(words, tagged, settings.offset, text.includes('’') ? '’' : "'", morphology));
+      marks.push(...shiftAdjectives(words, tagged, (index) => (skip.has(index) ? undefined : offsetAt(index)), apostrophe, morphology));
+    }
+    if (targets.has('verb')) {
+      // Les pas bouchés gardent leur raison ; les autres verbes reçoivent leur propre décalage.
+      for (const index of skip) if (tagged[index]?.category === 'verb') marks.push({ index, original: tagged[index]!.word, reason: CLOSED });
+      marks.push(
+        ...rewriteVerbs(
+          words,
+          tagged,
+          (index) => !skip.has(index),
+          (word, previous, repository, index) => shiftVerb(word, previous, offsetAt(index), repository),
+          verbs,
+          apostrophe,
+          (word) => elides(word, { blocksElision: (form) => !!verbs?.blocksElision(form) || morphology.blocksElision(form) }),
+        ),
+      );
     }
     return { words, tail, marks: marks.sort((a, b) => a.index - b.index) };
   },

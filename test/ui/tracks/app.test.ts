@@ -22,15 +22,17 @@ const setup = () => {
 const tick = () => new Promise((resolve) => setTimeout(resolve, 0));
 const click = (node: unknown, predicate: Parameters<typeof find>[1]) => (find(node as never, predicate).props['onClick'] as () => void)();
 
-test('avant l’étiquetage : définition, saisie, table inactive et cinq pistes vides, pas de texte résultant', () => {
+test('avant l’étiquetage : définition, saisie, chaîne, cinq pistes vides, pas de texte résultant', () => {
   const { app } = setup();
   const out = renderToString(app());
-  assert.match(out, /<h1>Potao<\/h1>/);
+  assert.match(out, /<h1>Oulipao<\/h1>/);
   assert.match(out, /Jean Lescure/);
   assert.match(out, /<textarea id="input"/);
   assert.match(out, /Essayer avec un exemple/);
-  assert.equal(elements(app()).filter(byClass('strip')).length, 5);
-  assert.match(out, /0 mot/);
+  assert.equal(elements(app()).filter(byClass('ch')).length, 5);
+  assert.match(out, /<span class="count mono">0<\/span>/);
+  assert.equal(elements(app()).filter(byClass('step')).length, 0);
+  assert.match(out, /<button type="button" class="key theme">Clair \/ sombre<\/button>/);
   assert.doesNotMatch(out, /class="score|Cliquez un mot/); // ni partition, ni invitation avant le texte
   assert.doesNotMatch(out, /Texte résultant/);
 });
@@ -45,15 +47,18 @@ test('mise en pistes : saisie repliée, texte résultant, inspecteur fermé, ré
   await tick();
   const out = renderToString(app());
   assert.match(out, /Texte : 6 mots/);
-  assert.equal(elements(app()).filter(byClass('plugin')).length, 2); // S+7 sur les noms, lipogramme sur toutes les pistes, dans le rack
-  assert.match(out, /<section class="rack" aria-label="Filtres">/);
+  assert.equal(elements(app()).filter(byClass('slot')).length, 2); // S+7 sur les noms, lipogramme sur toutes les pistes, dans la chaîne
+  assert.match(out, /<section class="chain" aria-labelledby="chain-title">/);
+  // de haut en bas : texte résultant, saisie, filtres, pistes, inspecteur
+  const order = ['aria-label="Texte résultant"', 'class="source', 'class="chain"', 'class="rack"', 'class="inspector-hint"'].map((mark) => out.indexOf(mark));
+  assert.ok(order.every((at, k) => at > 0 && (k === 0 || at > order[k - 1]!)), order.join(' '));
+  assert.equal(elements(app()).filter(byClass('step')).length, 6);
   assert.ok(out.indexOf('Filtre 1 : S+7') < out.indexOf('Filtre 2 : Lipogramme'));
   // les tranches rappellent les filtres qui les visent, sans leurs réglages
   const strip = (name: string) => renderToString(find(app(), byLabel(`Piste ${name}`)));
   assert.match(strip('Noms'), /<p class="reminder">1\. S\+7 · 2\. .* \(coupé\)<\/p>/);
   assert.match(strip('Verbes'), /<p class="reminder">2\. [^·]* \(coupé\)<\/p>/);
   assert.doesNotMatch(strip('Noms'), /class="plugin/);
-  assert.match(out, /D'autres contraintes viendront\./);
   assert.match(out, /<p class="summary" role="status" aria-live="polite">S\+7 sur les noms : 2 noms remplacés sur 2\.<\/p>/);
   assert.equal(controller.state.view!.result, 'Le vieil oncle du cheval dort.');
   assert.match(out, /<span class="word replaced noun" tabindex="0" title="Noms : ferme → oncle">oncle<\/span>/);
@@ -76,7 +81,7 @@ test('chaque réglage de la page passe par le contrôleur', async () => {
   assert.match(renderToString(app()), /Pistes coupées : le texte est rendu tel quel/);
   click(app(), byLabel('Seul : ne garder que la piste Verbes'));
   assert.equal(controller.state.view!.result, 'dort.');
-  click(app(), byLabel('Plugin S+7 actif'));
+  click(app(), byLabel('S+7 actif'));
   assert.match(renderToString(app()), /Filtres coupés : texte d’origine\. Pistes coupées : noms, adjectifs, adverbes, autres\./);
   (find(app(), (e) => e.type === 'input').props['onInput'] as (event: Event) => void)(inputEvent('3'));
   (find(app(), (e) => e.type === 'select').props['onChange'] as (event: Event) => void)(inputEvent('same-gender'));
@@ -89,7 +94,7 @@ test('chaque réglage de la page passe par le contrôleur', async () => {
   ]);
   click(app(), byClass('copy'));
   await tick();
-  assert.deepEqual(copied, ['dort.\n\n— pistes coupées : noms, adjectifs, adverbes, autres (Potao)']);
+  assert.deepEqual(copied, ['dort.\n\n— pistes coupées : noms, adjectifs, adverbes, autres (Oulipao)']);
   assert.match(renderToString(app()), /Copié\./);
 });
 
@@ -100,7 +105,7 @@ test('texte modifié : bandeau « remettre en pistes », partition estompée, re
   controller.edit();
   controller.setInput('La ferme dort.');
   const out = renderToString(app());
-  assert.match(out, /<p class="stale-bar">Texte modifié — <button type="button" class="rerun">remettre en pistes<\/button>/);
+  assert.match(out, /<p class="stale-bar">Texte modifié — <button type="button" class="key rerun">remettre en pistes<\/button>/);
   assert.match(out, /class="result stale"/);
   click(app(), byClass('rerun'));
   await tick();
@@ -130,13 +135,13 @@ test('le lipogramme se met en marche dans la page, après le S+7, puis passe dev
   const { controller, app, copied } = setup();
   controller.setInput('La vieille ferme du village dort.');
   await controller.run();
-  click(app(), byLabel('Plugin Lipogramme actif'));
+  click(find(app(), byLabel('Filtre 2 : Lipogramme')), byClass('power'));
   const out = renderToString(app());
   assert.match(out, /S\+7 sur les noms : 2 noms remplacés sur 2\. lipogramme en e : /);
   assert.doesNotMatch(controller.state.view!.result.replace(/\bdort\b/, ''), /e/); // plus de « e » hors verbes
   click(app(), byClass('copy'));
   await tick();
-  assert.match(copied[0]!, /— S\+7 sur les noms · lipogramme en e \(Potao\)$/);
+  assert.match(copied[0]!, /— S\+7 sur les noms · lipogramme en e \(Oulipao\)$/);
   click(app(), byLabel('Monter le filtre 2'));
   assert.ok(renderToString(app()).indexOf('Filtre 1 : Lipogramme') > 0);
   assert.deepEqual(controller.state.mixer.instances.map((i) => i.id), ['lipogram-1', 's7-1']);
@@ -155,7 +160,7 @@ test('rack : un second S+n sur les adjectifs, rappelé par leur tranche, puis mo
   click(unit(), (e) => byClass('chip')(e) && byClass('noun')(e));
   assert.deepEqual(controller.state.mixer.instances[2], { id: 's7-2', type: 's7', enabled: true, params: { offset: 3, mode: 'reagree' }, targets: ['adjective'] });
   const out = renderToString(app());
-  assert.equal(elements(app()).filter((e) => byClass('rank')(e)).length, 3);
+  assert.equal(elements(app()).filter((e) => byClass('pos')(e)).length, 3);
   assert.match(renderToString(find(app(), byLabel('Piste Adjectifs'))), /<p class="reminder">2\. [^·]* \(coupé\) · 3\. S\+3<\/p>/);
   assert.match(out, /S\+7 sur les noms : .* S\+3 sur les adjectifs : /);
   assert.match(renderToString(unit()), /Chaque adjectif devient le 3e adjectif/); // l'aide suit les pistes visées
@@ -178,12 +183,12 @@ test('inspecteur : un clic sur un mot, une bande par étape, les flèches, un fi
   click(app(), (e) => e.props['title'] === 'Noms : ferme → voisin'); // « ferme » : oncle, puis voisin
   assert.equal(controller.state.selected, 2);
   const inspector = () => renderToString(find(app(), byClass('inspector')));
-  assert.match(inspector(), /<caption>« ferme » à chaque étape de la chaîne<\/caption>/);
-  const rows = () => [...inspector().matchAll(/<th scope="row">([^<]*)<\/th>/g)].map((match) => match[1]);
+  assert.match(inspector(), /<caption>« ferme » à chaque étape de la chaîne · <span class="step-state">pas percé<\/span><\/caption>/);
+  const rows = () => [...inspector().matchAll(/<th scope="row">([^<]*)</g)].map((match) => match[1]);
   assert.deepEqual(rows(), ['Origine', 'S+7 sur les noms', 'lipogramme en e', 'S+7 sur les adjectifs']);
   assert.match(inspector(), /<td class="chosen" aria-current="true">ferme<\/td>/);
   assert.doesNotMatch(renderToString(app()), /Cliquez un mot/);
-  const key = (k: string) => (find(app(), byClass('inspector')).props['onKeyDown'] as (event: KeyboardEvent) => void)({ key: k, preventDefault: () => {} } as unknown as KeyboardEvent);
+  const key = (k: string) => controller.shortcut(k, false);
   key('ArrowRight');
   assert.match(inspector(), /« du »/);
   // le troisième filtre monte en tête : même mot, bandes dans le nouvel ordre
@@ -194,4 +199,30 @@ test('inspecteur : un clic sur un mot, une bande par étape, les flèches, un fi
   key('Escape');
   assert.equal(controller.state.selected, undefined);
   assert.match(renderToString(app()), /Cliquez un mot/);
+});
+
+test('grille : un clic bouche un pas, l’inspecteur s’ouvre depuis l’en-tête et pose un verrou, les pages défilent', async () => {
+  const { controller, app } = setup();
+  controller.setInput('La vieille ferme du village dort.');
+  await controller.run();
+  assert.equal(controller.state.view!.result, 'Le vieil oncle du cheval dort.');
+  // « ferme » (pas 3) bouché : son groupe reste tel quel, « village » change toujours
+  click(app(), byLabel('Noms, ferme : percé, le filtre agit'));
+  assert.equal(controller.state.view!.result, 'La vieille ferme du cheval dort.');
+  assert.match(renderToString(app()), /aria-label="Noms, ferme : bouché, laissé tel quel"/);
+  // l'en-tête ouvre l'inspecteur ; le verrou se pose depuis la bande du S+7
+  click(app(), byLabel('Inspecter « village », pas 5'));
+  assert.equal(controller.state.selected, 4);
+  const field = () => find(find(app(), byClass('inspector')), (e) => e.type === 'input');
+  (field().props['onChange'] as (event: Event) => void)({ currentTarget: { value: '2', setCustomValidity() {} } } as unknown as Event);
+  assert.deepEqual(controller.state.mixer.instances[0]!.locks, [{ index: 4, key: 'offset', value: 2 }]);
+  assert.match(renderToString(app()), /S\+2 sur ce mot/);
+  assert.match(renderToString(app()), /<span class="lock mono" aria-hidden="true">2<\/span>/);
+  (field().props['onChange'] as (event: Event) => void)({ currentTarget: { value: '' } } as unknown as Event);
+  assert.deepEqual(controller.state.mixer.instances[0]!.locks, []);
+  // pages : sur un téléphone, quatre pas par page
+  controller.resize(375);
+  controller.closeInspector();
+  click(app(), (e) => byClass('page')(e) && e.props['aria-pressed'] === false);
+  assert.equal(controller.state.page, 1);
 });

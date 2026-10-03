@@ -72,7 +72,7 @@ test('InMemoryMorphology : consultation et ordre du dictionnaire français', () 
 });
 
 test('le fichier de morphologie versionné se charge et sert le moteur', async () => {
-  const m = await loadMorphology(fileTextSource(new URL('../../data/morpho-potao.tsv', import.meta.url)));
+  const m = await loadMorphology(fileTextSource(new URL('../../data/morpho-oulipao.tsv', import.meta.url)));
   assert.ok(m.nounLemmas().length > 50000);
   assert.deepEqual(m.nounReadings('horloge'), [{ form: 'horloge', lemma: 'horloge', gender: 'f', number: 's' }]);
   assert.equal(m.blocksElision('héros'), true);

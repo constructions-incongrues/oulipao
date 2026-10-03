@@ -47,15 +47,15 @@ test('élision : l’article suit l’initiale de l’adjectif nouveau', () => {
   });
   const text = 'Le petit chat.';
   const words = plainWords(text).words;
-  shiftAdjectives(words, tag(text, { petit: 'adjective' }), 1, "'", elided);
+  shiftAdjectives(words, tag(text, { petit: 'adjective' }), () => 1, "'", elided);
   assert.equal(words.map((w) => w.gap + w.output).join(''), "L'ultime chat");
   // et « l’ » redevient « la » devant une consonne
   const back = 'L’ultime école.';
   const backWords = plainWords(back).words;
-  shiftAdjectives(backWords, tag(back, { ultime: 'adjective', école: 'noun' }), 1, '’', elided);
+  shiftAdjectives(backWords, tag(back, { ultime: 'adjective', école: 'noun' }), () => 1, '’', elided);
   assert.equal(backWords.map((w) => w.gap + w.output).join(''), 'Le petit école'); // genre retenu : masculin, l'adjectif l'est
   // un adjectif inconnu reste, avec sa raison
   const unknown = 'Un chat zorg.';
   const unknownWords = plainWords(unknown).words;
-  assert.deepEqual(shiftAdjectives(unknownWords, tag(unknown, { zorg: 'adjective' }), 1, "'", m), [{ index: 2, original: 'zorg', reason: 'absent du dictionnaire' }]);
+  assert.deepEqual(shiftAdjectives(unknownWords, tag(unknown, { zorg: 'adjective' }), () => 1, "'", m), [{ index: 2, original: 'zorg', reason: 'absent du dictionnaire' }]);
 });

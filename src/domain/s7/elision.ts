@@ -4,10 +4,13 @@ import type { ConcreteGender, ConcreteNumber } from './types.ts';
 
 const VOWEL_OR_H = /^[aeiouyhàâäéèêëîïôöùûüœæ]/i;
 
-/** Le mot appelle-t-il l'élision du mot précédent ? Voyelle ou h muet, sauf interdiction du lexique. */
-export function elides(word: string, morphology: MorphologyRepository): boolean {
+/**
+ * Le mot appelle-t-il l'élision du mot précédent ? Voyelle ou h muet, sauf interdiction du lexique :
+ * la morphologie, les verbes, ou les deux à la fois.
+ */
+export function elides(word: string, lexicon: Pick<MorphologyRepository, 'blocksElision'>): boolean {
   if (!VOWEL_OR_H.test(word)) return false;
-  return !morphology.blocksElision(word) && !morphology.blocksElision(word.toLowerCase());
+  return !lexicon.blocksElision(word) && !lexicon.blocksElision(word.toLowerCase());
 }
 
 export interface Realization {

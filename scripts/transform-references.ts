@@ -18,7 +18,7 @@ const references = new URL('../reference/', import.meta.url);
 const output = new URL('../resultats/s7/', import.meta.url);
 mkdirSync(output, { recursive: true });
 
-const morphology = await loadMorphology(fileTextSource(new URL('../data/morpho-potao.tsv', import.meta.url)));
+const morphology = await loadMorphology(fileTextSource(new URL('../data/morpho-oulipao.tsv', import.meta.url)));
 const camembert = new CamembertTagger(createCamembertClassifier());
 
 for (const file of readdirSync(references).filter((f) => f.endsWith('.json')).sort()) {

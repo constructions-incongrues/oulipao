@@ -81,4 +81,4 @@ sous-ensemble, qui reste sous la licence d'origine.
   entre deux catégories d'une même forme.
 
 Le fichier brut (55 Mo) n'est pas versionné : le télécharger dans `data/brut/`, puis lancer
-`npm run build:lexicon` pour régénérer `data/lexique-potao.tsv` (6,6 Mo, MPL 2.0).
+`npm run build:lexicon` pour régénérer `data/lexique-oulipao.tsv` (6,6 Mo, MPL 2.0).

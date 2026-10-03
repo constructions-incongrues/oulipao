@@ -25,12 +25,18 @@ export const TRACK_UNITS: Record<Category, [string, string]> = {
 export const PluginStateSchema = z.object({ enabled: z.boolean(), params: ParameterValuesSchema });
 export type PluginState = z.infer<typeof PluginStateSchema>;
 
+/** Un verrou : la valeur propre d'un paramètre entier de l'instance pour un mot d'origine. */
+export const LockSchema = z.object({ index: z.number().int().nonnegative(), key: z.string().min(1), value: z.number().int() });
+export type Lock = z.infer<typeof LockSchema>;
+
 /** Une instance de filtre : un exemplaire d'une contrainte, avec ses réglages et ses pistes visées. */
 export const InstanceSchema = PluginStateSchema.extend({
   id: z.string().min(1),
   /** L'identifiant du type de contrainte (« s7 », « lipogram »). */
   type: z.string().min(1),
   targets: z.array(CategorySchema).min(1),
+  /** Absent : aucun verrou. */
+  locks: z.array(LockSchema).optional(),
 });
 export type Instance = z.infer<typeof InstanceSchema>;
 
@@ -38,6 +44,8 @@ export type Instance = z.infer<typeof InstanceSchema>;
 export const MixerStateSchema = z.object({
   tracks: TracksSchema,
   instances: z.array(InstanceSchema),
+  /** Les mots d’origine aux pas bouchés : aucun filtre ne les touche. Absent : aucun. */
+  closed: z.array(z.number().int().nonnegative()).optional(),
 });
 export type MixerState = z.infer<typeof MixerStateSchema>;
 
@@ -55,5 +63,12 @@ export const MixerActionSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('remove-instance'), id: z.string().min(1) }),
   /** Place une instance à une position de la chaîne. */
   z.object({ type: z.literal('move-instance'), id: z.string().min(1), position: z.number().int().nonnegative() }),
+  /** Bouche le pas d'un mot d'origine, ou le rouvre. */
+  z.object({ type: z.literal('toggle-step'), index: z.number().int().nonnegative() }),
+  /** Verrouille un paramètre entier d'une instance pour un mot d'origine. */
+  z.object({ type: z.literal('set-lock'), id: z.string().min(1), index: z.number().int().nonnegative(), key: z.string().min(1), value: z.number().int() }),
+  z.object({ type: z.literal('clear-lock'), id: z.string().min(1), index: z.number().int().nonnegative(), key: z.string().min(1) }),
+  /** Rouvre tous les pas et retire tous les verrous : à chaque nouvel étiquetage. */
+  z.object({ type: z.literal('reset-steps') }),
 ]);
 export type MixerAction = z.infer<typeof MixerActionSchema>;

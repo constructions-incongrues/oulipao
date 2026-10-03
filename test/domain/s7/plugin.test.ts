@@ -2,12 +2,13 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { applyS7 } from '../../../src/domain/s7/engine.ts';
 import { s7Plugin } from '../../../src/domain/s7/plugin.ts';
-import { morphology, tag } from '../../support/morphology.ts';
+import { AUXILIARY, LOADING } from '../../../src/domain/verb.ts';
+import { morphology, tag, verbs } from '../../support/morphology.ts';
 
 const m = morphology();
 
 test('déclaration : sur la piste des noms, Décalage borné à ±99 et Parmi ; S+7 réaccordé à l’ouverture', () => {
-  assert.deepEqual(s7Plugin.tracks, ['noun', 'adjective']);
+  assert.deepEqual(s7Plugin.tracks, ['noun', 'adjective', 'verb']);
   assert.deepEqual(s7Plugin.defaultTargets, ['noun']);
   assert.deepEqual(s7Plugin.parameters.map((p) => p.label), ['Décalage', 'Parmi']);
   assert.deepEqual(s7Plugin.defaults, { offset: 7, mode: 'reagree' });
@@ -43,4 +44,58 @@ test('apply : la sortie du moteur, et ce qu’il a fait de chaque nom', () => {
   ]);
   const odd = s7Plugin.apply('La ferme.', tag('La ferme.'), { offset: 99, mode: 'same-gender' }, { morphology: m }, new Set(['noun']));
   assert.ok(odd.marks.every((mark) => mark.replacement !== undefined || mark.reason === 'aucun nom au bon genre et au bon nombre'));
+});
+
+test('portée par mot : un nom au pas bouché garde son groupe, un nom verrouillé prend son décalage', () => {
+  const text = 'Le chat et la vieille horloge.';
+  const tagged = tag(text);
+  const run = (values: object, scope?: { skip: number[]; overrides: { index: number; values: object }[] }) =>
+    s7Plugin.apply(text, tagged, values as never, { morphology: m }, new Set(['noun', 'adjective']), scope as never);
+  const outputs = (result: ReturnType<typeof run>) => result.words.map((w) => w.output);
+  const s1 = outputs(run({ offset: 1 }));
+  const s2 = outputs(run({ offset: 2 }));
+  // « horloge » (5) bouché : « la vieille horloge » reste ; « chat » suit le S+1.
+  const closed = run({ offset: 1 }, { skip: [4, 5], overrides: [] });
+  assert.deepEqual(outputs(closed).slice(3), ['la', 'vieille', 'horloge']);
+  assert.equal(outputs(closed)[1], s1[1]);
+  assert.deepEqual(closed.marks.find((mark) => mark.index === 5), { index: 5, original: 'horloge', reason: 'pas bouché' });
+  // « chat » (1) verrouillé à 2 : lui seul passe en S+2.
+  const locked = outputs(run({ offset: 1 }, { skip: [], overrides: [{ index: 1, values: { offset: 2 } }] }));
+  assert.equal(locked[1], s2[1]);
+  assert.notEqual(locked[1], s1[1]);
+  assert.equal(locked[5], s1[5]);
+  // Un verrou hors bornes est refusé comme un réglage.
+  assert.throws(() => run({ offset: 1 }, { skip: [], overrides: [{ index: 1, values: { offset: 120 } }] }));
+});
+
+test('portée par mot : un adjectif au pas bouché reste tel quel', () => {
+  const text = 'Un petit chat.';
+  const tagged = tag(text);
+  const apply = (skip: number[]) => s7Plugin.apply(text, tagged, { offset: 1 }, { morphology: m }, new Set(['adjective']), { skip, overrides: [] });
+  assert.notEqual(apply([]).words[1]!.output, 'petit');
+  assert.equal(apply([1]).words[1]!.output, 'petit');
+});
+
+test('S+7 sur les verbes : au même temps et à la même personne, le pronom suit', () => {
+  const text = 'nous aimions et je chante, il est.';
+  const tagged = tag(text, { aimions: 'verb', chante: 'verb' });
+  const apply = (resources: { verbs?: ReturnType<typeof verbs> }, scope = { skip: [] as number[], overrides: [] as { index: number; values: { offset: number } }[] }) => {
+    const result = s7Plugin.apply(text, tagged, { offset: 1 }, { morphology: m, ...resources }, new Set(['verb']), scope);
+    return { ...result, text: result.words.map((w) => w.gap + w.output).join('') + result.tail };
+  };
+  const shifted = apply({ verbs: verbs() });
+  assert.equal(shifted.text, 'nous chantions et je dors, il est.');
+  assert.deepEqual(shifted.marks, [
+    { index: 1, original: 'aimions', replacement: 'chantions' },
+    { index: 4, original: 'chante', replacement: 'dors' },
+    { index: 6, original: 'est', reason: AUXILIARY },
+  ]);
+  // Verrou à S−2 sur « chante », pas bouché sur « aimions ».
+  const scoped = apply({ verbs: verbs() }, { skip: [1], overrides: [{ index: 4, values: { offset: -2 } }] });
+  assert.equal(scoped.text, "nous aimions et j'adore, il est.");
+  assert.deepEqual(scoped.marks[0], { index: 1, original: 'aimions', reason: 'pas bouché' });
+  // Pas encore de verbes : chaque verbe attend.
+  assert.deepEqual(apply({}).marks.map((mark) => mark.reason), [LOADING, LOADING, LOADING]);
+  assert.match(s7Plugin.help({ offset: 7 }, new Set(['verb'])), /^Chaque verbe devient le 7e verbe/);
+  assert.match(s7Plugin.help({ offset: 7 }, new Set(['noun', 'verb'])), /réaccordée\. Chaque verbe/);
 });

@@ -33,7 +33,7 @@ test('ambiguityPredicate : plusieurs catégories pour une forme', async () => {
 
 test('le lexique dérivé versionné est conforme et se charge une seule fois', async () => {
   let reads = 0;
-  const source = fileTextSource(new URL('../../data/lexique-potao.tsv', import.meta.url));
+  const source = fileTextSource(new URL('../../data/lexique-oulipao.tsv', import.meta.url));
   const real = new LexiconLookupTagger(() => (reads++, source()));
   const output = await tagText(real, 'La ferme est vite fermée.');
   assert.equal(output.find((o) => o.word === 'vite')!.category, 'adverb');

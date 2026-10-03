@@ -73,7 +73,7 @@ export class InMemoryMorphology implements MorphologyRepository {
   }
 }
 
-// Fichier dérivé data/morpho-potao.tsv : « N|A|R <TAB> forme <TAB> lemme <TAB> genre <TAB> nombre <TAB> 0|1 »
+// Fichier dérivé data/morpho-oulipao.tsv : « N|A|R <TAB> forme <TAB> lemme <TAB> genre <TAB> nombre <TAB> 0|1 »
 // (1 = pas d'élision ; R = adverbe, invariable).
 const RowSchema = z.tuple([z.enum(['N', 'A', 'R']), z.string(), z.string(), z.string(), z.string(), z.enum(['0', '1'])]);
 

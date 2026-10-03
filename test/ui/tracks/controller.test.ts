@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createTracksController, EXAMPLE_TEXT, type TracksDependencies, type TracksState } from '../../../src/ui/tracks/controller.ts';
 import type { Tagger } from '../../../src/ports/tagger.ts';
-import { morphology, tag } from '../../support/morphology.ts';
+import { LOADING } from '../../../src/domain/verb.ts';
+import { morphology, tag, verbs } from '../../support/morphology.ts';
 
 const tagger = (calls: string[] = []): Tagger => ({ name: 'factice', tag: (text) => (calls.push(text), tag(text)) });
 const setup = (overrides: Partial<TracksDependencies> = {}, calls: string[] = []) => {
@@ -91,7 +92,7 @@ test('l’exemple : placé dans la saisie et mis en pistes', async () => {
   assert.equal(controller.state.input, EXAMPLE_TEXT);
   assert.ok(controller.state.view);
   await controller.copy();
-  assert.match(copied[0]!, /— S\+7 sur les noms \(Potao\)$/);
+  assert.match(copied[0]!, /— S\+7 sur les noms \(Oulipao\)$/);
 });
 
 test('chaque geste met la vue à jour sans réétiqueter ; les mots changés s’éclairent', async () => {
@@ -228,7 +229,7 @@ test('copier : le texte résultant et sa mention (D11) ; message à côté du bo
   controller.setInput('La ferme.');
   await controller.run();
   await controller.copy();
-  assert.deepEqual(copied, ["L'oncle.\n\n— S+7 sur les noms (Potao)"]);
+  assert.deepEqual(copied, ["L'oncle.\n\n— S+7 sur les noms (Oulipao)"]);
   assert.equal(controller.state.copyMessage, 'Copié.');
   controller.dispatch({ type: 'set-param', id: 's7-1', key: 'offset', value: 2 });
   assert.equal(controller.state.copyMessage, ''); // le texte a changé depuis la copie
@@ -244,4 +245,141 @@ test('copier : le texte résultant et sa mention (D11) ; message à côté du bo
   await denied.controller.copy();
   assert.equal(denied.controller.state.copyMessage, 'Copie impossible : refusé');
   assert.equal(denied.controller.state.inputMessage, ''); // la page n'est pas en erreur
+});
+
+test('nouveau texte : les pas bouchés se rouvrent et les verrous tombent', async () => {
+  const { controller } = setup();
+  controller.setInput('La ferme dort.');
+  await controller.run();
+  controller.dispatch({ type: 'toggle-step', index: 1 });
+  controller.dispatch({ type: 'set-lock', id: 's7-1', index: 1, key: 'offset', value: 2 });
+  assert.deepEqual(controller.state.mixer.closed, [1]);
+  controller.setInput('La ville dort.');
+  await controller.run();
+  assert.deepEqual(controller.state.mixer.closed, []);
+  assert.deepEqual(controller.state.mixer.instances.flatMap((instance) => instance.locks ?? []), []);
+});
+
+test('grille : pas par page selon la largeur, la page du pas en tête reste ; pages bornées ; le mot choisi amène sa page', async () => {
+  const { controller } = setup();
+  controller.setInput(EXAMPLE_TEXT);
+  await controller.run();
+  assert.equal(controller.state.perPage, 16);
+  controller.showPage(2);
+  assert.equal(controller.state.page, 2); // pas 33 à 44
+  controller.showPage(9);
+  assert.equal(controller.state.page, 2);
+  controller.showPage(-1);
+  assert.equal(controller.state.page, 0);
+  controller.showPage(1); // pas 17 à 32
+  controller.resize(375);
+  assert.deepEqual([controller.state.perPage, controller.state.page], [4, 4]); // le pas 17 reste en tête
+  const before = controller.state;
+  controller.resize(380);
+  assert.equal(controller.state, before); // même nombre de pas : rien ne change
+  controller.select(30);
+  assert.equal(controller.state.page, 7);
+  await controller.run();
+  assert.equal(controller.state.page, 0);
+});
+
+test('bande collée : l’état ne change qu’au franchissement', () => {
+  const { controller, states } = setup();
+  controller.pin(true);
+  controller.pin(true);
+  assert.equal(controller.state.pinned, true);
+  assert.equal(states.length, 1);
+  controller.pin(false);
+  assert.equal(controller.state.pinned, false);
+});
+
+test('raccourcis avant la mise en pistes : rien', () => {
+  const { controller } = setup();
+  assert.equal(controller.shortcut('ArrowRight', false), false);
+});
+
+test('raccourcis de l’inspecteur : où que soit le focus, pas dans un champ ; une flèche l’ouvre ; la grille suit la page', async () => {
+  const { controller } = setup();
+  controller.setInput(EXAMPLE_TEXT);
+  await controller.run();
+  controller.resize(375); // quatre pas par page
+  controller.showPage(2);
+  assert.equal(controller.shortcut('Escape', false), false); // rien à fermer
+  assert.equal(controller.shortcut('ArrowRight', false), true); // fermé : ouvert sur le premier mot de la page
+  assert.deepEqual([controller.state.selected, controller.state.page], [8, 2]);
+  controller.select(3);
+  assert.equal(controller.state.page, 0);
+  assert.equal(controller.shortcut('ArrowRight', false), true);
+  assert.deepEqual([controller.state.selected, controller.state.page], [4, 1]); // la grille passe à la page du pas 5
+  assert.equal(controller.shortcut('ArrowLeft', false), true);
+  assert.deepEqual([controller.state.selected, controller.state.page], [3, 0]);
+  assert.equal(controller.shortcut('ArrowLeft', true), false); // dans un champ : la flèche est au champ
+  assert.equal(controller.state.selected, 3);
+  assert.equal(controller.shortcut('a', false), false);
+  assert.equal(controller.shortcut('Escape', false), true);
+  assert.equal(controller.state.selected, undefined);
+});
+
+test('Page ouverte sans verbes visés : les verbes ne sont pas demandés', async () => {
+  let asked = 0;
+  const { controller } = setup({ loadVerbs: async () => (asked++, verbs()) });
+  controller.setInput('Le chat dort.');
+  await controller.run();
+  controller.dispatch({ type: 'set-param', id: 's7-1', key: 'offset', value: 3 });
+  await tick();
+  assert.equal(asked, 0);
+  assert.equal(controller.state.verbs.status, 'idle');
+});
+
+test('Verbes visés : d’abord la raison du chargement, puis le recalcul sans nouvel étiquetage', async () => {
+  const calls: string[] = [];
+  let release!: () => void;
+  const { controller } = setup({ loadVerbs: () => new Promise((resolve) => (release = () => resolve(verbs()))) }, calls);
+  controller.setInput('Le chat dort.');
+  await controller.run();
+  controller.dispatch({ type: 'set-targets', id: 's7-1', targets: ['noun', 'verb'] });
+  assert.equal(controller.state.verbs.status, 'loading');
+  assert.equal(controller.state.view!.stages.at(-1)!.words[2], 'dort');
+  assert.deepEqual(controller.state.view!.marks.get(2), { state: 'kept', original: 'dort', reason: LOADING });
+  release();
+  await tick();
+  assert.equal(controller.state.verbs.status, 'ready');
+  // dormir + 7, en faisant le tour des huit verbes du dictionnaire de test : chanter.
+  assert.equal(controller.state.view!.stages.at(-1)!.words[2], 'chante');
+  assert.deepEqual(calls, ['Le chat dort.']);
+  // Déjà là : un nouveau geste ne les redemande pas.
+  await controller.loadVerbs();
+  assert.equal(controller.state.verbs.status, 'ready');
+});
+
+test('Verbes injoignables : l’erreur reste affichée, la relance les charge', async () => {
+  let calls = 0;
+  const { controller } = setup({ loadVerbs: async () => (calls++ === 0 ? Promise.reject(new Error('503')) : verbs()) });
+  controller.setInput('Le chat dort.');
+  await controller.run();
+  controller.dispatch({ type: 'set-targets', id: 's7-1', targets: ['verb'] });
+  await tick();
+  assert.deepEqual(controller.state.verbs, { status: 'error', error: 'Échec du chargement des verbes : 503.' });
+  controller.dispatch({ type: 'set-param', id: 's7-1', key: 'offset', value: 7 });
+  await tick();
+  assert.equal(calls, 1); // un geste ne relance pas : le bouton le fait
+  await controller.loadVerbs();
+  assert.equal(controller.state.verbs.status, 'ready');
+  assert.equal(controller.state.view!.stages.at(-1)!.words[2], 'chante');
+});
+
+test('Un lipogramme mis en marche dès l’étiquetage vise les verbes : ils sont demandés', async () => {
+  let asked = 0;
+  const { controller } = setup({ loadVerbs: async () => (asked++, verbs()) });
+  controller.dispatch({ type: 'toggle-instance', id: 'lipogram-1' });
+  controller.setInput('Le chat dort.');
+  await controller.run();
+  await tick();
+  assert.equal(asked, 1);
+});
+
+test('Sans chargeur de verbes : rien n’est demandé', async () => {
+  const { controller } = setup();
+  await controller.loadVerbs();
+  assert.equal(controller.state.verbs.status, 'idle');
 });

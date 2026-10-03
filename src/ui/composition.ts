@@ -1,6 +1,7 @@
 // Câblage commun aux pages : quels adaptateurs servent les ports. Le script assemblé est servi
 // depuis dist/ : les données sont un cran au-dessus.
 import { loadMorphology } from '../adapters/morphology/in-memory-morphology.ts';
+import { loadVerbs } from '../adapters/morphology/in-memory-verbs.ts';
 import { createCamembertClassifier } from '../adapters/taggers/camembert-model.ts';
 import { CamembertTagger } from '../adapters/taggers/camembert-tagger.ts';
 import { FrCompromiseTagger } from '../adapters/taggers/fr-compromise-tagger.ts';
@@ -8,6 +9,7 @@ import { LexiconLookupTagger } from '../adapters/taggers/lexicon-lookup-tagger.t
 import { fetchTextSource } from '../adapters/text-sources/fetch-text-source.ts';
 import type { MorphologyRepository } from '../ports/morphology.ts';
 import type { Tagger } from '../ports/tagger.ts';
+import type { VerbRepository } from '../ports/verbs.ts';
 
 /** L'étiqueteur neuronal, le seul qui tienne le seuil de l'essai technique, et le préchargement de son modèle. */
 export function createNeuralTagging(): { tagger: Tagger; preload: (onProgress: (loaded: number, total: number) => void) => Promise<void> } {
@@ -22,7 +24,7 @@ export function createTaggers(base: string | URL): Tagger[] {
   return [
     createNeuralTagger(),
     new FrCompromiseTagger(),
-    new LexiconLookupTagger(fetchTextSource(new URL('../data/lexique-potao.tsv', base))),
+    new LexiconLookupTagger(fetchTextSource(new URL('../data/lexique-oulipao.tsv', base))),
   ];
 }
 
@@ -36,8 +38,21 @@ export const MORPHOLOGY_VERSION = '2026-10-03-adverbes';
 export function createMorphologyLoader(base: string | URL): () => Promise<MorphologyRepository> {
   let morphology: Promise<MorphologyRepository> | undefined;
   return () =>
-    (morphology ??= loadMorphology(fetchTextSource(new URL(`../data/morpho-potao.tsv?v=${MORPHOLOGY_VERSION}`, base))).catch((error: unknown) => {
+    (morphology ??= loadMorphology(fetchTextSource(new URL(`../data/morpho-oulipao.tsv?v=${MORPHOLOGY_VERSION}`, base))).catch((error: unknown) => {
       morphology = undefined;
+      throw error;
+    }));
+}
+
+/** Version du fichier des verbes, ajoutée à son adresse. À changer à chaque `npm run build:verbs`. */
+export const VERBS_VERSION = '2026-10-03-verbes';
+
+/** Les verbes, chargés seulement quand une contrainte les vise ; un échec n'est pas gardé. */
+export function createVerbsLoader(base: string | URL): () => Promise<VerbRepository> {
+  let verbs: Promise<VerbRepository> | undefined;
+  return () =>
+    (verbs ??= loadVerbs(fetchTextSource(new URL(`../data/verbes-oulipao.tsv?v=${VERBS_VERSION}`, base))).catch((error: unknown) => {
+      verbs = undefined;
       throw error;
     }));
 }

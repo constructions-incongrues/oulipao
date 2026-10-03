@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { createMorphologyLoader, createNeuralTagger, createNeuralTagging, createTaggers, MORPHOLOGY_VERSION } from '../../src/ui/composition.ts';
+import { createMorphologyLoader, createNeuralTagger, createNeuralTagging, createTaggers, createVerbsLoader, MORPHOLOGY_VERSION, VERBS_VERSION } from '../../src/ui/composition.ts';
 
 test('les trois étiqueteurs de l’essai, le neuronal en premier', () => {
   const taggers = createTaggers('http://localhost/dist/page.js');
@@ -22,7 +22,7 @@ test('le dictionnaire est cherché à côté de dist/, une seule fois', async ()
     const [a, b] = await Promise.all([load(), load()]);
     assert.equal(a, b);
     assert.deepEqual(a.nounLemmas(), ['horloge']);
-    assert.deepEqual(urls, [`http://localhost/data/morpho-potao.tsv?v=${MORPHOLOGY_VERSION}`]); // versionné : pas de copie périmée
+    assert.deepEqual(urls, [`http://localhost/data/morpho-oulipao.tsv?v=${MORPHOLOGY_VERSION}`]); // versionné : pas de copie périmée
   } finally {
     globalThis.fetch = original;
   }
@@ -37,6 +37,23 @@ test('dictionnaire injoignable (D12) : l’échec n’est pas gardé, le prochai
     await assert.rejects(load());
     assert.deepEqual((await load()).nounLemmas(), ['horloge']);
     assert.equal(calls, 2);
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+test('les verbes sont cherchés à côté de dist/, une seule fois, et un échec n’est pas gardé', async () => {
+  const original = globalThis.fetch;
+  const urls: string[] = [];
+  let calls = 0;
+  globalThis.fetch = async (url) => (urls.push(String(url)), calls++ === 0 ? new Response('', { status: 503 }) : new Response('V\taime\taimer\tindicative-present\t3s\t0\n'));
+  try {
+    const load = createVerbsLoader('http://localhost/dist/tracks.js');
+    await assert.rejects(load());
+    const [a, b] = await Promise.all([load(), load()]);
+    assert.equal(a, b);
+    assert.deepEqual(a.infinitives(), ['aimer']);
+    assert.deepEqual(urls, Array(2).fill(`http://localhost/data/verbes-oulipao.tsv?v=${VERBS_VERSION}`));
   } finally {
     globalThis.fetch = original;
   }

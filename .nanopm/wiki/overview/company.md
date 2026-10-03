@@ -6,11 +6,11 @@ sources: [vision-mission.md, business-model.md, product.md, org.md]
 ---
 
 # PM Context Brief
-Généré 2026-10-03 · Project: potao · Sources: 4 Define docs
+Généré 2026-10-03 · Project: oulipao · Sources: 4 Define docs
 
 ## What we do
 
-Potao est un outil web qui découpe un texte en pistes linguistiques (noms, adjectifs, verbes, adverbes…) et laisse l'utilisateur brancher des plugins de contrainte oulipienne (par exemple S+7) alimentés par des ressources lexicales, pour réécrire le texte en direct. Potao signifie « Potentialité Assistée par Ordinateur ». La métaphore est celle d'un logiciel de MAO : « comme Ableton, sauf que les pistes ne sont pas sonores, mais linguistiques ». La contrainte est toujours une règle énoncée, jamais une génération opaque.
+Oulipao est un outil web qui découpe un texte en pistes linguistiques (noms, adjectifs, verbes, adverbes…) et laisse l'utilisateur brancher des plugins de contrainte oulipienne (par exemple S+7) alimentés par des ressources lexicales, pour réécrire le texte en direct. Oulipao signifie « Ouvroir de Littérature Potentielle Assistée par Ordinateur ». La métaphore est celle d'un logiciel de MAO : « comme Ableton, sauf que les pistes ne sont pas sonores, mais linguistiques ». La contrainte est toujours une règle énoncée, jamais une génération opaque.
 
 _Plus de détails : `.nanopm/wiki/docs/product.md`_
 
@@ -20,7 +20,7 @@ _More detail: `.nanopm/wiki/docs/personas.md`_
 
 ## How we make money
 
-Aucun revenu. Potao est un projet open source bénévole dont les coûts sont financés par son fondateur. Gratuit, pas d'abonnement, ni dons ni subventions prévus. GTM par les créations : chaque texte transformé est partageable et ramène vers l'outil ; la découverte vient des textes produits, pas d'une promotion. Ce canal reste non prouvé (rien n'existe encore à partager).
+Aucun revenu. Oulipao est un projet open source bénévole dont les coûts sont financés par son fondateur. Gratuit, pas d'abonnement, ni dons ni subventions prévus. GTM par les créations : chaque texte transformé est partageable et ramène vers l'outil ; la découverte vient des textes produits, pas d'une promotion. Ce canal reste non prouvé (rien n'existe encore à partager).
 
 _Plus de détails : `.nanopm/wiki/docs/business-model.md`_
 

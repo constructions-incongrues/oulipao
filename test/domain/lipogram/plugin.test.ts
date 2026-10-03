@@ -4,11 +4,13 @@ import { CATEGORIES, type Category } from '../../../src/domain/categories.ts';
 import { lipogramPlugin } from '../../../src/domain/lipogram/plugin.ts';
 import { containsLetter } from '../../../src/domain/lipogram/neighbour.ts';
 import { applyS7 } from '../../../src/domain/s7/engine.ts';
-import { morphology, tag } from '../../support/morphology.ts';
+import { AUXILIARY, LOADING } from '../../../src/domain/verb.ts';
+import { morphology, tag, verbs } from '../../support/morphology.ts';
 
 const m = morphology();
-const run = (text: string, letter = 'e', extra = {}, targets: Iterable<Category> = CATEGORIES) => {
-  const result = lipogramPlugin.apply(text, tag(text, extra), { letter }, { morphology: m }, new Set(targets));
+const v = verbs();
+const run = (text: string, letter = 'e', extra = {}, targets: Iterable<Category> = CATEGORIES, withVerbs = true) => {
+  const result = lipogramPlugin.apply(text, tag(text, extra), { letter }, { morphology: m, verbs: withVerbs ? v : undefined }, new Set(targets));
   return { ...result, text: result.words.map((w) => w.gap + w.output).join('') + result.tail };
 };
 
@@ -30,7 +32,7 @@ test('noms remplacés par leur voisin, avec leur groupe ; adverbes et mots-outil
   assert.equal(text, 'Un chat est très ainsi ou la vieille maison dort.');
   assert.deepEqual(marks, [
     { index: 0, original: 'Le', replacement: 'Un' },
-    { index: 2, original: 'est', reason: 'verbe, laissé en v1' },
+    { index: 2, original: 'est', reason: AUXILIARY },
     { index: 4, original: 'vite', replacement: 'ainsi' },
     { index: 5, original: 'et', replacement: 'ou' },
     { index: 7, original: 'vieille', reason: 'aucun voisin sans la lettre' },
@@ -83,4 +85,34 @@ test('pistes visées : seuls leurs mots perdent la lettre', () => {
   const others = run(text, 'e', {}, ['adverb', 'other']);
   assert.equal(others.text, 'Un chat est très ainsi ou la vieille horloge dort.');
   assert.ok(!others.marks.some((mark) => mark.index === 8));
+});
+
+test('portée par mot : un pas bouché garde son mot et son groupe', () => {
+  const text = 'Le chat est très vite et la vieille horloge dort.';
+  const apply = (skip: number[]) => {
+    const result = lipogramPlugin.apply(text, tag(text), { letter: 'e' }, { morphology: m }, new Set(CATEGORIES), { skip, overrides: [] });
+    return result.words.map((w) => w.gap + w.output).join('') + result.tail;
+  };
+  // « horloge » (8) et son groupe bouchés, « vite » (4) aussi : le reste suit le lipogramme.
+  assert.equal(apply([4, 6, 7, 8]), 'Un chat est très vite ou la vieille horloge dort.');
+  assert.equal(apply([]), 'Un chat est très ainsi ou la vieille maison dort.');
+});
+
+test('Verbe fautif : le premier verbe suivant sans la lettre, au même temps et à la même personne', () => {
+  const { text, marks } = run('elle mangeait', 'e', { elle: 'other', mangeait: 'verb' }, ['verb']);
+  assert.equal(text, 'elle adorait');
+  assert.deepEqual(marks, [{ index: 1, original: 'mangeait', replacement: 'adorait' }]);
+  // Le pronom suit le verbe nouveau : « j'aime » sans « a » devient « je dors ».
+  assert.equal(run("j'aime", 'a', { "j'": 'other', aime: 'verb' }, ['verb']).text, 'je dors');
+});
+
+test('Verbes : sans voisin, auxiliaire, pas bouché, piste non visée, verbes pas encore chargés', () => {
+  assert.deepEqual(run('nous mangeons', 'o', { nous: 'other', mangeons: 'verb' }, ['verb']).marks, [{ index: 1, original: 'mangeons', reason: 'aucun voisin sans la lettre' }]);
+  assert.deepEqual(run('il est', 'e', { il: 'other', est: 'verb' }, ['verb']).marks, [{ index: 1, original: 'est', reason: AUXILIARY }]);
+  assert.deepEqual(run('elle mangeait', 'e', { elle: 'other', mangeait: 'verb' }, ['noun']).marks, []);
+  assert.deepEqual(run('elle mangeait', 'e', { elle: 'other', mangeait: 'verb' }, ['verb'], false).marks, [{ index: 1, original: 'mangeait', reason: LOADING }]);
+  const closed = lipogramPlugin.apply('elle mangeait', tag('elle mangeait', { mangeait: 'verb' }), { letter: 'e' }, { morphology: m, verbs: v }, new Set(['verb']), { skip: [1], overrides: [] });
+  assert.equal(closed.words[1]!.output, 'mangeait');
+  // Un verbe sans la lettre n'est pas touché.
+  assert.deepEqual(run('il dort', 'e', { il: 'other', dort: 'verb' }, ['verb']).marks, []);
 });

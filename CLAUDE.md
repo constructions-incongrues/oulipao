@@ -1,4 +1,4 @@
-# Potao
+# Oulipao
 
 Outil web qui applique des contraintes oulipiennes à un texte français, entièrement dans le
 navigateur. Planification dans `.nanopm/wiki/`, changements dans `openspec/`.
@@ -13,3 +13,7 @@ navigateur. Planification dans `.nanopm/wiki/`, changements dans `openspec/`.
   toute donnée entrant par un adaptateur est validée.
 - Symboles en anglais ; commentaires, documentation et PR en français.
 - Parler français avec le fondateur.
+
+## Système de design
+
+Lire `DESIGN.md` avant tout travail visuel ou d'interface : il fixe les polices, les couleurs, les espacements et la direction esthétique. Demander au fondateur avant de s'en écarter. En revue ou en recette d'interface, signaler le code qui ne suit pas `DESIGN.md`.

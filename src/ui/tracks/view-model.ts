@@ -1,9 +1,10 @@
 import { CATEGORIES, type Category } from '../../domain/categories.ts';
 import { audibleCategories, mixSegments, type MixedSegment } from '../../domain/mixing.ts';
-import type { ConstraintPlugin } from '../../domain/plugin.ts';
+import type { ConstraintPlugin, ParameterValues } from '../../domain/plugin.ts';
 import { runChain, type ChainStep, type StepReport } from '../../domain/plugin-chain.ts';
 import type { TaggedWord } from '../../domain/tagged-word.ts';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
+import type { VerbRepository } from '../../ports/verbs.ts';
 import { pluginById } from './mixer-state.ts';
 import { TRACK_NAMES, TRACK_UNITS, type Instance, type MixerState } from './types.ts';
 
@@ -60,10 +61,57 @@ const enabledInstances = (mixer: MixerState): Instance[] => mixer.instances.filt
 
 /** Les instances qui changent le texte : en marche, et réglées pour agir (le S+0, non). */
 export function activeSteps(mixer: MixerState, lookup: PluginLookup = pluginById): ChainStep[] {
+  const closed = new Set(mixer.closed ?? []);
   return enabledInstances(mixer)
-    .map((instance) => ({ id: instance.id, plugin: lookup(instance.type), values: instance.params, targets: new Set(instance.targets) }))
+    .map((instance) => ({
+      id: instance.id,
+      plugin: lookup(instance.type),
+      values: instance.params,
+      targets: new Set(instance.targets),
+      closed,
+      locks: locksOf(instance),
+    }))
     .filter(({ plugin, values }) => plugin.acts(values));
 }
+
+/** Les verrous d'une instance, par mot d'origine : les valeurs propres de ce mot. */
+function locksOf(instance: Instance): Map<number, ParameterValues> {
+  const locks = new Map<number, ParameterValues>();
+  for (const { index, key, value } of instance.locks ?? []) locks.set(index, { ...locks.get(index), [key]: value });
+  return locks;
+}
+
+/** Un pas de la grille : percé (un filtre agit), en contour (aucun filtre ne vise sa piste), ou bouché. */
+export interface GridStep {
+  /** Position du mot d'origine. */
+  index: number;
+  word: string;
+  track: Category;
+  state: 'punched' | 'outline' | 'closed';
+  /** Les verrous posés sur ce mot, instance par instance, dans l'ordre de la chaîne. */
+  locks: { id: string; key: string; value: number }[];
+}
+
+/** Les pas de la grille, un par mot d'origine. */
+export function gridSteps(mixer: MixerState, tracks: readonly Category[], words: readonly string[], lookup: PluginLookup = pluginById): GridStep[] {
+  const closed = new Set(mixer.closed ?? []);
+  const acting = activeSteps(mixer, lookup);
+  return tracks.map((track, index) => ({
+    index,
+    word: words[index]!,
+    track,
+    state: closed.has(index) ? 'closed' : acting.some((step) => step.targets.has(track)) ? 'punched' : 'outline',
+    locks: mixer.instances.flatMap((instance) =>
+      (instance.locks ?? []).filter((lock) => lock.index === index).map(({ key, value }) => ({ id: instance.id, key, value })),
+    ),
+  }));
+}
+
+/** Le nombre de pas par page : seize sur un écran large, huit sur une tablette, quatre sur un téléphone. */
+export const stepsPerPage = (width: number) => (width >= 1024 ? 16 : width >= 640 ? 8 : 4);
+
+/** La page qui contient un pas, à un nombre de pas par page donné. */
+export const pageOf = (index: number, perPage: number) => Math.floor(index / perPage);
 
 /** « les noms », « les noms et les adjectifs », « les noms, les verbes et les adjectifs ». */
 function tracksPhrase(targets: readonly Category[]): string {
@@ -88,9 +136,10 @@ export function buildView(
   mixer: MixerState,
   morphology: MorphologyRepository,
   lookup: PluginLookup = pluginById,
+  verbs?: VerbRepository,
 ): TracksView {
   const { text, tagged } = session;
-  const chain = runChain(text, tagged, activeSteps(mixer, lookup), { morphology });
+  const chain = runChain(text, tagged, activeSteps(mixer, lookup), { morphology, verbs });
   const active = mixer.instances.filter((instance) => chain.steps.some((step) => step.id === instance.id));
   const marks = new Map<number, Mark>();
   for (const { index, original, replacement, removed, reason } of chain.marks.values()) {
@@ -168,7 +217,7 @@ export function ruleMention(mixer: MixerState, audible: ReadonlySet<Category>, l
   const parts = mixer.instances.filter((instance) => active.has(instance.id)).map((instance) => describeInstance(instance, lookup));
   const cut = cutTracks(audible);
   if (cut.length) parts.push(`pistes coupées : ${cut.join(', ')}`);
-  return parts.length ? `\n\n— ${parts.join(' · ')} (Potao)` : '';
+  return parts.length ? `\n\n— ${parts.join(' · ')} (Oulipao)` : '';
 }
 
 /** Les mots dont le texte a changé d'une vue à l'autre, par position : ce sont eux qui s'éclairent. */
@@ -199,4 +248,40 @@ export function inspectorWindow(view: TracksView, index: number, radius: number)
     columns,
     bands: view.stages.map(({ id, label, words }) => ({ id, label, cells: columns.map((column) => words[column.index] || '·') })),
   };
+}
+
+/** Un champ de verrou de l'inspecteur : un paramètre entier d'une instance, pour le mot choisi. */
+export interface LockField {
+  key: string;
+  label: string;
+  min: number;
+  max: number;
+  /** La valeur verrouillée ; absente : le mot suit l'instance. */
+  value?: number;
+}
+
+/** Les verrous qu'on peut poser sur un mot : par instance en marche qui vise sa piste. */
+export interface InstanceLocks {
+  id: string;
+  fields: LockField[];
+  /** « S+3 sur ce mot » quand un verrou est posé ; absent sinon. */
+  note?: string;
+}
+
+/** Les champs de verrou de l'inspecteur pour un mot d'origine et sa piste. */
+export function inspectorLocks(mixer: MixerState, index: number, track: Category, lookup: PluginLookup = pluginById): InstanceLocks[] {
+  return enabledInstances(mixer)
+    .filter((instance) => instance.targets.includes(track))
+    .flatMap((instance) => {
+      const plugin = lookup(instance.type);
+      const fields = plugin.parameters.flatMap((parameter) =>
+        parameter.kind === 'integer'
+          ? [{ key: parameter.key, label: parameter.label, min: parameter.min, max: parameter.max, value: instance.locks?.find((lock) => lock.index === index && lock.key === parameter.key)?.value }]
+          : [],
+      );
+      if (!fields.length) return [];
+      const locked = Object.fromEntries(fields.filter((field) => field.value !== undefined).map((field) => [field.key, field.value!]));
+      const note = Object.keys(locked).length ? `${plugin.title({ ...instance.params, ...locked })} sur ce mot` : undefined;
+      return [{ id: instance.id, fields, ...(note && { note }) }];
+    });
 }

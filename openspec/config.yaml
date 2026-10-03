@@ -1,7 +1,7 @@
 schema: spec-driven
 
 context: |
-  Potao (« Potentialité Assistée par Ordinateur ») : outil web qui applique des contraintes
+  Oulipao (« Ouvroir de Littérature Potentielle Assistée par Ordinateur ») : outil web qui applique des contraintes
   oulipiennes à un texte français, entièrement dans le navigateur.
 
   Contraintes du projet (fixées par le fondateur le 2026-10-03) :

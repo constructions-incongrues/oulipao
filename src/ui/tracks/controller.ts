@@ -1,14 +1,17 @@
 import { tagText } from '../../domain/tagging.ts';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
 import type { Tagger } from '../../ports/tagger.ts';
+import type { VerbRepository } from '../../ports/verbs.ts';
 import { initialState, reduce } from './mixer-state.ts';
 import type { MixerAction, MixerState } from './types.ts';
-import { buildView, changedWords, ruleMention, type Session, type TracksView } from './view-model.ts';
+import { buildView, changedWords, pageOf, ruleMention, stepsPerPage, type Session, type TracksView } from './view-model.ts';
 
 /** Ce dont la page a besoin de l'extérieur. */
 export interface TracksDependencies {
   tagger: Tagger;
   loadMorphology: () => Promise<MorphologyRepository>;
+  /** Les verbes, demandés seulement quand une instance active vise leur piste. */
+  loadVerbs?: () => Promise<VerbRepository>;
   /** Télécharge le modèle d'étiquetage, en signalant l'avancement en octets. */
   preload: (onProgress: (loaded: number, total: number) => void) => Promise<void>;
   /** Place un texte dans le presse-papiers. */
@@ -46,8 +49,15 @@ export interface TracksState {
   generation: number;
   /** Message à côté du bouton de copie. */
   copyMessage: string;
+  /** Le chargement des verbes : `idle` tant qu'aucune instance ne les vise. */
+  verbs: { status: 'idle' | 'loading' | 'ready' | 'error'; error: string };
   /** Le mot d'origine ouvert dans l'inspecteur ; aucun : l'inspecteur est fermé. */
   selected?: number;
+  /** La grille : pas par page (selon sa largeur) et page affichée. */
+  perPage: number;
+  page: number;
+  /** La bande du texte résultant est collée en haut de l'écran : elle se fait compacte. */
+  pinned: boolean;
 }
 
 export interface TracksController {
@@ -63,17 +73,31 @@ export interface TracksController {
   run(): Promise<void>;
   /** Place le texte d'exemple dans la saisie et le met en pistes. */
   example(): Promise<void>;
+  /** Charge les verbes ; relance après un échec. Le texte résultant se recalcule à leur arrivée. */
+  loadVerbs(): Promise<void>;
   /** Applique un geste à la table et met la vue à jour, sans réétiqueter. */
   dispatch(action: MixerAction): void;
   /** Ouvre l'inspecteur sur un mot d'origine. */
   select(index: number): void;
-  /** Passe au mot d'origine précédent ou suivant, sans sortir du texte. */
+  /** Passe au mot d'origine précédent ou suivant, sans sortir du texte ; la grille suit sa page. */
   step(delta: number): void;
+  /**
+   * Un raccourci de l'inspecteur, où que soit le focus : une flèche l'ouvre (premier mot de la
+   * page affichée) ou passe au mot voisin, Échap le ferme. Rien avant la mise en pistes ni quand
+   * la frappe va dans un champ ; rend `true` si la touche a servi.
+   */
+  shortcut(key: string, inField: boolean): boolean;
   closeInspector(): void;
   copy(): Promise<void>;
+  /** La grille a changé de largeur : le pas qui était en tête de page reste visible. */
+  resize(width: number): void;
+  /** Affiche une page de la grille, bornée aux pages existantes. */
+  showPage(page: number): void;
+  /** La bande du texte résultant vient de se coller en haut de l'écran, ou de se décoller. */
+  pin(pinned: boolean): void;
 }
 
-/** Un texte d'exemple, écrit pour Potao. */
+/** Un texte d'exemple, écrit pour Oulipao. */
 export const EXAMPLE_TEXT =
   "Le matin où la vieille horloge du village s'arrêta, personne ne le remarqua vraiment. Le boulanger ouvrit sa boutique à l'heure habituelle, les enfants coururent vers l'école, et le chat du notaire dormit au soleil sur le mur de la mairie.";
 
@@ -92,9 +116,14 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     changed: new Set(),
     generation: 0,
     copyMessage: '',
+    verbs: { status: 'idle', error: '' },
+    perPage: 16,
+    page: 0,
+    pinned: false,
   };
   let session: Session | undefined;
   let morphology: MorphologyRepository | undefined;
+  let verbs: VerbRepository | undefined;
   let loading: Promise<void> | undefined;
   let runs = 0;
 
@@ -108,9 +137,15 @@ export function createTracksController(dependencies: TracksDependencies, onChang
   const rebuild = (patch: Partial<TracksState>) => {
     const mixer = patch.mixer ?? state.mixer;
     if (!session || !morphology) return update(patch);
-    const view = buildView(session, mixer, morphology);
+    const view = buildView(session, mixer, morphology, undefined, verbs);
     const changed = changedWords(state.view, view);
     update({ ...patch, view, changed, generation: state.generation + 1, copyMessage: '' });
+    wantVerbs(mixer);
+  };
+
+  /** Une instance active vise les verbes pour la première fois : on les charge, sans attendre. */
+  const wantVerbs = (mixer: MixerState) => {
+    if (state.verbs.status === 'idle' && mixer.instances.some((instance) => instance.enabled && instance.targets.includes('verb'))) void controller.loadVerbs();
   };
 
   const controller: TracksController = {
@@ -156,9 +191,11 @@ export function createTracksController(dependencies: TracksDependencies, onChang
         const tagged = await tagText(dependencies.tagger, text);
         if (run !== runs) return;
         session = { text, tagged };
-        const view = buildView(session, state.mixer, morphology!);
-        // Nouvel étiquetage, nouvelles positions : l'inspecteur se ferme.
-        update({ tagging: false, editing: false, stale: state.input !== text, view, changed: new Set(), generation: state.generation + 1, selected: undefined });
+        // Nouvel étiquetage, nouvelles positions : les pas se rouvrent, les verrous tombent, l'inspecteur se ferme.
+        const mixer = reduce(state.mixer, { type: 'reset-steps' });
+        const view = buildView(session, mixer, morphology!, undefined, verbs);
+        update({ tagging: false, editing: false, stale: state.input !== text, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0 });
+        wantVerbs(mixer);
       } catch (error) {
         if (run === runs) update({ tagging: false, inputMessage: `Échec de l’étiquetage : ${messageOf(error)}. Vous pouvez relancer.` });
       }
@@ -167,18 +204,54 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       controller.setInput(EXAMPLE_TEXT);
       return controller.run();
     },
+    async loadVerbs() {
+      if (!dependencies.loadVerbs || state.verbs.status === 'loading' || state.verbs.status === 'ready') return;
+      update({ verbs: { status: 'loading', error: '' } });
+      try {
+        verbs = await dependencies.loadVerbs();
+        update({ verbs: { status: 'ready', error: '' } });
+        rebuild({});
+      } catch (error) {
+        update({ verbs: { status: 'error', error: `Échec du chargement des verbes : ${messageOf(error)}.` } });
+      }
+    },
     dispatch(action) {
       rebuild({ mixer: reduce(state.mixer, action) });
     },
     select(index) {
-      update({ selected: index });
+      // La grille montre la page du mot choisi.
+      update({ selected: index, page: pageOf(index, state.perPage) });
     },
     step(delta) {
       if (state.selected === undefined || !state.view) return;
-      update({ selected: Math.min(Math.max(state.selected + delta, 0), state.view.tracks.length - 1) });
+      const selected = Math.min(Math.max(state.selected + delta, 0), state.view.tracks.length - 1);
+      update({ selected, page: pageOf(selected, state.perPage) });
+    },
+    shortcut(key, inField) {
+      if (inField || !state.view) return false;
+      const delta = ({ ArrowLeft: -1, ArrowRight: 1 } as Record<string, number>)[key];
+      // Inspecteur fermé : une flèche l'ouvre sur le premier mot de la page affichée.
+      if (delta && state.selected === undefined) controller.select(Math.min(state.page * state.perPage, state.view.tracks.length - 1));
+      else if (delta) controller.step(delta);
+      else if (key === 'Escape' && state.selected !== undefined) controller.closeInspector();
+      else return false;
+      return true;
     },
     closeInspector() {
       update({ selected: undefined });
+    },
+    resize(width) {
+      const perPage = stepsPerPage(width);
+      if (perPage === state.perPage) return;
+      update({ perPage, page: pageOf(state.page * state.perPage, perPage) });
+    },
+    showPage(page) {
+      const words = state.view?.tracks.length ?? 0;
+      const last = Math.max(0, Math.ceil(words / state.perPage) - 1);
+      update({ page: Math.min(Math.max(page, 0), last) });
+    },
+    pin(pinned) {
+      if (pinned !== state.pinned) update({ pinned });
     },
     async copy() {
       const view = state.view;
