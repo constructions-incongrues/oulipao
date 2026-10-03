@@ -10,14 +10,6 @@ The system SHALL give each track a channel strip, at the head of its row in the 
 - **WHEN** sa tranche s'affiche
 - **THEN** elle montre le carré des verbes, leur nom, leur nombre de mots, Muet et Seul, et aucun rappel de filtre
 
-### Requirement: Plugin S+7 sur la piste des noms
-The system SHALL open the page with an S+7 instance first in the chain, enabled, with offset 7 and re-agreement mode, targeting the nouns track.
-
-#### Scenario: Ouverture
-- **GIVEN** un texte étiqueté
-- **WHEN** la page affiche la chaîne
-- **THEN** le filtre 1 est un S+7 actif, décalage 7, mode « réaccord », sur les noms
-
 ## ADDED Requirements
 
 ### Requirement: Texte résultant toujours visible

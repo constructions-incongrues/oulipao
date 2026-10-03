@@ -56,3 +56,7 @@ Hors de ce changement : le mode témoin, l'effacement euclidien, les conditions 
   - nouveau script `scripts/check-palette.ts`.
 - **Dépendances** : aucune nouvelle au moment de l'exécution. Le glisser-déposer utilise l'API native du navigateur, et Pretext n'est pas repris (la hauteur de la bande se fait en CSS).
 - **Tests** : nouveaux tests du domaine (portée par mot) et de l'interface (grille, verrous, réordonnancement) ; la couverture doit rester au-dessus de 90 %.
+
+## Note d'archivage (2026-10-03)
+
+La delta modifiait aussi « Plugin S+7 sur la piste des noms » (un S+7 en tête de chaîne à l'ouverture). Entre-temps, la PR #2 a fait démarrer la chaîne vide et mis à jour cette exigence. Le bloc est retiré de la delta à l'archivage, pour garder la version la plus récente, qui est celle du code.
