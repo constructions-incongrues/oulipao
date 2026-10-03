@@ -1,10 +1,12 @@
 import { tagText } from '../../domain/tagging.ts';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
+import type { NotebookStorage } from '../../ports/notebook-storage.ts';
 import type { PhoneticsRepository } from '../../ports/phonetics.ts';
 import type { Tagger } from '../../ports/tagger.ts';
 import type { VerbRepository } from '../../ports/verbs.ts';
 import { initialState, pluginById, reduce } from './mixer-state.ts';
-import type { MixerAction, MixerState } from './types.ts';
+import { addEntry, exportFileName, mergeEntries, parseNotebook, removeEntry, serializeNotebook, type NotebookEntry } from './notebook.ts';
+import { MixerStateSchema, type MixerAction, type MixerState } from './types.ts';
 import { buildView, changedWords, pageOf, ruleMention, stepsPerPage, type Session, type TracksView } from './view-model.ts';
 
 /** Ce dont la page a besoin de l'extérieur. */
@@ -19,7 +21,32 @@ export interface TracksDependencies {
   preload: (onProgress: (loaded: number, total: number) => void) => Promise<void>;
   /** Place un texte dans le presse-papiers. */
   copy: (text: string) => Promise<void>;
+  /** Le carnet et ce qu'il demande au navigateur ; absent : un carnet en mémoire, perdu au rechargement. */
+  notebook?: NotebookDependencies;
 }
+
+/** Ce dont le carnet a besoin de l'extérieur. */
+export interface NotebookDependencies {
+  storage: NotebookStorage;
+  now: () => Date;
+  newId: () => string;
+  /** Demande une confirmation ; `true` si elle est donnée. */
+  confirm: (message: string) => boolean;
+  /** Propose un fichier à enregistrer, sans rien envoyer. */
+  download: (name: string, text: string) => void;
+}
+
+/** Un carnet en mémoire : pour les pages et les tests qui n'en branchent pas. */
+const memoryNotebook = (): NotebookDependencies => {
+  let data: string | null = null;
+  return {
+    storage: { read: () => data, write: (text) => void (data = text) },
+    now: () => new Date(),
+    newId: () => crypto.randomUUID(),
+    confirm: () => true,
+    download: () => {},
+  };
+};
 
 /** Le chargement du modèle et du dictionnaire. */
 export interface ModelState {
@@ -54,8 +81,12 @@ export interface TracksState {
   /** Les mots du texte résultant qui viennent de changer, et le numéro de ce changement. */
   changed: ReadonlySet<number>;
   generation: number;
-  /** Message à côté du bouton de copie. */
+  /** Message à côté du bouton de copie, et de celui qui garde. */
   copyMessage: string;
+  /** Les textes gardés, du plus récent au plus ancien. */
+  notebook: NotebookEntry[];
+  /** Message du carnet : entrées illisibles, import, réouverture impossible. */
+  notebookMessage: string;
   /** Le chargement des verbes : `idle` tant qu'aucune instance ne les vise. */
   verbs: Loading;
   /** Le chargement des prononciations : `idle` tant qu'aucun filtre phonétique n'est en marche. */
@@ -98,6 +129,16 @@ export interface TracksController {
   shortcut(key: string, inField: boolean): boolean;
   closeInspector(): void;
   copy(): Promise<void>;
+  /** Range le texte résultant dans le carnet, avec sa chaîne et de quoi le rouvrir. */
+  keep(): void;
+  /** Rouvre un texte gardé : son texte d'origine, son étiquetage et sa table, sans réétiqueter. */
+  reopen(id: string): Promise<void>;
+  /** Supprime un texte gardé, après confirmation. */
+  remove(id: string): void;
+  /** Propose le carnet entier en fichier. */
+  exportNotebook(): void;
+  /** Ajoute au carnet les entrées nouvelles d'un fichier exporté. */
+  importNotebook(text: string): void;
   /** La grille a changé de largeur : le pas qui était en tête de page reste visible. */
   resize(width: number): void;
   /** Affiche une page de la grille, bornée aux pages existantes. */
@@ -110,10 +151,16 @@ export interface TracksController {
 export const EXAMPLE_TEXT =
   "Le matin où la vieille horloge du village s'arrêta, personne ne le remarqua vraiment. Le boulanger ouvrit sa boutique à l'heure habituelle, les enfants coururent vers l'école, et le chat du notaire dormit au soleil sur le mur de la mairie.";
 
+/** « 1 texte illisible laissé de côté. » ; rien quand tout se lit. */
+const count = (n: number, one: string, many: string) => `${n} ${n > 1 ? many : one}`;
+const unreadable = (rejected: number) => (rejected ? `${count(rejected, 'texte illisible laissé', 'textes illisibles laissés')} de côté.` : '');
+
 const messageOf = (error: unknown) => (error instanceof Error ? error.message : String(error));
 
 /** L'état de la page des pistes et ses gestes ; `onChange` est appelé à chaque changement. */
 export function createTracksController(dependencies: TracksDependencies, onChange: (state: TracksState) => void = () => {}): TracksController {
+  const notebook = dependencies.notebook ?? memoryNotebook();
+  const stored = parseNotebook(notebook.storage.read());
   let state: TracksState = {
     input: '',
     editing: true,
@@ -125,6 +172,8 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     changed: new Set(),
     generation: 0,
     copyMessage: '',
+    notebook: stored.entries,
+    notebookMessage: stored.error ?? unreadable(stored.rejected),
     verbs: { status: 'idle', error: '' },
     phonetics: { status: 'idle', error: '' },
     perPage: 16,
@@ -276,6 +325,68 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     },
     pin(pinned) {
       if (pinned !== state.pinned) update({ pinned });
+    },
+    keep() {
+      const view = state.view;
+      if (!view || !session || state.stale || view.empty) return;
+      const entry: NotebookEntry = {
+        id: notebook.newId(),
+        keptAt: notebook.now().toISOString(),
+        result: view.result,
+        mention: ruleMention(state.mixer, view.audible),
+        source: session,
+        mixer: state.mixer,
+      };
+      const entries = addEntry(state.notebook, entry);
+      try {
+        notebook.storage.write(serializeNotebook(entries));
+        update({ notebook: entries, copyMessage: 'Gardé.' });
+      } catch (error) {
+        update({ copyMessage: `Impossible de garder : ${messageOf(error)}` });
+      }
+    },
+    async reopen(id) {
+      const entry = state.notebook.find((candidate) => candidate.id === id);
+      if (!entry) return;
+      try {
+        for (const instance of entry.mixer.instances) pluginById(instance.type);
+      } catch (error) {
+        return update({ notebookMessage: `Ce texte ne peut pas être rouvert : ${messageOf(error)}.` });
+      }
+      const run = ++runs; // une mise en pistes en cours ne doit pas l'écraser
+      update({ notebookMessage: '', inputMessage: '' });
+      await controller.preload();
+      if (run !== runs || !morphology) return;
+      session = entry.source;
+      const mixer = MixerStateSchema.parse(entry.mixer);
+      const view = buildView(session, mixer, morphology, undefined, verbs, phonetics);
+      update({ input: session.text, tagging: false, editing: false, stale: false, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, copyMessage: '' });
+      wantResources(mixer);
+    },
+    remove(id) {
+      if (!notebook.confirm('Supprimer ce texte du carnet ?')) return;
+      const entries = removeEntry(state.notebook, id);
+      try {
+        notebook.storage.write(serializeNotebook(entries));
+        update({ notebook: entries, notebookMessage: '' });
+      } catch (error) {
+        update({ notebookMessage: `Suppression impossible : ${messageOf(error)}` });
+      }
+    },
+    exportNotebook() {
+      notebook.download(exportFileName(notebook.now()), serializeNotebook(state.notebook));
+    },
+    importNotebook(text) {
+      const merged = mergeEntries(state.notebook, text);
+      if (merged.error) return update({ notebookMessage: `Import refusé : ${merged.error}` });
+      try {
+        notebook.storage.write(serializeNotebook(merged.entries));
+      } catch (error) {
+        return update({ notebookMessage: `Import impossible : ${messageOf(error)}` });
+      }
+      const counts = [count(merged.added, 'texte ajouté', 'textes ajoutés'), count(merged.present, 'déjà présent', 'déjà présents')];
+      if (merged.rejected) counts.push(count(merged.rejected, 'illisible', 'illisibles'));
+      update({ notebook: merged.entries, notebookMessage: `Import : ${counts.join(', ')}.` });
     },
     async copy() {
       const view = state.view;

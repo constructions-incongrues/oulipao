@@ -226,3 +226,27 @@ test('grille : un clic bouche un pas, l’inspecteur s’ouvre depuis l’en-tê
   click(app(), (e) => byClass('page')(e) && e.props['aria-pressed'] === false);
   assert.equal(controller.state.page, 1);
 });
+
+test('carnet : en bas de page ; « Garder » range le texte, « Rouvrir » le remet', async () => {
+  const { controller, app } = setup();
+  assert.match(renderToString(app()), /<section class="notebook"[\s\S]*Aucun texte gardé/);
+  controller.setInput('La ferme.');
+  await controller.run();
+  const kept = controller.state.view!.result;
+  click(app(), byClass('keep'));
+  const out = renderToString(app());
+  assert.match(out, /Gardé\./);
+  assert.match(out, /1 texte gardé[\s\S]*<p class="kept-text">/);
+  assert.ok(out.indexOf('class="notebook"') > out.indexOf('class="inspector-hint"')); // après l'inspecteur
+  controller.dispatch({ type: 'toggle-solo', category: 'adverb' });
+  click(app(), byClass('reopen'));
+  await tick();
+  assert.equal(controller.state.view!.result, kept);
+  click(app(), byClass('export'));
+  click(find(app(), byClass('notebook')), byClass('remove'));
+  assert.match(renderToString(app()), /Aucun texte gardé/);
+  await (find(app(), (e) => e.type === 'input' && e.props['type'] === 'file').props['onChange'] as (event: Event) => Promise<void>)({
+    currentTarget: { files: [{ text: async () => '{"chat":1}' }], value: '' },
+  } as unknown as Event);
+  assert.match(renderToString(app()), /Import refusé/);
+});

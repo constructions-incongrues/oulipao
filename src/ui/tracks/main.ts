@@ -2,6 +2,7 @@
 // teste est dans controller.ts, view-model.ts et les composants.
 import { html } from 'htm/preact';
 import { render } from 'preact';
+import { createLocalStorageNotebook } from '../../adapters/storage/local-storage-notebook.ts';
 import { createMorphologyLoader, createNeuralTagging, createPhoneticsLoader, createVerbsLoader } from '../composition.ts';
 import { App } from './app.ts';
 import { createTracksController, type TracksState } from './controller.ts';
@@ -28,6 +29,19 @@ const controller = createTracksController(
     loadVerbs: createVerbsLoader(import.meta.url),
     loadPhonetics: createPhoneticsLoader(import.meta.url),
     copy: (text) => navigator.clipboard.writeText(text),
+    notebook: {
+      storage: createLocalStorageNotebook(localStorage),
+      now: () => new Date(),
+      newId: () => crypto.randomUUID(),
+      confirm: (message) => window.confirm(message),
+      // Un fichier proposé à l'enregistrement : rien ne quitte la machine.
+      download: (name, text) => {
+        const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
+        const link = Object.assign(document.createElement('a'), { href: url, download: name });
+        link.click();
+        URL.revokeObjectURL(url);
+      },
+    },
   },
   draw,
 );

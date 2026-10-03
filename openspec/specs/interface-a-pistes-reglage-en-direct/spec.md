@@ -87,11 +87,11 @@ The system SHALL make every control reachable by keyboard and SHALL never convey
 - **THEN** chaque bouton, champ et sélecteur reçoit le focus et porte un libellé
 
 ### Requirement: Traitement dans le navigateur
-The system SHALL process the text entirely in the browser, with no network request containing the text.
+The system SHALL process the text entirely in the browser, with no network request containing the text, including texts kept in the notebook.
 
 #### Scenario: Session observée dans l'onglet réseau
 - **GIVEN** la page des pistes ouverte avec l'onglet réseau
-- **WHEN** un texte est collé, étiqueté et transformé
+- **WHEN** un texte est collé, étiqueté, transformé puis gardé
 - **THEN** aucune requête ne contient le texte
 
 ### Requirement: Texte résultant toujours visible
@@ -108,12 +108,12 @@ The system SHALL keep the resulting text on screen while the page scrolls: once 
 - **THEN** la bande collée montre trois lignes au plus et la page ne défile pas à l'horizontale
 
 ### Requirement: Ordre de la page
-The system SHALL present, from top to bottom: the resulting text, the source text, the filter chain, the step grid with its track strips, then the inspector.
+The system SHALL present, from top to bottom: the resulting text, the source text, the filter chain, the step grid with its track strips, the inspector, then the notebook.
 
 #### Scenario: Lecture au clavier
 - **GIVEN** la page des pistes
 - **WHEN** l'utilisateur la parcourt avec la touche Tab
-- **THEN** il atteint la copie du texte, puis la saisie, puis les filtres, puis les pistes et leurs pas, puis l'inspecteur
+- **THEN** il atteint la copie du texte et le bouton « Garder », puis la saisie, puis les filtres, puis les pistes et leurs pas, puis l'inspecteur, puis le carnet
 
 ### Requirement: Syllabes par vers
 The system SHALL show, next to each line of the result text, its syllable count, counted from the pronunciations of the textbank and including a final mute e before a consonant inside the line, once the textbank is loaded; the count SHALL be hidden when the chain has no phonetic filter.

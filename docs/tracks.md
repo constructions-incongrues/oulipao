@@ -99,6 +99,22 @@ Preact ; les composants (`components/`, `app.ts`) sont des fonctions de cet éta
 - **Lecteurs d'écran** : l'inspecteur est un tableau dont chaque ligne est nommée par son
   étape ; sa légende annonce le mot choisi.
 - **Sous 1024 px** : une seule colonne. Sous 768 px, l'inspecteur ne montre que deux voisins.
+- **Carnet** : « Garder », à côté de « Copier », range le texte résultant dans le carnet, en bas
+  de page. Le bouton est actif quand « Copier » l'est, et « Copier » ne range rien. Chaque entrée
+  garde sa date, sa mention (la même que celle de la copie), le texte d'origine avec son
+  étiquetage, et l'état de la table : instances, réglages, verrous, pas bouchés, pistes coupées
+  et forme.
+  - **Rouvrir** remet tout cela sans réétiqueter. Les verrous et les pas bouchés, qui désignent
+    les mots par leur position, retombent donc sur les mêmes mots, et le texte redevient celui
+    qui a été gardé. Seul un changement du lexique peut l'altérer.
+  - **Supprimer** demande une confirmation.
+  - Le carnet vit dans le `localStorage` du navigateur, sous la clé `oulipao.notebook`. Rien
+    n'est envoyé. Avant de vider les données du navigateur ou de changer d'appareil,
+    **Exporter** télécharge `oulipao-carnet-AAAA-MM-JJ.json`, et **Importer** relit un tel
+    fichier.
+  - Le format du fichier : `{ "version": 1, "entries": [...] }`. Chaque entrée est validée
+    (`NotebookEntrySchema`, dans `src/ui/tracks/notebook.ts`). À l'import, une entrée déjà
+    présente (même `id`) est ignorée, et une entrée illisible est comptée puis laissée de côté.
 - **Apparence** : variables et polices de `styles/tokens.css`, décrites dans `DESIGN.md`.
 
 ## Tests
@@ -108,7 +124,7 @@ TypeScript ordinaires. Les tests les rendent en texte (`preact-render-to-string`
 leurs gestionnaires en parcourant l'arbre rendu (`test/support/vnode.ts`), sans navigateur.
 
 Hors couverture, nommément (`package.json`) : `src/ui/tracks/main.ts` et `src/ui/page.ts`
-(montage sur le DOM, presse-papiers), `src/adapters/taggers/camembert-model.ts` (chargement du
+(montage sur le DOM, presse-papiers, stockage et téléchargement du carnet), `src/adapters/taggers/camembert-model.ts` (chargement du
 modèle).
 
 ## Voir aussi
