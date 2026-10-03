@@ -394,6 +394,36 @@ Vérification du 2026-10-03 : sous Node avec les fichiers dérivés, puis dans l
 
 ---
 
+# Schémas de rimes
+
+Vérification du 2026-10-03, dans le navigateur (page à pistes, étiqueteur neuronal). Trois poèmes
+de trois quatrains, écrits pour l'essai, passent aux rimes embrassées, rime suffisante, sur les
+quatre pistes pleines.
+
+| Critère | Constat |
+|---|---|
+| Fins de vers qui suivent leur lettre, selon la règle | 35 sur 36. La 36e (« fenêtre », lettre B) reste avec sa raison : « aucun voisin en /ɑ̃tʁ/ (B) ». Critère tenu : 36 sur 36 suivent leur lettre ou portent leur raison |
+| Fins de vers qui suivent leur lettre, à l'oreille | 34 sur 36 (9,4 sur 10). « table » → « CEM » rime en /ɑ̃/ par une prononciation devinée (le sigle manque dans GLÀFF) ; lu comme un sigle, il ne rime pas |
+| Exemples | « Le café fume sur la table / … » ; « Le phare veille sur la Côte-d'Or / Un marin chante sur le remarquable » ; « Le vieux marin ferme les péchés / La marée monte vers la planèze » |
+| Inspecteur | Sur la dernière fin d'un quatrain : « /ʒaʁdɛ̃/ · 2 syllabes · rime /ɛ̃/ masculine · lettre A » |
+| Tests | `npm test` : 317 tests, couverture 100 % des lignes, 98,8 % des branches |
+
+## Écarts et limites
+
+- **Des voisins rares.** Le premier voisin qui rime est souvent un mot rare du dictionnaire
+  (« tories », « sans-soin », « gynophile », « viscosimètre », « riblon »). C'est la règle :
+  le voisin le plus proche dans l'ordre alphabétique, pas le plus courant.
+- **La même rime deux fois.** Un vers peut recevoir le mot de son modèle à un autre nombre
+  (« fleuve » → « fleuves »). La règle ne l'interdit pas.
+- **La fin de vers dépend de l'étiqueteur.** Dans « Le berger rentre avec son chien », « chien »
+  n'est pas étiqueté comme un mot plein. La fin du vers est donc « rentre », et la lettre B prend
+  la rime /ɑ̃tʁ/.
+- **L'inspecteur lit le mot d'origine.** Pour une fin remplacée, il montre la prononciation, la
+  rime et le genre du mot d'origine, mais la lettre du vers dans le schéma. C'est l'écart déjà
+  connu des filtres de rime.
+
+---
+
 # Séances en ligne
 
 Mesure du pari de la mise en ligne (`.nanopm/wiki/docs/prds/mise-en-ligne-d-oulipao.md`). Le site n'a aucun traceur : on note ici chaque séance d'écriture, à la main, qu'elle se fasse en ligne ou en local.

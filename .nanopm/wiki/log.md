@@ -27,3 +27,4 @@
 ## [2026-10-03] ingest | pm-breakdown: domaine oulipao.incongru.org ajouté (DNS par le connecteur Cloudflare)
 ## [2026-10-03] ingest | pm-roadmap: wrote docs/roadmap.md
 ## [2026-10-03] ingest | pm-prd: wrote docs/prds/textbank-phonetique.md
+## [2026-10-03] ingest | pm-prd: wrote docs/prds/schemas-de-rimes.md

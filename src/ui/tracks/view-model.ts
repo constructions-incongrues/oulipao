@@ -3,6 +3,8 @@ import { audibleCategories, mixSegments, type MixedSegment } from '../../domain/
 import type { ConstraintPlugin, ParameterValues } from '../../domain/plugin.ts';
 import { runChain, type ChainStep, type StageWord, type StepReport } from '../../domain/plugin-chain.ts';
 import { describeReading, lineSyllables, pronounce, type VerseWord } from '../../domain/phonetics/lookup.ts';
+import { rhymeSchemePlugin, schemeOf } from '../../domain/rhyme/rhyme-scheme.ts';
+import { schemeLetters } from '../../domain/rhyme/scheme.ts';
 import type { TaggedWord } from '../../domain/tagged-word.ts';
 import { tokenize } from '../../domain/tokenizer.ts';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
@@ -186,6 +188,11 @@ export function buildView(
   ) as Record<Category, number>;
   const audible = audibleCategories(mixer.tracks);
   const segments = mixSegments(chain.words, tagged, audible, chain.tail, chain.steps.some((step) => step.removed > 0));
+  // La lettre de chaque fin de vers sous le dernier schéma de rimes actif.
+  // ponytail: lue sur la sortie finale, pas sur le texte qui entre dans le schéma ; une mise en vers
+  // placée après lui déplace les lettres. Relire l'étape d'entrée si ça trompe.
+  const scheme = steps.findLast((step) => step.plugin.id === rhymeSchemePlugin.id);
+  const letters = scheme && schemeLetters(chain.words.map((word, index) => ({ ...word, category: tagged[index]!.category })), schemeOf(scheme.values));
   return {
     stages: [
       { id: 'origin', label: 'Origine', words: tagged.map((word) => ({ output: word.word, newline: false })) },
@@ -199,9 +206,11 @@ export function buildView(
     steps: chain.steps,
     marks,
     audible,
-    pronunciations: phonetics ? tagged.map(({ word, category }) => {
+    pronunciations: phonetics ? tagged.map(({ word, category }, index) => {
       const reading = pronounce(word, category, phonetics);
-      return reading ? describeReading(reading) : '';
+      if (!reading) return '';
+      const letter = letters?.[index];
+      return `${describeReading(reading, word)}${letter ? ` · lettre ${letter}` : ''}`;
     }) : [],
     ...(phonetics && steps.some((step) => step.plugin.phonetic) && { syllables: segmentSyllables(segments, tagged.map((word) => word.category), phonetics) }),
   };

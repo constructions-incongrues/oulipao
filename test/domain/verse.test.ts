@@ -33,6 +33,12 @@ test('mot-outil final : « pense » finit le vers « Il pense à elle »', () =>
   assert.ok(places('à elle').every((place) => !place.lineEnd)); // un vers sans mot plein n'a pas de fin
 });
 
+test('article initial : « vieux » ouvre le vers « Le vieux chat dort sur la chaise. »', () => {
+  const layout = places('Le vieux chat dort\nsur la chaise.', { vieux: 'adjective', chat: 'noun', dort: 'verb', chaise: 'noun' });
+  assert.deepEqual(layout.map((place) => place.lineStart), [false, true, false, false, false, false, true]);
+  assert.ok(places('à elle').every((place) => !place.lineStart)); // un vers sans mot plein n'a pas de début
+});
+
 test('après un S+7 : chaque mot garde son vers et sa strophe', () => {
   const text = 'Le chat\ndort dans la maison\n\nLe voisin';
   const tagged = tag(text, { dort: 'verb', dans: 'other' });

@@ -188,3 +188,73 @@ export function applyRhymeFilter(
   for (const mark of marks) if (mark.replacement !== undefined) mark.replacement = words[mark.index]!.output;
   return { words, tail: nouns.tail, marks: marks.sort((a, b) => a.index - b.index) };
 }
+
+/** Un mot que le plan d'un filtre de vers peut toucher, dans l'ordre du texte. */
+export interface VerseSlot {
+  index: number;
+  place: VersePlace;
+  word: string;
+  category: Category;
+  /** Ses phonèmes ; `undefined` s'il n'a pas de son. */
+  sound: readonly Phoneme[] | undefined;
+  /** Sa piste est visée et son pas n'est pas bouché : le plan peut le changer. */
+  open: boolean;
+}
+
+/** Ce que le plan reçoit pour une strophe. */
+export interface StanzaTools {
+  sounds: Sounds;
+  /** Note la décision pour ce mot et rend la prononciation qu'il aura : celle du voisin prévu, ou la sienne. */
+  settle: (slot: VerseSlot, decision: Decision) => readonly Phoneme[] | undefined;
+}
+
+/**
+ * Applique un filtre qui se décide strophe par strophe, dans l'ordre du texte (antirime, schémas,
+ * antérime) : `plan` reçoit les mots que `pick` retient dans chaque strophe et note, par `settle`,
+ * ceux qui changent. Seuls ces mots-là reçoivent une marque. Sans prononciations chargées, chaque mot
+ * retenu attend.
+ */
+export function planByVerse(
+  text: string,
+  tagged: readonly TaggedWord[],
+  resources: PluginResources,
+  targets: ReadonlySet<Category>,
+  scope: WordScope,
+  pick: (place: VersePlace) => boolean,
+  plan: (slots: VerseSlot[], tools: StanzaTools) => void,
+): PluginResult {
+  const sounds = soundsFor(resources);
+  const decisions = new Map<number, Decision>();
+  if (sounds) {
+    const skip = new Set(scope.skip);
+    const tools: StanzaTools = {
+      sounds,
+      settle(slot, decision) {
+        decisions.set(slot.index, decision);
+        const replacement = probe(slot.word, slot.category, decision, resources);
+        return (replacement && sounds.of(replacement, slot.category)) || slot.sound;
+      },
+    };
+    const stanzas = new Map<number, VerseSlot[]>();
+    layoutVerse(text, tagged).forEach((place, index) => {
+      if (!pick(place)) return;
+      const { word, category } = tagged[index]!;
+      const slot = { index, place, word, category, sound: sounds.of(word, category), open: targets.has(category) && !skip.has(index) };
+      stanzas.set(place.stanza, [...(stanzas.get(place.stanza) ?? []), slot]);
+    });
+    for (const slots of stanzas.values()) plan(slots, tools);
+  }
+  return applyRhymeFilter(
+    text,
+    tagged,
+    resources,
+    targets,
+    scope,
+    {
+      // Sans prononciations, tous les mots retenus attendent ; ensuite, seuls ceux du plan changent.
+      eligible: (index, places) => pick(places[index]!) && (!sounds || decisions.has(index) || scope.skip.includes(index)),
+      decide: (index) => decisions.get(index)!,
+    },
+    sounds,
+  );
+}

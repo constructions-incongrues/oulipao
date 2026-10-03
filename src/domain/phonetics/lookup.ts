@@ -2,7 +2,7 @@ import type { PhoneticsRepository } from '../../ports/phonetics.ts';
 import type { Category } from '../categories.ts';
 import { guessReading } from './fallback.ts';
 import { ipaOf, isVowel, phonemesOf, type PhoneticReading } from './phoneme.ts';
-import { rhymeOf } from './rhyme.ts';
+import { endsWithMuteE, RHYME_GENDER_LABELS, rhymeGender, rhymeOf } from './rhyme.ts';
 
 export const GUESSED = 'prononciation devinée';
 export const PHONETICS_LOADING = 'prononciations en cours de chargement';
@@ -20,10 +20,15 @@ export function pronounce(word: string, category: Category | undefined, phonetic
 /** Le nombre de syllabes d'une prononciation : ses voyelles (« l' » élidé n'en a aucune). */
 export const syllableCount = (reading: PhoneticReading) => phonemesOf(reading).filter(isVowel).length;
 
-/** Une prononciation en clair : « /ʃɛz/ · 1 syllabe · rime /ɛz/ », et « devinée » s'il le faut. */
-export function describeReading(reading: PhoneticReading): string {
+/**
+ * Une prononciation en clair : « /ʃɛz/ · 1 syllabe · rime /ɛz/ », le genre de la rime si l'on donne
+ * le mot écrit (« rime /ɛz/ féminine »), et « devinée » s'il le faut.
+ */
+export function describeReading(reading: PhoneticReading, word?: string): string {
   const count = syllableCount(reading);
-  const text = `/${ipaOf(reading).replaceAll('.', '')}/ · ${count} syllabe${count > 1 ? 's' : ''} · rime /${rhymeOf(phonemesOf(reading))}/`;
+  const phonemes = phonemesOf(reading);
+  const gender = word === undefined ? '' : ` ${RHYME_GENDER_LABELS[rhymeGender(word, phonemes)]}`;
+  const text = `/${ipaOf(reading).replaceAll('.', '')}/ · ${count} syllabe${count > 1 ? 's' : ''} · rime /${rhymeOf(phonemes)}/${gender}`;
   return reading.guessed ? `${text} · devinée` : text;
 }
 
@@ -32,9 +37,6 @@ export interface VerseWord {
   word: string;
   category?: Category;
 }
-
-/** Le mot finit-il par un e muet écrit (« rêve », « chantent ») que la prononciation n'a pas ? */
-const muteE = (word: string, reading: PhoneticReading) => /(?:e|es|ent)$/i.test(word) && !isVowel(phonemesOf(reading).at(-1)!);
 
 /**
  * Le nombre de syllabes d'un vers : celles de chaque mot, plus le e muet d'un mot suivi, dans le
@@ -48,7 +50,7 @@ export function lineSyllables(words: readonly VerseWord[], phonetics: PhoneticsR
     if (!reading) return;
     count += syllableCount(reading);
     const next = readings.slice(k + 1).find(Boolean);
-    if (next && muteE(words[k]!.word, reading) && !isVowel(phonemesOf(next)[0]!)) count++;
+    if (next && endsWithMuteE(words[k]!.word, phonemesOf(reading)) && !isVowel(phonemesOf(next)[0]!)) count++;
   });
   return readings.some(Boolean) ? count : undefined;
 }
