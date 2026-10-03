@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import { SEED } from '../../support/chain.ts';
 import { html } from 'htm/preact';
 import { renderToString } from 'preact-render-to-string';
-import { App } from '../../../src/ui/tracks/app.ts';
+import { App, SOURCE_URL } from '../../../src/ui/tracks/app.ts';
 import { createTracksController } from '../../../src/ui/tracks/controller.ts';
 import type { MixerAction } from '../../../src/ui/tracks/types.ts';
 import { morphology, tag } from '../../support/morphology.ts';
@@ -34,6 +34,8 @@ test('avant l’étiquetage : saisie, chaîne, cinq pistes vides, pas de texte r
   assert.match(out, /<span class="count mono">0<\/span>/);
   assert.equal(elements(app()).filter(byClass('step')).length, 0);
   assert.match(out, /<button type="button" class="key theme">Clair \/ sombre<\/button>/);
+  assert.match(out, new RegExp(`<a class="key source-link" href="${SOURCE_URL}">Code source</a><button type="button" class="key theme">`));
+  assert.equal(SOURCE_URL, 'https://github.com/constructions-incongrues/oulipao');
   assert.doesNotMatch(out, /class="score|Cliquez un mot/); // ni partition, ni invitation avant le texte
   assert.doesNotMatch(out, /Texte résultant/);
 });
