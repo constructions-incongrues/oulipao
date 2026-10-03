@@ -14,8 +14,8 @@ Ensemble, ils montrent trois traits de l'architecture : tout le calcul se fait d
 seuls le modèle et les dictionnaires transitent par le réseau, et l'étiquetage, qui est coûteux,
 reste séparé de l'application des contraintes, qui est rapide et rejouée à chaque geste.
 
-Les participants sont les briques de la section 5. Les systèmes externes et les identifiants
-IF-xx sont ceux qu'elle a posés, en attendant la section 3. Les objectifs de qualité renvoient
+Les participants sont les briques de la section 5 et les partenaires externes de la section 3,
+avec leurs identifiants IF-xx. Les objectifs de qualité renvoient
 à la section 1.2.
 
 ---
