@@ -362,3 +362,14 @@ neuronal. Capture : `resultats/inspecteur/texte-1-inspecteur.jpg`.
 - **Les mesures varient** d'un geste à l'autre (8 à 300 ms) dans un panneau de navigateur
   partagé ; aucune ne dépasse la demi-seconde.
 
+
+---
+
+# Séances en ligne
+
+Mesure du pari de la mise en ligne (`.nanopm/wiki/docs/prds/mise-en-ligne-d-oulipao.md`). Le site n'a aucun traceur : on note ici chaque séance d'écriture, à la main, qu'elle se fasse en ligne ou en local.
+
+**Le pari est faux si**, dans les 28 jours qui suivent la mise en ligne, moins de 3 séances passent par `https://oulipao.incongru.org` alors qu'au moins 6 sont notées en tout.
+
+| Date | Adresse (en ligne ou locale) | Appareil | Ce qui a été fait | Texte gardé |
+|---|---|---|---|---|
