@@ -89,9 +89,9 @@ Un tableau date, appareil, ce qui a été fait, texte gardé, pour mesurer la fa
 **Depends on:** 1, 2, 3, 4
 **Ties to:** exigence 5
 
-Vérifier qu'aucun fichier commité n'est privé. Puis, avec la confirmation du fondateur, créer le dépôt public `oulipao`, ajouter le remote, pousser `main` et régler Pages sur « GitHub Actions ».
+Vérifier qu'aucun fichier commité n'est privé. Puis, avec la confirmation du fondateur, créer le dépôt public `constructions-incongrues/oulipao`, ajouter le remote, pousser `main` et régler Pages sur « GitHub Actions ».
 
-**Acceptance:** le workflow est vert et `<compte>.github.io/oulipao` répond.
+**Acceptance:** le workflow est vert et `constructions-incongrues.github.io/oulipao` répond.
 
 ---
 
@@ -116,7 +116,7 @@ Constater sur `https://oulipao.incongru.org`, avec le cache vidé : la page à p
 **Depends on:** 5
 **Ties to:** exigence 1 (adresse publique)
 
-Le connecteur Cloudflare doit être connecté, avec un droit d'écriture sur la zone `incongru.org`. Par ce connecteur, créer le `CNAME` `oulipao` → `<compte>.github.io` (non proxifié) et le `TXT` de vérification GitHub. Puis régler le domaine personnalisé de Pages et imposer HTTPS. Chaque écriture est confirmée par le fondateur.
+Le connecteur Cloudflare doit être connecté, avec un droit d'écriture sur la zone `incongru.org`. Par ce connecteur, créer le `CNAME` `oulipao` → `constructions-incongrues.github.io` (non proxifié) et le `TXT` de vérification GitHub. Puis régler le domaine personnalisé de Pages et imposer HTTPS. Chaque écriture est confirmée par le fondateur.
 
 **Acceptance:** `https://oulipao.incongru.org` répond avec un certificat valide, `http://` redirige vers `https://`, et le domaine est vérifié dans GitHub.
 

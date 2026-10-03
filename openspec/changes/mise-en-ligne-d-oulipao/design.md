@@ -43,7 +43,7 @@ Le script échoue en nommant le fichier manquant si une source attendue n'existe
 
 *Pourquoi pas renommer les pages dans le dépôt :* `index.html` reste la page d'essai en local, ce qui ne casse ni les habitudes ni `.claude/launch.json`. Seul le site publié change les noms.
 
-Les chemins restent relatifs, donc le site fonctionne à la racine du domaine comme sous le sous-chemin `/oulipao/` de `<compte>.github.io`, sans configuration.
+Les chemins restent relatifs, donc le site fonctionne à la racine du domaine comme sous le sous-chemin `/oulipao/` de `constructions-incongrues.github.io`, sans configuration.
 
 ### 2. Un workflow GitHub Actions (outillage)
 
@@ -58,11 +58,12 @@ Permissions : `pages: write`, `id-token: write`, `contents: read`. La concurrenc
 ### 3. Domaine `oulipao.incongru.org` (DNS chez Cloudflare)
 
 - **DNS, par le connecteur Cloudflare, dans la zone `incongru.org` :**
-  - un `CNAME` `oulipao` → `<compte>.github.io`, **non proxifié** (nuage gris), pour que GitHub obtienne lui-même le certificat Let's Encrypt et impose HTTPS ;
-  - un `TXT` `_github-pages-challenge-<compte>.incongru.org`, avec la valeur que GitHub fournit dans les réglages Pages du compte. Il vérifie le domaine et empêche qu'un autre compte le prenne.
+  - un `CNAME` `oulipao` → `constructions-incongrues.github.io`, **non proxifié** (nuage gris), pour que GitHub obtienne lui-même le certificat Let's Encrypt et impose HTTPS ;
+  - un `TXT` `_github-pages-challenge-constructions-incongrues.incongru.org`, avec la valeur que GitHub fournit dans les réglages Pages de l'organisation (Settings → Pages → Verified domains). Il vérifie le domaine et empêche qu'un autre compte le prenne.
 - **Côté GitHub :** dans Pages, le domaine personnalisé est `oulipao.incongru.org` et « Enforce HTTPS » est coché, une fois le certificat émis. Le fichier `CNAME` publié avec le site garde ce réglage à chaque déploiement.
 - *Pourquoi non proxifié :* derrière le proxy Cloudflare, GitHub ne peut pas valider le domaine pour émettre son certificat. On pourra passer en proxifié plus tard, en mode SSL « Full (strict) », si on veut le cache de Cloudflare ; ce n'est pas nécessaire en v1.
-- *Prérequis :* le connecteur Cloudflare doit être connecté à la session (réglages des connecteurs de claude.ai), avec un droit d'écriture sur la zone `incongru.org`. Chaque écriture DNS est confirmée par le fondateur avant d'être faite.
+- *Écart (2026-10-03) :* le connecteur Cloudflare branché n'a pas d'outil DNS. Les deux enregistrements sont créés à la main par le fondateur dans le tableau de bord Cloudflare, avec les valeurs ci-dessus. À refaire par le connecteur quand il exposera l'API DNS.
+- *Prérequis prévu :* le connecteur Cloudflare doit être connecté à la session (réglages des connecteurs de claude.ai), avec un droit d'écriture sur la zone `incongru.org`. Chaque écriture DNS est confirmée par le fondateur avant d'être faite.
 
 ### 4. Licences (racine)
 

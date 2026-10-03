@@ -10,7 +10,7 @@ Oulipao ne s'ouvre que sur le poste du fondateur, après un serveur local lancé
 - **Assemblage du site.** Une commande construit un dossier `_site/` publiable. La page à pistes y devient la page d'accueil (`index.html`), la page d'essai passe à `essai.html`, et le dossier contient les scripts construits, les styles, les polices, les données et les licences.
 - **Publication automatique.** À chaque poussée sur `main`, un workflow GitHub Actions lance les tests, assemble le site et le publie sur GitHub Pages. Si les tests échouent, rien n'est publié.
 - **Dépôt public.** Le dépôt est créé sur GitHub et Pages y est activé. C'est une action du fondateur, faite une seule fois.
-- **Adresse `https://oulipao.incongru.org`.** Le site publié porte un fichier `CNAME` et Pages est réglé sur ce domaine, avec HTTPS imposé. Dans la zone `incongru.org` chez Cloudflare, un enregistrement `CNAME` fait pointer `oulipao` vers `<compte>.github.io`, et un `TXT` vérifie le domaine auprès de GitHub. Ces enregistrements se posent par le connecteur Cloudflare.
+- **Adresse `https://oulipao.incongru.org`.** Le site publié porte un fichier `CNAME` et Pages est réglé sur ce domaine, avec HTTPS imposé. Dans la zone `incongru.org` chez Cloudflare, un enregistrement `CNAME` fait pointer `oulipao` vers `constructions-incongrues.github.io`, et un `TXT` vérifie le domaine auprès de GitHub. Ces enregistrements se posent par le connecteur Cloudflare.
 - **Mesure de l'usage.** `RESULTATS.md` gagne une section « Séances en ligne », où le fondateur note ses séances faites depuis l'adresse publique.
 
 Ce que la v1 ne fait **pas**, par décision du fondateur (2026-10-03) :

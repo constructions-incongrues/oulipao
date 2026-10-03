@@ -19,13 +19,13 @@ Plan de construction : les tâches d'une même vague se font en parallèle, une 
 
 ## 3. Dépôt public et domaine (vagues 2 et 3, actions du fondateur)
 
-- [ ] 3.1 Vérifier qu'aucun fichier commité n'est privé (`git ls-files`, en particulier `reference/`, `resultats/` et `.nanopm/`). Puis, **avec la confirmation du fondateur avant chaque geste extérieur** : créer le dépôt public `oulipao` sur GitHub, ajouter le remote `origin`, pousser `main`, et régler Pages sur la source « GitHub Actions ». Effort S, dépend de 1.1, 2.1, 2.2 et 2.3 (tout est commité avant la première poussée). Vérifié quand le workflow est vert et que l'adresse `<compte>.github.io/oulipao` répond (elle redirigera vers le domaine après 3.2).
-- [ ] 3.2 Domaine `oulipao.incongru.org`. Prérequis : le connecteur Cloudflare est connecté, avec un droit d'écriture sur la zone `incongru.org`. **Avec la confirmation du fondateur avant chaque écriture :**
-  - par le connecteur Cloudflare, créer dans la zone `incongru.org` le `CNAME` `oulipao` → `<compte>.github.io`, non proxifié ;
-  - créer aussi le `TXT` `_github-pages-challenge-<compte>` avec la valeur donnée par GitHub (vérification du domaine du compte) ;
+- [x] 3.1 Vérifier qu'aucun fichier commité n'est privé (`git ls-files`, en particulier `reference/`, `resultats/` et `.nanopm/`). Puis, **avec la confirmation du fondateur avant chaque geste extérieur** : créer le dépôt public `constructions-incongrues/oulipao` sur GitHub, ajouter le remote `origin`, pousser `main`, et régler Pages sur la source « GitHub Actions ». Effort S, dépend de 1.1, 2.1, 2.2 et 2.3 (tout est commité avant la première poussée). Vérifié quand le workflow est vert et que l'adresse `constructions-incongrues.github.io/oulipao` répond (elle redirigera vers le domaine après 3.2).
+- [ ] 3.2 Domaine `oulipao.incongru.org`. *Écart du 2026-10-03 : le connecteur Cloudflare branché n'expose pas l'API DNS (seulement Workers, D1, KV, R2 et Hyperdrive). Le fondateur crée donc lui-même les deux enregistrements dans le tableau de bord ; le reste est inchangé.* Prérequis prévu : le connecteur Cloudflare est connecté, avec un droit d'écriture sur la zone `incongru.org`. **Avec la confirmation du fondateur avant chaque écriture :**
+  - par le connecteur Cloudflare, créer dans la zone `incongru.org` le `CNAME` `oulipao` → `constructions-incongrues.github.io`, non proxifié ;
+  - créer aussi le `TXT` `_github-pages-challenge-constructions-incongrues` avec la valeur donnée par GitHub (vérification du domaine pour l'organisation) ;
   - côté GitHub, régler le domaine personnalisé de Pages sur `oulipao.incongru.org`, attendre le certificat, puis cocher « Enforce HTTPS ».
 
-  Effort S, dépend de 3.1. Vérifié quand `dig oulipao.incongru.org` renvoie vers `<compte>.github.io`, que le domaine apparaît comme vérifié dans GitHub, que `https://oulipao.incongru.org` répond avec un certificat valide, et que `http://` redirige vers `https://`.
+  Effort S, dépend de 3.1. Vérifié quand `dig oulipao.incongru.org` renvoie vers `constructions-incongrues.github.io`, que le domaine apparaît comme vérifié dans GitHub, que `https://oulipao.incongru.org` répond avec un certificat valide, et que `http://` redirige vers `https://`.
 
 ## 4. Vérification en ligne (vague 4)
 
