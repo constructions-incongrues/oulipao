@@ -162,7 +162,7 @@ test('casse, ponctuation et espaces conservés ; déterministe', () => {
 });
 
 test('options : valeurs par défaut et validation par le schéma', () => {
-  assert.equal(s7('ferme', {}), same('ferme', 7));
+  assert.equal(s7('ferme', {}), strict('ferme', 7)); // par défaut : décalage 7, S+7 strict
   assert.throws(() => s7('ferme', { offset: 1.5 }));
   assert.throws(() => s7('ferme', { mode: 'au hasard' as never }));
   assert.throws(() => s7('ferme', { category: 'verb' as never }));

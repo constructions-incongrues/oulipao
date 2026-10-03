@@ -98,9 +98,10 @@ Décisions du fondateur après la première mesure : le dictionnaire n'est pas f
 
 ## 5. Wave 4 — Mesure
 
-- [ ] 5.1 Mesure sur les textes de référence (M, dépend de : 3.1, 4.1 ; critères de réussite ; falsification)
+- [x] 5.1 Mesure sur les textes de référence (M, dépend de : 3.1, 4.1 ; critères de réussite ; falsification)
   - Scripts : `scripts/transform-references.ts` transforme les 3 textes de référence, décalage 7, dans chaque mode, avec les étiquettes de référence, puis de bout en bout avec l'étiqueteur neuronal.
   - Sorties versionnées dans `resultats/s7/`, avec une grille de relecture listant chaque substitution et son groupe nominal.
   - Section « Moteur S+7 » dans `RESULTATS.md` : décompte par texte et par mode, mode retenu par défaut.
   - Le décompte des substitutions correctes est fait par le fondateur à la lecture ; la tâche n'est terminée qu'avec ce décompte.
+  - Écart : le fondateur a validé comme décompte la lecture de l'assistant, sans relire les grilles (2026-10-03). Mode par défaut retenu : réaccord.
   - Acceptance : `RESULTATS.md` donne, pour chaque texte et chaque mode, le nombre de substitutions correctes sur le total, et nomme le mode par défaut, avant le 8 novembre 2026.

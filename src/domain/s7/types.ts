@@ -35,7 +35,8 @@ export type S7Mode = z.infer<typeof S7ModeSchema>;
 export const S7OptionsSchema = z.object({
   /** Le « 7 » du S+7 ; négatif pour revenir en arrière. */
   offset: z.number().int().default(7),
-  mode: S7ModeSchema.default('same-gender'),
+  /** Par défaut le S+7 strict, choix du fondateur du 2026-10-03. */
+  mode: S7ModeSchema.default('reagree'),
   /** Catégorie visée. Seuls les noms sont pris en charge ; le paramètre réserve la place des autres. */
   category: z.enum(['noun']).default('noun'),
 });

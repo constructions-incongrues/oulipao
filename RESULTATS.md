@@ -131,20 +131,22 @@ noms, que le dictionnaire ne connaît pas et que le moteur laisse donc intacts.
 ## Substitutions correctes
 
 Critère du PRD : au moins 90 % de substitutions correctes sur chacun des trois textes, dans
-chaque mode, **à la lecture du fondateur**. Une substitution est correcte si le groupe nominal
+chaque mode, à la lecture du fondateur. Une substitution est correcte si le groupe nominal
 se lit sans faute.
 
-| Texte | Mode | Lecture préliminaire de l'assistant | Décompte du fondateur |
-|---|---|---|---|
-| 1 | même genre | 33 sur 33 | à faire |
-| 1 | réaccord | 32 sur 32 | à faire |
-| 2 | même genre | 37 sur 38 | à faire |
-| 2 | réaccord | 40 sur 41 | à faire |
-| 3 | même genre | 37 sur 39 | à faire |
-| 3 | réaccord | 39 sur 39 | à faire |
+| Texte | Mode | Substitutions correctes |
+|---|---|---|
+| 1 | même genre | 33 sur 33 |
+| 1 | réaccord | 32 sur 32 |
+| 2 | même genre | 37 sur 38 |
+| 2 | réaccord | 40 sur 41 |
+| 3 | même genre | 37 sur 39 |
+| 3 | réaccord | 39 sur 39 |
 
-La lecture préliminaire est celle de l'assistant qui a écrit le moteur ; elle ne vaut pas
-décompte. Elle donne les deux modes au-dessus du seuil sur les trois textes.
+Ces chiffres sont la lecture de l'assistant qui a écrit le moteur. Le fondateur les a validés
+comme décompte le 2026-10-03, sans relire lui-même les grilles. Les deux modes sont au-dessus du
+seuil de 90 % sur les trois textes : le pari du PRD (« des règles locales suffisent à réaccorder
+un S+7 strict ») n'est pas réfuté.
 
 Fautes relevées à cette lecture :
 
@@ -194,4 +196,5 @@ texte : « Personne n'avait su » devient « Perspiration n'avait su », « Salu
 
 ## Mode par défaut
 
-À décider par le fondateur après son décompte.
+**Réaccord (S+7 strict)**, choisi par le fondateur le 2026-10-03. Le mode « même genre » reste
+disponible.
