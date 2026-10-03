@@ -4,6 +4,7 @@ import { CATEGORIES, type Category } from '../../domain/categories.ts';
 import { audibleCategories } from '../../domain/mixing.ts';
 import { Chain } from './components/chain.ts';
 import { Inspector } from './components/inspector.ts';
+import { Notebook } from './components/notebook.ts';
 import { Result } from './components/result.ts';
 import { Source } from './components/source.ts';
 import { StepGrid } from './components/step-grid.ts';
@@ -20,7 +21,7 @@ export interface AppProps {
   state: TracksState;
   controller: Pick<
     TracksController,
-    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage'
+    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook'
   >;
   /** Bascule le thème clair ou sombre ; posé par le montage, qui seul touche au document. */
   onTheme?: () => void;
@@ -28,7 +29,7 @@ export interface AppProps {
 
 /**
  * La page des pistes, de haut en bas : le texte résultant (collé en haut de l'écran quand on
- * descend), la saisie, la chaîne de contraintes, la grille des pistes, puis l'inspecteur.
+ * descend), la saisie, la chaîne de contraintes, la grille des pistes, l'inspecteur, puis le carnet.
  */
 export function App({ state, controller, onTheme = () => {} }: AppProps): VNode {
   const { mixer, view, stale } = state;
@@ -68,6 +69,7 @@ export function App({ state, controller, onTheme = () => {} }: AppProps): VNode 
         pinned=${state.pinned}
         copyMessage=${state.copyMessage}
         onCopy=${() => void controller.copy()}
+        onKeep=${controller.keep}
         syllables=${view.syllables}
         form=${state.mixer.form ?? 'none'}
         onForm=${(form: Form) => controller.dispatch({ type: 'set-form', form })}
@@ -122,6 +124,14 @@ export function App({ state, controller, onTheme = () => {} }: AppProps): VNode 
             onClose=${controller.closeInspector}
             pronunciation=${view.pronunciations[selected]}
           />`)}
+      <${Notebook}
+        entries=${state.notebook}
+        message=${state.notebookMessage}
+        onReopen=${(id: string) => void controller.reopen(id)}
+        onRemove=${controller.remove}
+        onExport=${controller.exportNotebook}
+        onImport=${controller.importNotebook}
+      />
     </main>
   ` as VNode;
 }
