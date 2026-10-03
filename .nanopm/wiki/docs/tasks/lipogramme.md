@@ -68,7 +68,7 @@ Contraintes du projet (voir `openspec/config.yaml`) : TypeScript strict, archite
 - Total effort: environ 8 jours (1 M + 2 L + 1 S + 1 M + 1 S)
 - Waves: 4 (Wave 0 foundation + 3 parallel waves; max parallel width 3)
 - Handoff target: openspec
-- Handoff path: openspec/changes/lipogramme
+- Handoff path: openspec/changes/archive/2026-10-03-lipogramme
 
 ---
 
