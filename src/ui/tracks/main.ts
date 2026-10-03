@@ -44,4 +44,14 @@ document.addEventListener('keydown', (event) => {
 // La grille compte ses pas par page d'après sa largeur ; la bande du texte résultant se colle
 // en haut de l'écran dès que le repère placé juste au-dessus d'elle en sort.
 new ResizeObserver(([entry]) => controller.resize(entry!.contentRect.width)).observe(root.querySelector('.rack')!);
-new IntersectionObserver(([entry]) => controller.pin(!entry!.isIntersecting)).observe(root.querySelector('.pin-sentinel')!);
+// La bande collée se fait compacte : sur une page courte, la place perdue la rendrait trop courte pour
+// défiler, le défilement reviendrait à zéro et la bande se décollerait aussitôt. On rend cette place
+// en bas de page tant qu'elle est collée.
+new IntersectionObserver(([entry]) => {
+  const result = root.querySelector<HTMLElement>('.result')!;
+  const before = result.offsetHeight;
+  // Réservée avant le rendu compact, sinon le navigateur ramène le défilement à zéro avant qu'on l'ajuste.
+  document.body.style.paddingBottom = entry!.isIntersecting ? '' : `${before}px`;
+  controller.pin(!entry!.isIntersecting);
+  if (!entry!.isIntersecting) document.body.style.paddingBottom = `${Math.max(0, before - result.offsetHeight)}px`;
+}).observe(root.querySelector('.pin-sentinel')!);
