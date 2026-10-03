@@ -38,7 +38,7 @@ source de données : c'est le mainteneur qui l'apporte (section 3.2).
 
 | ID | Partenaire | Ce qui entre dans Oulipao | Ce qui sort d'Oulipao |
 |----|------------|---------------------------|-----------------------|
-| IF-01 | Lecteur | Un texte français ; les gestes sur la table (contraintes, réglages, pistes muettes ou en solo, pas bouchés) ; l'accord pour charger le modèle quand le navigateur économise les données | Le texte en pistes ; le texte transformé ; pour chaque mot, ce que chaque contrainte en a fait ; le texte copié avec la mention de la chaîne |
+| IF-01 | Lecteur | Un texte français ; les gestes sur la table (contraintes, réglages, pistes muettes ou en solo, pas bouchés) ; l'accord pour charger le modèle, donné par le premier clic | Le texte en pistes ; le texte transformé ; pour chaque mot, ce que chaque contrainte en a fait ; le texte copié avec la mention de la chaîne |
 | IF-02 | jsDelivr | La bibliothèque qui fait tourner le modèle d'étiquetage | Rien : ni le texte, ni donnée sur le lecteur, au-delà de la demande de fichier |
 | IF-03 | Hugging Face | Le modèle d'étiquetage (tokeniseur et poids) | Rien : ni le texte, ni donnée sur le lecteur, au-delà de la demande de fichier |
 | IF-04 | Lexique Grammalecte | Les formes du français avec leur catégorie, leur genre, leur nombre, leur conjugaison et l'interdiction d'élision | Rien |

@@ -2,6 +2,8 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
+<!-- La page ne parle qu'au site, à jsDelivr et à Hugging Face : même un code tiers altéré ne peut rien envoyer ailleurs. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'wasm-unsafe-eval' blob:; connect-src 'self' https://cdn.jsdelivr.net https://huggingface.co https://*.hf.co; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Oulipao — essai d'étiquetage et S+7</title>
 <meta name="robots" content="noindex">

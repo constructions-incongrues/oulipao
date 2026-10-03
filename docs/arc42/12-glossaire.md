@@ -20,7 +20,7 @@ terme en gras est le terme retenu, celui que toute la documentation doit employe
 | **Adaptateurs** | La brique qui branche les ports du Domaine sur le monde réel : les étiqueteurs, les dictionnaires, `fetch`, `node:fs` (`src/adapters`). | — |
 | **Bord** | Le type de contrainte qui ne garde que les fins de vers, les débuts et fins, ou l'intérieur du poème (`src/domain/edge`). Il sert aux recettes Haï-kaïsation et Intérieur de poème. | `edge` |
 | **Chaîne** | La suite ordonnée des instances actives. Chacune relit la sortie de la précédente comme un texte neuf, tout en gardant le mot d'origine de chaque mot (`runChain`). | — |
-| **Contrainte** | Une règle d'écriture énoncée, appliquée aux mots d'une ou plusieurs pistes. Il en existe cinq types : S+n, lipogramme, tri par piste, bord, mise en vers. Dans le code, un type de contrainte est un `ConstraintPlugin`. | plugin, type (code) ; filtre (specs, wiki) ; moteur (interface, section « Moteurs ») |
+| **Contrainte** | Une règle d'écriture énoncée, appliquée aux mots d'une ou plusieurs pistes. Il en existe cinq types : S+n, lipogramme, tri par piste, bord, mise en vers. Dans le code, un type de contrainte est un `ConstraintPlugin`. | plugin, type (code) ; moteur (interface, section « Moteurs ») ; filtre, voir 12.3 |
 | **Contrat de plugin** | L'ensemble de ce qu'un type de contrainte déclare et rend : ses réglages, ses pistes, son application, ses marques. Il est interne et non versionné (I-05, ADR-004). | — |
 | **Dictionnaire** | Les fichiers dérivés du lexique Grammalecte, lus par les ports `MorphologyRepository` et `VerbRepository`. Changer de dictionnaire revient à changer de textbank. | textbank |
 | **Domaine** | La brique pure, sans effet de bord, qui découpe, vérifie l'étiquetage et applique la chaîne. Elle comprend les ports (`src/domain`, `src/ports`). | — |
@@ -28,7 +28,7 @@ terme en gras est le terme retenu, celui que toute la documentation doit employe
 | **Élision** | Le passage de « le » à « l' » (ou de « de le » à « du ») devant un mot nouveau qui commence par une voyelle ou un h muet. Le h aspiré et quelques mots (« onze », « yaourt ») l'interdisent : c'est la note `pel` de Grammalecte. | contraction |
 | **Étiqueteur** | Ce qui range chaque mot dans une piste, derrière le port `Tagger`. Celui de la page à pistes est CamemBERT. La page d'essai compare aussi fr-compromise et la consultation du lexique. | tagger |
 | **Inspecteur** | Le panneau qui montre, pour un mot d'origine, ce que chaque instance de la chaîne en a fait et pourquoi : une bande par instance. | — |
-| **Instance** | Une occurrence d'un type de contrainte dans la chaîne, avec ses réglages et ses pistes visées. Deux instances du même type coexistent : « S+2 sur les adjectifs » et « S+7 sur les noms ». | `ChainStep`, filtre (specs) |
+| **Instance** | Une occurrence d'un type de contrainte dans la chaîne, avec ses réglages et ses pistes visées. Deux instances du même type coexistent : « S+2 sur les adjectifs » et « S+7 sur les noms ». | `ChainStep` ; filtre, voir 12.3 |
 | **Interface** | La brique qui monte les pages, tient l'état de la table, le registre des contraintes et les recettes, et câble les adaptateurs (`src/ui`). Voir 12.3. | UI |
 | **Lecteur** | Celui qui ouvre la page à pistes pour écrire sous contrainte : le fondateur d'abord, le lecteur de Queneau ou de Perec ensuite. | visiteur |
 | **Lemme** | La forme de dictionnaire d'un mot : le singulier pour un nom, le masculin singulier pour un adjectif, l'infinitif pour un verbe. Le S+n se déplace dans la liste des lemmes, puis remet le mot nouveau au genre, au nombre, au temps et à la personne du mot remplacé. | paradigme (adjectifs, dans le code) |
@@ -39,6 +39,7 @@ terme en gras est le terme retenu, celui que toute la documentation doit employe
 | **Mise en vers** | Le type de contrainte qui recoupe le texte en lignes (`src/domain/lineation`). | `lineation` |
 | **Mot d'origine** | Un mot du découpage du texte collé. C'est l'unité de compte de bout en bout : une case de la grille, une marque par instance, une ligne de l'inspecteur (section 8). | `Token`, `index` |
 | **Oulipao** | « Ouvroir de Littérature Potentielle Assistée par Ordinateur » : le système documenté ici, sur le modèle de MAO. Il s'appelait Potao avant le 2026-10-03. | Potao (ancien nom) |
+| **Outils** | La brique des scripts Node que le mainteneur lance hors du navigateur : dériver les dictionnaires, construire les textes de référence, mesurer, vérifier la palette, assembler le site (`scripts/`, IF-06). Ils ne sont jamais publiés. | scripts |
 | **Pas** | Une case de la grille, une par mot d'origine, comme le pas d'un séquenceur. Un pas **bouché** soustrait le mot à toute la chaîne ; un pas **percé** le laisse aux contraintes. | step |
 | **Piste** | Une catégorie grammaticale du texte : noms, adjectifs, verbes, adverbes, ou autres (les mots-outils et les noms propres). On la rend muette, on la met en solo, une contrainte la vise. | `Category`, track ; « Autres » = mots-outils |
 | **Rack** | La zone de la page à pistes, sous la table, qui montre la chaîne : une ligne par instance, avec ses réglages, ses pistes visées, son interrupteur et sa poignée pour la réordonner. | rack de filtres (`strategy.md`) |
@@ -61,7 +62,7 @@ terme en gras est le terme retenu, celui que toute la documentation doit employe
 | CamemBERT | — | Le modèle neuronal d'étiquetage, `Xenova/french-camembert-postag-model`, quantifié en q8 et exécuté dans le navigateur (ADR-002). |
 | CDN | Content Delivery Network | jsDelivr, le CDN de Hugging Face et celui de GitHub Pages : ils servent les fichiers ; aucun ne reçoit le texte. |
 | CI | Intégration continue | Le workflow GitHub Actions `pages.yml` : typecheck, tests, assemblage, publication. |
-| CSP | Content Security Policy | Une politique qui limiterait les hôtes contactés par la page. Il n'y en a pas aujourd'hui (RISK-02, QS-02). |
+| CSP | Content Security Policy | La politique déclarée dans une balise `<meta>` de chaque page : elle borne les requêtes au site, à jsDelivr et à Hugging Face, même pour un code tiers altéré (QS-02, RISK-02). |
 | DEBT-xx | — | L'identifiant d'une dette technique de la section 11. |
 | DOM | Document Object Model | Seuls les points d'entrée des pages y touchent. Ils sont exclus de la couverture de tests. |
 | ESM | ECMAScript Modules | Le format du code assemblé par esbuild et du module Transformers.js importé. |
@@ -99,6 +100,7 @@ terme en gras est le terme retenu, celui que toute la documentation doit employe
 |-------|-------------------------------|-------------------------|
 | **Contrainte** | Une règle d'écriture oulipienne (12.1). | Une contrainte d'architecture, au sens de la section 2 d'arc42. La section 2 précise « contrainte du projet » quand c'est ce sens-là. |
 | **Domaine** | La brique pure du système (`src/domain`). | Le nom de domaine `oulipao.incongru.org` (sections 3 et 7), écrit alors « nom de domaine » ou « adresse ». |
+| **Filtre** | Dans les specs et le wiki, tantôt un type de contrainte (« filtres instanciables »), tantôt une instance (« cinq filtres »). Cette documentation écrit **contrainte** pour le type et **instance** pour l'occurrence dans la chaîne. | Un filtre au sens du traitement du signal ou d'un filtre de recherche : rien n'est filtré, les mots sont remplacés, retirés ou recoupés. |
 | **Interface** | La brique qui monte les pages (`src/ui`), avec une majuscule. | Une `interface` TypeScript (un port) ; une interface au sens d'arc42 (IF-xx, I-xx), écrite « interface » en minuscule et suivie de son identifiant. |
 | **Moteur** | Dans l'interface, la section « Moteurs » liste les types de contrainte qu'on peut ajouter nus. | Le moteur S+7 (`src/domain/s7/engine.ts`), qui est le code qui applique le S+n. |
 | **Pas** | Une case de la grille, un mot d'origine (12.1). | Le décalage du S+n (le « 7 » de S+7), qu'on écrit « décalage ». |

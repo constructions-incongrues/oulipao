@@ -5,7 +5,7 @@
 ## Vue d'ensemble
 
 Les quatre scénarios suivent le parcours du lecteur sur la page à pistes :
-1. le chargement du modèle à l'ouverture ;
+1. le chargement du modèle au premier clic ;
 2. la mise en pistes d'un texte, qui est le chemin nominal ;
 3. le réglage en direct d'une contrainte, sans réétiqueter le texte ;
 4. la reprise après un échec.
@@ -20,24 +20,28 @@ avec leurs identifiants IF-xx. Les objectifs de qualité renvoient
 
 ---
 
-## 6.1 Ouverture de la page et préchargement du modèle
+## 6.1 Ouverture de la page et chargement du modèle au premier clic
 
 **But :** montrer comment le modèle arrive dans le navigateur sans bloquer la page (environ
-141 Mo au premier chargement, dont 111 Mo de poids : voir `RESULTATS.md`), et comment la page respecte une demande d'économie de données.
+141 Mo au premier chargement, dont 111 Mo de poids : voir `RESULTATS.md`), et pourquoi rien ne
+part vers un tiers avant que le lecteur ait cliqué (section 2.5).
 
-**Déclencheur :** le lecteur ouvre la page à pistes.
+**Déclencheur :** le lecteur ouvre la page à pistes, puis clique sur « Charger le modèle »,
+« Mettre en pistes » ou « Essayer avec un exemple ».
 
 **Participants :** Lecteur, Interface, Adaptateurs, Données dérivées, jsDelivr, Hugging Face.
 
 **Objectif de qualité illustré :** objectif 1, `#secure` (le texte reste dans le navigateur) : le texte n'est envoyé
-nulle part ; seuls la bibliothèque et les poids sont téléchargés. Sobriété aussi : le
-téléchargement attend l'accord du lecteur quand le navigateur demande d'économiser les données.
+nulle part ; seuls la bibliothèque et les poids sont téléchargés, et seulement après un clic.
+Sobriété aussi : qui ouvre la page sans s'en servir ne télécharge rien.
 
 ### Séquence
 
-1. L'Interface monte la page et regarde si le navigateur signale `saveData`. Si c'est le cas, elle
-   affiche un bouton « Charger le modèle » et s'arrête là jusqu'au clic.
-2. Sinon, ou après le clic, l'Interface lance deux chargements en parallèle.
+1. L'Interface monte la page et affiche le bouton « Charger le modèle (141 Mo) », avec une notice
+   qui nomme jsDelivr et Hugging Face et dit qu'ils verront l'adresse du lecteur. Rien ne part.
+2. Au premier clic sur « Charger le modèle », « Mettre en pistes » ou « Essayer avec un exemple »,
+   l'Interface lance deux chargements en parallèle. Avec les deux derniers, la mise en pistes
+   suit (6.2).
 3. Premier chargement : les Adaptateurs importent Transformers.js depuis jsDelivr (IF-02), puis
    téléchargent le tokeniseur et les poids quantifiés depuis Hugging Face (IF-03). L'avancement,
    en octets, remonte jusqu'à une barre de progression.
@@ -56,10 +60,8 @@ sequenceDiagram
     participant H as Hugging Face
 
     L->>UI: ouvre la page à pistes
-    alt le navigateur demande d'économiser les données
-        UI-->>L: bouton « Charger le modèle »
-        L->>UI: clic
-    end
+    UI-->>L: bouton « Charger le modèle » et notice (jsDelivr, Hugging Face)
+    L->>UI: premier clic (charger, mettre en pistes ou exemple)
     par modèle
         UI->>A: preload(onProgress)
         A->>J: import de Transformers.js (IF-02)
@@ -82,7 +84,7 @@ sequenceDiagram
 |-------|-------|--------------------|
 | 3 | jsDelivr ou Hugging Face injoignable, téléchargement interrompu | État « erreur », message et bouton « Relancer ». L'échec n'est pas gardé en mémoire : la relance retélécharge. Voir 6.4. |
 | 4 | Fichier absent (statut HTTP non 2xx) ou ligne non conforme | Même état d'erreur ; le chargeur oublie la promesse ratée, et la relance refait la requête. |
-| 2 | Le lecteur lance une mise en pistes pendant le chargement | Aucun second téléchargement : la mise en pistes attend la promesse en cours (voir 6.2). |
+| 2 | Le lecteur relance une mise en pistes pendant le chargement | Aucun second téléchargement : la mise en pistes attend la promesse en cours (voir 6.2). |
 
 ---
 

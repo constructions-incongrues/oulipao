@@ -122,10 +122,14 @@ du Domaine.
   `http://` est redirigé en 301 (section 7).
 - **Secrets :** aucun, ni côté client, ni dans la CI, hormis le jeton que GitHub Actions fournit
   pour publier sur Pages.
-- **Ce qui manque :** il n'y a ni SRI sur le code chargé de jsDelivr (RISK-02), ni politique de
-  sécurité du contenu (CSP). Une CSP qui limite `connect-src` aux trois fournisseurs garantirait
-  l'objectif 1 même si un code tiers était altéré. L'adresse IP du visiteur part chez les trois
-  fournisseurs dès l'ouverture (section 2.5).
+- **Politique de sécurité du contenu :** les deux pages déclarent une CSP. `connect-src` n'admet que le site, `cdn.jsdelivr.net`, `huggingface.co` et `*.hf.co` ;
+  les scripts ne viennent que du site, de jsDelivr et de copies `blob:` (le moteur ONNX en
+  fait une de son module). L'objectif 1 tient donc même si un code tiers est altéré, pour tout
+  hôte hors des trois fournisseurs (QS-02).
+- **Ce qui manque :** il n'y a pas de SRI sur le code chargé de jsDelivr (RISK-02). Un module
+  altéré pourrait encore viser l'un des hôtes autorisés. L'adresse IP du visiteur part chez GitHub Pages
+  à l'ouverture, et chez jsDelivr et Hugging Face seulement au premier clic, après une notice
+  (section 2.5).
 
 ---
 

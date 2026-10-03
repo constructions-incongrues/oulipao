@@ -61,7 +61,7 @@ The system SHALL place the resulting text in the clipboard when the copy button 
 - **THEN** le presse-papiers contient exactement ce texte
 
 ### Requirement: États d'attente et d'échec
-The system SHALL say so while the tagging model and the dictionary are loading, SHALL say so when loading fails, and SHALL remain usable for a new attempt.
+The system SHALL say so while the tagging model, the dictionary or the phonetic textbank are loading, SHALL say so when loading fails, and SHALL remain usable for a new attempt.
 
 #### Scenario: Chargement en cours
 - **GIVEN** un premier étiquetage
@@ -72,6 +72,11 @@ The system SHALL say so while the tagging model and the dictionary are loading, 
 - **GIVEN** un chargement qui échoue
 - **WHEN** l'erreur survient
 - **THEN** la page l'indique et permet de relancer
+
+#### Scenario: Échec de la textbank phonétique
+- **GIVEN** une chaîne avec un R+n dont la textbank ne se charge pas
+- **WHEN** l'erreur survient
+- **THEN** la page l'indique, les autres filtres continuent de s'appliquer, et un bouton permet de relancer
 
 ### Requirement: Accessibilité des réglages
 The system SHALL make every control reachable by keyboard and SHALL never convey the category of a word by colour alone.
@@ -109,3 +114,16 @@ The system SHALL present, from top to bottom: the resulting text, the source tex
 - **GIVEN** la page des pistes
 - **WHEN** l'utilisateur la parcourt avec la touche Tab
 - **THEN** il atteint la copie du texte, puis la saisie, puis les filtres, puis les pistes et leurs pas, puis l'inspecteur
+
+### Requirement: Syllabes par vers
+The system SHALL show, next to each line of the result text, its syllable count, counted from the pronunciations of the textbank and including a final mute e before a consonant inside the line, once the textbank is loaded; the count SHALL be hidden when the chain has no phonetic filter.
+
+#### Scenario: Alexandrin
+- **GIVEN** une chaîne avec un filtre phonétique et le vers « Je fais souvent ce rêve étrange et pénétrant »
+- **WHEN** le texte résultant s'affiche
+- **THEN** ce vers porte le compte 12
+
+#### Scenario: Sans filtre phonétique
+- **GIVEN** une chaîne sans filtre phonétique
+- **WHEN** le texte résultant s'affiche
+- **THEN** aucun compte de syllabes n'apparaît

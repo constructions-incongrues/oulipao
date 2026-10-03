@@ -130,6 +130,29 @@ peut-être en revanche revoir `track` et `marks`, pensés pour une contrainte at
 - Chaque étape de la chaîne dit, mot par mot, si elle a mis le mot à la ligne
   (`stages[k][i].newline`) : l'inspecteur y met « ↵ ».
 
+## Ce que les filtres de rime ont changé au contrat
+
+Quatre contraintes phonétiques (`src/domain/rhyme/`) : R+n, monorime, antirime, homophonies.
+
+- `phonetic: true` dans la déclaration : la page charge alors les prononciations à la demande
+  (`resources.phonetics`, port `PhoneticsRepository`), comme les verbes. D'ici là, chaque mot
+  visé reste avec la raison « prononciations en cours de chargement ».
+- La rime, sa richesse et le compte des syllabes se calculent dans le domaine
+  (`src/domain/phonetics/`) ; le port ne donne que les prononciations et les homophones.
+- Les quatre contraintes partagent un moteur (`applyRhymeFilter`) : pour chaque mot visé, la
+  contrainte décide d'un critère, et le moteur prend le n-ième voisin du dictionnaire qui le
+  passe (`src/domain/neighbours.ts`, partagé avec le lipogramme), accordé comme au S+n.
+- Les fins de vers viennent de `layoutVerse` (`src/domain/verse.ts`), recalculé sur le texte que
+  la contrainte reçoit : une mise en page placée avant elle dans la chaîne (Mise en vers)
+  redéfinit donc les vers des filtres de rime qui la suivent. Le contrat de sortie, un mot par mot d'origine, n'a pas changé.
+
+| Contrainte | Réglages | Exemple |
+|---|---|---|
+| R+n | décalage, richesse (pauvre, suffisante, riche), tous les mots ou fins de vers | R+1 : « sur la chaise » → « sur la fraise » |
+| Monorime | la rime, dans la liste des 30 plus fréquentes (`frequent-rhymes.ts`, généré) | en /ɔ̃/ : « la chaise » en fin de vers → « la maison » |
+| Antirime | richesse | « la table / la fable / la rose / la chose » → « la table / la fraise / la rose / la maison » |
+| Homophonies | rang | « un vers » → « un vert » |
+
 ## Côté page
 
 `installedPlugins` (`src/ui/tracks/mixer-state.ts`) est la seule liste qui nomme les types ;
