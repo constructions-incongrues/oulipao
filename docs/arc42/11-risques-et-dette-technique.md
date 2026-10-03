@@ -10,11 +10,13 @@ champs « Risques créés » des ADR (section 9). RISK-08 et RISK-09 viennent d'
 qui ne sont pas encore tenus ou pas encore vérifiés (section 1.2), puisque la section 10 n'existe
 pas encore. Les deux dettes ont été relevées en écrivant les sections 6 et 5.
 
-Aucun risque n'est critique. Quatre sont de priorité haute :
+Aucun risque n'est critique. Trois sont de priorité haute :
 - **RISK-01 :** la dépendance à deux distributeurs tiers ;
 - **RISK-03 :** la licence du modèle ;
-- **RISK-04 :** la perte du texte faute de sauvegarde ;
-- **RISK-05 :** le coût d'une nouvelle contrainte.
+- **RISK-04 :** la perte du texte faute de sauvegarde.
+
+RISK-05 (le coût d'une nouvelle contrainte) est passé de haute à moyenne le 2026-10-03 : trois
+contraintes ont été ajoutées sans toucher aux ports ni aux adaptateurs.
 
 Deux d'entre eux (RISK-03 et RISK-04) sont acceptés pour la v1, chacun avec sa raison.
 
@@ -38,7 +40,7 @@ le tableau du toolkit.*
 | RISK-01 | jsDelivr ou Hugging Face indisponible, ou le modèle retiré | Dépendance | Moyenne | Haut | Haute | Ouvert |
 | RISK-03 | Licence du modèle d'étiquetage non déclarée | Données et conformité | Haute | Moyen | Haute | Accepté |
 | RISK-04 | Le texte est perdu quand l'onglet se ferme | Données | Haute | Moyen | Haute | Accepté |
-| RISK-05 | Ajouter une contrainte oblige à toucher plusieurs briques | Architecture | Haute | Moyen | Haute | Ouvert |
+| RISK-05 | Ajouter une contrainte oblige à toucher plusieurs briques | Architecture | Moyenne | Moyen | Moyenne | Ouvert |
 | RISK-02 | Code tiers chargé sans vérification d'intégrité | Sécurité | Basse | Haut | Moyenne | Ouvert |
 | RISK-06 | Fautes d'accord hors du voisinage, et erreurs d'étiquetage propagées | Architecture | Haute | Bas | Moyenne | Accepté |
 | RISK-08 | Le réglage en direct est proche de la limite de 100 ms | Architecture | Moyenne | Moyen | Moyenne | Ouvert |
@@ -99,11 +101,11 @@ le tableau du toolkit.*
 | Attribut | Valeur |
 |----------|--------|
 | **Type** | Architecture |
-| **Description** | Le lipogramme a dû étendre le port `MorphologyRepository`, deux adaptateurs et l'Interface : le registre `installedPlugins` y vit, ainsi que le rack. La troisième contrainte risque d'en faire autant. |
-| **Probabilité** | Haute : chaque contrainte demande jusqu'ici des données nouvelles au dictionnaire. |
-| **Impact** | Moyen : le travail est plus lent et plus risqué pour un projet mené seul. L'objectif 4 de la section 1.2 n'est pas tenu. |
-| **Priorité** | Haute |
-| **Mitigation** | Prévue : se servir de la troisième contrainte comme test de l'objectif 4, puis stabiliser le contrat avant de l'ouvrir (ADR-004). |
+| **Description** | Le lipogramme a dû étendre le port `MorphologyRepository`, deux adaptateurs et l'Interface. Les trois contraintes suivantes (tri par piste, bord, mise en vers, PR #9) n'ont touché que leurs répertoires du Domaine, le contrat partagé et l'Interface : le registre `installedPlugins`, le rack et les recettes. Une contrainte qui demande au dictionnaire des données qu'il n'offre pas encore touchera de nouveau un port et un adaptateur. |
+| **Probabilité** | Moyenne : les contraintes de forme (retrait, lignes) n'ont besoin d'aucune donnée nouvelle ; les contraintes lexicales en auront parfois besoin. *Révisée le 2026-10-03 (elle était haute).* |
+| **Impact** | Moyen : le travail est plus lent et plus risqué pour un projet mené seul. Le registre et les recettes dans l'Interface restent un passage obligé. |
+| **Priorité** | Moyenne |
+| **Mitigation** | Le test de l'objectif 4 a réussi avec la troisième contrainte, puis la quatrième et la cinquième. Reste à prévoir : dans le Domaine, un registre qui évite de modifier l'Interface pour chaque type. |
 | **Statut** | Ouvert |
 
 **Contexte :** ADR-004 ; objectif 4 de la section 1.2.
@@ -131,7 +133,7 @@ le tableau du toolkit.*
 | **Probabilité** | Haute : cela arrive dans presque tout texte un peu long. |
 | **Impact** | Bas : le seuil de 9 substitutions sur 10 accordées est tenu, et l'inspecteur dit pourquoi un mot a été laissé. |
 | **Priorité** | Moyenne |
-| **Mitigation** | Règles prudentes : un mot reste tel quel plutôt que de recevoir une faute absente de l'original. Les textes de référence servent de test de non-régression. |
+| **Mitigation** | Règles prudentes : un mot reste tel quel plutôt que de recevoir une faute absente de l'original. Les textes de référence servent de mesure de non-régression, relancée à la main (`npm run measure`), pas en CI. |
 | **Statut** | Accepté (ADR-005) : une analyse syntaxique complète n'a pas sa place dans le navigateur. |
 
 **Contexte :** ADR-005 ; objectif 2 de la section 1.2.
