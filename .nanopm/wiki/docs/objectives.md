@@ -3,6 +3,7 @@ type: doc
 skill: pm-objectives
 provenance: user-stated
 generated: 2026-10-03
+updated: 2026-10-03
 sources: [challenges.md, CONTEXT.md, personas.md, vision-mission.md, business-model.md, réponses du fondateur]
 ---
 # Product Objectives
@@ -12,40 +13,40 @@ Period: octobre – décembre 2026
 
 ---
 
-## Objective 1: Mettre en ligne un prototype à pistes qui fait un S+7 français correct
+## Objective 1: Un prototype à pistes qui fait un S+7 français correct
 
-*La métaphore de MAO est l'idée même du projet, et le fondateur tient à la montrer dès le premier prototype ; la séance de contradiction rappelle que la difficulté est dans la langue, pas dans l'interface.*
+*La métaphore de MAO est l'idée même du projet ; la séance de contradiction rappelle que la difficulté est dans la langue, pas dans l'interface. Révisé le 2026-10-03 : le fondateur étant le persona, la mise en ligne publique n'est plus une condition.*
 
-| Key Result | Target | Metric |
-|-----------|--------|--------|
-| KR1: Le prototype est accessible par une URL publique, sans compte | Oui, avant le 30 novembre 2026 | Le lien s'ouvre depuis un autre appareil que celui du fondateur |
-| KR2: Un texte collé est découpé en pistes par catégorie grammaticale | Au moins 4 pistes (noms, verbes, adjectifs, adverbes) | Vérification à la main sur 3 textes de 200 mots : moins de 1 mot sur 10 mal classé |
-| KR3: Le S+7 sur la piste des noms donne des phrases accordées | Au moins 9 substitutions sur 10 correctes en genre et en nombre | Relecture à la main des mêmes 3 textes |
-| KR4: Le texte chargé ne quitte pas le navigateur | Aucune requête réseau contenant le texte | Inspection de l'onglet réseau |
+| Key Result | Target | Metric | État au 2026-10-03 |
+|-----------|--------|--------|------|
+| KR1: Un texte collé est découpé en pistes par catégorie grammaticale | Au moins 4 pistes (noms, verbes, adjectifs, adverbes) | Vérification à la main sur 3 textes de 200 mots : moins de 1 mot sur 10 mal classé | Atteint (étiqueteur neuronal, `RESULTATS.md`) |
+| KR2: Le S+7 sur la piste des noms donne des phrases accordées | Au moins 9 substitutions sur 10 correctes en genre et en nombre | Relecture à la main des mêmes 3 textes | Atteint (décompte validé par le fondateur) |
+| KR3: Le texte chargé ne quitte pas le navigateur | Aucune requête réseau contenant le texte | Inspection de l'onglet réseau | Atteint |
 
 ---
 
-## Objective 2: Savoir si quelqu'un d'autre que le fondateur y prend plaisir
+## Objective 2: Que le fondateur se serve de Potao pour écrire
 
-*Le risque déclaré est l'arrêt du projet faute de retour rapide ; la question évitée est de savoir si le lecteur revient une seconde fois.*
+*Remplace « savoir si quelqu'un d'autre que le fondateur y prend plaisir » (2026-10-03) : le fondateur se déclare persona principal, et Potao est d'abord son outil, ouvert en passant. Le risque déclaré reste l'arrêt du projet ; un outil dont son auteur se sert lui donne son retour chaque soir.*
 
 | Key Result | Target | Metric |
 |-----------|--------|--------|
-| KR1: Cinq personnes nommées ont essayé le prototype | 5, dont au moins 2 lecteurs et 2 bidouilleurs, avant le 31 décembre 2026 | Liste de noms tenue par le fondateur |
-| KR2: Des personnes reviennent sans relance | Au moins 2 sur 5 rouvrent l'outil ou envoient un second texte transformé dans les 7 jours | Message reçu ou question directe au bout d'une semaine |
-| KR3: Des textes sont partagés spontanément | Au moins 2 sur 5 montrent un résultat à quelqu'un d'autre | Question directe au bout d'une semaine |
+| KR1: Des textes faits avec Potao sont gardés | Au moins 5, avant le 31 décembre 2026 | Textes datés, rangés par le fondateur, avec la mention de la chaîne qui les a faits |
+| KR2: L'usage est régulier | Au moins une séance par semaine pendant 6 semaines | Dates des textes gardés |
+| KR3: Les filtres servent | Au moins 3 des textes gardés enchaînent plusieurs contraintes, dont au moins une instanciée deux fois ou visant plusieurs pistes | Mention copiée avec chaque texte |
 
-Si moins de 2 personnes sur 5 reviennent, la mission (« jouable par n'importe qui ») est à revoir avant d'aller plus loin.
+Si le fondateur ne garde aucun texte d'ici fin décembre, l'outil ne remplit pas même sa fonction personnelle : comprendre ce qui l'en empêche avant d'ajouter des contraintes.
 
 ---
 
 ## What's NOT an objective this period
 
-- **Format ouvert de plugin et de textbank.** Tentant parce que c'est la vision d'écosystème et que la dev-joueuse en a besoin. Revisit when : trois contraintes différentes ont été écrites en interne et au moins une personne a demandé à écrire la sienne.
-- **Une deuxième contrainte au-delà du S+7.** Tentant parce qu'un seul plugin fait pauvre dans une interface à pistes. Revisit when : le S+7 atteint le seuil de 9 substitutions correctes sur 10.
-- **Partage en un clic (lien, image).** Tentant parce que c'est le canal de diffusion choisi. Revisit when : au moins 2 testeurs sur 5 ont partagé un résultat par copier-coller.
-- **Comptes, sauvegarde de projets, autres langues que le français.** Tentant pour faire « vrai logiciel ». Revisit when : quelqu'un revient plusieurs fois et se plaint de perdre son travail.
+- **Mise en ligne publique et cinq testeurs.** Ne sont plus des conditions depuis le 2026-10-03. Revisit when : le fondateur veut montrer un texte ou l'outil à quelqu'un, ou quelqu'un le demande. La réserve sur la licence du modèle (`TODOS.md`) ne compte qu'à ce moment-là.
+- **Format ouvert de plugin et de textbank, bac à sable pour plugins tiers.** Tentant parce que c'est la vision d'écosystème. Revisit when : quelqu'un d'autre que le fondateur veut écrire un plugin.
+- **Partage en un clic (lien, image).** Revisit when : le fondateur veut partager un texte et le copier-coller ne suffit pas.
+- **Comptes, sauvegarde de projets, autres langues que le français.** Revisit when : le fondateur perd un travail faute de sauvegarde.
 - **Tout ce qui génère du texte par IA.** Anti-persona ; pas de condition de réouverture.
+- ~~**Une deuxième contrainte au-delà du S+7.**~~ Fait le 2026-10-03 : le lipogramme.
 
 **Action:** Before accepting any new feature request or work item this period, check it against this list. If it matches an anti-goal, the answer is no without a re-prioritization conversation.
 
@@ -55,8 +56,8 @@ Si moins de 2 personnes sur 5 reviennent, la mission (« jouable par n'importe q
 
 **Run: /pm-strategy**
 
-Deux objectifs en tension (construire la métaphore, obtenir un retour vite) demandent un pari explicite sur l'ordre.
+La stratégie et la roadmap parlent encore du lecteur de Perec et des cinq testeurs : elles sont à revoir pour le nouveau persona.
 
 ---
 
-*Sources : challenges.md, CONTEXT.md, réponses du fondateur du 2026-10-03. Les seuils chiffrés (1 mot sur 10, 9 sur 10, 2 sur 5) et les dates sont proposés par l'assistant, non validés par le fondateur.*
+*Sources : challenges.md, CONTEXT.md, réponses du fondateur du 2026-10-03, jam /pm-brainstorm du 2026-10-03. Les seuils chiffrés (1 mot sur 10, 9 sur 10, 5 textes, 6 semaines, 3 textes) et les dates sont proposés par l'assistant, non validés par le fondateur.*

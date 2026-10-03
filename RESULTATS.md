@@ -307,3 +307,33 @@ ou sa marihuana lisait la jovialité sans lever nos officialisations. »
   lettre ».
 - **La falsification** (2 testeurs sur 5 branchent les deux contraintes au premier essai) attend
   la mise en ligne et les cinq testeurs.
+
+# Filtres
+
+Vérification du 2026-10-03. Dans le navigateur, sur le texte 1 de référence avec l'étiqueteur
+neuronal (fenêtre de 1280 × 900 px) ; sous Node, sur les 3 textes, avec les catégories annotées.
+Capture : `resultats/filtres/texte-1-cinq-filtres.jpg`.
+
+| Critère du PRD | Constat |
+|---|---|
+| Instancier | Deux S+n indépendants dans la page : S+7 sur les noms, S+3 puis S+2 sur les adjectifs. Navigateur, texte 1 : « S+7 sur les noms : 33 noms remplacés sur 34. S+3 sur les adjectifs : 13 adjectifs remplacés sur 13. » Sous Node (S+7 noms, S+3 adjectifs) : 32 + 13, 41 + 24, 39 + 14 mots remplacés sur les textes 1, 2, 3 |
+| Cibler | Lipogramme en « e » sur les seuls noms, sous Node : 22, 33 et 24 noms remplacés, 0 nom gardant un « e » ; aucun mot des autres pistes ne change, sauf un adjectif réaccordé au nom remplacé (texte 3 : « l'eau désolé » → « l'ébriété désolée »), comme le prévoit l'exigence ; les « e » des autres pistes restent (47 mots-outils, 16 verbes, 11 adjectifs, 15 adverbes dans le texte 1) |
+| Chaîner | Trois filtres réordonnés (S+3 adjectifs monté de la 3e à la 1re place) : le résumé et le texte suivent l'ordre affiché (« S+3 sur les adjectifs : 12 adjectifs remplacés sur 13. S+7 sur les noms … »), sans nouvel étiquetage. Avec cinq filtres, geste et rendu compris : ajouter 7 à 37 ms, changer un décalage 6 à 7 ms, changer de lettre 8 à 12 ms, monter ou descendre 7 à 11 ms, couper ou rallumer 8 à 31 ms, Muet 9 à 10 ms ; tout sous la demi-seconde |
+| La mention copiée | « — S+2 sur les adjectifs · S+7 sur les noms · lipogramme en e sur les noms · S+1 sur les noms · lipogramme en a (Potao) » |
+| Les filtres servent | Non mesuré : attend le carnet de textes gardés (roadmap, NOW, item 2) et le 14 novembre 2026 |
+
+Extrait du texte 1, chaîne S+2 adjectifs · S+7 noms · lipogramme en e sur les noms · S+1 noms ·
+lipogramme en a : « Une mâture où le vigilé hors-bord s'arrêta, personne ne le remarqua vulgo
+Préparait le câlin en une cuistrerie étrusque… »
+
+## Écarts et limites
+
+- **Le S+n sur les adjectifs compte tous les adjectifs** : « Parmi » ne vaut que pour les noms
+  (décision du 2026-10-03). Un adjectif sans forme au bon genre et au bon nombre reste tel quel.
+- **Ordre des mesures** : les premières mesures attendaient deux images ; dans un panneau masqué,
+  le navigateur les espace d'une seconde. Les chiffres ci-dessus mesurent le geste et le rendu
+  sans attendre l'image suivante.
+- **Lettres accentuées** : un lipogramme en « a » laisse « â » (« mâture », « câlin ») ; les
+  voyelles accentuées sont hors du périmètre v1.
+- **Un filtre ajouté est en marche** : il agit dès qu'il est branché (S+7 par défaut,
+  lipogramme en « e »).

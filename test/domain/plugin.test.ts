@@ -6,7 +6,8 @@ import { plainWords } from '../../src/domain/mixing.ts';
 const base: ConstraintPlugin = {
   id: 'essai',
   name: 'Essai',
-  track: 'verb',
+  tracks: ['verb'],
+  defaultTargets: ['verb'],
   parameters: [
     { kind: 'integer', key: 'n', label: 'N', min: 0, max: 3 },
     { kind: 'choice', key: 'sens', label: 'Sens', options: [{ value: 'haut', label: 'vers le haut' }] },
@@ -29,7 +30,8 @@ test('definePlugin : accepte une déclaration correcte et la rend telle quelle',
 
 test('definePlugin : refuse une déclaration incohérente', () => {
   assert.throws(() => definePlugin({ ...base, id: '' }));
-  assert.throws(() => definePlugin({ ...base, track: 'pronom' as never }));
+  assert.throws(() => definePlugin({ ...base, tracks: ['pronom' as never] }));
+  assert.throws(() => definePlugin({ ...base, defaultTargets: ['noun'] }), /piste par défaut/);
   assert.throws(() => definePlugin({ ...base, parameters: [{ kind: 'choice', key: 'x', label: 'X', options: [] }] }));
   assert.throws(() => definePlugin({ ...base, parameters: [base.parameters[0]!, base.parameters[0]!] }), /même clé/);
   assert.throws(() => definePlugin({ ...base, parameters: [{ kind: 'integer', key: 'n', label: 'N', min: 3, max: 0 }] }), /bornes inversées/);

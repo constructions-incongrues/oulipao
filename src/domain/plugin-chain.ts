@@ -1,13 +1,17 @@
+import type { Category } from './categories.ts';
 import { plainWords } from './mixing.ts';
 import type { ConstraintPlugin, ParameterValues, PluginResources, WordMark } from './plugin.ts';
 import type { OutputWord } from './s7/types.ts';
 import type { TaggedWord } from './tagged-word.ts';
 import { tokenize } from './tokenizer.ts';
 
-/** Un plugin de la chaîne, avec ses réglages. */
+/** Une instance de la chaîne : son type, ses réglages et ses pistes visées. */
 export interface ChainStep {
+  /** Identifiant de l'instance : deux instances d'un même type ont chacune le leur. */
+  id: string;
   plugin: ConstraintPlugin;
   values: ParameterValues;
+  targets: ReadonlySet<Category>;
 }
 
 /** Ce qu'un plugin a fait, une fois ses marques ramenées aux mots d'origine. */
@@ -87,13 +91,13 @@ export function runChain(text: string, tagged: readonly TaggedWord[], steps: rea
   let { words, tail } = plainWords(text);
   const marks = new Map<number, WordMark>();
   const reports: StepReport[] = [];
-  for (const { plugin, values } of steps) {
+  for (const { id, plugin, values, targets } of steps) {
     const current = reread(words, tail, tagged);
-    const result = plugin.apply(current.text, current.tagged, values, resources);
+    const result = plugin.apply(current.text, current.tagged, values, resources, targets);
     if (result.words.length !== current.origin.length) throw new Error(`${plugin.id} : la sortie ne suit pas les mots du texte`);
     words = fold(result.words, current.origin, tagged.length);
     tail = result.tail;
-    const report: StepReport = { id: plugin.id, replaced: 0, removed: 0, kept: 0 };
+    const report: StepReport = { id, replaced: 0, removed: 0, kept: 0 };
     for (const mark of result.marks) {
       const index = current.origin[mark.index]!;
       const original = marks.get(index)?.original ?? tagged[index]!.word;

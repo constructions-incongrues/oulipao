@@ -45,10 +45,19 @@
   .power { justify-self: start; }
   .help { margin: 0; }
   .more { font-size: var(--size-small); margin: var(--space-3) 0 0; }
-  .master { border-bottom: var(--rule) solid var(--line); padding: var(--space-2) 0; }
-  .master .plugin { margin-left: 0; }
-  .chain { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; font-size: var(--size-small); color: var(--muted); margin: var(--space-2) 0 0; }
-  .chain button { padding: 2px var(--space-2); font-size: var(--size-small); }
+  .reminder { font-size: var(--size-small); color: var(--muted); margin: var(--space-1) 0 0 18px; }
+  /* Rack : les filtres dans l'ordre de la chaîne */
+  .rack { padding: var(--space-3) 0; border-bottom: var(--rule) solid var(--line); }
+  .rack ol { list-style: none; margin: var(--space-2) 0 0; padding: 0; display: grid; gap: var(--space-3); }
+  .unit { display: grid; grid-template-columns: 1.25rem minmax(0, 1fr); gap: var(--space-1) var(--space-2); padding-top: var(--space-2); border-top: var(--rule) dashed var(--line); }
+  .rank { font-weight: 600; color: var(--muted); padding-top: var(--space-1); }
+  .unit .plugin, .targets, .unit-actions { grid-column: 2; margin: 0; }
+  .targets, .unit-actions, .add { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+  .rack button { padding: 2px var(--space-2); font-size: var(--size-small); }
+  .chip { border-color: var(--track); }
+  .chip:disabled { opacity: 1; cursor: default; } /* la seule piste visée : enfoncée, sans s'éteindre */
+  .chip[aria-pressed="true"] { background: color-mix(in srgb, var(--track) 30%, transparent); color: var(--fg); border-color: var(--track); }
+  .add { margin-top: var(--space-3); }
   .noun { --track: var(--noun); } .verb { --track: var(--verb); } .adjective { --track: var(--adjective); }
   .adverb { --track: var(--adverb); } .other { --track: var(--other); }
 

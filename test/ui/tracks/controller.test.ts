@@ -91,7 +91,7 @@ test('l’exemple : placé dans la saisie et mis en pistes', async () => {
   assert.equal(controller.state.input, EXAMPLE_TEXT);
   assert.ok(controller.state.view);
   await controller.copy();
-  assert.match(copied[0]!, /— S\+7, parmi tous les noms \(Potao\)$/);
+  assert.match(copied[0]!, /— S\+7 sur les noms \(Potao\)$/);
 });
 
 test('chaque geste met la vue à jour sans réétiqueter ; les mots changés s’éclairent', async () => {
@@ -103,13 +103,13 @@ test('chaque geste met la vue à jour sans réétiqueter ; les mots changés s�
   const results = [controller.state.view!.result];
   const generation = controller.state.generation;
   for (const offset of [1, 2, 3, -1]) {
-    controller.dispatch({ type: 'set-param', id: 's7', key: 'offset', value: offset });
+    controller.dispatch({ type: 'set-param', id: 's7-1', key: 'offset', value: offset });
     results.push(controller.state.view!.result);
   }
   assert.equal(new Set(results).size, 5);
   assert.ok(controller.state.changed.has(2)); // « ferme » a encore changé de remplaçant
   assert.equal(controller.state.generation, generation + 4);
-  controller.dispatch({ type: 'toggle-plugin', id: 's7' });
+  controller.dispatch({ type: 'toggle-instance', id: 's7-1' });
   assert.equal(controller.state.view!.result, 'La vieille ferme.');
   controller.dispatch({ type: 'toggle-mute', category: 'adjective' });
   assert.equal(controller.state.view!.result, 'La ferme.');
@@ -228,11 +228,11 @@ test('copier : le texte résultant et sa mention (D11) ; message à côté du bo
   controller.setInput('La ferme.');
   await controller.run();
   await controller.copy();
-  assert.deepEqual(copied, ["L'oncle.\n\n— S+7, parmi tous les noms (Potao)"]);
+  assert.deepEqual(copied, ["L'oncle.\n\n— S+7 sur les noms (Potao)"]);
   assert.equal(controller.state.copyMessage, 'Copié.');
-  controller.dispatch({ type: 'set-param', id: 's7', key: 'offset', value: 2 });
+  controller.dispatch({ type: 'set-param', id: 's7-1', key: 'offset', value: 2 });
   assert.equal(controller.state.copyMessage, ''); // le texte a changé depuis la copie
-  controller.dispatch({ type: 'toggle-plugin', id: 's7' });
+  controller.dispatch({ type: 'toggle-instance', id: 's7-1' });
   await controller.copy();
   assert.equal(copied.at(-1), 'La ferme.'); // texte d'origine : pas de mention
   controller.dispatch({ type: 'toggle-solo', category: 'adverb' });

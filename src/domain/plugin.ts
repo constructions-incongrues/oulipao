@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { MorphologyRepository } from '../ports/morphology.ts';
-import { CategorySchema } from './categories.ts';
+import { CategorySchema, type Category } from './categories.ts';
 import type { OutputWord } from './s7/types.ts';
 import type { TaggedWord } from './tagged-word.ts';
 
@@ -44,10 +44,6 @@ export const WordMarkSchema = z.object({
 });
 export type WordMark = z.infer<typeof WordMarkSchema>;
 
-/** Une piste, ou toutes : une contrainte comme le lipogramme agit partout, comme un effet sur le bus master. */
-export const PluginTrackSchema = z.union([CategorySchema, z.literal('all')]);
-export type PluginTrack = z.infer<typeof PluginTrackSchema>;
-
 /** Le texte transformé, mot par mot, et ce que la contrainte a fait des mots qu'elle a touchés. */
 export interface PluginResult {
   /** Un élément par mot du texte d'origine, comme `plainWords`. */
@@ -65,8 +61,10 @@ export interface ConstraintPlugin {
   id: string;
   /** Le nom court, sur le bouton de marche : « S+7 ». */
   name: string;
-  /** La piste sur laquelle la contrainte se branche, ou toutes. */
-  track: PluginTrack;
+  /** Les pistes que la contrainte sait traiter : une instance choisit les siennes parmi elles. */
+  tracks: readonly Category[];
+  /** Les pistes visées par une instance qu'on vient d'ajouter. */
+  defaultTargets: readonly Category[];
   /** Les paramètres, dans l'ordre d'affichage. */
   parameters: Parameter[];
   /** Les valeurs à l'ouverture. */
@@ -79,19 +77,27 @@ export interface ConstraintPlugin {
   title(values: ParameterValues): string;
   /** Le réglage en clair, pour le résumé et la mention : « S+3, parmi tous les noms ». */
   label(values: ParameterValues): string;
-  /** L'effet du réglage en une phrase. */
-  help(values: ParameterValues): string;
+  /** L'effet du réglage en une phrase, sur les pistes visées (par défaut, celles du type). */
+  help(values: ParameterValues, targets?: ReadonlySet<Category>): string;
   /**
-   * Applique la contrainte au texte étiqueté. Dans une chaîne, la page lui passe la sortie du
-   * plugin précédent, relue comme un texte (voir `plugin-chain.ts`).
+   * Applique la contrainte au texte étiqueté, sur les pistes visées (parmi `tracks`). Dans une
+   * chaîne, la page lui passe la sortie de l'instance précédente, relue comme un texte (voir
+   * `plugin-chain.ts`).
    */
-  apply(text: string, tagged: readonly TaggedWord[], values: ParameterValues, resources: PluginResources): PluginResult;
+  apply(
+    text: string,
+    tagged: readonly TaggedWord[],
+    values: ParameterValues,
+    resources: PluginResources,
+    targets: ReadonlySet<Category>,
+  ): PluginResult;
 }
 
 const DeclarationSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
-  track: PluginTrackSchema,
+  tracks: z.array(CategorySchema).min(1),
+  defaultTargets: z.array(CategorySchema).min(1),
   parameters: z.array(ParameterSchema),
 });
 
@@ -103,6 +109,7 @@ export function definePlugin(plugin: ConstraintPlugin): ConstraintPlugin {
   for (const parameter of plugin.parameters) {
     if (parameter.kind === 'integer' && parameter.min > parameter.max) throw new Error(`${plugin.id} : bornes inversées pour ${parameter.key}`);
   }
+  if (plugin.defaultTargets.some((track) => !plugin.tracks.includes(track))) throw new Error(`${plugin.id} : une piste par défaut n'est pas traitée`);
   plugin.parse(plugin.defaults);
   return plugin;
 }

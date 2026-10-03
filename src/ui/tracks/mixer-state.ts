@@ -3,27 +3,55 @@ import type { Tracks } from '../../domain/mixing.ts';
 import type { ConstraintPlugin } from '../../domain/plugin.ts';
 import { lipogramPlugin } from '../../domain/lipogram/plugin.ts';
 import { s7Plugin } from '../../domain/s7/plugin.ts';
-import { MixerActionSchema, type MixerAction, type MixerState } from './types.ts';
+import { MixerActionSchema, type Instance, type MixerAction, type MixerState } from './types.ts';
 
-/** Les contraintes installées sur la table, dans l'ordre de la chaîne à l'ouverture. */
+/** Les types de contraintes qu'on peut brancher sur la table. */
 export const installedPlugins: readonly ConstraintPlugin[] = [s7Plugin, lipogramPlugin];
 
-/** Coupés à l'ouverture : le lipogramme s'essaie après le S+7, on le met en marche soi-même. */
-const OFF_AT_OPEN = new Set(['lipogram']);
-
-/** Un plugin installé, par son identifiant ; lève s'il n'est pas installé. */
+/** Un type de contrainte installé, par son identifiant ; lève s'il n'est pas installé. */
 export function pluginById(id: string): ConstraintPlugin {
   const plugin = installedPlugins.find((candidate) => candidate.id === id);
   if (!plugin) throw new Error(`plugin inconnu : ${id}`);
   return plugin;
 }
 
-/** À l'ouverture : toutes les pistes s'entendent ; chaque plugin est à ses réglages d'ouverture. */
+/** Une instance neuve d'un type : ses réglages et ses pistes par défaut. */
+const freshInstance = (plugin: ConstraintPlugin, id: string, enabled = true): Instance => ({
+  id,
+  type: plugin.id,
+  enabled,
+  params: plugin.defaults,
+  targets: [...plugin.defaultTargets],
+});
+
+/** Un identifiant libre pour une nouvelle instance d'un type : « s7-2 », « s7-3 »… */
+function nextId(instances: readonly Instance[], type: string): string {
+  const taken = new Set(instances.map((instance) => instance.id));
+  let n = 1;
+  while (taken.has(`${type}-${n}`)) n++;
+  return `${type}-${n}`;
+}
+
+/**
+ * À l'ouverture : toutes les pistes s'entendent ; un S+7 en marche sur les noms, puis un
+ * lipogramme coupé, qui s'essaie après le S+7.
+ */
 export const initialState: MixerState = {
   tracks: Object.fromEntries(CATEGORIES.map((category) => [category, { muted: false, solo: false }])) as Tracks,
-  plugins: Object.fromEntries(installedPlugins.map((plugin) => [plugin.id, { enabled: !OFF_AT_OPEN.has(plugin.id), params: plugin.defaults }])),
-  order: installedPlugins.map((plugin) => plugin.id),
+  instances: [freshInstance(s7Plugin, 's7-1'), freshInstance(lipogramPlugin, 'lipogram-1', false)],
 };
+
+/** L'instance d'identifiant donné ; lève si elle n'existe pas. */
+function instanceOf(state: MixerState, id: string): Instance {
+  const instance = state.instances.find((candidate) => candidate.id === id);
+  if (!instance) throw new Error(`instance inconnue : ${id}`);
+  return instance;
+}
+
+const replace = (state: MixerState, next: Instance): MixerState => ({
+  ...state,
+  instances: state.instances.map((instance) => (instance.id === next.id ? next : instance)),
+});
 
 /** Applique un geste à l'état de la table ; refuse un geste non conforme, ou un réglage que le plugin refuse. */
 export function reduce(state: MixerState, action: MixerAction): MixerState {
@@ -37,22 +65,41 @@ export function reduce(state: MixerState, action: MixerAction): MixerState {
       const track = state.tracks[checked.category];
       return { ...state, tracks: { ...state.tracks, [checked.category]: { ...track, solo: !track.solo } } };
     }
-    case 'toggle-plugin': {
-      const current = state.plugins[pluginById(checked.id).id]!;
-      return { ...state, plugins: { ...state.plugins, [checked.id]: { ...current, enabled: !current.enabled } } };
+    case 'toggle-instance': {
+      const instance = instanceOf(state, checked.id);
+      return replace(state, { ...instance, enabled: !instance.enabled });
     }
     case 'set-param': {
-      const plugin = pluginById(checked.id);
+      const instance = instanceOf(state, checked.id);
+      const plugin = pluginById(instance.type);
       if (!plugin.parameters.some((parameter) => parameter.key === checked.key)) throw new Error(`paramètre inconnu : ${checked.key}`);
-      const current = state.plugins[plugin.id]!;
-      const params = plugin.parse({ ...current.params, [checked.key]: checked.value });
-      return { ...state, plugins: { ...state.plugins, [plugin.id]: { ...current, params } } };
+      return replace(state, { ...instance, params: plugin.parse({ ...instance.params, [checked.key]: checked.value }) });
     }
-    case 'move-plugin': {
-      pluginById(checked.id);
-      const order = state.order.filter((id) => id !== checked.id);
-      order.splice(Math.min(checked.position, order.length), 0, checked.id);
-      return { ...state, order };
+    case 'set-targets': {
+      const instance = instanceOf(state, checked.id);
+      const plugin = pluginById(instance.type);
+      const refused = checked.targets.filter((track) => !plugin.tracks.includes(track));
+      if (refused.length) throw new Error(`${plugin.name} ne traite pas : ${refused.join(', ')}`);
+      // Dans l'ordre des pistes de la table, sans doublon.
+      return replace(state, { ...instance, targets: CATEGORIES.filter((track) => checked.targets.includes(track)) });
+    }
+    case 'add-instance': {
+      const plugin = pluginById(checked.plugin);
+      return { ...state, instances: [...state.instances, freshInstance(plugin, nextId(state.instances, plugin.id))] };
+    }
+    case 'duplicate-instance': {
+      const instance = instanceOf(state, checked.id);
+      return { ...state, instances: [...state.instances, { ...instance, id: nextId(state.instances, instance.type) }] };
+    }
+    case 'remove-instance': {
+      instanceOf(state, checked.id);
+      return { ...state, instances: state.instances.filter((instance) => instance.id !== checked.id) };
+    }
+    case 'move-instance': {
+      const instance = instanceOf(state, checked.id);
+      const instances = state.instances.filter((candidate) => candidate.id !== checked.id);
+      instances.splice(Math.min(checked.position, instances.length), 0, instance);
+      return { ...state, instances };
     }
   }
 }

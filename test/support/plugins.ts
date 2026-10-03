@@ -1,12 +1,14 @@
 // Un plugin d'essai sur toutes les pistes : retire les mots qui contiennent une lettre, et laisse
 // tels quels les verbes. Sert à éprouver la page sans le vrai lipogramme.
+import { CATEGORIES } from '../../src/domain/categories.ts';
 import { plainWords } from '../../src/domain/mixing.ts';
 import { definePlugin, type ConstraintPlugin, type WordMark } from '../../src/domain/plugin.ts';
 
 export const sansPlugin: ConstraintPlugin = definePlugin({
   id: 'sans',
   name: 'Sans',
-  track: 'all',
+  tracks: [...CATEGORIES],
+  defaultTargets: [...CATEGORIES],
   parameters: [{ kind: 'choice', key: 'lettre', label: 'Lettre', options: [{ value: 'e', label: 'e' }, { value: 'a', label: 'a' }] }],
   defaults: { lettre: 'e' },
   parse: (values) => ({ lettre: 'e', ...values }),

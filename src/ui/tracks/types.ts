@@ -21,15 +21,23 @@ export const TRACK_UNITS: Record<Category, [string, string]> = {
   other: ['mot', 'mots'],
 };
 
-/** Le plugin branché sur sa piste : en marche ou coupé, et ses réglages. */
+/** L'état d'une contrainte branchée : en marche ou coupée, et ses réglages. */
 export const PluginStateSchema = z.object({ enabled: z.boolean(), params: ParameterValuesSchema });
 export type PluginState = z.infer<typeof PluginStateSchema>;
 
-/** L'état de la table de mixage : les pistes, les plugins installés (par identifiant) et l'ordre de leur chaîne. */
+/** Une instance de filtre : un exemplaire d'une contrainte, avec ses réglages et ses pistes visées. */
+export const InstanceSchema = PluginStateSchema.extend({
+  id: z.string().min(1),
+  /** L'identifiant du type de contrainte (« s7 », « lipogram »). */
+  type: z.string().min(1),
+  targets: z.array(CategorySchema).min(1),
+});
+export type Instance = z.infer<typeof InstanceSchema>;
+
+/** L'état de la table de mixage : les pistes, et les instances dans l'ordre de la chaîne. */
 export const MixerStateSchema = z.object({
   tracks: TracksSchema,
-  plugins: z.record(z.string(), PluginStateSchema),
-  order: z.array(z.string()),
+  instances: z.array(InstanceSchema),
 });
 export type MixerState = z.infer<typeof MixerStateSchema>;
 
@@ -37,10 +45,16 @@ export type MixerState = z.infer<typeof MixerStateSchema>;
 export const MixerActionSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('toggle-mute'), category: CategorySchema }),
   z.object({ type: z.literal('toggle-solo'), category: CategorySchema }),
-  z.object({ type: z.literal('toggle-plugin'), id: z.string().min(1) }),
+  z.object({ type: z.literal('toggle-instance'), id: z.string().min(1) }),
   z.object({ type: z.literal('set-param'), id: z.string().min(1), key: z.string().min(1), value: z.union([z.number(), z.string()]) }),
-  /** Place un plugin à une position de la chaîne. */
-  z.object({ type: z.literal('move-plugin'), id: z.string().min(1), position: z.number().int().nonnegative() }),
+  /** Les pistes visées par une instance : au moins une, parmi celles de son type. */
+  z.object({ type: z.literal('set-targets'), id: z.string().min(1), targets: z.array(CategorySchema).min(1) }),
+  /** Ajoute une instance d'un type, en fin de chaîne. */
+  z.object({ type: z.literal('add-instance'), plugin: z.string().min(1) }),
+  z.object({ type: z.literal('duplicate-instance'), id: z.string().min(1) }),
+  z.object({ type: z.literal('remove-instance'), id: z.string().min(1) }),
+  /** Place une instance à une position de la chaîne. */
+  z.object({ type: z.literal('move-instance'), id: z.string().min(1), position: z.number().int().nonnegative() }),
 ]);
 export type MixerAction = z.infer<typeof MixerActionSchema>;
 

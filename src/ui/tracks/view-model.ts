@@ -6,7 +6,7 @@ import type { TaggedWord } from '../../domain/tagged-word.ts';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
 import { pluginById } from './mixer-state.ts';
 import { layoutScore } from './score-layout.ts';
-import { TRACK_NAMES, TRACK_UNITS, type MixerState, type ScoreLayout } from './types.ts';
+import { TRACK_NAMES, TRACK_UNITS, type Instance, type MixerState, type ScoreLayout } from './types.ts';
 
 /** Un texte collé et étiqueté : on ne l'étiquette qu'une fois, puis chaque geste rejoue la suite. */
 export interface Session {
@@ -40,18 +40,34 @@ export interface TracksView {
   audible: ReadonlySet<Category>;
 }
 
-/** Retrouve un plugin par son identifiant : les plugins installés, sauf en test. */
+/** Retrouve un type de contrainte par son identifiant : les types installés, sauf en test. */
 export type PluginLookup = (id: string) => ConstraintPlugin;
 
-/** Les plugins de la chaîne qui sont en marche, dans l'ordre. */
-const enabledPlugins = (mixer: MixerState, lookup: PluginLookup): ConstraintPlugin[] =>
-  mixer.order.map(lookup).filter((plugin) => mixer.plugins[plugin.id]!.enabled);
+/** Les instances en marche, dans l'ordre de la chaîne. */
+const enabledInstances = (mixer: MixerState): Instance[] => mixer.instances.filter((instance) => instance.enabled);
 
-/** Les plugins qui changent le texte : en marche, et réglés pour agir (le S+0, non). */
+/** Les instances qui changent le texte : en marche, et réglées pour agir (le S+0, non). */
 export function activeSteps(mixer: MixerState, lookup: PluginLookup = pluginById): ChainStep[] {
-  return enabledPlugins(mixer, lookup)
-    .map((plugin) => ({ plugin, values: mixer.plugins[plugin.id]!.params }))
+  return enabledInstances(mixer)
+    .map((instance) => ({ id: instance.id, plugin: lookup(instance.type), values: instance.params, targets: new Set(instance.targets) }))
     .filter(({ plugin, values }) => plugin.acts(values));
+}
+
+/** « les noms », « les noms et les adjectifs », « les noms, les verbes et les adjectifs ». */
+function tracksPhrase(targets: readonly Category[]): string {
+  const names = targets.map((track) => `les ${TRACK_NAMES[track].toLowerCase()}`);
+  return names.length > 1 ? `${names.slice(0, -1).join(', ')} et ${names.at(-1)}` : names[0]!;
+}
+
+/**
+ * Le nom d'une instance dans le résumé et la mention : son réglage, et ses pistes visées sauf
+ * quand elle vise toutes celles que son type sait traiter (« S+7 sur les noms », « lipogramme en e »).
+ */
+export function describeInstance(instance: Instance, lookup: PluginLookup = pluginById): string {
+  const plugin = lookup(instance.type);
+  const label = plugin.label(instance.params);
+  if (plugin.tracks.every((track) => instance.targets.includes(track))) return label;
+  return `${label}${label.includes(',') ? ',' : ''} sur ${tracksPhrase(instance.targets)}`;
 }
 
 /** Rejoue la chaîne de plugins, puis le mixage et la disposition, sans réétiqueter. */
@@ -100,37 +116,42 @@ const cutTracks = (audible: ReadonlySet<Category>) =>
 const plural = (count: number, one: string, many: string) => `${count} ${count > 1 ? many : one}`;
 
 /**
- * Ce qu'un plugin a fait, en une phrase. Sur une piste : « S+7, parmi tous les noms : 12 noms
- * remplacés sur 13. » Sur toutes : « lipogramme en e : 63 mots remplacés, 4 retirés, 9 laissés
+ * Ce qu'une instance a fait, en une phrase. Sur une piste : « S+7 sur les noms : 12 noms
+ * remplacés sur 13. » Sur plusieurs : « lipogramme en e : 63 mots remplacés, 4 retirés, 9 laissés
  * tels quels. »
  */
-function stepSentence(plugin: ConstraintPlugin, mixer: MixerState, view: TracksView): string {
-  const params = mixer.plugins[plugin.id]!.params;
-  if (!plugin.acts(params)) return plugin.help(params);
-  const { replaced, removed, kept } = view.steps.find((step) => step.id === plugin.id)!;
-  if (plugin.track === 'all') {
-    return `${plugin.label(params)} : ${plural(replaced, 'mot remplacé', 'mots remplacés')}, ${plural(removed, 'retiré', 'retirés')}, ${plural(kept, 'laissé tel quel', 'laissés tels quels')}.`;
+function stepSentence(instance: Instance, view: TracksView, lookup: PluginLookup): string {
+  const plugin = lookup(instance.type);
+  if (!plugin.acts(instance.params)) return plugin.help(instance.params);
+  const name = describeInstance(instance, lookup);
+  const { replaced, removed, kept } = view.steps.find((step) => step.id === instance.id)!;
+  if (instance.targets.length > 1) {
+    return `${name} : ${plural(replaced, 'mot remplacé', 'mots remplacés')}, ${plural(removed, 'retiré', 'retirés')}, ${plural(kept, 'laissé tel quel', 'laissés tels quels')}.`;
   }
-  const [one, many] = TRACK_UNITS[plugin.track];
-  return `${plugin.label(params)} : ${plural(replaced, `${one} remplacé`, `${many} remplacés`)} sur ${view.counts[plugin.track]}.`;
+  const [track] = instance.targets as [Category];
+  const [one, many] = TRACK_UNITS[track];
+  return `${name} : ${plural(replaced, `${one} remplacé`, `${many} remplacés`)} sur ${view.counts[track]}.`;
 }
 
 /** La phrase qui résume l'état du texte, affichée et annoncée après chaque geste. */
 export function summarize(mixer: MixerState, view: TracksView, lookup: PluginLookup = pluginById): string {
-  const plugins = enabledPlugins(mixer, lookup);
-  const rule = plugins.length
-    ? plugins.map((plugin) => stepSentence(plugin, mixer, view)).join(' ')
-    : `${mixer.order.length > 1 ? 'Plugins coupés' : 'Plugin coupé'} : texte d’origine.`;
+  const enabled = enabledInstances(mixer);
+  const rule = enabled.length
+    ? enabled.map((instance) => stepSentence(instance, view, lookup)).join(' ')
+    : !mixer.instances.length
+      ? 'Aucun filtre : texte d’origine.'
+      : `${mixer.instances.length > 1 ? 'Filtres coupés' : 'Filtre coupé'} : texte d’origine.`;
   const cut = cutTracks(view.audible);
   return cut.length ? `${rule} Pistes coupées : ${cut.join(', ')}.` : rule;
 }
 
 /**
  * La mention ajoutée au texte copié : ce qui a changé le texte, et d'où il vient. Rien quand le
- * texte copié est le texte d'origine (aucun plugin n'agit, toutes les pistes entendues).
+ * texte copié est le texte d'origine (aucune instance n'agit, toutes les pistes entendues).
  */
 export function ruleMention(mixer: MixerState, audible: ReadonlySet<Category>, lookup: PluginLookup = pluginById): string {
-  const parts = activeSteps(mixer, lookup).map(({ plugin, values }) => plugin.label(values));
+  const active = new Set(activeSteps(mixer, lookup).map((step) => step.id));
+  const parts = mixer.instances.filter((instance) => active.has(instance.id)).map((instance) => describeInstance(instance, lookup));
   const cut = cutTracks(audible);
   if (cut.length) parts.push(`pistes coupées : ${cut.join(', ')}`);
   return parts.length ? `\n\n— ${parts.join(' · ')} (Potao)` : '';

@@ -1,18 +1,20 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
+import { CATEGORIES, type Category } from '../../../src/domain/categories.ts';
 import { lipogramPlugin } from '../../../src/domain/lipogram/plugin.ts';
 import { containsLetter } from '../../../src/domain/lipogram/neighbour.ts';
 import { applyS7 } from '../../../src/domain/s7/engine.ts';
 import { morphology, tag } from '../../support/morphology.ts';
 
 const m = morphology();
-const run = (text: string, letter = 'e', extra = {}) => {
-  const result = lipogramPlugin.apply(text, tag(text, extra), { letter }, { morphology: m });
+const run = (text: string, letter = 'e', extra = {}, targets: Iterable<Category> = CATEGORIES) => {
+  const result = lipogramPlugin.apply(text, tag(text, extra), { letter }, { morphology: m }, new Set(targets));
   return { ...result, text: result.words.map((w) => w.gap + w.output).join('') + result.tail };
 };
 
 test('déclaration : sur toutes les pistes, un paramètre « Lettre », « e » par défaut', () => {
-  assert.equal(lipogramPlugin.track, 'all');
+  assert.deepEqual(lipogramPlugin.tracks, [...CATEGORIES]);
+  assert.deepEqual(lipogramPlugin.defaultTargets, [...CATEGORIES]);
   assert.deepEqual(lipogramPlugin.defaults, { letter: 'e' });
   const [parameter] = lipogramPlugin.parameters;
   assert.equal(parameter?.kind === 'choice' && parameter.options.length, 26);
@@ -69,4 +71,16 @@ test('les noms passent par la même réécriture que le S+7', () => {
   // le S+7 n'a pas changé de comportement
   const text = 'La vieille ferme du village dort.';
   assert.equal(applyS7(text, tag(text), { offset: 1 }, m).text, 'Le vieux fermoir de la ville dort.');
+});
+
+test('pistes visées : seuls leurs mots perdent la lettre', () => {
+  const text = 'Le chat est très vite et la vieille horloge dort.';
+  // sur les seuls noms : « horloge » change, mais pas « Le », « vite », « et »
+  const nouns = run(text, 'e', {}, ['noun']);
+  assert.equal(nouns.text, 'Le chat est très vite et la vieille maison dort.');
+  assert.deepEqual(nouns.marks.map((mark) => mark.index), [8]);
+  // sans les noms : les mots-outils et l'adverbe changent, « horloge » reste
+  const others = run(text, 'e', {}, ['adverb', 'other']);
+  assert.equal(others.text, 'Un chat est très ainsi ou la vieille horloge dort.');
+  assert.ok(!others.marks.some((mark) => mark.index === 8));
 });

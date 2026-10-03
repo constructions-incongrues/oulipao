@@ -13,3 +13,9 @@
 ## [2026-10-03] ingest | pm-prd: wrote docs/prds/moteur-s7-accorde-sur-les-noms.md
 ## [2026-10-03] ingest | pm-prd: wrote docs/prds/interface-a-pistes-reglage-en-direct.md
 ## [2026-10-03] ingest | pm-prd: wrote docs/prds/lipogramme.md
+## [2026-10-03] ingest | pm-personas: persona principal : le fondateur
+## [2026-10-03] ingest | pm-vision-mission: mission révisée : outil du fondateur, ouvert en passant
+## [2026-10-03] ingest | pm-objectives: O2 remplacé : le fondateur se sert de Potao pour écrire
+## [2026-10-03] ingest | pm-strategy: wrote docs/strategy.md (révision : le fondateur est le persona)
+## [2026-10-03] ingest | pm-roadmap: wrote docs/roadmap.md (révision : le fondateur est le persona)
+## [2026-10-03] ingest | pm-prd: wrote docs/prds/filtres-instanciables.md

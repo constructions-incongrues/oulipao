@@ -1,5 +1,7 @@
 import { z } from 'zod';
-import { definePlugin, type ParameterValues } from '../plugin.ts';
+import { plainWords } from '../mixing.ts';
+import { definePlugin, type ParameterValues, type WordMark } from '../plugin.ts';
+import { shiftAdjectives } from './adjective-shift.ts';
 import { applyS7 } from './engine.ts';
 import { S7ModeSchema, type SubstitutionStatus } from './types.ts';
 
@@ -30,7 +32,9 @@ const title = (values: ParameterValues) => {
 export const s7Plugin = definePlugin({
   id: 's7',
   name: 'S+7',
-  track: 'noun',
+  // Les noms, et les adjectifs : le n-ième adjectif suivant, au même genre et au même nombre.
+  tracks: ['noun', 'adjective'],
+  defaultTargets: ['noun'],
   parameters: [
     { kind: 'integer', key: 'offset', label: 'Décalage', min: MIN_OFFSET, max: MAX_OFFSET },
     {
@@ -47,21 +51,39 @@ export const s7Plugin = definePlugin({
   parse: params,
   acts: (values) => params(values).offset !== 0,
   title,
-  label: (values) => `${title(values)}, parmi ${AMONG[params(values).mode]}`,
-  help(values) {
+  // « parmi tous les noms » est le réglage par défaut : on ne le dit que s'il change.
+  label: (values) => (params(values).mode === 'reagree' ? title(values) : `${title(values)}, parmi ${AMONG['same-gender']}`),
+  help(values, targets = new Set(['noun'])) {
     const { offset, mode } = params(values);
     if (offset === 0) return 'S+0 : aucun changement.';
     const rank = `${Math.abs(offset)}${Math.abs(offset) === 1 ? 'er' : 'e'}`;
     const direction = offset > 0 ? 'suit' : 'précède';
-    return mode === 'reagree'
-      ? `Chaque nom devient le ${rank} nom qui le ${direction} dans le dictionnaire ; la phrase est réaccordée.`
-      : `Chaque nom devient le ${rank} nom de même genre qui le ${direction} dans le dictionnaire.`;
+    const adjectives = `adjectif devient le ${rank} adjectif qui le ${direction} dans le dictionnaire, au même genre et au même nombre.`;
+    if (!targets.has('noun')) return `Chaque ${adjectives}`;
+    const nouns =
+      mode === 'reagree'
+        ? `Chaque nom devient le ${rank} nom qui le ${direction} dans le dictionnaire ; la phrase est réaccordée.`
+        : `Chaque nom devient le ${rank} nom de même genre qui le ${direction} dans le dictionnaire.`;
+    return targets.has('adjective') ? `${nouns} Chaque ${adjectives}` : nouns;
   },
-  apply(text, tagged, values, { morphology }) {
-    const { words, tail, substitutions } = applyS7(text, tagged, params(values), morphology);
-    const marks = substitutions.map(({ index, original, replacement, status }) =>
-      status === 'replaced' ? { index, original, replacement } : { index, original, reason: REASONS[status] },
-    );
-    return { words, tail, marks };
+  apply(text, tagged, values, { morphology }, targets) {
+    const settings = params(values);
+    let words;
+    let tail;
+    const marks: WordMark[] = [];
+    // Les noms d'abord : leur remplacement réaccorde les adjectifs, que le décalage lit ensuite.
+    if (targets.has('noun')) {
+      const s7 = applyS7(text, tagged, settings, morphology);
+      ({ words, tail } = s7);
+      for (const { index, original, replacement, status } of s7.substitutions) {
+        marks.push(status === 'replaced' ? { index, original, replacement } : { index, original, reason: REASONS[status] });
+      }
+    } else {
+      ({ words, tail } = plainWords(text));
+    }
+    if (targets.has('adjective')) {
+      marks.push(...shiftAdjectives(words, tagged, settings.offset, text.includes('’') ? '’' : "'", morphology));
+    }
+    return { words, tail, marks: marks.sort((a, b) => a.index - b.index) };
   },
 });

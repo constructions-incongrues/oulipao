@@ -1,16 +1,21 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { initialState, reduce } from '../../../src/ui/tracks/mixer-state.ts';
+import { initialState, installedPlugins, pluginById, reduce } from '../../../src/ui/tracks/mixer-state.ts';
 import { MixerStateSchema, type MixerAction } from '../../../src/ui/tracks/types.ts';
 
 const after = (...actions: MixerAction[]) => MixerStateSchema.parse(actions.reduce(reduce, initialState));
+const instance = (state: ReturnType<typeof after>, id: string) => state.instances.find((candidate) => candidate.id === id)!;
 
-test('état initial : toutes les pistes s’entendent ; S+7 actif, décalage 7, réaccord', () => {
+test('état initial : toutes les pistes s’entendent ; S+7 sur les noms en marche, puis un lipogramme coupé', () => {
   const state = MixerStateSchema.parse(initialState);
-  assert.deepEqual(state.plugins, { s7: { enabled: true, params: { offset: 7, mode: 'reagree' } }, lipogram: { enabled: false, params: { letter: 'e' } } });
-  assert.deepEqual(state.order, ['s7', 'lipogram']);
+  assert.deepEqual(state.instances, [
+    { id: 's7-1', type: 's7', enabled: true, params: { offset: 7, mode: 'reagree' }, targets: ['noun'] },
+    { id: 'lipogram-1', type: 'lipogram', enabled: false, params: { letter: 'e' }, targets: ['noun', 'verb', 'adjective', 'adverb', 'other'] },
+  ]);
   assert.deepEqual(Object.keys(state.tracks), ['noun', 'verb', 'adjective', 'adverb', 'other']);
   assert.ok(Object.values(state.tracks).every((t) => !t.muted && !t.solo));
+  assert.deepEqual(installedPlugins.map((plugin) => plugin.id), ['s7', 'lipogram']);
+  assert.throws(() => pluginById('inconnu'), /plugin inconnu : inconnu/);
 });
 
 test('mute et solo basculent, piste par piste', () => {
@@ -22,35 +27,67 @@ test('mute et solo basculent, piste par piste', () => {
   assert.deepEqual(after({ type: 'toggle-solo', category: 'noun' }, { type: 'toggle-solo', category: 'noun' }), initialState);
 });
 
-test('plugin : actif ou coupé, décalage, mode', () => {
-  assert.equal(after({ type: 'toggle-plugin', id: 's7' }).plugins['s7']!.enabled, false);
-  assert.equal(after({ type: 'toggle-plugin', id: 's7' }, { type: 'toggle-plugin', id: 's7' }).plugins['s7']!.enabled, true);
-  assert.equal(after({ type: 'set-param', id: 's7', key: 'offset', value: -3 }).plugins['s7']!.params['offset'], -3);
-  assert.equal(after({ type: 'set-param', id: 's7', key: 'mode', value: 'same-gender' }).plugins['s7']!.params['mode'], 'same-gender');
+test('une instance : en marche ou coupée, réglages bornés', () => {
+  assert.equal(instance(after({ type: 'toggle-instance', id: 's7-1' }), 's7-1').enabled, false);
+  assert.equal(instance(after({ type: 'toggle-instance', id: 'lipogram-1' }), 'lipogram-1').enabled, true);
+  assert.equal(instance(after({ type: 'set-param', id: 's7-1', key: 'offset', value: -3 }), 's7-1').params['offset'], -3);
+  assert.equal(instance(after({ type: 'set-param', id: 's7-1', key: 'mode', value: 'same-gender' }), 's7-1').params['mode'], 'same-gender');
+  assert.equal(instance(after({ type: 'set-param', id: 'lipogram-1', key: 'letter', value: 'a' }), 'lipogram-1').params['letter'], 'a');
+  assert.equal(instance(after({ type: 'set-param', id: 's7-1', key: 'offset', value: -99 }, { type: 'set-param', id: 's7-1', key: 'offset', value: 99 }), 's7-1').params['offset'], 99);
+});
+
+test('ajouter, dupliquer, retirer : chaque instance a son identifiant et ses réglages', () => {
+  const added = after({ type: 'add-instance', plugin: 's7' }, { type: 'set-param', id: 's7-2', key: 'offset', value: 3 });
+  assert.deepEqual(added.instances.map((i) => i.id), ['s7-1', 'lipogram-1', 's7-2']); // en fin de chaîne
+  assert.equal(instance(added, 's7-1').params['offset'], 7);
+  assert.equal(instance(added, 's7-2').params['offset'], 3); // réglages indépendants
+  assert.deepEqual(instance(added, 's7-2').targets, ['noun']); // pistes par défaut du type
+  const duplicated = after({ type: 'set-param', id: 'lipogram-1', key: 'letter', value: 'a' }, { type: 'duplicate-instance', id: 'lipogram-1' });
+  assert.deepEqual(instance(duplicated, 'lipogram-2'), { ...instance(duplicated, 'lipogram-1'), id: 'lipogram-2' });
+  const removed = after({ type: 'remove-instance', id: 's7-1' });
+  assert.deepEqual(removed.instances.map((i) => i.id), ['lipogram-1']);
+  // un identifiant libéré se réutilise
+  assert.deepEqual(after({ type: 'remove-instance', id: 's7-1' }, { type: 'add-instance', plugin: 's7' }).instances.map((i) => i.id), ['lipogram-1', 's7-1']);
+});
+
+test('pistes visées : parmi celles du type, dans l’ordre de la table, au moins une', () => {
+  assert.deepEqual(instance(after({ type: 'set-targets', id: 's7-1', targets: ['adjective', 'noun', 'noun'] }), 's7-1').targets, ['noun', 'adjective']);
+  assert.deepEqual(instance(after({ type: 'set-targets', id: 'lipogram-1', targets: ['noun'] }), 'lipogram-1').targets, ['noun']);
+  assert.throws(() => reduce(initialState, { type: 'set-targets', id: 's7-1', targets: ['verb'] }), /S\+7 ne traite pas : verb/);
+  assert.throws(() => reduce(initialState, { type: 'set-targets', id: 's7-1', targets: [] }));
+});
+
+test('ordre de la chaîne : une instance se place à une position, bornée à la fin', () => {
+  const three = after({ type: 'add-instance', plugin: 's7' });
+  assert.deepEqual(reduce(three, { type: 'move-instance', id: 's7-1', position: 2 }).instances.map((i) => i.id), ['lipogram-1', 's7-2', 's7-1']);
+  assert.deepEqual(reduce(three, { type: 'move-instance', id: 's7-1', position: 9 }).instances.map((i) => i.id), ['lipogram-1', 's7-2', 's7-1']);
+  assert.deepEqual(reduce(three, { type: 'move-instance', id: 's7-2', position: 0 }).instances.map((i) => i.id), ['s7-2', 's7-1', 'lipogram-1']);
 });
 
 test('un geste ne modifie pas l’état précédent', () => {
   reduce(initialState, { type: 'toggle-mute', category: 'noun' });
+  reduce(initialState, { type: 'toggle-instance', id: 's7-1' });
   assert.equal(initialState.tracks.noun.muted, false);
+  assert.equal(initialState.instances[0]!.enabled, true);
 });
 
 test('refuse un geste non conforme', () => {
-  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7', key: 'offset', value: 1.5 }));
-  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7', key: 'offset', value: 100 })); // décalage borné à ±99
-  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7', key: 'offset', value: -100 }));
-  assert.equal(after({ type: 'set-param', id: 's7', key: 'offset', value: -99 }, { type: 'set-param', id: 's7', key: 'offset', value: 99 }).plugins['s7']!.params['offset'], 99);
-  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7', key: 'mode', value: 'au hasard' }));
-  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7', key: 'vitesse', value: 3 }), /paramètre inconnu : vitesse/);
-  assert.throws(() => reduce(initialState, { type: 'toggle-plugin', id: 'inconnu' }), /plugin inconnu : inconnu/);
-  assert.throws(() => reduce(initialState, { type: 'set-param', id: 'inconnu', key: 'offset', value: 3 }), /plugin inconnu/);
-  assert.throws(() => reduce(initialState, { type: 'move-plugin', id: 'inconnu', position: 0 }), /plugin inconnu/);
+  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7-1', key: 'offset', value: 1.5 }));
+  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7-1', key: 'offset', value: 100 })); // décalage borné à ±99
+  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7-1', key: 'offset', value: -100 }));
+  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7-1', key: 'mode', value: 'au hasard' }));
+  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7-1', key: 'vitesse', value: 3 }), /paramètre inconnu : vitesse/);
+  for (const action of [
+    { type: 'toggle-instance', id: 'x' },
+    { type: 'set-param', id: 'x', key: 'offset', value: 3 },
+    { type: 'set-targets', id: 'x', targets: ['noun'] },
+    { type: 'duplicate-instance', id: 'x' },
+    { type: 'remove-instance', id: 'x' },
+    { type: 'move-instance', id: 'x', position: 0 },
+  ] as MixerAction[]) {
+    assert.throws(() => reduce(initialState, action), /instance inconnue : x/);
+  }
+  assert.throws(() => reduce(initialState, { type: 'add-instance', plugin: 'inconnu' }), /plugin inconnu/);
   assert.throws(() => reduce(initialState, { type: 'toggle-mute', category: 'pronom' as never }));
   assert.throws(() => reduce(initialState, { type: 'danser' } as never));
-});
-
-test('ordre de la chaîne : un plugin se place à une position, bornée à la fin', () => {
-  const state = { ...initialState, order: ['s7', 'b', 'c'] };
-  assert.deepEqual(reduce(state, { type: 'move-plugin', id: 's7', position: 2 }).order, ['b', 'c', 's7']);
-  assert.deepEqual(reduce(state, { type: 'move-plugin', id: 's7', position: 9 }).order, ['b', 'c', 's7']);
-  assert.deepEqual(reduce(state, { type: 'move-plugin', id: 's7', position: 0 }).order, ['s7', 'b', 'c']);
 });

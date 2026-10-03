@@ -1,11 +1,13 @@
 import { html } from 'htm/preact';
 import type { VNode } from 'preact';
+import type { Category } from '../../../domain/categories.ts';
 import type { ConstraintPlugin, Parameter } from '../../../domain/plugin.ts';
-import { TRACK_UNITS, type PluginState } from '../types.ts';
+import type { PluginState } from '../types.ts';
 
 export interface PluginSlotProps {
   plugin: ConstraintPlugin;
-  state: PluginState;
+  /** Les pistes visées, quand le réglage s'applique à une instance. */
+  state: PluginState & { targets?: readonly Category[] };
   onToggle?: () => void;
   onParam?: (key: string, value: number | string) => void;
 }
@@ -47,7 +49,7 @@ export function PluginSlot({ plugin, state, onToggle, onParam }: PluginSlotProps
       ${plugin.parameters.map(
         (parameter) => html`<label>${parameter.label}<${Control} parameter=${parameter} value=${params[parameter.key]} onParam=${onParam} /></label>`,
       )}
-      <p class="help">${enabled ? plugin.help(params) : `Plugin coupé : les ${plugin.track === 'all' ? 'mots' : TRACK_UNITS[plugin.track][1]} restent ceux du texte.`}</p>
+      <p class="help">${enabled ? plugin.help(params, state.targets && new Set(state.targets)) : 'Filtre coupé : le texte passe tel quel.'}</p>
     </div>
   ` as VNode;
 }

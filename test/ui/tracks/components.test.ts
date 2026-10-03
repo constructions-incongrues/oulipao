@@ -5,7 +5,8 @@ import { renderToString } from 'preact-render-to-string';
 import { CATEGORIES } from '../../../src/domain/categories.ts';
 import type { ModelState } from '../../../src/ui/tracks/controller.ts';
 import { PluginSlot } from '../../../src/ui/tracks/components/plugin-slot.ts';
-import { Master } from '../../../src/ui/tracks/components/master.ts';
+import { Rack } from '../../../src/ui/tracks/components/rack.ts';
+import type { MixerAction } from '../../../src/ui/tracks/types.ts';
 import { sansPlugin } from '../../support/plugins.ts';
 import { definePlugin } from '../../../src/domain/plugin.ts';
 import { s7Plugin } from '../../../src/domain/s7/plugin.ts';
@@ -23,17 +24,19 @@ const click = (node: unknown, predicate: Parameters<typeof find>[1]) => (find(no
 test('Strip : pastille, nom, nombre de mots, Muet et Seul en toutes lettres, avec infobulles', () => {
   const calls: string[] = [];
   const strip = html`<${Strip} category="verb" count=${39} track=${{ muted: true, solo: false }}
-    onMute=${() => calls.push('mute')} onSolo=${() => calls.push('solo')}><p>plugin</p><//>`;
+    onMute=${() => calls.push('mute')} onSolo=${() => calls.push('solo')} reminders=${['1. S+7', '2. Sans e (coupé)']} />`;
   const out = renderToString(strip);
   assert.match(out, /<section class="strip verb" aria-label="Piste Verbes">/);
   assert.match(out, /<span class="dot" aria-hidden="true"><\/span><h3>Verbes<\/h3><span class="count">39 mots<\/span>/);
   assert.match(out, /aria-pressed="true" aria-label="Muet : retirer la piste Verbes du texte" title="Retirer cette piste du texte">Muet</);
   assert.match(out, /aria-pressed="false" aria-label="Seul : ne garder que la piste Verbes" title="Ne garder que cette piste">Seul</);
-  assert.match(out, /<p>plugin<\/p>/);
+  assert.match(out, /<p class="reminder">1\. S\+7 · 2\. Sans e \(coupé\)<\/p>/);
   click(strip, byClass('mute'));
   click(strip, byClass('solo'));
   assert.deepEqual(calls, ['mute', 'solo']);
-  assert.match(renderToString(html`<${Strip} category="adverb" count=${1} track=${{ muted: false, solo: true }} onMute=${() => {}} onSolo=${() => {}} />`), /1 mot</);
+  const bare = renderToString(html`<${Strip} category="adverb" count=${1} track=${{ muted: false, solo: true }} onMute=${() => {}} onSolo=${() => {}} />`);
+  assert.match(bare, /1 mot</);
+  assert.doesNotMatch(bare, /reminder/);
   assert.deepEqual(Object.keys(TRACK_NAMES), [...CATEGORIES]);
 });
 
@@ -55,7 +58,7 @@ test('PluginSlot : marche, un réglage par paramètre déclaré, et l’effet en
   assert.deepEqual(calls, ['toggle', 'offset=3', 'offset=-99', 'mode=same-gender']);
 
   const help = (enabled: boolean, params: object) => renderToString(html`<${PluginSlot} plugin=${s7Plugin} state=${{ enabled, params }} />`);
-  assert.match(help(false, { offset: -3, mode: 'same-gender' }), /class="plugin off".*S−3 coupé.*Plugin coupé : les noms restent ceux du texte\./s);
+  assert.match(help(false, { offset: -3, mode: 'same-gender' }), /class="plugin off".*S−3 coupé.*Filtre coupé : le texte passe tel quel\./s);
   assert.match(help(true, { offset: 0, mode: 'reagree' }), /S\+0 : aucun changement\./);
   assert.match(help(true, { offset: -1, mode: 'same-gender' }), /le 1er nom de même genre qui le précède/);
   // sans gestionnaires : les gestes sont sans effet, sans erreur
@@ -66,7 +69,7 @@ test('PluginSlot : marche, un réglage par paramètre déclaré, et l’effet en
   // la page ne connaît pas le S+7 : un autre plugin se dessine d'après sa propre déclaration
   const other = definePlugin({
     ...s7Plugin,
-    id: 'essai', name: 'Essai', track: 'adjective',
+    id: 'essai', name: 'Essai', tracks: ['adjective'], defaultTargets: ['adjective'],
     parameters: [{ kind: 'choice', key: 'sens', label: 'Sens', options: [{ value: 'haut', label: 'vers le haut' }] }],
     defaults: { sens: 'haut' },
     parse: (values) => values,
@@ -76,7 +79,7 @@ test('PluginSlot : marche, un réglage par paramètre déclaré, et l’effet en
   const drawn = renderToString(html`<${PluginSlot} plugin=${other} state=${{ enabled: false, params: { sens: 'haut' } }} />`);
   assert.match(drawn, /aria-label="Plugin Essai actif">Essai coupé/);
   assert.match(drawn, /<label>Sens<select><option value="haut" selected>vers le haut<\/option><\/select><\/label>/);
-  assert.match(drawn, /Plugin coupé : les adjectifs restent ceux du texte\./);
+  assert.match(drawn, /Filtre coupé : le texte passe tel quel\./);
 });
 
 test('Score : la règle, les seules pistes non vides, trois aspects de bloc, une liste pour les lecteurs d’écran', () => {
@@ -178,30 +181,47 @@ test('Source : définition et exemple au premier contact, avancement du modèle,
   assert.deepEqual(calls, ['input:Un texte', 'run', 'example', 'load', 'load', 'edit']);
 });
 
-test('Master : l’emplacement « Toutes les pistes », et l’ordre de la chaîne dès deux plugins', () => {
-  const calls: string[] = [];
-  const props = {
-    plugins: [s7Plugin, sansPlugin],
-    states: { s7: { enabled: true, params: { offset: 7, mode: 'reagree' } }, sans: { enabled: false, params: { lettre: 'e' } } },
-    order: ['s7', 'sans'],
-    onToggle: (id: string) => calls.push(`toggle ${id}`),
-    onParam: (id: string, key: string, value: unknown) => calls.push(`${id} ${key}=${value}`),
-    onReverse: () => calls.push('reverse'),
-  };
-  const master = html`<${Master} ...${props} />`;
-  const out = renderToString(master);
-  assert.match(out, /<section class="master" aria-label="Toutes les pistes"><h3>Toutes les pistes<\/h3>/);
-  assert.match(out, /aria-label="Plugin Sans actif">Sans e coupé/); // seul le plugin de portée « toutes les pistes »
-  assert.doesNotMatch(out, /Plugin S\+7/);
-  assert.match(out, /Ordre : S\+7 → Sans/);
-  click(master, byClass('power'));
-  (find(master, (e) => e.type === 'select').props['onChange'] as (event: Event) => void)(inputEvent('a'));
-  click(master, byClass('reverse'));
-  assert.deepEqual(calls, ['toggle sans', 'sans lettre=a', 'reverse']);
-  assert.match(renderToString(html`<${Master} ...${{ ...props, order: ['sans', 's7'] }} />`), /Ordre : Sans → S\+7/);
-  const alone = renderToString(html`<${Master} ...${{ ...props, plugins: [s7Plugin], order: ['s7'] }} />`);
-  assert.doesNotMatch(alone, /Ordre/);
-  assert.match(alone, /Emplacement vide\./);
-  assert.doesNotMatch(out, /Emplacement vide/);
-  assert.match(renderToString(html`<${Master} ...${{ ...props, order: ['s7', 'inconnu'] }} />`), /S\+7 → inconnu/);
+test('Rack : les filtres dans l’ordre de la chaîne, leurs pistes, leurs gestes ; un bouton d’ajout par type', () => {
+  const actions: MixerAction[] = [];
+  const lookup = (type: string) => (type === 'sans' ? sansPlugin : s7Plugin);
+  const s7 = { id: 's7-1', type: 's7', enabled: true, params: { offset: 7, mode: 'reagree' }, targets: ['noun' as const] };
+  const sans = { id: 'sans-1', type: 'sans', enabled: false, params: { lettre: 'e' }, targets: [...CATEGORIES] };
+  const props = { instances: [s7, sans], plugins: [s7Plugin, sansPlugin], lookup, dispatch: (action: MixerAction) => void actions.push(action) };
+  const rack = html`<${Rack} ...${props} />`;
+  const out = renderToString(rack);
+  assert.match(out, /<section class="rack" aria-label="Filtres"><h3>Filtres<\/h3><ol>/);
+  assert.ok(out.indexOf('Filtre 1 : S+7') < out.indexOf('Filtre 2 : Sans'));
+  // pastilles : les pistes que le type traite, enfoncées si visées ; la dernière ne s'éteint pas
+  assert.match(out, /class="chip noun" aria-pressed="true" disabled>Noms</);
+  assert.match(out, /class="chip adjective" aria-pressed="false">Adjectifs</);
+  assert.doesNotMatch(out.slice(0, out.indexOf('Filtre 2')), /chip verb/); // le S+n ne traite pas les verbes
+  assert.equal(elements(rack).filter(byClass('chip')).length, 2 + 5);
+  // monter le premier, descendre le dernier : impossible
+  assert.match(out, /aria-label="Monter le filtre 1" disabled/);
+  assert.match(out, /aria-label="Descendre le filtre 2" disabled/);
+  click(rack, byClass('power'));
+  (find(rack, (e) => e.type === 'select' && String(e.props['value']) === 'e').props['onChange'] as (event: Event) => void)(inputEvent('a'));
+  click(rack, (e) => byClass('chip')(e) && byClass('adjective')(e));
+  click(rack, (e) => byClass('chip')(e) && byClass('verb')(e) && e.props['aria-pressed'] === true);
+  click(rack, byLabel('Descendre le filtre 1'));
+  click(rack, byLabel('Monter le filtre 2'));
+  click(rack, byClass('duplicate'));
+  click(rack, byClass('remove'));
+  for (const button of elements(rack).filter(byClass('add-instance'))) (button.props['onClick'] as () => void)();
+  assert.deepEqual(actions, [
+    { type: 'toggle-instance', id: 's7-1' },
+    { type: 'set-param', id: 'sans-1', key: 'lettre', value: 'a' },
+    { type: 'set-targets', id: 's7-1', targets: ['noun', 'adjective'] },
+    { type: 'set-targets', id: 'sans-1', targets: ['noun', 'adjective', 'adverb', 'other'] },
+    { type: 'move-instance', id: 's7-1', position: 1 },
+    { type: 'move-instance', id: 'sans-1', position: 0 },
+    { type: 'duplicate-instance', id: 's7-1' },
+    { type: 'remove-instance', id: 's7-1' },
+    { type: 'add-instance', plugin: 's7' },
+    { type: 'add-instance', plugin: 'sans' },
+  ]);
+  assert.match(renderToString(rack), />\+ S\+7<.*>\+ Sans</s);
+  const empty = renderToString(html`<${Rack} ...${{ ...props, instances: [] }} />`);
+  assert.match(empty, /Aucun filtre : le texte passe tel quel\./);
+  assert.doesNotMatch(empty, /<ol>/);
 });

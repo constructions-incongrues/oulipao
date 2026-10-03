@@ -7,6 +7,7 @@ import type { NounChoice } from '../s7/substitution.ts';
 import type { OutputWord } from '../s7/types.ts';
 import type { TaggedWord } from '../tagged-word.ts';
 import { tokenize } from '../tokenizer.ts';
+import { CATEGORIES } from '../categories.ts';
 import { functionWordWithout } from './function-words.ts';
 import { containsLetter, neighbourAdjective, neighbourAdverb, neighbourNoun } from './neighbour.ts';
 
@@ -72,12 +73,14 @@ function elide(words: OutputWord[], index: number, apostrophe: string, morpholog
  * Le lipogramme : chaque mot qui contient la lettre interdite devient le premier mot qui le suit
  * dans le dictionnaire, de même catégorie et de mêmes traits, sans la lettre. Les noms passent par
  * la réécriture du S+7 (déterminants et adjectifs réaccordés) ; les mots-outils par une table
- * d'équivalents, ou sont retirés ; les verbes restent tels quels en v1.
+ * d'équivalents, ou sont retirés ; les verbes restent tels quels en v1. Seuls les mots des pistes
+ * visées sont touchés.
  */
 export const lipogramPlugin = definePlugin({
   id: 'lipogram',
   name: 'Lipogramme',
-  track: 'all',
+  tracks: [...CATEGORIES],
+  defaultTargets: [...CATEGORIES],
   parameters: [{ kind: 'choice', key: 'letter', label: 'Lettre', options: LETTERS.map((letter) => ({ value: letter, label: letter })) }],
   defaults: ParamsSchema.parse({}),
   parse: params,
@@ -88,7 +91,7 @@ export const lipogramPlugin = definePlugin({
     const { letter } = params(values);
     return `Chaque mot qui contient « ${letter} » devient le premier mot qui le suit dans le dictionnaire sans cette lettre ; les verbes restent tels quels.`;
   },
-  apply(text, tagged, values, { morphology }) {
+  apply(text, tagged, values, { morphology }, targets) {
     const { letter } = params(values);
     const tokens = tokenize(text);
     const apostrophe = text.includes('’') ? '’' : "'";
@@ -98,7 +101,7 @@ export const lipogramPlugin = definePlugin({
       text,
       tagged,
       // Un nom sans la lettre n'est pas touché : la réécriture laisse son groupe tel quel.
-      (word, hints) => (containsLetter(word, letter) ? neighbourNoun(word, hints, letter, morphology) : untouched(word)),
+      (word, hints) => (targets.has('noun') && containsLetter(word, letter) ? neighbourNoun(word, hints, letter, morphology) : untouched(word)),
       morphology,
     );
     const words = nouns.words.map((word) => ({ ...word }));
@@ -110,7 +113,8 @@ export const lipogramPlugin = definePlugin({
     // 2. Les autres mots qui contiennent encore la lettre, piste par piste.
     const touched = new Set(marks.map((mark) => mark.index));
     words.forEach((word, index) => {
-      if (touched.has(index) || !containsLetter(word.output, letter)) return;
+      // Seulement les pistes visées ; le réaccord d'un nom remplacé reste la seule exception.
+      if (touched.has(index) || !targets.has(tagged[index]!.category) || !containsLetter(word.output, letter)) return;
       const original = tokens[index]!.word;
       const fate = fateOf(word.output, tagged[index]!.category, letter, morphology);
       if ('replacement' in fate) {

@@ -16,22 +16,29 @@ ce contrat a de faux.
 | Champ | Rôle |
 |---|---|
 | `id`, `name` | identifiant, et nom court du bouton de marche (« S+7 ») |
-| `track` | la piste sur laquelle elle se branche, ou `'all'` pour toutes (comme un effet sur le bus master) |
+| `tracks`, `defaultTargets` | les pistes que la contrainte sait traiter (S+n : noms et adjectifs ; lipogramme : les cinq), et celles qu'une instance neuve vise |
 | `parameters` | les paramètres, dans l'ordre d'affichage : entier borné (champ numérique) ou choix (liste) |
 | `defaults` | les valeurs à l'ouverture |
 | `parse(values)` | valide des valeurs et complète celles qui manquent ; lève sinon |
 | `acts(values)` | ces réglages changent-ils le texte ? (Le S+0, non : la page n'affiche alors ni marques ni mention) |
-| `title`, `label`, `help` | « S+3 » ; « S+3, parmi tous les noms » (résumé et mention copiée) ; l'effet en une phrase |
-| `apply(text, tagged, values, resources)` | le texte transformé |
+| `title`, `label`, `help` | « S+3 » ; « S+3, parmi tous les noms » (résumé et mention copiée) ; l'effet en une phrase, selon les pistes visées si on les lui donne (« Chaque adjectif devient… ») |
+| `apply(text, tagged, values, resources, targets)` | le texte transformé, sur les pistes visées par l'instance |
 
 `apply` rend, comme `plainWords`, un élément par mot du texte qu'il a lu (`words`, `tail`) : la
 page peut ensuite couper des pistes et disposer la partition sans connaître la contrainte. Il
 rend aussi `marks` : pour chaque mot qu'il a touché, le remplaçant, le fait qu'il l'a retiré
 (`removed`), ou la raison pour laquelle il l'a laissé tel quel.
 
+## Type et instance
+
+Une contrainte déclarée est un **type**. Ce qu'on branche sur la table est une **instance** :
+un exemplaire du type, avec son identifiant (« s7-1 », « s7-2 »), ses réglages et ses pistes
+visées, choisies parmi celles du type. On peut brancher plusieurs instances d'un même type
+(deux S+n réglés différemment) ; elles forment une seule chaîne, dans l'ordre de la table.
+
 ## La chaîne
 
-Plusieurs contraintes s'appliquent l'une après l'autre, dans l'ordre choisi sur la table
+Plusieurs instances s'appliquent l'une après l'autre, dans l'ordre choisi sur la table
 (`runChain`, `src/domain/plugin-chain.ts`). Chacune lit la sortie de la précédente, que la page
 relit comme un texte neuf : chaque mot relu garde la catégorie du mot d'origine dont il vient.
 La sortie est ensuite ramenée aux mots du texte d'origine — une contraction relue en deux mots
@@ -59,7 +66,9 @@ peut-être en revanche revoir `track` et `marks`, pensés pour une contrainte at
 
 ## Côté page
 
-`installedPlugins` (`src/ui/tracks/mixer-state.ts`) est la seule liste qui nomme les
-contraintes. L'état de la table garde, par identifiant, si chacune est en marche et ses
-réglages, et l'ordre de la chaîne. Trois gestes : `toggle-plugin`, `set-param` (clé, valeur,
-validé par `parse`) et `move-plugin` (position dans la chaîne).
+`installedPlugins` (`src/ui/tracks/mixer-state.ts`) est la seule liste qui nomme les types.
+L'état de la table est une liste ordonnée d'instances `{id, type, enabled, params, targets}` ;
+l'ordre de la liste est celui de la chaîne. Gestes : `add-instance`, `duplicate-instance`,
+`remove-instance`, `toggle-instance`, `set-param` (validé par `parse`), `set-targets` (pistes
+du type seulement, au moins une), `move-instance`. Le résumé et la mention nomment chaque
+instance avec ses pistes, sauf quand elle vise toutes celles de son type.

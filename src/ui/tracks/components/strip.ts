@@ -1,5 +1,5 @@
 import { html } from 'htm/preact';
-import type { ComponentChildren, VNode } from 'preact';
+import type { VNode } from 'preact';
 import type { Category } from '../../../domain/categories.ts';
 import type { TrackState } from '../../../domain/mixing.ts';
 import { TRACK_NAMES } from '../types.ts';
@@ -13,12 +13,12 @@ export interface StripProps {
   track: TrackState;
   onMute: () => void;
   onSolo: () => void;
-  /** Le plugin branché sur la piste, ouvert sous sa ligne. */
-  children?: ComponentChildren;
+  /** Rappel des filtres qui visent la piste, dans l'ordre de la chaîne ; ils se règlent dans le rack. */
+  reminders?: readonly string[];
 }
 
 /** La ligne d'une piste dans la table de mixage : pastille, nom, nombre de mots, Muet, Seul. */
-export function Strip({ category, count, track, onMute, onSolo, children }: StripProps): VNode {
+export function Strip({ category, count, track, onMute, onSolo, reminders = [] }: StripProps): VNode {
   const name = TRACK_NAMES[category];
   return html`
     <section class=${`strip ${category}`} aria-label=${`Piste ${name}`}>
@@ -31,7 +31,7 @@ export function Strip({ category, count, track, onMute, onSolo, children }: Stri
         <button type="button" class="solo" aria-pressed=${track.solo} aria-label=${`Seul : ne garder que la piste ${name}`}
           title="Ne garder que cette piste" onClick=${onSolo}>Seul</button>
       </div>
-      ${children}
+      ${reminders.length > 0 && html`<p class="reminder">${reminders.join(' · ')}</p>`}
     </section>
   ` as VNode;
 }
