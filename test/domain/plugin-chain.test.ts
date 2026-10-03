@@ -141,7 +141,7 @@ test('S+7 sur les verbes puis lipogramme en e : un verbe sans « e », au même 
   const text = 'je dors';
   const steps: ChainStep[] = [
     { id: 'v7', plugin: s7Plugin, values: { offset: -1 }, targets: new Set(['verb'] as const) },
-    { id: 'lipo', plugin: lipogramPlugin, values: { letter: 'e' }, targets: new Set(['verb'] as const) },
+    { id: 'lipo', plugin: lipogramPlugin, values: { letters: 'e' }, targets: new Set(['verb'] as const) },
   ];
   // dormir −1 → chanter (« chante », avec un « e »), puis le premier verbe suivant sans « e » à la 1re personne : dormir.
   const chain = runChain(text, tag(text, { je: 'other', dors: 'verb' }), steps, { ...resources, verbs: verbs() });
@@ -150,14 +150,17 @@ test('S+7 sur les verbes puis lipogramme en e : un verbe sans « e », au même 
 
 test('lipogrammes enchaînés : chacun respecte aussi les lettres bannies avant lui', () => {
   const text = 'La ferme dort.';
-  const steps: ChainStep[] = ['a', 'e'].map((letter) => step(lipogramPlugin, { letter }));
+  const steps: ChainStep[] = ['a', 'e'].map((letter) => step(lipogramPlugin, { letters: letter }));
   // en a : « La » → « Une » ; en e, sans le cumul, « Une » redeviendrait « La » et « ferme » « maison ».
   // Ici « Une » n'a pas d'équivalent sans a ni e (retiré) et « ferme » pas de voisin (gardé).
   const chain = runChain(text, tag(text), steps, resources);
   assert.equal(join(chain.words, chain.tail), 'Ferme dort.');
   // Hors chaîne, les réglages ne bougent pas ; un lipogramme qui ouvre la chaîne n'hérite de rien.
-  assert.deepEqual(lipogramPlugin.inherit!({ letter: 'e' }, [{ letter: 'a' }, { letter: 'i' }]), { letter: 'e', banned: 'ai' });
-  assert.deepEqual(lipogramPlugin.inherit!({ letter: 'e' }, []), { letter: 'e', banned: '' });
+  assert.deepEqual(lipogramPlugin.inherit!({ letters: 'e' }, [{ letters: 'a' }, { letters: 'i' }]), { letters: 'e', banned: 'ai' });
+  assert.deepEqual(lipogramPlugin.inherit!({ letters: 'e' }, []), { letters: 'e', banned: '' });
+  // Permises puis interdites : le second cumule les lettres que le premier bannit et la sienne.
+  const inherited = lipogramPlugin.inherit!({ letters: 'u' }, [{ letters: 'lucie', mode: 'allowed' }]);
+  assert.equal(inherited['banned'], 'abdfghjkmnopqrstvwxyz');
 });
 
 /** Un plugin d'essai qui met chaque mot à la ligne, sans le changer. */

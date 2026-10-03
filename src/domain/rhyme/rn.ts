@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { rhymes, RICHNESS_LABELS, RichnessSchema } from '../phonetics/rhyme.ts';
 import { definePlugin, FULL_SCOPE, type ParameterValues } from '../plugin.ts';
-import { applyRhymeFilter } from './engine.ts';
+import { applyRhymeFilter, candidatesFor } from './engine.ts';
 
 const MIN_OFFSET = -20;
 const MAX_OFFSET = 20;
@@ -70,6 +70,8 @@ export const rnPlugin = definePlugin({
         if (offset === 0) return { reason: 'R+0 sur ce mot' };
         return {
           offset,
+          // Rimer à cette richesse suppose de partager la finale exigée du mot (vide s'il est trop court).
+          among: candidatesFor(sounds, original, settings.richness, category),
           accept: (form) => {
             const sound = sounds.of(form, category);
             return !!sound && form.toLowerCase() !== word.toLowerCase() && rhymes(original, sound, settings.richness);

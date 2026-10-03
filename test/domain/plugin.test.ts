@@ -28,11 +28,17 @@ test('definePlugin : accepte une déclaration correcte et la rend telle quelle',
   assert.equal(definePlugin(base), base);
 });
 
+test('definePlugin : accepte un paramètre texte', () => {
+  const text = { ...base, parameters: [{ kind: 'text' as const, key: 'lettres', label: 'Lettres', maxLength: 40 }] };
+  assert.equal(definePlugin(text), text);
+});
+
 test('definePlugin : refuse une déclaration incohérente', () => {
   assert.throws(() => definePlugin({ ...base, id: '' }));
   assert.throws(() => definePlugin({ ...base, tracks: ['pronom' as never] }));
   assert.throws(() => definePlugin({ ...base, defaultTargets: ['noun'] }), /piste par défaut/);
   assert.throws(() => definePlugin({ ...base, parameters: [{ kind: 'choice', key: 'x', label: 'X', options: [] }] }));
+  assert.throws(() => definePlugin({ ...base, parameters: [{ kind: 'text', key: 'x', label: 'X', maxLength: 0 }] }));
   assert.throws(() => definePlugin({ ...base, parameters: [base.parameters[0]!, base.parameters[0]!] }), /même clé/);
   assert.throws(() => definePlugin({ ...base, parameters: [{ kind: 'integer', key: 'n', label: 'N', min: 3, max: 0 }] }), /bornes inversées/);
   assert.throws(() => definePlugin({ ...base, defaults: { n: 9, sens: 'haut' } }), /n invalide/); // valeurs d'ouverture refusées

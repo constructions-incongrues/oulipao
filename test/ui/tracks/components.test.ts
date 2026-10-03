@@ -5,6 +5,7 @@ import { renderToString } from 'preact-render-to-string';
 import { CATEGORIES } from '../../../src/domain/categories.ts';
 import type { ModelState } from '../../../src/ui/tracks/controller.ts';
 import { Control } from '../../../src/ui/tracks/components/control.ts';
+import { lipogramPlugin } from '../../../src/domain/lipogram/plugin.ts';
 import { StepGrid, type StepGridProps } from '../../../src/ui/tracks/components/step-grid.ts';
 import { Chain, dropPosition } from '../../../src/ui/tracks/components/chain.ts';
 import type { MixerAction } from '../../../src/ui/tracks/types.ts';
@@ -42,6 +43,19 @@ test('Control : un champ entier borné ou une liste, d’après la déclaration 
   // sans gestionnaire : les gestes sont sans effet, sans erreur
   (find(html`<${Control} parameter=${offset} value=${7} />`, (e) => e.type === 'input').props['onInput'] as (event: Event) => void)(inputEvent('4'));
   (find(html`<${Control} parameter=${mode} value="reagree" />`, (e) => e.type === 'select').props['onChange'] as (event: Event) => void)(inputEvent('reagree'));
+});
+
+test('Control : un paramètre texte devient un champ de saisie, réglé à chaque frappe', () => {
+  const calls: unknown[] = [];
+  const [letters] = lipogramPlugin.parameters as [Parameter];
+  const field = html`<${Control} parameter=${letters} value="e" onParam=${(key: string, value: unknown) => calls.push(`${key}=${value}`)} />`;
+  assert.match(renderToString(field), /<input type="text" class="param-text" maxlength="40" placeholder="e" spellcheck="false" value="e"/);
+  const input = find(field, (e) => e.type === 'input').props['onInput'] as (event: Event) => void;
+  for (const value of ['Lu', 'Lucie', '']) input(inputEvent(value));
+  assert.deepEqual(calls, ['letters=Lu', 'letters=Lucie', 'letters=']);
+  (find(html`<${Control} parameter=${letters} value="e" />`, (e) => e.type === 'input').props['onInput'] as (event: Event) => void)(inputEvent('a'));
+  // dans sa tranche, le champ porte le libellé du paramètre
+  assert.match(renderToString(html`<label class="silk">${letters.label}<${Control} parameter=${letters} value="e" /></label>`), /<label class="silk">Lettres<input type="text"/);
 });
 
 const gridProps = (overrides: Partial<StepGridProps> = {}) => {

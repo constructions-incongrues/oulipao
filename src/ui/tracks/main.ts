@@ -17,7 +17,7 @@ const onTheme = () => {
   page.dataset['theme'] = nextTheme(page.dataset['theme'] as Theme | undefined, matchMedia('(prefers-color-scheme: dark)').matches);
 };
 const draw = (state: TracksState) => {
-  render(html`<${App} state=${state} controller=${controller} onTheme=${onTheme} />`, root);
+  render(html`<${App} state=${state} controller=${controller} onTheme=${onTheme} version=${__OULIPAO_VERSION__} />`, root);
   if (state.selected !== undefined && !inspecting) root.querySelector<HTMLElement>('.inspector')?.focus();
   inspecting = state.selected !== undefined;
 };
@@ -62,12 +62,11 @@ new ResizeObserver(([entry]) => controller.resize(entry!.contentRect.width)).obs
 // défiler, le défilement reviendrait à zéro et la bande se décollerait aussitôt. On rend cette place
 // en bas de page tant qu'elle est collée.
 new IntersectionObserver(([entry]) => {
-  // Pas encore de texte résultant (avant la mise en pistes, le carnet suffit à faire défiler) : rien à coller.
-  const result = root.querySelector<HTMLElement>('.result');
-  if (!result) return;
-  const before = result.offsetHeight;
+  // Avant la première mise en pistes, pas de bloc résultat : rien à réserver.
+  const height = () => root.querySelector<HTMLElement>('.result')?.offsetHeight ?? 0;
+  const before = height();
   // Réservée avant le rendu compact, sinon le navigateur ramène le défilement à zéro avant qu'on l'ajuste.
   document.body.style.paddingBottom = entry!.isIntersecting ? '' : `${before}px`;
   controller.pin(!entry!.isIntersecting);
-  if (!entry!.isIntersecting) document.body.style.paddingBottom = `${Math.max(0, before - result.offsetHeight)}px`;
+  if (!entry!.isIntersecting) document.body.style.paddingBottom = `${Math.max(0, before - height())}px`;
 }).observe(root.querySelector('.pin-sentinel')!);

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { rhymeOf, rhymes, RICHNESS_LABELS, RichnessSchema } from '../phonetics/rhyme.ts';
 import { definePlugin, FULL_SCOPE, type ParameterValues } from '../plugin.ts';
-import { planByVerse } from './engine.ts';
+import { candidatesFor, planByVerse } from './engine.ts';
 import { RICHNESS_OPTIONS } from './rn.ts';
 
 const ParamsSchema = z.object({ richness: RichnessSchema.default('sufficient') });
@@ -34,6 +34,7 @@ export const anterhymePlugin = definePlugin({
         if (!head || !slot.sound || !slot.open || rhymes(slot.sound, head, richness)) continue;
         settle(slot, {
           offset: 1,
+          among: candidatesFor(sounds, head, richness, slot.category), // rimer suppose la finale exigée
           accept: (form) => {
             const candidate = sounds.of(form, slot.category);
             return !!candidate && rhymes(candidate, head, richness);

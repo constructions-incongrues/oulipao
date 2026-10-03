@@ -6,6 +6,7 @@ import { tagText } from '../domain/tagging.ts';
 import type { TaggedWord } from '../domain/tagged-word.ts';
 import { createMorphologyLoader, createTaggers } from './composition.ts';
 import { CATEGORY_LABELS, toSegments } from './render.ts';
+import { versionLink } from './version.ts';
 
 const taggers = createTaggers(import.meta.url);
 const getMorphology = createMorphologyLoader(import.meta.url);
@@ -19,6 +20,8 @@ const offset = byId<HTMLInputElement>('offset');
 const mode = byId<HTMLSelectElement>('mode');
 const s7Status = byId('s7-status');
 const s7Output = byId('s7-output');
+const release = versionLink(__OULIPAO_VERSION__);
+Object.assign(byId<HTMLAnchorElement>('version'), { textContent: release.text, href: release.href });
 // Dernier étiquetage affiché : le S+7 s'y applique sans réétiqueter.
 let last: { text: string; tagged: TaggedWord[] } | undefined;
 

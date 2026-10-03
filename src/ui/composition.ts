@@ -60,7 +60,7 @@ export function createVerbsLoader(base: string | URL): () => Promise<VerbReposit
 }
 
 /** Version du fichier des prononciations, ajoutée à son adresse. À changer à chaque `npm run build:phonetics`. */
-export const PHONETICS_VERSION = '2026-10-03-glaff';
+export const PHONETICS_VERSION = '2026-10-03-index-des-rimes';
 
 /** Les prononciations, chargées seulement quand un filtre phonétique est dans la chaîne ; un échec n'est pas gardé. */
 export function createPhoneticsLoader(base: string | URL): () => Promise<PhoneticsRepository> {

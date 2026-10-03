@@ -12,11 +12,11 @@ test('état initial : toutes les pistes s’entendent, aucune contrainte ; la ch
   assert.deepEqual(state.instances, []);
   assert.deepEqual(MixerStateSchema.parse(seededState).instances, [
     { id: 's7-1', type: 's7', enabled: true, params: { offset: 7, mode: 'reagree' }, targets: ['noun'] },
-    { id: 'lipogram-1', type: 'lipogram', enabled: false, params: { letter: 'e' }, targets: ['noun', 'verb', 'adjective', 'adverb', 'other'] },
+    { id: 'lipogram-1', type: 'lipogram', enabled: false, params: { letters: 'e', mode: 'forbidden' }, targets: ['noun', 'verb', 'adjective', 'adverb', 'other'] },
   ]);
   assert.deepEqual(Object.keys(state.tracks), ['noun', 'verb', 'adjective', 'adverb', 'other']);
   assert.ok(Object.values(state.tracks).every((t) => !t.muted && !t.solo));
-  assert.deepEqual(installedPlugins.map((plugin) => plugin.id), ['s7', 'lipogram', 'track-sort', 'edge', 'lineation', 'rn', 'monorhyme', 'antirhyme', 'homophony', 'rhyme-scheme', 'anterhyme', 'berrychonne']);
+  assert.deepEqual(installedPlugins.map((plugin) => plugin.id), ['s7', 'lipogram', 'track-sort', 'edge', 'lineation', 'rn', 'monorhyme', 'antirhyme', 'homophony', 'rhyme-scheme', 'anterhyme', 'berrychonne', 'tautogram']);
   assert.throws(() => pluginById('inconnu'), /plugin inconnu : inconnu/);
 });
 
@@ -34,7 +34,11 @@ test('une instance : en marche ou coupée, réglages bornés', () => {
   assert.equal(instance(after({ type: 'toggle-instance', id: 'lipogram-1' }), 'lipogram-1').enabled, true);
   assert.equal(instance(after({ type: 'set-param', id: 's7-1', key: 'offset', value: -3 }), 's7-1').params['offset'], -3);
   assert.equal(instance(after({ type: 'set-param', id: 's7-1', key: 'mode', value: 'same-gender' }), 's7-1').params['mode'], 'same-gender');
-  assert.equal(instance(after({ type: 'set-param', id: 'lipogram-1', key: 'letter', value: 'a' }), 'lipogram-1').params['letter'], 'a');
+  assert.equal(instance(after({ type: 'set-param', id: 'lipogram-1', key: 'letters', value: 'a' }), 'lipogram-1').params['letters'], 'a');
+  // un paramètre texte : vide, c'est valable ; trop long, c'est refusé et l'instance garde sa valeur
+  assert.equal(instance(after({ type: 'set-param', id: 'lipogram-1', key: 'letters', value: '' }), 'lipogram-1').params['letters'], '');
+  assert.throws(() => after({ type: 'set-param', id: 'lipogram-1', key: 'letters', value: 'x'.repeat(41) }));
+  assert.equal(instance(after(), 'lipogram-1').params['letters'], 'e');
   assert.equal(instance(after({ type: 'set-param', id: 's7-1', key: 'offset', value: -99 }, { type: 'set-param', id: 's7-1', key: 'offset', value: 99 }), 's7-1').params['offset'], 99);
 });
 
@@ -44,7 +48,7 @@ test('ajouter, dupliquer, retirer : chaque instance a son identifiant et ses ré
   assert.equal(instance(added, 's7-1').params['offset'], 7);
   assert.equal(instance(added, 's7-2').params['offset'], 3); // réglages indépendants
   assert.deepEqual(instance(added, 's7-2').targets, ['noun']); // pistes par défaut du type
-  const duplicated = after({ type: 'set-param', id: 'lipogram-1', key: 'letter', value: 'a' }, { type: 'duplicate-instance', id: 'lipogram-1' });
+  const duplicated = after({ type: 'set-param', id: 'lipogram-1', key: 'letters', value: 'a' }, { type: 'duplicate-instance', id: 'lipogram-1' });
   assert.deepEqual(instance(duplicated, 'lipogram-2'), { ...instance(duplicated, 'lipogram-1'), id: 'lipogram-2' });
   const removed = after({ type: 'remove-instance', id: 's7-1' });
   assert.deepEqual(removed.instances.map((i) => i.id), ['lipogram-1']);
@@ -114,7 +118,7 @@ test('verrous : posés par instance et par mot, validés comme un réglage, reti
   // Hors bornes, ou sur un paramètre qui n'est pas entier : refusé.
   assert.throws(() => after({ type: 'set-lock', id: 's7-1', index: 3, key: 'offset', value: 120 }));
   assert.throws(() => after({ type: 'set-lock', id: 's7-1', index: 3, key: 'mode', value: 1 }));
-  assert.throws(() => after({ type: 'set-lock', id: 'lipogram-1', index: 3, key: 'letter', value: 1 }));
+  assert.throws(() => after({ type: 'set-lock', id: 'lipogram-1', index: 3, key: 'letters', value: 1 }));
   // Bord ne lit pas les verrous : son paramètre entier n'en accepte pas.
   assert.throws(() => after({ type: 'add-instance', plugin: 'edge' }, { type: 'set-lock', id: 'edge-1', index: 3, key: 'n', value: 2 }));
   // Vider le champ retire le verrou.

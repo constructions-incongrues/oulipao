@@ -24,17 +24,58 @@ The system SHALL be published as a static site at `https://oulipao.incongru.org`
 - **THEN** la page d'essai étiquette un texte collé
 
 ### Requirement: Publication depuis main
-The system SHALL rebuild and republish the site on every push to `main`, and SHALL publish nothing when the tests fail.
+The system SHALL republish the site only when a new version is released from `main` — that is, when the pending version pull request is merged — or when the founder triggers the publication by hand. A push to `main` that releases no version SHALL leave the published site unchanged. The system SHALL publish nothing when the tests fail.
 
 #### Scenario: Poussée réussie
-- **GIVEN** un commit dont les tests passent
-- **WHEN** il est poussé sur `main`
-- **THEN** le site publié reflète ce commit, sans autre manipulation
+- **GIVEN** une PR fusionnée sur `main` avec le titre `fix: défilement bloqué`
+- **WHEN** la poussée sur `main` est traitée
+- **THEN** le site publié ne change pas, et la PR de version en attente annonce cette correction et propose la version suivante
+
+#### Scenario: Fusion de la PR de version
+- **GIVEN** une PR de version en attente dont les tests passent
+- **WHEN** le fondateur la fusionne
+- **THEN** la version est étiquetée dans le dépôt, une release GitHub est créée, et le site publié reflète cette version sans autre manipulation
 
 #### Scenario: Tests en échec
-- **GIVEN** un commit dont un test échoue
-- **WHEN** il est poussé sur `main`
+- **GIVEN** une PR de version dont un test échoue après fusion
+- **WHEN** la publication s'exécute
 - **THEN** la publication s'arrête et le site publié reste celui d'avant
+
+#### Scenario: Publication à la main
+- **GIVEN** le site publié
+- **WHEN** le fondateur lance la publication à la main depuis GitHub
+- **THEN** le site est reconstruit à partir de `main` et republié, si les tests passent
+
+### Requirement: Journal des versions
+The repository SHALL keep a `CHANGELOG.md` in French that lists, for each released version, its number, its date, and its changes grouped under « Nouveautés » (titles `feat:`) and « Corrections » (titles `fix:`). Pull requests titled `docs:`, `chore:`, `refactor:`, `test:`, `ci:` or `build:` SHALL not appear in it. A title marked as breaking (`feat!:` or `fix!:`) SHALL be listed under its own heading.
+
+#### Scenario: Version avec une nouveauté et une correction
+- **GIVEN** deux PR fusionnées depuis la dernière version, `feat: filtre de rime riche` et `fix: défilement bloqué`
+- **WHEN** la PR de version suivante est fusionnée
+- **THEN** `CHANGELOG.md` gagne une entrée datée pour cette version, avec « filtre de rime riche » sous « Nouveautés » et « défilement bloqué » sous « Corrections »
+
+#### Scenario: Travail sans effet visible
+- **GIVEN** une seule PR fusionnée depuis la dernière version, intitulée `docs: section 5 arc42`
+- **WHEN** release-please traite la poussée
+- **THEN** aucune nouvelle version n'est proposée et `CHANGELOG.md` ne change pas
+
+### Requirement: Version affichée
+The tracks page SHALL show the published version number (for example `v0.2.0`) in its brand bar, next to « Code source », as a link to the version history. The test page SHALL show the same number and link in its introduction. Both SHALL show the version the site was built from, be reachable by keyboard and stay visible at every screen width.
+
+#### Scenario: Page à pistes
+- **GIVEN** le site publié en version `0.2.0`
+- **WHEN** la page à pistes s'affiche
+- **THEN** la barre de marque montre `v0.2.0`, et l'activer ouvre le journal des versions
+
+#### Scenario: Page d'essai
+- **GIVEN** le site publié en version `0.2.0`
+- **WHEN** la page d'essai s'affiche
+- **THEN** son introduction montre `v0.2.0` avec un lien vers le journal des versions
+
+#### Scenario: Téléphone
+- **GIVEN** une fenêtre de 375 px de large
+- **WHEN** la page à pistes s'affiche
+- **THEN** la version et « Code source » sont visibles dans la barre de marque, et la page ne défile pas à l'horizontale
 
 ### Requirement: Le texte reste dans le navigateur
 The system SHALL send no request containing the user's text, SHALL load nothing from third parties other than the tagging library from jsDelivr and the tagging model from Hugging Face, and SHALL carry no tracker or audience measurement.
@@ -110,3 +151,29 @@ The system SHALL show on the tracks page and on the test page a link labelled «
 - **GIVEN** une fenêtre de 375 px de large
 - **WHEN** la page à pistes s'affiche
 - **THEN** le lien « Code source » est visible dans la barre de marque et la page ne défile pas à l'horizontale
+
+### Requirement: Aperçu de lien
+The root page SHALL declare, in its static HTML head and readable without running any script, a title and a description presenting Oulipao, the Open Graph properties `og:title`, `og:description`, `og:type`, `og:url`, `og:image` (with its width, height and alternative text) and `og:locale` set to `fr_FR`, and a `twitter:card` set to `summary_large_image`. Every address in these properties SHALL be absolute and under `https://oulipao.incongru.org/`. The preview image SHALL be a 1200×630 PNG published with the site. Both pages SHALL declare an SVG icon published with the site. None of this SHALL load anything from a third party.
+
+#### Scenario: Lien partagé par messagerie
+- **GIVEN** le site publié
+- **WHEN** on colle `https://oulipao.incongru.org` dans une messagerie qui affiche des aperçus
+- **THEN** la carte montre le titre, la description et l'image d'aperçu d'Oulipao
+
+#### Scenario: Robot sans JavaScript
+- **GIVEN** la page d'accueil récupérée par une simple requête HTTP, sans exécuter de script
+- **WHEN** on lit son `<head>`
+- **THEN** il contient le titre, la description, toutes les propriétés Open Graph listées et `twitter:card`, et chaque adresse commence par `https://oulipao.incongru.org/`
+
+#### Scenario: Image et icône publiées
+- **GIVEN** le site publié
+- **WHEN** on ouvre l'adresse de `og:image` et celle de l'icône
+- **THEN** la première renvoie une image PNG de 1200×630, la seconde une image SVG
+
+### Requirement: Page d'essai hors index
+The test page SHALL ask search engines not to index it.
+
+#### Scenario: Balise robots
+- **GIVEN** la page `essai.html` publiée
+- **WHEN** on lit son `<head>`
+- **THEN** il contient `<meta name="robots" content="noindex">`

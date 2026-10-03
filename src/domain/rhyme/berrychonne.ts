@@ -31,6 +31,7 @@ export const berrychonnePlugin = definePlugin({
         if (crossed.has(rhymeOf(slot.sound))) continue;
         settle(slot, {
           offset: 1,
+          among: sounds.rhyming([...crossed], slot.category), // l'une des deux rimes croisées
           accept: (form) => {
             const candidate = sounds.of(form, slot.category);
             return !!candidate && crossed.has(rhymeOf(candidate));

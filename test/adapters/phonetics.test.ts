@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { categoryOfGrace, DERIVED_PHONETICS_HEADER, derivePhonetics, frequentRhymes, glaffFrequency, phoneticRowOf } from '../../src/adapters/lexicon/glaff-phonetics.ts';
+import { categoryOfGrace, completePhonetics, DERIVED_PHONETICS_HEADER, derivePhonetics, frequentRhymes, glaffFrequency, phoneticRowOf } from '../../src/adapters/lexicon/glaff-phonetics.ts';
 import { loadPhonetics, parsePhonetics } from '../../src/adapters/morphology/in-memory-phonetics.ts';
 import { ipaOf } from '../../src/domain/phonetics/phoneme.ts';
 
@@ -29,17 +29,17 @@ test('catégories GRACE : noms communs, adjectifs, verbes, adverbes ; le reste, 
 });
 
 test('dérivation : forme, catégorie, prononciation en syllabes et rime ; ce qui ne sert pas est écarté', () => {
-  assert.equal(phoneticRowOf(GLAFF[0]!, known), 'chaise\tN\tʃɛz\tɛz');
+  assert.equal(phoneticRowOf(GLAFF[0]!, known), 'chaise\tN\tʃɛz\tɛz\tG');
   assert.equal(phoneticRowOf(GLAFF[7]!, known), undefined); // pas de prononciation
   assert.equal(phoneticRowOf(GLAFF[8]!, known), undefined); // « χ » hors de l'inventaire
   assert.equal(phoneticRowOf(GLAFF[12]!, known), undefined); // inconnue de Grammalecte
   assert.equal(phoneticRowOf('', known), undefined);
-  assert.equal(phoneticRowOf(GLAFF[14]!, known), 'noir\tA\tnwaʁ\taʁ'); // allongement retiré
+  assert.equal(phoneticRowOf(GLAFF[14]!, known), 'noir\tA\tnwaʁ\taʁ\tG'); // allongement retiré
   const rows = derivePhonetics(GLAFF, known);
-  assert.ok(rows.includes('couvent\tN\tku.vɑ̃\tɑ̃'));
-  assert.ok(rows.includes('couvent\tV\tkuv\tuv'));
+  assert.ok(rows.includes('couvent\tN\tku.vɑ̃\tɑ̃\tG'));
+  assert.ok(rows.includes('couvent\tV\tkuv\tuv\tG'));
   assert.equal(rows.filter((row) => row.startsWith('vers\tN')).length, 1); // une ligne par forme et par catégorie
-  assert.ok(rows.includes('aînée\tN\te.ne\te')); // la première prononciation seulement
+  assert.ok(rows.includes('aînée\tN\te.ne\te\tG')); // la première prononciation seulement
 });
 
 test('rimes fréquentes : les plus nombreuses parmi les noms, avec leur nom le plus fréquent', () => {
@@ -59,7 +59,7 @@ test('en-tête : la source, ses auteurs et la licence CC BY-SA 3.0', () => {
 });
 
 test('prononciation de « chaise » ; « couvent » nom et verbe ; homophones de « verre »', async () => {
-  const tsv = ['# en-tête', 'chaise\tN\tʃɛz\tɛz', 'couvent\tN\tku.vɑ̃\tɑ̃', 'couvent\tV\tkuv\tuv', 'verre\tN\tvɛʁ\tɛʁ', 'vers\tN\tvɛʁ\tɛʁ', 'vert\tN\tvɛʁ\tɛʁ', 'vert\tA\tvɛʁ\tɛʁ', 'vair\tN\tvɛʁ\tɛʁ', 'ver\tN\tvɛʁ\tɛʁ', ''].join('\n');
+  const tsv = ['# en-tête', 'chaise\tN\tʃɛz\tɛz\tG', 'couvent\tN\tku.vɑ̃\tɑ̃\tG', 'couvent\tV\tkuv\tuv\tG', 'verre\tN\tvɛʁ\tɛʁ\tG', 'vers\tN\tvɛʁ\tɛʁ\tG', 'vert\tN\tvɛʁ\tɛʁ\tG', 'vert\tA\tvɛʁ\tɛʁ\tG', 'vair\tN\tvɛʁ\tɛʁ\tG', 'ver\tN\tvɛʁ\tɛʁ\tG', 'vers\tA\tvɛʁ\tɛʁ\tA', 'glaise\tN\tglɛz\tɛz\tR', ''].join('\n');
   const phonetics = await loadPhonetics(async () => tsv);
   const [chaise] = phonetics.readings('chaise', 'noun');
   assert.equal(ipaOf(chaise!), 'ʃɛz');
@@ -71,10 +71,39 @@ test('prononciation de « chaise » ; « couvent » nom et verbe ; homophones de
   assert.deepEqual(phonetics.homophones('vɛʁ', 'noun'), ['vair', 'ver', 'verre', 'vers', 'vert']);
   assert.deepEqual(phonetics.homophones('vɛʁ', 'adjective'), ['vert']);
   assert.deepEqual(phonetics.homophones('zzz', 'noun'), []);
+  // L'index des rimes compte aussi les prononciations empruntées et devinées ; les homophones, non.
+  assert.deepEqual([...phonetics.rhyming('ɛz', 'noun')].sort(), ['chaise', 'glaise']);
+  assert.deepEqual(phonetics.rhyming('ɛʁ', 'adjective'), ['vert', 'vers']);
+  assert.deepEqual(phonetics.homophones('vɛʁ', 'adjective'), ['vert']);
+  assert.deepEqual(phonetics.rhyming('zzz', 'noun'), []);
+  // Les finales : « ɛʁ » réunit les cinq homophones et l'adjectif emprunté ; « z » ajoute « glaise ».
+  assert.deepEqual([...phonetics.ending('vɛʁ', 'noun')].sort(), ['vair', 'ver', 'verre', 'vers', 'vert']);
+  assert.deepEqual([...phonetics.ending('ɛz', 'noun')].sort(), ['chaise', 'glaise']);
+  assert.deepEqual(phonetics.ending('ʃɛz', 'noun'), ['chaise']);
+  assert.deepEqual(phonetics.ending('ɑ̃', 'noun'), ['couvent']);
+  assert.deepEqual(phonetics.ending('zzz', 'noun'), []);
+  assert.equal(phonetics.readings('glaise', 'noun')[0]!.guessed, true);
+  assert.equal(phonetics.readings('vers', 'adjective')[0]!.guessed, false);
+});
+
+test('complétion : chaque forme candidate absente de GLÀFF dans sa catégorie reçoit la prononciation du domaine', () => {
+  const rows = derivePhonetics(GLAFF, known);
+  const extra = completePhonetics(rows, [['chaise', 'N'], ['couvent', 'A'], ['glorbiture', 'N'], ['glorbiture', 'N'], ['χχ', 'N']]);
+  // « chaise » est déjà là ; « couvent » adjectif emprunte la première prononciation de GLÀFF ;
+  // « glorbiture » est devinée, une seule fois ; « χχ » n'a pas de prononciation possible.
+  assert.equal(extra.length, 2);
+  // Une forme capitalisée garde sa casse dans l'index, avec la prononciation de sa minuscule, empruntée.
+  assert.deepEqual(completePhonetics(rows, [['Chaise', 'N']]), ['Chaise\tN\tʃɛz\tɛz\tA']);
+  assert.ok(extra[0]!.startsWith('couvent\tA\tku.vɑ̃\tɑ̃\tA'));
+  assert.match(extra[1]!, /^glorbiture\tN\t.+\tyʁ\tR$/);
+  // Relu par l'adaptateur : conforme, et la prononciation devinée garde son drapeau.
+  assert.equal(parsePhonetics([...rows, ...extra].join('\n')).find((entry) => entry.form === 'glorbiture')!.reading.guessed, true);
 });
 
 test('ligne non conforme : phonème inconnu, catégorie inconnue ou rime fausse, citée dans le message', () => {
-  assert.throws(() => parsePhonetics('chaise\tN\tʃɛθ\tɛθ'), /ligne non conforme « chaise\tN\tʃɛθ\tɛθ »/);
-  assert.throws(() => parsePhonetics('chaise\tX\tʃɛz\tɛz'), /ligne non conforme/);
-  assert.throws(() => parsePhonetics('chaise\tN\tʃɛz\tɛ'), /ligne non conforme/);
+  assert.throws(() => parsePhonetics('chaise\tN\tʃɛθ\tɛθ\tG'), /ligne non conforme « chaise\tN\tʃɛθ\tɛθ\tG »/);
+  assert.throws(() => parsePhonetics('chaise\tX\tʃɛz\tɛz\tG'), /ligne non conforme/);
+  assert.throws(() => parsePhonetics('chaise\tN\tʃɛz\tɛz\tZ'), /ligne non conforme/);
+  assert.throws(() => parsePhonetics('chaise\tN\tʃɛz\tɛz'), /ligne non conforme/);
+  assert.throws(() => parsePhonetics('chaise\tN\tʃɛz\tɛ\tG'), /ligne non conforme/);
 });

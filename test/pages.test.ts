@@ -19,3 +19,8 @@ test('les deux pages déclarent la même politique, qui borne les connexions aux
   assert.deepEqual(tracks.get('default-src'), ["'self'"]);
   for (const name of ['object-src', 'base-uri', 'form-action']) assert.deepEqual(tracks.get(name), ["'none'"]);
 });
+
+test('la page d’essai réserve dans son introduction le lien de version vers le journal', () => {
+  const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  assert.match(html, /<a id="version" href="https:\/\/github\.com\/constructions-incongrues\/oulipao\/blob\/main\/CHANGELOG\.md">/);
+});

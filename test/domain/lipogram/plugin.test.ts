@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { CATEGORIES, type Category } from '../../../src/domain/categories.ts';
-import { lipogramPlugin } from '../../../src/domain/lipogram/plugin.ts';
+import { bannedLetters, lipogramPlugin } from '../../../src/domain/lipogram/plugin.ts';
 import { containsLetter } from '../../../src/domain/lipogram/neighbour.ts';
+import type { ParameterValues } from '../../../src/domain/plugin.ts';
 import { applyS7 } from '../../../src/domain/s7/engine.ts';
 import { AUXILIARY, LOADING } from '../../../src/domain/verb.ts';
 import { morphology, tag, verbs } from '../../support/morphology.ts';
@@ -10,21 +11,62 @@ import { morphology, tag, verbs } from '../../support/morphology.ts';
 const m = morphology();
 const v = verbs();
 const run = (text: string, letter = 'e', extra = {}, targets: Iterable<Category> = CATEGORIES, withVerbs = true) => {
-  const result = lipogramPlugin.apply(text, tag(text, extra), { letter }, { morphology: m, verbs: withVerbs ? v : undefined }, new Set(targets));
+  const result = lipogramPlugin.apply(text, tag(text, extra), { letters: letter }, { morphology: m, verbs: withVerbs ? v : undefined }, new Set(targets));
   return { ...result, text: result.words.map((w) => w.gap + w.output).join('') + result.tail };
 };
 
-test('déclaration : sur toutes les pistes, un paramètre « Lettre », « e » par défaut', () => {
+test('déclaration : sur toutes les pistes, « Lettres » (« e ») et « Mode » (interdites)', () => {
   assert.deepEqual(lipogramPlugin.tracks, [...CATEGORIES]);
   assert.deepEqual(lipogramPlugin.defaultTargets, [...CATEGORIES]);
-  assert.deepEqual(lipogramPlugin.defaults, { letter: 'e' });
-  const [parameter] = lipogramPlugin.parameters;
-  assert.equal(parameter?.kind === 'choice' && parameter.options.length, 26);
-  assert.throws(() => lipogramPlugin.parse({ letter: 'é' }));
-  assert.equal(lipogramPlugin.title({ letter: 'a' }), 'Lipogramme en a');
+  assert.deepEqual(lipogramPlugin.defaults, { letters: 'e', mode: 'forbidden' });
+  assert.deepEqual(lipogramPlugin.parameters.map((p) => p.kind), ['text', 'choice']);
+  assert.throws(() => lipogramPlugin.parse({ letters: 'a'.repeat(41) }));
+  assert.throws(() => lipogramPlugin.parse({ mode: 'toutes' }));
+  assert.equal(lipogramPlugin.title({ letters: 'a' }), 'Lipogramme en a');
   assert.equal(lipogramPlugin.label({}), 'lipogramme en e');
-  assert.match(lipogramPlugin.help({}), /contient « e »/);
+  assert.match(lipogramPlugin.help({}), /contient « e » devient .* sans cette lettre/);
   assert.equal(lipogramPlugin.acts({}), true);
+});
+
+test('lettres saisies : nues, sans doublon, dans l’ordre ; mention et aide', () => {
+  assert.equal(lipogramPlugin.label({ letters: 'a, e, a' }), 'lipogramme en a, e');
+  assert.equal(lipogramPlugin.label({ letters: 'Lucie', mode: 'allowed' }), 'lipogramme seulement en l, u, c, i, e');
+  assert.equal(lipogramPlugin.title({ letters: 'Lucie', mode: 'allowed' }), 'Lipogramme seulement en l, u, c, i, e');
+  assert.match(lipogramPlugin.help({ letters: 'ae' }), /« a », « e » devient .* sans ces lettres/);
+  assert.match(lipogramPlugin.help({ letters: 'lucie', mode: 'allowed' }), /autre lettre que « l », « u », « c », « i », « e »/);
+});
+
+test('aucune lettre saisie : le lipogramme n’agit pas et le dit', () => {
+  for (const values of [{ letters: '' }, { letters: ' 12 !', mode: 'allowed' }] as ParameterValues[]) {
+    assert.equal(lipogramPlugin.acts(values), false);
+    assert.equal(lipogramPlugin.title(values), 'Lipogramme');
+    assert.equal(lipogramPlugin.label(values), 'lipogramme sans lettre');
+    assert.match(lipogramPlugin.help(values), /Aucune lettre saisie/);
+  }
+});
+
+test('bannedLetters : les lettres tapées, ou toutes les autres', () => {
+  assert.equal(bannedLetters('a, é', 'forbidden'), 'ae');
+  assert.equal(bannedLetters('Lucie', 'allowed'), 'abdfghjkmnopqrstvwxyz');
+  assert.equal(bannedLetters('', 'allowed'), '');
+});
+
+test('plusieurs lettres interdites : le voisin n’a aucune des deux', () => {
+  const two = run('Le chat dort.', 'a, e');
+  const one = run('Le chat dort.', 'a');
+  for (const mark of two.marks) if (mark.replacement) assert.ok(!containsLetter(mark.replacement, 'ae'), mark.replacement);
+  assert.notEqual(two.text, 'Le chat dort.');
+  assert.ok(one.marks.length > 0);
+});
+
+test('lettres permises : seul ce qui s’écrit avec les lettres du nom passe, « é » compris', () => {
+  const result = lipogramPlugin.apply('Le chat dort.', tag('Le chat dort.'), { letters: 'Lucie', mode: 'allowed' }, { morphology: m, verbs: v }, new Set(CATEGORIES));
+  for (const mark of result.marks) if (mark.replacement) assert.ok(!containsLetter(mark.replacement, bannedLetters('lucie', 'allowed')), mark.replacement);
+  assert.ok(!containsLetter('élu', bannedLetters('Lucie', 'allowed')));
+});
+
+test('une seule lettre interdite : même texte qu’avec l’ancien paramètre « Lettre »', () => {
+  assert.equal(run('Le chat est trop vite et la vieille horloge dort.').text, 'Un chat est trop ainsi ou la vieille maison dort.');
 });
 
 test('noms remplacés par leur voisin, avec leur groupe ; adverbes et mots-outils aussi', () => {
@@ -94,7 +136,7 @@ test('pistes visées : seuls leurs mots perdent la lettre', () => {
 test('portée par mot : un pas bouché garde son mot et son groupe', () => {
   const text = 'Le chat est trop vite et la vieille horloge dort.';
   const apply = (skip: number[]) => {
-    const result = lipogramPlugin.apply(text, tag(text), { letter: 'e' }, { morphology: m }, new Set(CATEGORIES), { skip, overrides: [] });
+    const result = lipogramPlugin.apply(text, tag(text), { letters: 'e' }, { morphology: m }, new Set(CATEGORIES), { skip, overrides: [] });
     return result.words.map((w) => w.gap + w.output).join('') + result.tail;
   };
   // « horloge » (8) et son groupe bouchés, « vite » (4) aussi : le reste suit le lipogramme.
@@ -115,8 +157,14 @@ test('Verbes : sans voisin, auxiliaire, pas bouché, piste non visée, verbes pa
   assert.deepEqual(run('il est', 'e', { il: 'other', est: 'verb' }, ['verb']).marks, [{ index: 1, original: 'est', reason: AUXILIARY }]);
   assert.deepEqual(run('elle mangeait', 'e', { elle: 'other', mangeait: 'verb' }, ['noun']).marks, []);
   assert.deepEqual(run('elle mangeait', 'e', { elle: 'other', mangeait: 'verb' }, ['verb'], false).marks, [{ index: 1, original: 'mangeait', reason: LOADING }]);
-  const closed = lipogramPlugin.apply('elle mangeait', tag('elle mangeait', { mangeait: 'verb' }), { letter: 'e' }, { morphology: m, verbs: v }, new Set(['verb']), { skip: [1], overrides: [] });
+  const closed = lipogramPlugin.apply('elle mangeait', tag('elle mangeait', { mangeait: 'verb' }), { letters: 'e' }, { morphology: m, verbs: v }, new Set(['verb']), { skip: [1], overrides: [] });
   assert.equal(closed.words[1]!.output, 'mangeait');
   // Un verbe sans la lettre n'est pas touché.
   assert.deepEqual(run('il dort', 'e', { il: 'other', dort: 'verb' }, ['verb']).marks, []);
+});
+
+test('article rétabli : « l’ » devant un mot nouveau à initiale consonantique', () => {
+  const { text, marks } = run("L'enceinte maison.", 'n');
+  assert.equal(text, 'La fermée ville.');
+  assert.deepEqual(marks.find((mark) => mark.original === 'enceinte'), { index: 1, original: 'enceinte', replacement: 'fermée' });
 });

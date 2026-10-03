@@ -28,7 +28,16 @@ export const ChoiceParameterSchema = z.object({
   options: z.array(z.object({ value: z.string().min(1), label: z.string().min(1) })).min(1),
 });
 
-export const ParameterSchema = z.discriminatedUnion('kind', [IntegerParameterSchema, ChoiceParameterSchema]);
+/** Un paramètre texte, court : l'hôte en fait un champ de saisie ; le plugin interprète la chaîne dans `parse`. */
+export const TextParameterSchema = z.object({
+  kind: z.literal('text'),
+  key: z.string().min(1),
+  label: z.string().min(1),
+  maxLength: z.number().int().min(1),
+  placeholder: z.string().optional(),
+});
+
+export const ParameterSchema = z.discriminatedUnion('kind', [IntegerParameterSchema, ChoiceParameterSchema, TextParameterSchema]);
 export type Parameter = z.infer<typeof ParameterSchema>;
 
 /** Les valeurs des paramètres, par clé. */

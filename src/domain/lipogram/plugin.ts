@@ -8,18 +8,42 @@ import type { OutputWord } from '../s7/types.ts';
 import type { TaggedWord } from '../tagged-word.ts';
 import { tokenize } from '../tokenizer.ts';
 import { CATEGORIES } from '../categories.ts';
+import { elide, lettersOf, restoreArticle } from '../letters.ts';
 import { neighbourVerb, rewriteVerbs } from '../verb.ts';
 import { functionWordWithout } from './function-words.ts';
 import { containsLetter, neighbourAdjective, neighbourAdverb, neighbourNoun } from './neighbour.ts';
 
-const LETTERS = [...'abcdefghijklmnopqrstuvwxyz'];
+const ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
+const MAX_LETTERS = 40;
+
+const ModeSchema = z.enum(['forbidden', 'allowed']);
+type Mode = z.infer<typeof ModeSchema>;
 
 const ParamsSchema = z.object({
-  letter: z.enum(LETTERS as [string, ...string[]]).default('e'),
+  letters: z.string().max(MAX_LETTERS).default('e'),
+  mode: ModeSchema.default('forbidden'),
   /** Les lettres bannies par les lipogrammes placés avant dans la chaîne (voir `inherit`). */
   banned: z.string().regex(/^[a-z]*$/).optional(),
 });
 const params = (values: ParameterValues) => ParamsSchema.parse(values);
+
+/** Les lettres saisies, nues, sans doublon, dans l'ordre de la saisie. */
+const typed = (letters: string) => [...new Set(lettersOf(letters))];
+
+/** Les lettres bannies : celles qu'on a tapées, ou toutes les autres (rien si rien n'est tapé). */
+export function bannedLetters(letters: string, mode: Mode): string {
+  const own = typed(letters);
+  if (mode === 'forbidden' || own.length === 0) return own.join('');
+  return [...ALPHABET].filter((letter) => !own.includes(letter)).join('');
+}
+
+/** « en a, e », « seulement en l, u, c, i, e » ; rien si aucune lettre n'est saisie. */
+function naming(values: ParameterValues): string | undefined {
+  const { letters, mode } = params(values);
+  const own = typed(letters);
+  if (!own.length) return undefined;
+  return `${mode === 'allowed' ? 'seulement en' : 'en'} ${own.join(', ')}`;
+}
 
 
 const NO_NEIGHBOUR = 'aucun voisin sans la lettre';
@@ -57,16 +81,6 @@ function fateOf(output: string, category: Exclude<TaggedWord['category'], 'verb'
   }
 }
 
-/** « le », « la » devant une voyelle ou un h muet : « l’ », collé au mot suivant. */
-function elide(words: OutputWord[], index: number, apostrophe: string, morphology: MorphologyRepository) {
-  const word = words[index]!;
-  // Seulement devant le mot qui suit immédiatement : s'il a été retiré, l'article reste tel quel.
-  const next = words[index + 1];
-  if (!next?.output || !/^(le|la)$/i.test(word.output) || !elides(next.output, morphology)) return;
-  word.output = `${word.output[0]}${apostrophe}`;
-  next.gap = '';
-}
-
 /**
  * Le lipogramme : chaque mot qui contient la lettre interdite devient le premier mot qui le suit
  * dans le dictionnaire, de même catégorie et de mêmes traits, sans la lettre. Les noms passent par
@@ -79,21 +93,33 @@ export const lipogramPlugin = definePlugin({
   name: 'Lipogramme',
   tracks: [...CATEGORIES],
   defaultTargets: [...CATEGORIES],
-  parameters: [{ kind: 'choice', key: 'letter', label: 'Lettre', options: LETTERS.map((letter) => ({ value: letter, label: letter })) }],
+  parameters: [
+    { kind: 'text', key: 'letters', label: 'Lettres', maxLength: MAX_LETTERS, placeholder: 'e' },
+    { kind: 'choice', key: 'mode', label: 'Mode', options: [{ value: 'forbidden', label: 'interdites' }, { value: 'allowed', label: 'permises' }] },
+  ],
   defaults: ParamsSchema.parse({}),
   parse: params,
-  inherit: (values, earlier) => ({ ...values, banned: earlier.map((previous) => params(previous).letter).join('') }),
-  acts: () => true,
-  title: (values) => `Lipogramme en ${params(values).letter}`,
-  label: (values) => `lipogramme en ${params(values).letter}`,
+  inherit: (values, earlier) => ({
+    ...values,
+    banned: earlier.map((previous) => { const { letters, mode } = params(previous); return bannedLetters(letters, mode); }).join(''),
+  }),
+  acts: (values) => naming(values) !== undefined,
+  title: (values) => { const name = naming(values); return name ? `Lipogramme ${name}` : 'Lipogramme'; },
+  label: (values) => { const name = naming(values); return name ? `lipogramme ${name}` : 'lipogramme sans lettre'; },
   help: (values) => {
-    const { letter } = params(values);
-    return `Chaque mot qui contient « ${letter} » devient le premier mot qui le suit dans le dictionnaire sans cette lettre ; les verbes gardent leur temps et leur personne, « être » et « avoir » restent.`;
+    const { letters, mode } = params(values);
+    const own = typed(letters);
+    const tail = 'les verbes gardent leur temps et leur personne, « être » et « avoir » restent.';
+    if (!own.length) return 'Aucune lettre saisie : le lipogramme ne change rien.';
+    const list = own.map((letter) => `« ${letter} »`).join(', ');
+    return mode === 'allowed'
+      ? `Chaque mot qui emploie une autre lettre que ${list} devient le premier mot qui le suit dans le dictionnaire sans autre lettre ; ${tail}`
+      : `Chaque mot qui contient ${list} devient le premier mot qui le suit dans le dictionnaire sans ${own.length > 1 ? 'ces lettres' : 'cette lettre'} ; ${tail}`;
   },
   apply(text, tagged, values, { morphology, verbs }, targets, scope = FULL_SCOPE) {
-    const { letter: own, banned = '' } = params(values);
-    // La lettre de l'instance et celles des lipogrammes d'avant : aucune ne doit revenir.
-    const letter = own + banned;
+    const { letters, mode, banned = '' } = params(values);
+    // Les lettres de l'instance et celles des lipogrammes d'avant : aucune ne doit revenir.
+    const letter = bannedLetters(letters, mode) + banned;
     const skip = new Set(scope.skip);
     const tokens = tokenize(text);
     const apostrophe = text.includes('’') ? '’' : "'";
@@ -149,8 +175,12 @@ export const lipogramPlugin = definePlugin({
       );
     }
 
-    // 4. Élision des articles remplacés devant une voyelle : « une horloge » → « l’horloge ».
-    for (const mark of marks) if (mark.replacement !== undefined) elide(words, mark.index, apostrophe, morphology);
+    // 4. Élision des articles remplacés devant une voyelle : « une horloge » → « l’horloge » ; « l’ » rétabli devant une consonne.
+    for (const mark of marks) {
+      if (mark.replacement === undefined) continue;
+      elide(words, mark.index, apostrophe, morphology);
+      restoreArticle(words, mark.index, mark.original, morphology);
+    }
     for (const mark of marks) if (mark.replacement !== undefined) mark.replacement = words[mark.index]!.output;
 
     return { words, tail, marks: marks.sort((a, b) => a.index - b.index) };

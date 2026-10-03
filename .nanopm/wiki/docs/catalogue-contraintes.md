@@ -37,15 +37,18 @@ Deux réserves valent pour tout le niveau A :
 | Contrainte | Comment |
 |---|---|
 | S+7, V+7 | moteur S+n, sur les noms, adjectifs et verbes |
-| Lipogramme | moteur Lipogramme |
+| Lipogramme | moteur Lipogramme, sur une liste de lettres interdites ou permises (paramètre texte, E1) |
 | Liponymie, La rien que la toute la, Inventaire | moteur Tri par piste, et une recette chacune |
 | Haï-kaïsation, Intérieur de poème | moteur Bord, et une recette chacune |
 | Poème de bandit, Juliennes | moteur Mise en vers, et une recette chacune (Juliennes prend la date julienne du jour) |
-| Monovocalisme, Bivocalisme | recettes : des lipogrammes enchaînés, voyelle(s) gardée(s) au choix ; les voyelles accentuées passent |
-| Contrainte du prisonnier | recette : douze lipogrammes enchaînés (classée B ci-dessous, couverte sans évolution) |
+| Monovocalisme, Bivocalisme | recettes : un lipogramme sur les autres voyelles, voyelle(s) gardée(s) au choix ; une voyelle accentuée compte pour sa voyelle nue |
+| Contrainte du prisonnier | recette : un lipogramme sur les douze lettres à hampe ou à jambage (E1) |
+| Beau présent, Épithalame oulipien | recette Beau présent : un lipogramme en lettres permises, où l'on tape le nom (E1) |
+| Monoconsonnantisme | lipogramme en lettres permises sur les voyelles et la consonne gardée (E1) ; les mots qui survivent sont rares tant que E7 manque |
+| Tautogramme progressif | moteur Tautogramme progressif : les initiales suivent une liste de lettres en boucle ; chaque mot part du dictionnaire à son initiale changée (E1) |
 | Éclipse | pas de recette : le S+7 donne la seconde partie, mais juxtaposer les deux demande E3 |
 
-Familles suivantes, dans l'ordre : voisin à initiale imposée (Tautogramme, Abécédaire, Acrostiche universel, Delmas, Lipossible), variantes du S+n (adverbes, S+dé, Poème carré, Propre-Commun ; Homosyntaxisme et Aphorisme n'attendent plus que les adverbes), recherche par forme (Anagramme, Homovocalisme, avec un index construit à la demande).
+Familles suivantes, dans l'ordre : voisin à initiale imposée (Tautogramme, Abécédaire, Acrostiche universel, Delmas, Lipossible : le moteur du Tautogramme progressif en fait déjà l'essentiel ; l'Acrostiche brivadois reste à faire), variantes du S+n (adverbes, S+dé, Poème carré, Propre-Commun ; Homosyntaxisme et Aphorisme n'attendent plus que les adverbes), recherche par forme (Anagramme, Homovocalisme, avec un index construit à la demande).
 
 ## Récapitulatif
 

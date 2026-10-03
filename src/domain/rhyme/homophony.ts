@@ -33,7 +33,7 @@ export const homophonyPlugin = definePlugin({
         const same = original ? sounds.homophones(original, category) : new Set<string>();
         const lower = word.toLowerCase();
         if (![...same].some((form) => form !== lower)) return { reason: 'aucun homophone' };
-        return { offset: locked.get(index) ?? settings.offset, accept: (form) => form !== lower && same.has(form), none: 'aucun homophone' };
+        return { offset: locked.get(index) ?? settings.offset, among: same, accept: (form) => form !== lower && same.has(form), none: 'aucun homophone' };
       },
     });
   },

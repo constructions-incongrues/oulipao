@@ -4,6 +4,7 @@ import { plainWords } from '../mixing.ts';
 import { nthAdjective, nthAdverb, nthNoun } from '../neighbours.ts';
 import { pronounce, PHONETICS_LOADING } from '../phonetics/lookup.ts';
 import { phonemesOf, type Phoneme } from '../phonetics/phoneme.ts';
+import { requiredEnding, rhymeOf, type Richness } from '../phonetics/rhyme.ts';
 import type { PluginResources, PluginResult, WordMark, WordScope } from '../plugin.ts';
 import { fixElision } from '../s7/adjective-shift.ts';
 import { elides } from '../s7/elision.ts';
@@ -13,8 +14,12 @@ import type { TaggedWord } from '../tagged-word.ts';
 import { nthVerb, rewriteVerbs } from '../verb.ts';
 import { layoutVerse, type VersePlace } from '../verse.ts';
 
-/** Ce qu'un filtre de rime fait d'un mot : le n-ième voisin que `accept` retient, ou la raison de le laisser. */
-export type Decision = { offset: number; accept: (form: string) => boolean; none: string } | { reason: string };
+/**
+ * Ce qu'un filtre de rime fait d'un mot : le n-ième voisin que `accept` retient, ou la raison de le
+ * laisser. `among`, s'il est donné, borne la recherche à ces formes : `accept` ne doit retenir
+ * aucune forme hors de `among`, sinon des voisins seraient manqués.
+ */
+export type Decision = { offset: number; accept: (form: string) => boolean; none: string; among?: ReadonlySet<string> } | { reason: string };
 
 /** La raison d'un mot laissé parce que son pas est bouché (comme au S+n). */
 export const CLOSED = 'pas bouché';
@@ -26,10 +31,37 @@ export interface Sounds {
   of(word: string, category: Category): readonly Phoneme[] | undefined;
   /** Les formes d'une catégorie qui se prononcent exactement comme ces phonèmes. */
   homophones(phonemes: readonly Phoneme[], category: Category): ReadonlySet<string>;
+  /**
+   * Les formes d'une catégorie qui ont cette rime, ou l'une de ces rimes, devinées comprises : les
+   * candidates d'un filtre qui veut une rime donnée. Le même ensemble est rendu d'un passage à l'autre.
+   */
+  rhyming(rhyme: string | readonly string[], category: Category): ReadonlySet<string>;
+  /** Les formes d'une catégorie qui finissent par ces phonèmes (un à trois) ; le même ensemble d'un passage à l'autre. */
+  ending(phonemes: readonly Phoneme[], category: Category): ReadonlySet<string>;
 }
 
-// ponytail: une mémoire par passage, sans index « rime → lemmes ». Plafond : une rime riche rare
-// fait parcourir tout le dictionnaire de la catégorie ; précalculer l'index à la dérivation si ça traîne.
+// Les candidates d'une rime, en ensemble, gardées d'un passage à l'autre : la textbank rend toujours
+// le même tableau pour une rime, et les positions de ses lemmes se calculent une fois (neighbours.ts).
+const asSets = new WeakMap<readonly string[], ReadonlySet<string>>();
+const asSet = (forms: readonly string[]) => {
+  let set = asSets.get(forms);
+  if (!set) asSets.set(forms, (set = new Set(forms)));
+  return set;
+};
+
+// La réunion des formes de plusieurs rimes (la rime berrychonne en croise deux), gardée par textbank.
+const unions = new WeakMap<PhoneticsRepository, Map<string, ReadonlySet<string>>>();
+function rhymingAll(phonetics: PhoneticsRepository, rhymes: readonly string[], category: Category): ReadonlySet<string> {
+  const key = `${category}\t${[...new Set(rhymes)].sort().join('\t')}`;
+  let byKey = unions.get(phonetics);
+  if (!byKey) unions.set(phonetics, (byKey = new Map()));
+  let union = byKey.get(key);
+  if (!union) byKey.set(key, (union = new Set(rhymes.flatMap((rhyme) => phonetics.rhyming(rhyme, category)))));
+  return union;
+}
+
+// Une mémoire par passage pour les prononciations. Les candidates d'une rime viennent de l'index de
+// la textbank, qui couvre toutes les formes du dictionnaire (prononciations devinées comprises).
 function soundsOf(phonetics: PhoneticsRepository): Sounds {
   const memo = new Map<string, readonly Phoneme[] | undefined>();
   return {
@@ -41,7 +73,10 @@ function soundsOf(phonetics: PhoneticsRepository): Sounds {
       }
       return memo.get(key);
     },
-    homophones: (phonemes, category) => new Set(phonetics.homophones(phonemes.join(''), category)),
+    homophones: (phonemes, category) => asSet(phonetics.homophones(phonemes.join(''), category)),
+    rhyming: (rhyme, category) =>
+      typeof rhyme === 'string' ? asSet(phonetics.rhyming(rhyme, category)) : rhyme.length === 1 ? asSet(phonetics.rhyming(rhyme[0]!, category)) : rhymingAll(phonetics, rhyme, category),
+    ending: (phonemes, category) => asSet(phonetics.ending(phonemes.join(''), category)),
   };
 }
 
@@ -61,18 +96,31 @@ export interface RhymeFilter {
 export function probe(word: string, category: Category, decision: Decision, resources: PluginResources): string | undefined {
   if ('reason' in decision) return undefined;
   const { morphology, verbs } = resources;
-  const { offset, accept } = decision;
+  const { offset, accept, among } = decision;
   if (category === 'noun') {
-    const choice = nthNoun(word, {}, offset, accept, morphology);
+    const choice = nthNoun(word, {}, offset, accept, morphology, among);
     return choice.status === 'replaced' ? choice.replacement : undefined;
   }
-  if (category === 'adjective') return nthAdjective(word, {}, offset, accept, morphology)?.form;
-  if (category === 'adverb') return nthAdverb(word, offset, accept, morphology);
+  if (category === 'adjective') return nthAdjective(word, {}, offset, accept, morphology, among)?.form;
+  if (category === 'adverb') return nthAdverb(word, offset, accept, morphology, among);
   if (category === 'verb' && verbs) {
-    const shift = nthVerb(word, [], offset, accept, verbs, '');
+    const shift = nthVerb(word, [], offset, accept, verbs, '', among);
     return 'form' in shift ? shift.form : undefined;
   }
   return undefined;
+}
+
+const NO_CANDIDATE: ReadonlySet<string> = new Set();
+
+/**
+ * Les candidates d'une forme qui doit rimer avec `reference` à cette richesse : celles qui partagent
+ * sa finale exigée (`requiredEnding`), ou aucune si elle est trop courte pour rimer ainsi. Au-delà de
+ * trois phonèmes, la finale est la rime entière : l'index des rimes la sert.
+ */
+export function candidatesFor(sounds: Sounds, reference: readonly Phoneme[], richness: Richness, category: Category): ReadonlySet<string> {
+  const ending = requiredEnding(reference, richness);
+  if (!ending) return NO_CANDIDATE;
+  return ending.length <= 3 ? sounds.ending(ending, category) : sounds.rhyming(rhymeOf(reference), category);
 }
 
 /** Les prononciations du passage, ou rien si elles ne sont pas encore chargées. */
@@ -129,7 +177,7 @@ export function applyRhymeFilter(
       if (tagged[index]!.category !== 'noun') return keepNoun(word);
       const rule = ruleAt(index, word);
       if (!rule) return keepNoun(word);
-      const choice = nthNoun(word, hints, rule.offset, rule.accept, morphology);
+      const choice = nthNoun(word, hints, rule.offset, rule.accept, morphology, rule.among);
       if (choice.status !== 'replaced') marks.push({ index, original: word, reason: choice.status === 'unknown-noun' ? UNKNOWN : rule.none });
       return choice;
     },
@@ -154,9 +202,9 @@ export function applyRhymeFilter(
       const reading = morphology.adjectiveReadings(original.toLowerCase())[0];
       gender = reading && reading.gender !== 'e' ? reading.gender : 'm';
       const wanted = { ...(reading && reading.gender !== 'e' && { gender: reading.gender }), ...(reading && reading.number !== 'i' && { number: reading.number }) };
-      replacement = nthAdjective(original, wanted, rule.offset, rule.accept, morphology)?.form;
+      replacement = nthAdjective(original, wanted, rule.offset, rule.accept, morphology, rule.among)?.form;
     } else {
-      replacement = nthAdverb(original, rule.offset, rule.accept, morphology);
+      replacement = nthAdverb(original, rule.offset, rule.accept, morphology, rule.among);
     }
     if (!replacement) return marks.push({ index, original, reason: rule.none });
     word.output = matchCase(original, replacement);
@@ -177,7 +225,7 @@ export function applyRhymeFilter(
       },
       (word, previous, repository, index) => {
         const rule = verbRules.get(index)!;
-        return nthVerb(word, previous, rule.offset, rule.accept, repository, rule.none);
+        return nthVerb(word, previous, rule.offset, rule.accept, repository, rule.none, rule.among);
       },
       verbs,
       apostrophe,

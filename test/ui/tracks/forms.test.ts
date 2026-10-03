@@ -63,14 +63,14 @@ test('page : le choix de forme déclenche « set-form » ; les refrains sont mar
   controller.setInput(TEN);
   await controller.run();
   // Le choix de forme, près du texte résultant.
-  const app = html`<${App} state=${controller.state} controller=${controller} />`;
+  const app = html`<${App} state=${controller.state} controller=${controller} version="0.2.0" />`;
   assert.match(renderToString(app), /<label class="silk form-choice">Forme<select class="form">/);
-  const select = find(App({ state: controller.state, controller }), (node) => node.props['class'] === 'form');
+  const select = find(App({ state: controller.state, controller, version: "0.2.0" }), (node) => node.props['class'] === 'form');
   (select.props['onChange'] as (event: Event) => void)(inputEvent('rondel'));
   assert.equal(controller.state.mixer.form, 'rondel');
   assert.equal(controller.state.view!.result.split('\n').filter(Boolean).length, 13);
   // Les vers 7, 8 et 13 sont des copies, en italique, annoncées aux lecteurs d'écran.
-  const out = renderToString(html`<${App} state=${controller.state} controller=${controller} />`);
+  const out = renderToString(html`<${App} state=${controller.state} controller=${controller} version="0.2.0" />`);
   assert.equal(out.match(/<span class="sr-only">Refrain, copie du vers (\d+) : <\/span>/g)!.length, 3);
   assert.match(out, /Refrain, copie du vers 1 : <\/span><span class="word copy"[^>]*>la<\/span>/);
   // Un clic sur un mot du vers 7 ouvre l'inspecteur sur ce mot dans le vers 1.

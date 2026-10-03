@@ -12,6 +12,7 @@ import { ThemeToggle } from './components/theme-toggle.ts';
 import type { TracksController, TracksState } from './controller.ts';
 import { installedPlugins, pluginById, recipes } from './mixer-state.ts';
 import { gridSteps, inspectorLocks, inspectorWindow, summarize } from './view-model.ts';
+import { versionLink } from '../version.ts';
 import type { Form } from '../../domain/forms/form.ts';
 
 /** Le dépôt du code d'Oulipao, ouvert sous licence MIT. */
@@ -25,14 +26,17 @@ export interface AppProps {
   >;
   /** Bascule le thème clair ou sombre ; posé par le montage, qui seul touche au document. */
   onTheme?: () => void;
+  /** La version publiée (« 0.2.0 »), injectée au build et passée par le montage. */
+  version: string;
 }
 
 /**
  * La page des pistes, de haut en bas : le texte résultant (collé en haut de l'écran quand on
  * descend), la saisie, la chaîne de contraintes, la grille des pistes, l'inspecteur, puis le carnet.
  */
-export function App({ state, controller, onTheme = () => {} }: AppProps): VNode {
+export function App({ state, controller, onTheme = () => {}, version }: AppProps): VNode {
   const { mixer, view, stale } = state;
+  const release = versionLink(version);
   const audible = view?.audible ?? audibleCategories(mixer.tracks);
   const words = view?.stages[0]!.words.map((word) => word.output) ?? [];
   const steps = view ? gridSteps(mixer, view.tracks, words) : [];
@@ -50,6 +54,7 @@ export function App({ state, controller, onTheme = () => {} }: AppProps): VNode 
       <header class="bar">
         <h1>Oulipao</h1>
         <span class="silk">Ouvroir de littérature potentielle assistée par ordinateur</span>
+        <a class="key version-link" href=${release.href} title="Journal des versions">${release.text}</a>
         <a class="key source-link" href=${SOURCE_URL}>Code source</a>
         <${ThemeToggle} onToggle=${onTheme} />
       </header>
