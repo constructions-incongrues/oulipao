@@ -64,3 +64,19 @@ test('Sounds.rhyming : une rime ou plusieurs, le même ensemble d’un passage �
   assert.deepEqual([...both].sort(), [...new Set([...ez, ...first.rhyming('ɔ̃', 'noun')])].sort());
   assert.equal(second.rhyming(['ɛz', 'ɔ̃', 'ɛz'], 'noun'), both); // même réunion, quel que soit l'ordre
 });
+
+test('candidatesFor : la finale exigée ; un mot trop court n’a aucune candidate, et rien n’est essayé', async () => {
+  const { candidatesFor, soundsFor } = await import('../../src/domain/rhyme/engine.ts');
+  const { rhymeResources } = await import('../support/phonetics.ts');
+  const { splitPhonemes } = await import('../../src/domain/phonetics/phoneme.ts');
+  const sounds = soundsFor(rhymeResources())!;
+  const chaise = splitPhonemes('ʃɛz')!;
+  assert.ok(candidatesFor(sounds, chaise, 'sufficient', 'noun').has('chaise'));
+  assert.equal(candidatesFor(sounds, chaise, 'sufficient', 'noun'), sounds.ending(splitPhonemes('ɛz')!, 'noun'));
+  const ans = candidatesFor(sounds, splitPhonemes('ɑ̃')!, 'sufficient', 'noun');
+  assert.equal(ans.size, 0);
+  let tried = 0;
+  const choice = nthNoun('chaise', {}, 7, () => (tried++, true), morphology, ans);
+  assert.equal(choice.status, 'missing-form');
+  assert.equal(tried, 0); // l'échec est constaté sans parcours
+});

@@ -107,3 +107,17 @@ test('découpe de la rime : la voyelle et ce qui la suit', () => {
   assert.deepEqual(splitRhyme(sound('ʁoz')), { vowel: 'o', coda: 'z' });
   assert.deepEqual(splitRhyme([]), { vowel: '', coda: '' });
 });
+
+test('finale exigée : la plus longue de la rime et des phonèmes communs ; rien pour un mot trop court', async () => {
+  const { requiredEnding } = await import('../../../src/domain/phonetics/rhyme.ts');
+  const { splitPhonemes } = await import('../../../src/domain/phonetics/phoneme.ts');
+  const ending = (ipa: string, richness: 'poor' | 'sufficient' | 'rich') => requiredEnding(splitPhonemes(ipa)!, richness)?.join('');
+  assert.equal(ending('ʃɛz', 'sufficient'), 'ɛz'); // la rime suffit
+  assert.equal(ending('ʃɛz', 'rich'), 'ʃɛz');
+  assert.equal(ending('plɥi', 'sufficient'), 'ɥi'); // rime d'un phonème : on remonte d'un cran
+  assert.equal(ending('plɥi', 'poor'), 'i');
+  assert.equal(ending('ɑ̃', 'sufficient'), undefined); // « ans » ne peut rimer suffisamment
+  assert.equal(ending('ɑ̃', 'poor'), 'ɑ̃');
+  assert.equal(ending('ʃɑ̃bʁ', 'sufficient'), 'ɑ̃bʁ'); // rime de trois phonèmes, gardée entière
+  assert.equal(ending('kaʁtʁ', 'sufficient'), 'aʁtʁ'); // rime de quatre phonèmes
+});

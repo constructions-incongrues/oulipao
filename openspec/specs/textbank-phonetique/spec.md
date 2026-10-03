@@ -106,3 +106,11 @@ The phonetics textbank SHALL give, for a rhyme and a category, every candidate f
 - **GIVEN** une forme dont la prononciation est devinée
 - **WHEN** on cherche les homophones d'un nom qui se prononce comme elle
 - **THEN** elle n'en fait pas partie, comme avant l'index
+
+### Requirement: Les formes d'une finale
+The phonetics textbank SHALL give, for a sequence of one to three final phonemes and a category, every candidate form of that category whose pronunciation ends with that sequence, guessed and borrowed pronunciations included, without scanning the dictionary.
+
+#### Scenario: Formes en /ɥi/
+- **GIVEN** la textbank chargée
+- **WHEN** on demande les noms qui finissent par /ɥi/
+- **THEN** on obtient notamment « pluie » et « nuit », et aucun nom qui finit seulement par /i/, comme « ami »

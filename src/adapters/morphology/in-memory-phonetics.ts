@@ -27,6 +27,7 @@ export class InMemoryPhonetics implements PhoneticsRepository {
   readonly #byForm = new Map<string, PhoneticEntry[]>();
   readonly #bySound = new Map<string, string[]>();
   readonly #byRhyme = new Map<string, string[]>();
+  readonly #byEnding = new Map<string, string[]>();
 
   constructor(entries: readonly PhoneticEntry[]) {
     for (const entry of entries) {
@@ -35,6 +36,9 @@ export class InMemoryPhonetics implements PhoneticsRepository {
       // Les homophones restent ceux du lexique : une prononciation empruntée ou devinée n'en fait pas.
       if ((entry.source ?? 'G') === 'G') push(this.#bySound, `${entry.category}\t${phonemes.join('')}`, entry.form);
       push(this.#byRhyme, `${entry.category}\t${rhymeOf(phonemes)}`, entry.form);
+      // Les finales d'un à trois phonèmes : la rime riche en exige au plus trois.
+      for (let length = 1; length <= Math.min(3, phonemes.length); length++)
+        push(this.#byEnding, `${entry.category}\t${phonemes.slice(-length).join('')}`, entry.form);
     }
     for (const forms of this.#bySound.values()) forms.sort(collator.compare);
   }
@@ -48,6 +52,9 @@ export class InMemoryPhonetics implements PhoneticsRepository {
   }
   rhyming(rhyme: string, category: Category): readonly string[] {
     return this.#byRhyme.get(`${category}\t${rhyme}`) ?? NONE;
+  }
+  ending(phonemes: string, category: Category): readonly string[] {
+    return this.#byEnding.get(`${category}\t${phonemes}`) ?? NONE;
   }
 }
 

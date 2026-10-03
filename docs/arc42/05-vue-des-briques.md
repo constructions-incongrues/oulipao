@@ -87,7 +87,7 @@ cycle : les ports appartiennent à la brique Domaine (voir la boîte noire du Do
 | I-02 | Port `MorphologyRepository` : noms, adjectifs, adverbes, élision | Interne | Interface TypeScript, `src/ports/morphology.ts` |
 | I-03 | Port `VerbRepository` : infinitifs et formes conjuguées | Interne | Interface TypeScript, `src/ports/verbs.ts` |
 | I-04 | Port `TextSource` : le contenu d'un fichier texte | Interne | Type fonction, `src/ports/text-source.ts` |
-| I-06 | Port `PhoneticsRepository` : prononciations d'une forme, homophones, formes d'une rime | Interne | Interface TypeScript, `src/ports/phonetics.ts` |
+| I-06 | Port `PhoneticsRepository` : prononciations d'une forme, homophones, formes d'une rime, formes d'une finale | Interne | Interface TypeScript, `src/ports/phonetics.ts` |
 | I-05 | Contrat de plugin : réglages, pistes visées, application | Interne | Schémas zod, `src/domain/plugin.ts` et `plugin-chain.ts` |
 
 Les interfaces externes IF-01 à IF-04, IF-06 et IF-07 sont celles du contexte (section 3), avec les

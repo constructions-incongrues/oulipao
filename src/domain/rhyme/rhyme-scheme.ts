@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type { Phoneme } from '../phonetics/phoneme.ts';
 import { GENDER_LABELS, GenderSchema, hasGender, rhymeGender, rhymeOf, rhymes, RICHNESS_LABELS, RichnessSchema, type RhymeGender } from '../phonetics/rhyme.ts';
 import { definePlugin, FULL_SCOPE, type ParameterValues } from '../plugin.ts';
-import { planByVerse } from './engine.ts';
+import { candidatesFor, planByVerse } from './engine.ts';
 import { RICHNESS_OPTIONS } from './rn.ts';
 import { lettersFor, SCHEME_LABELS, SchemeSchema, wantedGender } from './scheme.ts';
 
@@ -72,7 +72,7 @@ export const rhymeSchemePlugin = definePlugin({
           offset: 1,
           // Une lettre déjà posée : le voisin doit avoir sa rime. Sinon le critère est de ne plus
           // rimer, ce que l'index ne sert pas : parcours complet.
-          ...(reference && { among: sounds.rhyming(rhymeOf(reference), slot.category) }),
+          ...(reference && { among: candidatesFor(sounds, reference, richness, slot.category) }),
           accept: (form) => fits(form, sounds.of(form, slot.category)),
           none: reference ? `aucun voisin en /${rhymeOf(reference)}/ (${letter})` : `aucun voisin hors des autres rimes (${letter})`,
         });
