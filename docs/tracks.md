@@ -96,3 +96,9 @@ leurs gestionnaires en parcourant l'arbre rendu (`test/support/vnode.ts`), sans 
 Hors couverture, nommément (`package.json`) : `src/ui/tracks/main.ts` et `src/ui/page.ts`
 (montage sur le DOM, presse-papiers), `src/adapters/taggers/camembert-model.ts` (chargement du
 modèle).
+
+## Voir aussi
+
+- [Le contrat des plugins](plugins.md) : ce que la page attend d'une contrainte
+- [Comment ajouter une recette](guides/ajouter-une-recette.md)
+- [Comment publier le site](guides/publier-le-site.md)

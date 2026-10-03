@@ -1,7 +1,8 @@
 # Oulipao
 
 Outil web qui applique des contraintes oulipiennes à un texte français, entièrement dans le
-navigateur. Planification dans `.nanopm/wiki/`, changements dans `openspec/`.
+navigateur. Planification dans `.nanopm/wiki/`, changements dans `openspec/`, documentation
+indexée dans `README.md`.
 
 ## Contraintes
 
