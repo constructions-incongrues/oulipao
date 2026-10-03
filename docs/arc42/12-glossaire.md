@@ -69,7 +69,7 @@ terme en gras est le terme retenu, celui que toute la documentation doit employe
 | Architecture hexagonale | — | Le découpage en Domaine pur, ports, adaptateurs et interface, imposé par `CLAUDE.md` (sections 2.1 et 4.2). |
 | CamemBERT | — | Le modèle neuronal d'étiquetage, `Xenova/french-camembert-postag-model`, quantifié en q8 et exécuté dans le navigateur (ADR-002). |
 | CDN | Content Delivery Network | jsDelivr, le CDN de Hugging Face et celui de GitHub Pages : ils servent les fichiers ; aucun ne reçoit le texte. |
-| CI | Intégration continue | Le workflow GitHub Actions `pages.yml` : typecheck, tests, assemblage, publication. |
+| CI | Intégration continue | Le workflow GitHub Actions `release.yml` : release-please, puis, à chaque version, typecheck, tests, assemblage, publication. |
 | CSP | Content Security Policy | La politique déclarée dans une balise `<meta>` de chaque page : elle borne les requêtes au site, à jsDelivr et à Hugging Face, même pour un code tiers altéré (QS-02, RISK-02). |
 | DEBT-xx | — | L'identifiant d'une dette technique de la section 11. |
 | DOM | Document Object Model | Seuls les points d'entrée des pages y touchent. Ils sont exclus de la couverture de tests. |
@@ -86,6 +86,7 @@ terme en gras est le terme retenu, celui que toute la documentation doit employe
 | OpenSpec | — | L'outil de changements du projet (`openspec/`) : chaque évolution a sa spec et son `design.md`. |
 | Port | — | Une interface déclarée par le Domaine pour ce dont il a besoin : `Tagger`, `MorphologyRepository`, `VerbRepository`, `TextSource`. |
 | `ponytail:` | — | Le préfixe d'un commentaire qui marque une simplification délibérée, avec sa limite et sa sortie (section 2.4). |
+| PR de version | — | La PR que release-please ouvre et tient à jour sur `main` : prochain numéro de version et `CHANGELOG.md`. Sa fusion publie le site. |
 | Q42 | — | Le modèle de qualité de quality.arc42.org, d'où viennent les étiquettes `#secure`, `#suitable`, `#efficient`, `#flexible`, `#usable`. |
 | QS-xx | — | L'identifiant d'un scénario de qualité de la section 10 (QS-01 à QS-13). |
 | Racine de composition | — | Le seul endroit qui choisit quel adaptateur sert quel port : `src/ui/composition.ts`. |

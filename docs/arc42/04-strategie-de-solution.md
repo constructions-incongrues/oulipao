@@ -33,7 +33,7 @@ qui tournent directement sur les sources, aucun framework lourd.
 | Prononciations | GLÀFF 1.2.2 (CC BY-SA 3.0), joint par forme et catégorie, dans un fichier séparé chargé à la demande ; repli par règles pour les formes absentes | Le seul lexique sous une licence sans ambiguïté qui donne la prononciation en API (382 669 formes). Lexique 3.83 en donne aussi, mais sa licence reste ambiguë (ADR-007). |
 | Interface | Preact et gabarits htm, sans JSX | Les composants restent du TypeScript ordinaire. `node --test` les lit sans étape de compilation et les teste en les rendant en texte (`preact-render-to-string`). |
 | Outillage | `tsc --noEmit`, esbuild pour assembler, `node --test` avec un seuil de couverture | Il faut un assemblage, puisque zod est une dépendance d'exécution, mais pas de chaîne de compilation pour les tests. Le seuil de 90 % est vérifié par le lanceur lui-même. |
-| Hébergement et publication | GitHub Pages, publié par GitHub Actions à chaque poussée sur `main` ; licence MIT | C'est le choix du fondateur (2026-10-03). L'hébergement est gratuit, il n'y a aucune machine, et un test qui échoue empêche la publication. |
+| Hébergement et publication | GitHub Pages, publié par GitHub Actions à chaque version fixée par release-please ; licence MIT | C'est le choix du fondateur (2026-10-03). L'hébergement est gratuit, il n'y a aucune machine, et un test qui échoue empêche la publication. Le fondateur choisit le moment de la mise en ligne en fusionnant la PR de version. |
 | Génération du texte | Des règles énoncées, appliquées à un dictionnaire ; ni modèle génératif ni tirage aléatoire | « La contrainte est explicite » : chaque mot nouveau doit pouvoir être expliqué, ce que montre l'inspecteur. Ce choix ne sera pas rouvert. |
 
 ---

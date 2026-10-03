@@ -104,7 +104,7 @@ et ce qu'elle n'apporte pas.
 |----------|----------------------------|
 | Objectif 1, `#secure` : le texte reste dans le navigateur | Pas de serveur applicatif. Le site est statique, le calcul se fait côté client, et seuls trois fournisseurs reçoivent des requêtes. |
 | Objectif 3, `#efficient` : un réglage en direct | Le calcul se fait dans le navigateur : un geste ne déclenche aucun aller-retour réseau, seulement un passage de la chaîne en mémoire (section 6.3). Pour le premier chargement : compression gzip par GitHub Pages, adresse versionnée et cache du navigateur, verbes chargés seulement à la demande. |
-| `#operable`, hors section 1.2 : publication sans geste manuel | GitHub Actions publie à chaque poussée sur `main`, après `typecheck` et `test`. Si un test échoue, le site publié reste le précédent. |
+| `#operable`, hors section 1.2 : publication en un geste | release-please tient à jour une PR de version ; sa fusion étiquette la version et GitHub Actions publie, après `typecheck` et `test`. Si un test échoue, le site publié reste le précédent. |
 | `#reliable`, hors section 1.2 : disponibilité | Délégué à GitHub Pages, jsDelivr et Hugging Face, sans engagement de service ni repli. Une panne de l'un des deux CDN tiers empêche la mise en pistes (section 6.4). |
 
 ---

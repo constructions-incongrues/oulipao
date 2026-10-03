@@ -67,9 +67,9 @@ test('Échec de la textbank phonétique : l’erreur reste, les autres filtres s
   await tick();
   assert.deepEqual(controller.state.phonetics, { status: 'error', error: 'Échec du chargement des prononciations : 404.' });
   assert.equal(controller.state.view!.result, 'un vert'); // le S+1 s'est appliqué
-  const out = renderToString(html`<${App} state=${controller.state} controller=${controller} />`);
+  const out = renderToString(html`<${App} state=${controller.state} controller=${controller} version="0.2.0" />`);
   assert.match(out, /<p class="loading error" role="alert">Échec du chargement des prononciations : 404\. <button type="button" class="load">Relancer<\/button><\/p>/);
-  const app = App({ state: controller.state, controller });
+  const app = App({ state: controller.state, controller, version: "0.2.0" });
   const retry = find(app, (node) => node.props['class'] === 'load');
   (retry.props['onClick'] as () => void)();
   await tick();
@@ -138,5 +138,5 @@ test('App : l’inspecteur montre la prononciation du mot ouvert', async () => {
   await controller.run();
   await tick();
   controller.select(2);
-  assert.match(renderToString(html`<${App} state=${controller.state} controller=${controller} />`), /<p class="pronunciation"><span class="silk">Prononciation<\/span> \/ʃɛz\/ · 1 syllabe · rime \/ɛz\/<\/p>/);
+  assert.match(renderToString(html`<${App} state=${controller.state} controller=${controller} version="0.2.0" />`), /<p class="pronunciation"><span class="silk">Prononciation<\/span> \/ʃɛz\/ · 1 syllabe · rime \/ɛz\/<\/p>/);
 });
