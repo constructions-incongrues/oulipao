@@ -17,8 +17,8 @@ export interface InspectorProps {
 
 const STEP_STATES: Record<GridStep['state'], string> = {
   punched: 'pas percé',
-  outline: 'aucun filtre sur sa piste',
-  closed: 'pas bouché : aucun filtre ne le touche',
+  outline: 'aucune contrainte sur sa piste',
+  closed: 'pas bouché : aucune contrainte ne le touche',
 };
 
 /** Un champ de verrou : vide, le mot suit l'instance ; une valeur hors bornes est refusée sur place. */
@@ -48,7 +48,7 @@ const NEAR = 2;
 
 /**
  * L'inspecteur : le mot choisi et ses voisins, une ligne par étape de la chaîne, de l'origine au
- * dernier filtre ; chaque mot garde sa colonne d'une ligne à l'autre.
+ * dernière contrainte ; chaque mot garde sa colonne d'une ligne à l'autre.
  */
 export function Inspector({ window, word, onClose, step, locks = [], onLock = () => {} }: InspectorProps): VNode {
   return html`

@@ -12,7 +12,7 @@ export interface ChainStep {
   plugin: ConstraintPlugin;
   values: ParameterValues;
   targets: ReadonlySet<Category>;
-  /** Les mots d'origine qu'aucun filtre ne touche (pas bouchés), communs à toute la chaîne. */
+  /** Les mots d'origine qu'aucune contrainte ne touche (pas bouchés), communs à toute la chaîne. */
   closed?: ReadonlySet<number>;
   /** Les valeurs propres à certains mots d'origine pour cette instance (verrous). */
   locks?: ReadonlyMap<number, ParameterValues>;

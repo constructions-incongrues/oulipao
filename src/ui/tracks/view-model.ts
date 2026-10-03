@@ -27,14 +27,14 @@ export interface Mark {
 export interface Stage {
   /** `origin` pour le texte d'origine, sinon l'identifiant de l'instance. */
   id: string;
-  /** « Origine », ou le filtre nommé comme dans le résumé : « S+7 sur les noms ». */
+  /** « Origine », ou la contrainte nommée comme dans le résumé : « S+7 sur les noms ». */
   label: string;
   /** Chaîne vide pour un mot retiré. */
   words: string[];
 }
 
 export interface TracksView {
-  /** Le texte d'origine, puis la sortie de chaque filtre actif, dans l'ordre de la chaîne. */
+  /** Le texte d'origine, puis la sortie de chaque contrainte active, dans l'ordre de la chaîne. */
   stages: Stage[];
   /** La piste de chaque mot d'origine. */
   tracks: Category[];
@@ -81,7 +81,7 @@ function locksOf(instance: Instance): Map<number, ParameterValues> {
   return locks;
 }
 
-/** Un pas de la grille : percé (un filtre agit), en contour (aucun filtre ne vise sa piste), ou bouché. */
+/** Un pas de la grille : percé (une contrainte agit), en contour (aucune contrainte ne vise sa piste), ou bouché. */
 export interface GridStep {
   /** Position du mot d'origine. */
   index: number;
@@ -130,7 +130,7 @@ export function describeInstance(instance: Instance, lookup: PluginLookup = plug
   return `${label}${label.includes(',') ? ',' : ''} sur ${tracksPhrase(instance.targets)}`;
 }
 
-/** Rejoue la chaîne de filtres, puis le mixage, sans réétiqueter. */
+/** Rejoue la chaîne de contraintes, puis le mixage, sans réétiqueter. */
 export function buildView(
   session: Session,
   mixer: MixerState,
@@ -202,8 +202,8 @@ export function summarize(mixer: MixerState, view: TracksView, lookup: PluginLoo
   const rule = enabled.length
     ? enabled.map((instance) => stepSentence(instance, view, lookup)).join(' ')
     : !mixer.instances.length
-      ? 'Aucun filtre : texte d’origine.'
-      : `${mixer.instances.length > 1 ? 'Filtres coupés' : 'Filtre coupé'} : texte d’origine.`;
+      ? 'Aucune contrainte : texte d’origine.'
+      : `${mixer.instances.length > 1 ? 'Contraintes coupées' : 'Contrainte coupée'} : texte d’origine.`;
   const cut = cutTracks(view.audible);
   return cut.length ? `${rule} Pistes coupées : ${cut.join(', ')}.` : rule;
 }

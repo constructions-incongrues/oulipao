@@ -80,10 +80,10 @@ test('StepGrid : une colonne par mot, temps forts, un pas par mot sur la ligne d
   assert.match(out, /class="ch verb off"/);
   assert.match(out, /aria-pressed="true" aria-label="Muet : retirer la piste Verbes du texte"/);
   // pas : percé, bouché, contour ; nom accessible avec l'état et le verrou
-  assert.match(out, /class="cell step punched sel" aria-pressed="true" aria-label="Noms, matin : percé, le filtre agit, verrou 3"><svg[^>]*><use href="#shape-noun" fill="currentColor"/);
+  assert.match(out, /class="cell step punched sel" aria-pressed="true" aria-label="Noms, matin : percé, la contrainte agit, verrou 3"><svg[^>]*><use href="#shape-noun" fill="currentColor"/);
   assert.match(out, /<span class="lock mono" aria-hidden="true">3<\/span>/);
   assert.match(out, /class="cell step closed" aria-pressed="false" aria-label="Noms, horloge : bouché, laissé tel quel"><svg[^>]*><use href="#shape-noun" fill="none"/);
-  assert.match(out, /aria-label="Verbes, sonne : aucun filtre sur cette piste"/);
+  assert.match(out, /aria-label="Verbes, sonne : aucune contrainte sur cette piste"/);
   // quatre pas par page : « vite » (pas 5) n'est pas sur la première
   assert.doesNotMatch(out, /vite/);
   assert.equal(elements(grid).filter(byClass('step')).length, 4);
@@ -163,7 +163,7 @@ test('Inspector : état du pas, champ de verrou dans la bande de l’instance, v
   assert.deepEqual(locks, [['s7-1', 'offset', 2], ['s7-1', 'offset', undefined]]);
   // Champ vide sans verrou ; le refus remet le champ à vide ; sans gestionnaire, rien ne casse.
   const empty = html`<${Inspector} window=${window} word="chat" step="closed" locks=${[{ id: 's7-1', fields: [{ key: 'offset', label: 'Décalage', min: -99, max: 99 }] }]} onStep=${() => {}} onClose=${() => {}} />`;
-  assert.match(renderToString(empty), /pas bouché : aucun filtre ne le touche.*value placeholder="—"/s);
+  assert.match(renderToString(empty), /pas bouché : aucune contrainte ne le touche.*value placeholder="—"/s);
   const bare = { value: '500', setCustomValidity() {}, reportValidity() {} };
   (find(empty, (e) => e.type === 'input').props['onChange'] as (event: Event) => void)({ currentTarget: bare } as unknown as Event);
   assert.equal(bare.value, '');
@@ -227,7 +227,6 @@ test('Source : définition et exemple au premier contact, avancement du modèle,
   const render = (patch: Partial<SourceProps>) => renderToString(html`<${Source} ...${{ ...props, ...patch }} />`);
   const first = html`<${Source} ...${props} />`;
   const out = renderToString(first);
-  assert.match(out, /Le S\+7, inventé par Jean Lescure à l'Oulipo/);
   assert.match(out, /<button type="button" class="run" disabled>Mettre en pistes<\/button>/); // le modèle n'est pas prêt
   assert.match(out, /<progress max="111000000" value="42000000" aria-label="Chargement du modèle"><\/progress>/);
   assert.match(out, /Chargement du modèle : 42 \/ 111 Mo — une seule fois, puis gardé par votre navigateur\./);
@@ -242,7 +241,7 @@ test('Source : définition et exemple au premier contact, avancement du modèle,
   assert.match(renderToString(failed), /role="alert">Échec : hors ligne\. Vous pouvez relancer\. <button type="button" class="load">Relancer/);
   click(failed, byClass('load'));
   const ready = render({ model: model({}), started: true, message: 'Collez d’abord un texte.' });
-  assert.doesNotMatch(ready, /Jean Lescure|class="example"|progress/);
+  assert.doesNotMatch(ready, /class="example"|progress/);
   assert.match(ready, /<button type="button" class="run">Mettre en pistes<\/button>/);
   assert.match(ready, /class="input-message" role="status" aria-live="polite">Collez d’abord un texte\./);
   assert.match(render({ model: model({}), tagging: true }), /Étiquetage du texte…/);
@@ -253,7 +252,7 @@ test('Source : définition et exemple au premier contact, avancement du modèle,
   assert.deepEqual(calls, ['input:Un texte', 'run', 'example', 'load', 'load', 'edit']);
 });
 
-test('Chain : les filtres numérotés dans l’ordre de la chaîne, leurs pistes, leurs gestes ; un bouton d’ajout par type', () => {
+test('Chain : les contraintes numérotées dans l’ordre de la chaîne, leurs pistes, leurs gestes ; un bouton d’ajout par type', () => {
   const actions: MixerAction[] = [];
   const lookup = (type: string) => (type === 'sans' ? sansPlugin : s7Plugin);
   const s7 = { id: 's7-1', type: 's7', enabled: true, params: { offset: 7, mode: 'reagree' }, targets: ['noun' as const] };
@@ -261,29 +260,29 @@ test('Chain : les filtres numérotés dans l’ordre de la chaîne, leurs pistes
   const props = { instances: [s7, sans], plugins: [s7Plugin, sansPlugin], lookup, dispatch: (action: MixerAction) => void actions.push(action) };
   const chain = html`<${Chain} ...${props} />`;
   const out = renderToString(chain);
-  assert.match(out, /<section class="chain" aria-labelledby="chain-title"><h2 class="silk" id="chain-title">Filtres<\/h2><ol class="slots">/);
-  assert.ok(out.indexOf('Filtre 1 : S+7') < out.indexOf('Filtre 2 : Sans'));
+  assert.match(out, /<section class="chain" aria-labelledby="chain-title"><h2 class="silk" id="chain-title">Contraintes<\/h2><ol class="slots">/);
+  assert.ok(out.indexOf('Contrainte 1 : S+7') < out.indexOf('Contrainte 2 : Sans'));
   assert.match(out, /<span class="pos mono" aria-hidden="true">1<\/span><span class="name">S\+7<\/span>/);
-  assert.match(out, /class="slot off" aria-label="Filtre 2 : Sans"/);
+  assert.match(out, /class="slot off" aria-label="Contrainte 2 : Sans"/);
   // pastilles : les pistes que le type traite, avec leur poinçon, enfoncées si visées ; la dernière ne s'éteint pas
   assert.match(out, /class="chip noun" aria-pressed="true" disabled><svg class="shape noun"[^]*?Noms</);
   assert.match(out, /class="chip adjective" aria-pressed="false"><svg/);
-  assert.match(out.slice(0, out.indexOf('Filtre 2')), /class="chip verb" aria-pressed="false"/); // le V+n
-  assert.doesNotMatch(out.slice(0, out.indexOf('Filtre 2')), /chip adverb/); // le S+n ne traite pas les adverbes
+  assert.match(out.slice(0, out.indexOf('Contrainte 2')), /class="chip verb" aria-pressed="false"/); // le V+n
+  assert.doesNotMatch(out.slice(0, out.indexOf('Contrainte 2')), /chip adverb/); // le S+n ne traite pas les adverbes
   assert.equal(elements(chain).filter(byClass('chip')).length, 3 + 5);
   assert.match(out, /aria-label="S\+7 actif">Actif</);
   assert.match(out, /Chaque nom devient le 7e nom/);
-  assert.match(out, /Filtre coupé : le texte passe tel quel\./);
+  assert.match(out, /Contrainte coupée : le texte passe tel quel\./);
   // monter le premier, descendre le dernier : impossible
-  assert.match(out, /aria-label="Monter le filtre 1" disabled/);
-  assert.match(out, /aria-label="Descendre le filtre 2" disabled/);
+  assert.match(out, /aria-label="Monter la contrainte 1" disabled/);
+  assert.match(out, /aria-label="Descendre la contrainte 2" disabled/);
   click(chain, byClass('power'));
   (find(chain, (e) => e.type === 'input').props['onInput'] as (event: Event) => void)(inputEvent('3'));
   (find(chain, (e) => e.type === 'select' && String(e.props['value']) === 'e').props['onChange'] as (event: Event) => void)(inputEvent('a'));
   click(chain, (e) => byClass('chip')(e) && byClass('adjective')(e));
   click(chain, (e) => byClass('chip')(e) && byClass('verb')(e) && e.props['aria-pressed'] === true);
-  click(chain, byLabel('Descendre le filtre 1'));
-  click(chain, byLabel('Monter le filtre 2'));
+  click(chain, byLabel('Descendre la contrainte 1'));
+  click(chain, byLabel('Monter la contrainte 2'));
   click(chain, byClass('duplicate'));
   click(chain, byClass('remove'));
   for (const button of elements(chain).filter(byClass('add-instance'))) (button.props['onClick'] as () => void)();
@@ -302,7 +301,7 @@ test('Chain : les filtres numérotés dans l’ordre de la chaîne, leurs pistes
   ]);
   assert.match(renderToString(chain), />\+ S\+7<.*>\+ Sans</s);
   const empty = renderToString(html`<${Chain} ...${{ ...props, instances: [] }} />`);
-  assert.match(empty, /Aucun filtre : le texte passe tel quel\./);
+  assert.match(empty, /Aucune contrainte : le texte passe tel quel\./);
   assert.doesNotMatch(empty, /<ol/);
 });
 

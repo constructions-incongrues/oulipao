@@ -95,7 +95,7 @@ test('refuse un geste non conforme', () => {
 test('pas bouchés : un clic bouche, un second rouvre ; valable pour toute la chaîne', () => {
   assert.deepEqual(after({ type: 'toggle-step', index: 5 }).closed, [5]);
   assert.deepEqual(after({ type: 'toggle-step', index: 5 }, { type: 'toggle-step', index: 2 }, { type: 'toggle-step', index: 5 }).closed, [2]);
-  // Un filtre ajouté après coup trouve le pas toujours bouché : l'état n'appartient à aucune instance.
+  // Une contrainte ajoutée après coup trouve le pas toujours bouché : l'état n'appartient à aucune instance.
   assert.deepEqual(after({ type: 'toggle-step', index: 5 }, { type: 'add-instance', plugin: 'lipogram' }).closed, [5]);
 });
 

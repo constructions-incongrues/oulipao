@@ -29,7 +29,7 @@ export type PluginState = z.infer<typeof PluginStateSchema>;
 export const LockSchema = z.object({ index: z.number().int().nonnegative(), key: z.string().min(1), value: z.number().int() });
 export type Lock = z.infer<typeof LockSchema>;
 
-/** Une instance de filtre : un exemplaire d'une contrainte, avec ses réglages et ses pistes visées. */
+/** Une instance de contrainte : un exemplaire, avec ses réglages et ses pistes visées. */
 export const InstanceSchema = PluginStateSchema.extend({
   id: z.string().min(1),
   /** L'identifiant du type de contrainte (« s7 », « lipogram »). */
@@ -44,7 +44,7 @@ export type Instance = z.infer<typeof InstanceSchema>;
 export const MixerStateSchema = z.object({
   tracks: TracksSchema,
   instances: z.array(InstanceSchema),
-  /** Les mots d’origine aux pas bouchés : aucun filtre ne les touche. Absent : aucun. */
+  /** Les mots d’origine aux pas bouchés : aucune contrainte ne les touche. Absent : aucun. */
   closed: z.array(z.number().int().nonnegative()).optional(),
 });
 export type MixerState = z.infer<typeof MixerStateSchema>;
