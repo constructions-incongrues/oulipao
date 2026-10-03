@@ -454,3 +454,10 @@ test('Browser : le choix se déplie, Brancher ajoute la recette réglée, Annule
   assert.equal(actions.length, 1);
   assert.deepEqual(calls.slice(-2), ['aria-expanded=false', 'focus key']);
 });
+
+test('StepGrid : le pas que dit l’écoute porte la marque et est annoncé comme pas courant ; aucun sans écoute', () => {
+  const playing = renderToString(html`<${StepGrid} ...${gridProps({ playing: 3 }).props} />`);
+  assert.match(playing, /class="hd playing" aria-pressed="false" aria-current="step" aria-label="Inspecter « sonne », pas 4"/);
+  assert.equal(playing.match(/aria-current/g)?.length, 1);
+  assert.equal(renderToString(html`<${StepGrid} ...${gridProps().props} />`).match(/aria-current|playing/g), null);
+});

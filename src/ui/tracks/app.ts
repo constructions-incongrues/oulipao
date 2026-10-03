@@ -9,6 +9,7 @@ import { Result } from './components/result.ts';
 import { Source } from './components/source.ts';
 import { StepGrid } from './components/step-grid.ts';
 import { ThemeToggle } from './components/theme-toggle.ts';
+import { Transport } from './components/transport.ts';
 import type { TracksController, TracksState } from './controller.ts';
 import { installedPlugins, pluginById, recipes } from './mixer-state.ts';
 import { gridSteps, inspectorLocks, inspectorWindow, summarize } from './view-model.ts';
@@ -22,7 +23,7 @@ export interface AppProps {
   state: TracksState;
   controller: Pick<
     TracksController,
-    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook' | 'copyEntry' | 'editEntry'
+    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook' | 'copyEntry' | 'editEntry' | 'toggle' | 'setTempo' | 'setVoice'
   >;
   /** Bascule le thème clair ou sombre ; posé par le montage, qui seul touche au document. */
   onTheme?: () => void;
@@ -115,6 +116,16 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
       ${state.phonetics.status === 'error' &&
       html`<p class="loading error" role="alert">${state.phonetics.error} <button type="button" class="load" onClick=${() => void controller.loadPhonetics()}>Relancer</button></p>`}
       <${Chain} instances=${mixer.instances} plugins=${installedPlugins} recipes=${recipes} lookup=${pluginById} dispatch=${controller.dispatch} />
+      ${view &&
+      html`<${Transport}
+        playing=${state.playing}
+        tempo=${state.tempo}
+        voice=${state.voice}
+        voices=${state.voices}
+        onToggle=${controller.toggle}
+        onTempo=${controller.setTempo}
+        onVoice=${controller.setVoice}
+      />`}
       <${StepGrid}
         steps=${steps}
         tracks=${mixer.tracks}
@@ -124,6 +135,7 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
         page=${state.page}
         selected=${selected}
         generation=${state.generation}
+        playing=${state.playhead}
         onToggleStep=${(index: number) => controller.dispatch({ type: 'toggle-step', index })}
         onInspect=${controller.select}
         onMute=${(category: Category) => controller.dispatch({ type: 'toggle-mute', category })}

@@ -290,6 +290,15 @@ export function ruleMention(mixer: MixerState, audible: ReadonlySet<Category>, l
   return parts.length ? `\n\n— ${parts.join(' · ')} (Oulipao)` : '';
 }
 
+/**
+ * La mention, quand le texte a été réglé en écoutant : « réglé en écoutant » en dernière partie
+ * (« — S+7 … · réglé en écoutant (Oulipao) »), ou seule quand aucune règle n'agit.
+ */
+export function withListening(mention: string, listened: boolean): string {
+  if (!listened) return mention;
+  return mention ? mention.replace(/ \(Oulipao\)$/, ' · réglé en écoutant (Oulipao)') : '\n\n— réglé en écoutant (Oulipao)';
+}
+
 /** Les mots dont le texte a changé d'une vue à l'autre, par position : ce sont eux qui s'éclairent. */
 export function changedWords(before: TracksView | undefined, after: TracksView): Set<number> {
   if (!before) return new Set();
