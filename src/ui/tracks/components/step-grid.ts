@@ -20,6 +20,8 @@ export interface StepGridProps {
   selected?: number;
   /** Le numéro du dernier changement du texte : la tête de lecture passe à chaque nouveau. */
   generation: number;
+  /** Le pas que l'écoute est en train de dire ; aucun : l'écoute est arrêtée. */
+  playing?: number;
   onToggleStep: (index: number) => void;
   onInspect: (index: number) => void;
   onMute: (category: Category) => void;
@@ -62,7 +64,7 @@ function Pages({ count, page, perPage, total, onPage }: { count: number; page: n
  * Seul), une colonne par mot. Un pas percé laisse agir les contraintes ; un clic le bouche.
  */
 export function StepGrid(props: StepGridProps): VNode {
-  const { steps, tracks, audible, reminders, perPage, page, selected, generation } = props;
+  const { steps, tracks, audible, reminders, perPage, page, selected, generation, playing } = props;
   const count = Math.max(1, Math.ceil(steps.length / perPage));
   const shown = steps.slice(page * perPage, (page + 1) * perPage);
   const columns = Array.from({ length: perPage }, (_, k) => shown[k]);
@@ -77,7 +79,8 @@ export function StepGrid(props: StepGridProps): VNode {
         <div class="corner silk" aria-hidden="true">Pas</div>
         ${columns.map((step) =>
           step
-            ? html`<button type="button" class=${`hd${step.index % 4 === 0 ? ' beat' : ''}`} aria-pressed=${step.index === selected}
+            ? html`<button type="button" class=${`hd${step.index % 4 === 0 ? ' beat' : ''}${step.index === playing ? ' playing' : ''}`} aria-pressed=${step.index === selected}
+                aria-current=${step.index === playing ? 'step' : undefined}
                 aria-label=${`Inspecter « ${step.word} », pas ${step.index + 1}`} onClick=${() => props.onInspect(step.index)}>
                 <span class="num mono">${step.index + 1}</span><span class="w">${step.word}</span>
               </button>`

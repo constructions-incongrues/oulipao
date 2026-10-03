@@ -1,13 +1,16 @@
+import { wordsAtStep } from '../../domain/monitoring.ts';
 import { tagText } from '../../domain/tagging.ts';
+import { DEFAULT_PREFERENCES, MonitoringPreferencesSchema, tempoTiming, type MonitoringPreferencesStorage } from '../../ports/monitoring-preferences.ts';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
 import type { NotebookStorage } from '../../ports/notebook-storage.ts';
 import type { PhoneticsRepository } from '../../ports/phonetics.ts';
+import type { Speech, Voice } from '../../ports/speech.ts';
 import type { Tagger } from '../../ports/tagger.ts';
 import type { VerbRepository } from '../../ports/verbs.ts';
 import { initialState, pluginById, reduce } from './mixer-state.ts';
 import { addEntry, editEntry, entryClipboard, exportFileName, mergeEntries, parseNotebook, removeEntry, serializeNotebook, type NotebookEntry } from './notebook.ts';
 import { MixerStateSchema, type MixerAction, type MixerState } from './types.ts';
-import { buildView, changedWords, pageOf, ruleMention, stepsPerPage, type Session, type TracksView } from './view-model.ts';
+import { buildView, changedWords, pageOf, ruleMention, stepsPerPage, withListening, type Session, type TracksView } from './view-model.ts';
 
 /** Ce dont la page a besoin de l'extérieur. */
 export interface TracksDependencies {
@@ -23,6 +26,12 @@ export interface TracksDependencies {
   copy: (text: string) => Promise<void>;
   /** Le carnet et ce qu'il demande au navigateur ; absent : un carnet en mémoire, perdu au rechargement. */
   notebook?: NotebookDependencies;
+  /** La voix de l'écoute ; absente : pas d'écoute. */
+  speech?: Speech;
+  /** Les réglages de l'écoute, gardés ; absents : réglages par défaut, perdus au rechargement. */
+  preferences?: MonitoringPreferencesStorage;
+  /** Attend un blanc, en millisecondes ; remplacé dans les tests. */
+  sleep?: (ms: number) => Promise<void>;
 }
 
 /** Ce dont le carnet a besoin de l'extérieur. */
@@ -100,6 +109,17 @@ export interface TracksState {
   page: number;
   /** La bande du texte résultant est collée en haut de l'écran : elle se fait compacte. */
   pinned: boolean;
+  /** L'écoute est en marche. */
+  playing: boolean;
+  /** Le pas que dit l'écoute ; aucun : l'écoute est arrêtée. */
+  playhead?: number;
+  /** L'écoute a tourné depuis la dernière mise en pistes ou réouverture : la mention le dit. */
+  listened: boolean;
+  /** Le tempo de l'écoute, de 1 à 5, et la voix choisie. */
+  tempo: number;
+  voice?: string;
+  /** Les voix françaises du système ; aucune : pas d'écoute. */
+  voices: Voice[];
 }
 
 export interface TracksController {
@@ -151,6 +171,16 @@ export interface TracksController {
   showPage(page: number): void;
   /** La bande du texte résultant vient de se coller en haut de l'écran, ou de se décoller. */
   pin(pinned: boolean): void;
+  /** Lance l'écoute de la page affichée, en boucle ; rien sans texte en pistes ni voix française. */
+  play(): void;
+  /** Arrête l'écoute ; la voix se tait aussitôt. */
+  stop(): void;
+  /** Lance ou arrête l'écoute. */
+  toggle(): void;
+  /** Règle le tempo de l'écoute, à partir du pas suivant. */
+  setTempo(tempo: number): void;
+  /** Choisit la voix de l'écoute, à partir du pas suivant. */
+  setVoice(voice: string): void;
 }
 
 /** Un texte d'exemple, écrit pour Oulipao. */
@@ -167,6 +197,9 @@ const messageOf = (error: unknown) => (error instanceof Error ? error.message : 
 export function createTracksController(dependencies: TracksDependencies, onChange: (state: TracksState) => void = () => {}): TracksController {
   const notebook = dependencies.notebook ?? memoryNotebook();
   const stored = parseNotebook(notebook.storage.read());
+  const speech = dependencies.speech;
+  const preferences = dependencies.preferences?.load() ?? DEFAULT_PREFERENCES;
+  const sleep = dependencies.sleep ?? ((ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms)));
   let state: TracksState = {
     input: '',
     editing: true,
@@ -186,6 +219,11 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     perPage: 16,
     page: 0,
     pinned: false,
+    playing: false,
+    listened: false,
+    tempo: preferences.tempo,
+    voice: preferences.voice,
+    voices: speech?.voices() ?? [],
   };
   let session: Session | undefined;
   let morphology: MorphologyRepository | undefined;
@@ -193,6 +231,8 @@ export function createTracksController(dependencies: TracksDependencies, onChang
   let phonetics: PhoneticsRepository | undefined;
   let loading: Promise<void> | undefined;
   let runs = 0;
+  // Le numéro de l'écoute en cours : arrêter le change, et la boucle d'avant s'éteint d'elle-même.
+  let playback = 0;
 
   const update = (patch: Partial<TracksState>) => {
     state = { ...state, ...patch };
@@ -219,6 +259,35 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     if (state.verbs.status === 'idle' && enabled.some((instance) => instance.targets.includes('verb'))) void controller.loadVerbs();
     if (state.phonetics.status === 'idle' && enabled.some((instance) => pluginById(instance.type).phonetic)) void controller.loadPhonetics();
   };
+
+  /** La mention de la chaîne, avec « réglé en écoutant » si l'écoute a tourné. */
+  const mention = (view: TracksView) => withListening(ruleMention(state.mixer, view.audible), state.listened);
+
+  /**
+   * L'écoute : à chaque pas, elle relit l'état (vue, page, tempo, voix), dit les mots du pas ou se
+   * tait, attend un blanc, puis passe au suivant, en boucle sur la page affichée. Un réglage changé
+   * s'entend donc au pas suivant, sans revenir au début.
+   */
+  const listen = async (token: number) => {
+    let at = state.page * state.perPage;
+    while (token === playback) {
+      const first = state.page * state.perPage;
+      const end = Math.min(first + state.perPage, state.view?.tracks.length ?? 0);
+      if (end <= first) return controller.stop();
+      if (at < first || at >= end) at = first; // fin de page, ou page changée : premier pas de la page
+      update({ playhead: at });
+      const { rate, gap } = tempoTiming(state.tempo);
+      const words = wordsAtStep(state.view!.segments, at);
+      if (words.length) await speech!.speak(words, { rate, voice: state.voice });
+      if (token !== playback) return;
+      await sleep(gap);
+      at++;
+    }
+  };
+
+  const savePreferences = () => dependencies.preferences?.save(MonitoringPreferencesSchema.parse({ tempo: state.tempo, voice: state.voice }));
+
+  speech?.onVoices(() => update({ voices: speech.voices() }));
 
   const controller: TracksController = {
     get state() {
@@ -252,6 +321,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       const text = state.input;
       if (!text.trim()) return update({ inputMessage: 'Collez d’abord un texte.' });
       const run = ++runs;
+      controller.stop();
       update({ tagging: true, inputMessage: '', copyMessage: '' });
       await controller.preload();
       if (run !== runs) return; // un essai plus récent a pris le relais
@@ -263,7 +333,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
         // Nouvel étiquetage, nouvelles positions : les pas se rouvrent, les verrous tombent, l'inspecteur se ferme.
         const mixer = reduce(state.mixer, { type: 'reset-steps' });
         const view = buildView(session, mixer, morphology!, undefined, verbs, phonetics);
-        update({ tagging: false, editing: false, stale: state.input !== text, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, unsaved: true });
+        update({ tagging: false, editing: false, stale: state.input !== text, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, unsaved: true, listened: false });
         wantResources(mixer);
       } catch (error) {
         if (run === runs) update({ tagging: false, inputMessage: `Échec de l’étiquetage : ${messageOf(error)}. Vous pouvez relancer.` });
@@ -310,6 +380,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     },
     shortcut(key, inField) {
       if (inField || !state.view) return false;
+      if (key === ' ') return controller.toggle(), true;
       const delta = ({ ArrowLeft: -1, ArrowRight: 1 } as Record<string, number>)[key];
       // Inspecteur fermé : une flèche l'ouvre sur le premier mot de la page affichée.
       if (delta && state.selected === undefined) controller.select(Math.min(state.page * state.perPage, state.view.tracks.length - 1));
@@ -334,6 +405,31 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     pin(pinned) {
       if (pinned !== state.pinned) update({ pinned });
     },
+    play() {
+      if (state.playing || !speech || !state.view || !state.voices.length) return;
+      update({ playing: true, listened: true });
+      void listen(++playback);
+    },
+    stop() {
+      if (!state.playing) return;
+      playback++;
+      speech!.cancel();
+      update({ playing: false, playhead: undefined });
+    },
+    toggle() {
+      if (state.playing) controller.stop();
+      else controller.play();
+    },
+    setTempo(tempo) {
+      if (!MonitoringPreferencesSchema.shape.tempo.safeParse(tempo).success) return;
+      update({ tempo });
+      savePreferences();
+    },
+    setVoice(voice) {
+      if (!state.voices.some((candidate) => candidate.id === voice)) return;
+      update({ voice });
+      savePreferences();
+    },
     keep() {
       const view = state.view;
       if (!view || !session || state.stale || view.empty) return;
@@ -341,7 +437,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
         id: notebook.newId(),
         keptAt: notebook.now().toISOString(),
         result: view.result,
-        mention: ruleMention(state.mixer, view.audible),
+        mention: mention(view),
         source: session,
         mixer: state.mixer,
       };
@@ -363,7 +459,8 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       }
       if (state.unsaved && !notebook.confirm('Le texte en cours n’est pas gardé. Rouvrir quand même ?')) return;
       const run = ++runs; // une mise en pistes en cours ne doit pas l'écraser
-      update({ notebookMessage: '', inputMessage: '' });
+      controller.stop();
+      update({ notebookMessage: '', inputMessage: '', listened: false });
       await controller.preload();
       if (run !== runs || !morphology) return;
       session = entry.source;
@@ -420,7 +517,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       const view = state.view;
       if (!view || state.stale || view.empty) return;
       try {
-        await dependencies.copy(view.result + ruleMention(state.mixer, view.audible));
+        await dependencies.copy(view.result + mention(view));
         update({ copyMessage: 'Copié.' });
       } catch (error) {
         update({ copyMessage: `Copie impossible : ${messageOf(error)}` });

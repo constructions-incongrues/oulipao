@@ -2,7 +2,9 @@
 // teste est dans controller.ts, view-model.ts et les composants.
 import { html } from 'htm/preact';
 import { render } from 'preact';
+import { createSpeechSynthesis } from '../../adapters/speech/speech-synthesis.ts';
 import { createLocalStorageNotebook } from '../../adapters/storage/local-storage-notebook.ts';
+import { createLocalStoragePreferences } from '../../adapters/storage/local-storage-preferences.ts';
 import { createMorphologyLoader, createNeuralTagging, createPhoneticsLoader, createVerbsLoader } from '../composition.ts';
 import { App } from './app.ts';
 import { createTracksController, type TracksState } from './controller.ts';
@@ -29,6 +31,9 @@ const controller = createTracksController(
     loadVerbs: createVerbsLoader(import.meta.url),
     loadPhonetics: createPhoneticsLoader(import.meta.url),
     copy: (text) => navigator.clipboard.writeText(text),
+    // La voix du système : sans synthèse vocale dans le navigateur, pas d'écoute.
+    ...('speechSynthesis' in window && { speech: createSpeechSynthesis(speechSynthesis, SpeechSynthesisUtterance) }),
+    preferences: createLocalStoragePreferences(localStorage),
     notebook: {
       storage: createLocalStorageNotebook(localStorage),
       now: () => new Date(),
@@ -47,13 +52,20 @@ const controller = createTracksController(
 );
 draw(controller.state);
 
-// Les raccourcis de l'inspecteur répondent où que soit le focus, sauf dans un champ de saisie.
+// Les raccourcis de l'inspecteur et de l'écoute répondent où que soit le focus, sauf dans un champ de saisie.
+const inField = (target: EventTarget | null) =>
+  target instanceof HTMLElement && (/^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName) || target.isContentEditable);
 document.addEventListener('keydown', (event) => {
   if (event.altKey || event.ctrlKey || event.metaKey) return;
-  const target = event.target as HTMLElement | null;
-  const inField = !!target && (/^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName) || target.isContentEditable);
-  if (controller.shortcut(event.key, inField)) event.preventDefault();
+  if (controller.shortcut(event.key, inField(event.target))) event.preventDefault();
 });
+// Sur un bouton qui a le focus, la barre d'espace l'activerait au relâché : elle sert à l'écoute.
+document.addEventListener('keyup', (event) => {
+  if (event.key === ' ' && controller.state.view && !inField(event.target)) event.preventDefault();
+});
+// L'écoute se tait quand l'onglet est masqué ou la page quittée, et ne reprend pas seule.
+document.addEventListener('visibilitychange', () => document.hidden && controller.stop());
+addEventListener('pagehide', () => controller.stop());
 
 // La grille compte ses pas par page d'après sa largeur ; la bande du texte résultant se colle
 // en haut de l'écran dès que le repère placé juste au-dessus d'elle en sort.
