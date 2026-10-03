@@ -50,3 +50,17 @@ test('adjectifs, adverbes et verbes : mêmes voisins avec ou sans les candidates
     }
   }
 });
+
+test('Sounds.rhyming : une rime ou plusieurs, le même ensemble d’un passage à l’autre', async () => {
+  const { soundsFor } = await import('../../src/domain/rhyme/engine.ts');
+  const { rhymeResources } = await import('../support/phonetics.ts');
+  const resources = rhymeResources();
+  const [first, second] = [soundsFor(resources)!, soundsFor(resources)!];
+  const ez = first.rhyming('ɛz', 'noun');
+  assert.ok(ez.has('chaise'));
+  assert.equal(second.rhyming('ɛz', 'noun'), ez); // gardé d'un passage à l'autre
+  assert.equal(first.rhyming(['ɛz'], 'noun'), ez);
+  const both = first.rhyming(['ɔ̃', 'ɛz'], 'noun');
+  assert.deepEqual([...both].sort(), [...new Set([...ez, ...first.rhyming('ɔ̃', 'noun')])].sort());
+  assert.equal(second.rhyming(['ɛz', 'ɔ̃', 'ɛz'], 'noun'), both); // même réunion, quel que soit l'ordre
+});

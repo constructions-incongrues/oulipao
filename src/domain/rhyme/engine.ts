@@ -30,8 +30,11 @@ export interface Sounds {
   of(word: string, category: Category): readonly Phoneme[] | undefined;
   /** Les formes d'une catégorie qui se prononcent exactement comme ces phonèmes. */
   homophones(phonemes: readonly Phoneme[], category: Category): ReadonlySet<string>;
-  /** Les formes d'une catégorie qui ont cette rime, devinées comprises : les candidates d'un R+n. */
-  rhyming(rhyme: string, category: Category): ReadonlySet<string>;
+  /**
+   * Les formes d'une catégorie qui ont cette rime, ou l'une de ces rimes, devinées comprises : les
+   * candidates d'un filtre qui veut une rime donnée. Le même ensemble est rendu d'un passage à l'autre.
+   */
+  rhyming(rhyme: string | readonly string[], category: Category): ReadonlySet<string>;
 }
 
 // Les candidates d'une rime, en ensemble, gardées d'un passage à l'autre : la textbank rend toujours
@@ -42,6 +45,17 @@ const asSet = (forms: readonly string[]) => {
   if (!set) asSets.set(forms, (set = new Set(forms)));
   return set;
 };
+
+// La réunion des formes de plusieurs rimes (la rime berrychonne en croise deux), gardée par textbank.
+const unions = new WeakMap<PhoneticsRepository, Map<string, ReadonlySet<string>>>();
+function rhymingAll(phonetics: PhoneticsRepository, rhymes: readonly string[], category: Category): ReadonlySet<string> {
+  const key = `${category}\t${[...new Set(rhymes)].sort().join('\t')}`;
+  let byKey = unions.get(phonetics);
+  if (!byKey) unions.set(phonetics, (byKey = new Map()));
+  let union = byKey.get(key);
+  if (!union) byKey.set(key, (union = new Set(rhymes.flatMap((rhyme) => phonetics.rhyming(rhyme, category)))));
+  return union;
+}
 
 // Une mémoire par passage pour les prononciations. Les candidates d'une rime viennent de l'index de
 // la textbank, qui couvre toutes les formes du dictionnaire (prononciations devinées comprises).
@@ -57,7 +71,8 @@ function soundsOf(phonetics: PhoneticsRepository): Sounds {
       return memo.get(key);
     },
     homophones: (phonemes, category) => asSet(phonetics.homophones(phonemes.join(''), category)),
-    rhyming: (rhyme, category) => asSet(phonetics.rhyming(rhyme, category)),
+    rhyming: (rhyme, category) =>
+      typeof rhyme === 'string' ? asSet(phonetics.rhyming(rhyme, category)) : rhyme.length === 1 ? asSet(phonetics.rhyming(rhyme[0]!, category)) : rhymingAll(phonetics, rhyme, category),
   };
 }
 

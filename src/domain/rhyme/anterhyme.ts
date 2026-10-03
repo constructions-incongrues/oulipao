@@ -34,6 +34,7 @@ export const anterhymePlugin = definePlugin({
         if (!head || !slot.sound || !slot.open || rhymes(slot.sound, head, richness)) continue;
         settle(slot, {
           offset: 1,
+          among: sounds.rhyming(rhymeOf(head), slot.category), // rimer suppose la même rime
           accept: (form) => {
             const candidate = sounds.of(form, slot.category);
             return !!candidate && rhymes(candidate, head, richness);
