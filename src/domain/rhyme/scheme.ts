@@ -3,7 +3,7 @@ import type { Category } from '../categories.ts';
 import type { GenderSetting, RhymeGender } from '../phonetics/rhyme.ts';
 
 /** Les schémas de rimes nommés. */
-export const SchemeSchema = z.enum(['plates', 'croisees', 'embrassees', 'etreinte', 'bisexuelle']);
+export const SchemeSchema = z.enum(['plates', 'croisees', 'embrassees', 'etreinte', 'bisexuelle', 'rondel', 'villanelle']);
 export type Scheme = z.infer<typeof SchemeSchema>;
 
 export const SCHEME_LABELS: Record<Scheme, string> = {
@@ -12,10 +12,12 @@ export const SCHEME_LABELS: Record<Scheme, string> = {
   embrassees: 'rimes embrassées (ABBA)',
   etreinte: 'étreinte (ABC…CBA)',
   bisexuelle: 'rime bisexuelle (AAA)',
+  rondel: 'rondel (10 vers, deux rimes)',
+  villanelle: 'villanelle (13 vers, deux rimes)',
 };
 
 /** Le motif de chaque schéma de longueur fixe, en rangs de lettre (0 = A). */
-const PATTERNS: Record<Exclude<Scheme, 'etreinte'>, readonly number[]> = {
+const PATTERNS: Record<Exclude<Scheme, 'etreinte' | 'rondel' | 'villanelle'>, readonly number[]> = {
   plates: [0, 0, 1, 1],
   croisees: [0, 1, 0, 1],
   embrassees: [0, 1, 1, 0],
@@ -25,11 +27,19 @@ const PATTERNS: Record<Exclude<Scheme, 'etreinte'>, readonly number[]> = {
 const letter = (rank: number) => String.fromCharCode(65 + (rank % 26));
 
 /**
+ * Les lettres des vers de l'auteur dans une forme à refrain, refrains ôtés : les places non
+ * recopiées du rondel (ABBA ABAB ABBAA) et de la villanelle (ABA ABA … ABAA).
+ */
+const FORMS: Record<'rondel' | 'villanelle', string> = { rondel: 'ABBAABABBA', villanelle: 'ABAABABABABAB' };
+
+/**
  * La lettre de chaque vers d'une strophe. Un schéma de longueur fixe se répète avec des lettres
  * nouvelles (six vers croisés : ABAB CD) ; l'étreinte se lit en miroir sur toute la strophe
- * (ABCCBA), et le vers du milieu d'une strophe impaire est libre (`null`).
+ * (ABCCBA), et le vers du milieu d'une strophe impaire est libre (`null`). Le rondel et la
+ * villanelle lettrent les vers de l'auteur avant les refrains ; au-delà, les vers sont libres.
  */
 export function lettersFor(scheme: Scheme, stanzaLength: number): (string | null)[] {
+  if (scheme === 'rondel' || scheme === 'villanelle') return Array.from({ length: stanzaLength }, (_, k) => FORMS[scheme][k] ?? null);
   if (scheme === 'etreinte') {
     const half = Math.floor(stanzaLength / 2);
     return Array.from({ length: stanzaLength }, (_, k) => (k < half ? letter(k) : k >= stanzaLength - half ? letter(stanzaLength - 1 - k) : null));

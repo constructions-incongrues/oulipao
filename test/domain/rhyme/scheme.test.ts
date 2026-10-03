@@ -34,3 +34,10 @@ test('lettres d’une sortie : par strophe, sur les fins de vers ; un mot retir�
   assert.deepEqual(schemeLetters([w('', 'la', 'other')], 'plates'), [undefined]);
   assert.deepEqual(schemeLetters([w('', 'chat'), w('\n', 'chien'), w('\n', 'loup')], 'etreinte'), ['A', undefined, 'A']);
 });
+
+test('formes à refrain : les vers de l’auteur, refrains ôtés ; au-delà, libres', () => {
+  assert.equal(read(lettersFor('rondel', 10)), 'ABBAABABBA');
+  assert.equal(read(lettersFor('villanelle', 13)), 'ABAABABABABAB');
+  assert.equal(read(lettersFor('rondel', 12)), 'ABBAABABBA··');
+  assert.equal(read(lettersFor('villanelle', 4)), 'ABAA');
+});

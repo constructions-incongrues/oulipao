@@ -51,7 +51,12 @@ L'étiquetage a lieu une fois par texte. Ensuite chaque geste rejoue deux foncti
 2. **Mixage** (`src/domain/mixing.ts`) : `audibleCategories` dit quelles pistes s'entendent
    (sans solo, celles qui ne sont pas muettes ; sinon les seules pistes en solo) ; `mixText`
    retire les mots des autres, resserre le texte et garde la ponctuation.
-`buildView` (`view-model.ts`) enchaîne les deux et prépare les bandes de l'inspecteur ;
+3. **Forme à refrain** (`layoutForm`, `src/domain/forms/form.ts`) : aucune, rondel ou
+   villanelle, choisie près du texte résultant. Elle se pose sur le texte mixé, après la chaîne,
+   et recopie les vers de refrain à leurs places. Un mot recopié garde l'index de son mot
+   d'origine : la chaîne, l'inspecteur et la grille restent alignés mot à mot.
+
+`buildView` (`view-model.ts`) enchaîne les trois et prépare les bandes de l'inspecteur ;
 `inspectorWindow` en découpe la fenêtre autour du mot choisi ; `createTracksController` (`controller.ts`)
 tient l'état de la page (saisie, attente, erreur, table de mixage, vue) et ne connaît pas
 Preact ; les composants (`components/`, `app.ts`) sont des fonctions de cet état.
@@ -69,6 +74,15 @@ Preact ; les composants (`components/`, `app.ts`) sont des fonctions de cet éta
   d'un filtre sont nommées, sauf quand il vise toutes celles que son type sait traiter. Rien
   quand le texte copié est le texte d'origine (filtres coupés ou sans effet, toutes les pistes
   entendues). Décision D11 de la revue d'ingénierie.
+
+- **Aucun filtre après la forme.** Les filtres ne lisent que les vers de l'auteur. Les refrains
+  recopient la sortie de la chaîne et rien ne les retouche ensuite. Pour faire rimer la forme,
+  on met un schéma de rimes « rondel » ou « villanelle » dans la chaîne. Les sauts de strophe de
+  l'auteur tombent : c'est la forme qui fait les strophes. S'il manque des vers, la forme
+  s'arrête et le résumé dit combien. Les vers en trop suivent dans une strophe à part.
+- **Un refrain se lit comme une copie** : en italique, à l'encre secondaire, annoncé aux
+  lecteurs d'écran (« Refrain, copie du vers 1 »). Cliquer un de ses mots ouvre le mot d'origine
+  dans l'inspecteur. La copie du texte garde les refrains, sans ces marques, et nomme la forme.
 
 ## La page
 

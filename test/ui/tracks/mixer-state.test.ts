@@ -140,3 +140,11 @@ test('nouveau texte : tous les pas rouverts, aucun verrou', () => {
   assert.deepEqual(state.closed, []);
   assert.ok(state.instances.every((candidate) => candidate.locks?.length === 0));
 });
+
+test('forme à refrain : aucune par défaut, choisie par un geste, une forme inconnue refusée', () => {
+  assert.equal(initialState.form, undefined);
+  const rondel = reduce(initialState, { type: 'set-form', form: 'rondel' });
+  assert.equal(rondel.form, 'rondel');
+  assert.equal(reduce(rondel, { type: 'set-form', form: 'none' }).form, 'none');
+  assert.throws(() => reduce(initialState, { type: 'set-form', form: 'sonnet' } as never));
+});

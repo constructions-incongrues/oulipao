@@ -21,6 +21,7 @@ Ces formes ne rentrent pas dans le contrat actuel des filtres. Un filtre rend un
 ### Modified Capabilities
 
 - `interface-a-pistes-reglage-en-direct` : le texte résultant montre les vers recopiés.
+- `schemas-de-rimes` : les schémas « rondel » et « villanelle » s'ajoutent à la liste fermée. Ils lettrent les vers de l'auteur avant que la forme recopie ses refrains.
 
 ## Impact
 

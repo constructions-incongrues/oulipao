@@ -73,6 +73,9 @@
   @keyframes flash { from { background: color-mix(in srgb, var(--track, var(--ink)) 22%, transparent); } }
   .notice { font-size: var(--size-small); color: var(--muted); margin: var(--space-2) 0 0; }
   .stale .result-text { opacity: .45; }
+  /* Un refrain recopie un vers : italique et encre secondaire, annoncé aux lecteurs d'écran. */
+  .result-text .copy { font-style: italic; color: var(--muted); }
+  .form-choice { display: inline-flex; gap: var(--space-2); align-items: center; }
   .syllables { font: 400 var(--size-label) var(--font-mono); color: var(--muted); margin-left: var(--space-2); vertical-align: middle; user-select: none; }
 
   /* Saisie : dépliée, ou repliée en une ligne */
