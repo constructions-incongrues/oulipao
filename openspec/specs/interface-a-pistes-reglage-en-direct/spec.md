@@ -5,14 +5,6 @@ Montrer un texte français comme une partition de pistes linguistiques sur laque
 
 ## Requirements
 
-### Requirement: Partition en systèmes
-The system SHALL, once a pasted text is tagged, display a score that wraps with the text into systems, each system showing a ruler carrying one line of the original text and five tracks (nouns, verbs, adjectives, adverbs, others) where every word is a block aligned on its position in the ruler.
-
-#### Scenario: Texte de 200 mots
-- **GIVEN** un texte de 200 mots collé et étiqueté
-- **WHEN** la partition s'affiche
-- **THEN** chaque système montre cinq pistes et chaque mot a un bloc sur la piste de sa catégorie
-
 ### Requirement: Tranche de réglage par piste
 The system SHALL give each track a channel strip showing the track name, its word count, a mute button, a solo button and a plugin slot.
 
@@ -54,14 +46,6 @@ The system SHALL remove from the resulting text the words of a muted track, tigh
 - **GIVEN** un texte étiqueté
 - **WHEN** la piste des verbes est mise en solo
 - **THEN** le texte résultant ne contient que les verbes et la ponctuation
-
-### Requirement: Blocs des noms remplacés
-The system SHALL show, on the blocks of the nouns track, the replacement word when the plugin is enabled.
-
-#### Scenario: Plugin actif
-- **GIVEN** le plugin actif
-- **WHEN** la partition s'affiche
-- **THEN** le bloc d'un nom remplacé porte le nouveau mot
 
 ### Requirement: Copie du résultat
 The system SHALL place the resulting text in the clipboard when the copy button is used.
