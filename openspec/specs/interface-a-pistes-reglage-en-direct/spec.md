@@ -14,12 +14,17 @@ The system SHALL give each track a channel strip showing the track name, its wor
 - **THEN** elle montre son nom, son nombre de mots, mute, solo et un emplacement de plugin vide
 
 ### Requirement: Plugin S+7 sur la piste des noms
-The system SHALL load the S+7 plugin in the plugin slot of the nouns track, enabled by default with offset 7 and re-agreement mode.
+The system SHALL open with an empty chain; a S+7 added to the chain targets the nouns track, enabled, with offset 7 and re-agreement mode.
 
 #### Scenario: Ouverture
-- **GIVEN** un texte étiqueté
-- **WHEN** la page affiche les tranches
-- **THEN** la tranche des noms porte le S+7, actif, décalage 7, mode « réaccord »
+- **GIVEN** la page à pistes qui vient de s'ouvrir
+- **WHEN** la chaîne s'affiche
+- **THEN** elle ne porte aucune contrainte et le texte passe tel quel
+
+#### Scenario: Ajout d'un S+7
+- **GIVEN** la chaîne vide
+- **WHEN** on ajoute un S+7
+- **THEN** il vise les noms, actif, décalage 7, mode « réaccord »
 
 ### Requirement: Réglage en direct
 The system SHALL update the resulting text when the offset changes, when the plugin is disabled or re-enabled, or when the mode changes, without tagging the text again.

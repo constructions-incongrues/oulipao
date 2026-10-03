@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
+import { SEED } from '../../support/chain.ts';
 import { createTracksController, EXAMPLE_TEXT, type TracksDependencies, type TracksState } from '../../../src/ui/tracks/controller.ts';
 import type { Tagger } from '../../../src/ports/tagger.ts';
 import { LOADING } from '../../../src/domain/verb.ts';
@@ -19,6 +20,8 @@ const setup = (overrides: Partial<TracksDependencies> = {}, calls: string[] = []
     },
     (state) => states.push(state),
   );
+  for (const action of SEED) controller.dispatch(action);
+  states.length = 0;
   return { controller, states, copied };
 };
 const tick = () => new Promise((resolve) => setTimeout(resolve, 0));

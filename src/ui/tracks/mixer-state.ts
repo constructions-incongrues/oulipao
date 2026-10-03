@@ -32,13 +32,10 @@ function nextId(instances: readonly Instance[], type: string): string {
   return `${type}-${n}`;
 }
 
-/**
- * À l'ouverture : toutes les pistes s'entendent ; un S+7 en marche sur les noms, puis un
- * lipogramme coupé, qui s'essaie après le S+7.
- */
+/** À l'ouverture : toutes les pistes s'entendent, aucune contrainte sur la chaîne. */
 export const initialState: MixerState = {
   tracks: Object.fromEntries(CATEGORIES.map((category) => [category, { muted: false, solo: false }])) as Tracks,
-  instances: [freshInstance(s7Plugin, 's7-1'), freshInstance(lipogramPlugin, 'lipogram-1', false)],
+  instances: [],
 };
 
 /** L'instance d'identifiant donné ; lève si elle n'existe pas. */
