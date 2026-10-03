@@ -39,10 +39,21 @@ const ACCENTS = 'Une lettre accentuée compte pour sa lettre nue, comme chez Per
 /** La date julienne d'un jour, à midi : le 3 octobre 2026 donne 2461317. */
 export const julianDay = (date: Date) => Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 86_400_000 + 2_440_588;
 
+const ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
+const tautogram = (letters: string): RecipeStep[] => [{ type: 'tautogram', params: { letters }, targets: ['noun', 'adjective', 'verb', 'adverb'] }];
+const INITIALS = 'Les mots-outils ne comptent pas ; « être » et « avoir » restent.';
+
 const PAIRS = VOWELS.flatMap((a, i) => VOWELS.slice(i + 1).map((b) => `${a}${b}`));
 
 /** Les recettes fournies, par ordre alphabétique. */
 export const RECIPES: Recipe[] = [
+  {
+    id: 'abecedaire',
+    name: 'Abécédaire',
+    rule: `Les initiales des mots successifs suivent l'alphabet, de a à z, en boucle. ${INITIALS}`,
+    url: 'https://oulipo.net/contraintes/abecedaire',
+    build: () => tautogram(ALPHABET),
+  },
   {
     id: 'beau-present',
     name: 'Beau présent',
@@ -123,6 +134,14 @@ export const RECIPES: Recipe[] = [
     rule: 'Voler un poème à une prose : seule la disposition change.',
     url: 'https://oulipo.net/contraintes/poeme-de-bandit',
     build: () => [{ type: 'lineation', params: { cut: 'every', n: 6 }, targets: [...CATEGORIES] }],
+  },
+  {
+    id: 'tautogramme',
+    name: 'Tautogramme',
+    rule: `Tous les mots commencent par la même lettre. ${INITIALS}`,
+    url: 'https://oulipo.net/contraintes/tautogramme',
+    choice: { label: 'Lettre', options: [...ALPHABET].map((letter) => ({ value: letter, label: letter })) },
+    build: (letter) => tautogram(letter!),
   },
 ];
 
