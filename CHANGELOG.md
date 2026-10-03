@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/constructions-incongrues/oulipao/compare/v0.2.0...v0.3.0) (2026-10-03)
+
+
+### Nouveautés
+
+* carnet replié sous le résultat, copie d'une entrée et retouche ([#49](https://github.com/constructions-incongrues/oulipao/issues/49)) ([1590307](https://github.com/constructions-incongrues/oulipao/commit/159030767d4c80faddbc073bf159ff6a2adac509))
+
 ## [0.2.0](https://github.com/constructions-incongrues/oulipao/compare/v0.1.0...v0.2.0) (2026-10-03)
 
 
