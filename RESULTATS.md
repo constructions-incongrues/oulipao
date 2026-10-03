@@ -396,6 +396,62 @@ Vérification du 2026-10-03 : sous Node avec les fichiers dérivés, puis dans l
 
 ---
 
+# Schémas de rimes
+
+Vérification du 2026-10-03, dans le navigateur (page à pistes, étiqueteur neuronal). Trois poèmes
+de trois quatrains, écrits pour l'essai, passent aux rimes embrassées, rime suffisante, sur les
+quatre pistes pleines.
+
+| Critère | Constat |
+|---|---|
+| Fins de vers qui suivent leur lettre, selon la règle | 35 sur 36. La 36e (« fenêtre », lettre B) reste avec sa raison : « aucun voisin en /ɑ̃tʁ/ (B) ». Critère tenu : 36 sur 36 suivent leur lettre ou portent leur raison |
+| Fins de vers qui suivent leur lettre, à l'oreille | 34 sur 36 (9,4 sur 10). « table » → « CEM » rime en /ɑ̃/ par une prononciation devinée (le sigle manque dans GLÀFF) ; lu comme un sigle, il ne rime pas |
+| Exemples | « Le café fume sur la table / … » ; « Le phare veille sur la Côte-d'Or / Un marin chante sur le remarquable » ; « Le vieux marin ferme les péchés / La marée monte vers la planèze » |
+| Inspecteur | Sur la dernière fin d'un quatrain : « /ʒaʁdɛ̃/ · 2 syllabes · rime /ɛ̃/ masculine · lettre A » |
+| Tests | `npm test` : 317 tests, couverture 100 % des lignes, 98,8 % des branches |
+
+## Écarts et limites
+
+- **Des voisins rares.** Le premier voisin qui rime est souvent un mot rare du dictionnaire
+  (« tories », « sans-soin », « gynophile », « viscosimètre », « riblon »). C'est la règle :
+  le voisin le plus proche dans l'ordre alphabétique, pas le plus courant.
+- **La même rime deux fois.** Un vers peut recevoir le mot de son modèle à un autre nombre
+  (« fleuve » → « fleuves »). La règle ne l'interdit pas.
+- **La fin de vers dépend de l'étiqueteur.** Dans « Le berger rentre avec son chien », « chien »
+  n'est pas étiqueté comme un mot plein. La fin du vers est donc « rentre », et la lettre B prend
+  la rime /ɑ̃tʁ/.
+- **L'inspecteur lit le mot d'origine.** Pour une fin remplacée, il montre la prononciation, la
+  rime et le genre du mot d'origine, mais la lettre du vers dans le schéma. C'est l'écart déjà
+  connu des filtres de rime.
+
+---
+
+# Formes à refrain
+
+Vérification du 2026-10-03, dans le navigateur (page à pistes, étiqueteur neuronal). Deux
+textes écrits pour l'essai passent par un schéma de rimes du même nom que la forme, puis par
+la forme.
+
+| Critère | Constat |
+|---|---|
+| Rondel | 10 vers donnent 13 vers en strophes de 4, 4 et 5 ; les vers 7, 8 et 13 sont des refrains. Deux rimes, /in/ et /o/ : « Le soir descend sur la colline / Le berger rentre avec son troupeau / La lampe brille à la kapo / … / La lune éclaire le ruine-babine / Le soir descend sur la colline » |
+| Villanelle | 13 vers donnent 19 vers, soit cinq tercets et un quatrain ; les vers 6, 12 et 18 recopient le vers 1, les vers 9, 15 et 19 recopient le vers 3. Deux rimes, /abl/ et /ɔʁ/, aucun vers laissé : « La mer revient sur le sable / Les bateaux dorment dans le port / Le phare veille sur la coupable / … » |
+| Refrains | En italique, à l'encre secondaire, annoncés « Refrain, copie du vers N » aux lecteurs d'écran ; un clic sur « colline » au vers 7 sélectionne le mot d'origine, et l'inspecteur l'ouvre. Chaque vers garde son compte de syllabes |
+| Téléphone | À 375 px, le choix de forme passe sous le titre, sans défilement horizontal |
+| Tests | `npm test` : couverture 100 % des lignes ; `npm run typecheck` sans erreur |
+
+## Écarts et limites
+
+- **Une donnée fausse dans GLÀFF.** « polygéniste » y est noté /po/ : le rondel le fait rimer
+  avec « troupeau ». La règle est juste, pas la donnée.
+- **Les mots rares** reviennent, comme pour tous les filtres de rime (« ruine-babine »,
+  « plaider-coupable », « isochore »).
+- **Une erreur de console antérieure.** Au chargement de la page, l'observateur qui colle la
+  bande de résultat lit une bande qui n'existe pas encore (`src/ui/tracks/main.ts`). Elle est
+  sans lien avec les formes et à corriger à part.
+
+---
+
 # Séances en ligne
 
 Mesure du pari de la mise en ligne (`.nanopm/wiki/docs/prds/mise-en-ligne-d-oulipao.md`). Le site n'a aucun traceur : on note ici chaque séance d'écriture, à la main, qu'elle se fasse en ligne ou en local.

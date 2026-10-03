@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import { guessReading } from '../../../src/domain/phonetics/fallback.ts';
 import { describeReading, lineSyllables, pronounce } from '../../../src/domain/phonetics/lookup.ts';
 import { ipaOf, parseReading, phonemesOf, splitPhonemes } from '../../../src/domain/phonetics/phoneme.ts';
-import { rhymeOf, rhymes } from '../../../src/domain/phonetics/rhyme.ts';
+import { hasGender, rhymeGender, rhymeOf, rhymes, splitRhyme } from '../../../src/domain/phonetics/rhyme.ts';
 import { InMemoryPhonetics } from '../../../src/adapters/morphology/in-memory-phonetics.ts';
 import { rhymePhonetics } from '../../support/phonetics.ts';
 
@@ -87,4 +87,23 @@ test('syllabes d’un vers : e muet devant consonne, élidé devant voyelle, mue
   assert.equal(line('dort rêve'), 2);
   assert.equal(line("l' rêve"), 1); // « l' » n'a pas de voyelle
   assert.equal(lineSyllables([], phonetics), undefined);
+});
+
+test('genre de la rime : rose, roses et chantent sont féminins ; vert, souvent et été sont masculins', () => {
+  assert.equal(rhymeGender('rose', sound('ʁoz')), 'feminine');
+  assert.equal(rhymeGender('roses', sound('ʁoz')), 'feminine');
+  assert.equal(rhymeGender('chantent', sound('ʃɑ̃t')), 'feminine');
+  assert.equal(rhymeGender('vert', sound('vɛʁ')), 'masculine');
+  assert.equal(rhymeGender('souvent', sound('su.vɑ̃')), 'masculine');
+  assert.equal(rhymeGender('été', sound('e.te')), 'masculine');
+  assert.equal(rhymeGender('e', []), 'masculine'); // rien à lire
+  assert.ok(hasGender('rose', sound('ʁoz'), 'any') && hasGender('rose', sound('ʁoz'), 'alternate'));
+  assert.ok(hasGender('rose', sound('ʁoz'), 'feminine') && !hasGender('vert', sound('vɛʁ'), 'feminine'));
+});
+
+test('découpe de la rime : la voyelle et ce qui la suit', () => {
+  assert.deepEqual(splitRhyme(sound('vɛʁ')), { vowel: 'ɛ', coda: 'ʁ' });
+  assert.deepEqual(splitRhyme(sound('mɛ.zɔ̃')), { vowel: 'ɔ̃', coda: '' });
+  assert.deepEqual(splitRhyme(sound('ʁoz')), { vowel: 'o', coda: 'z' });
+  assert.deepEqual(splitRhyme([]), { vowel: '', coda: '' });
 });

@@ -11,6 +11,7 @@ import { ThemeToggle } from './components/theme-toggle.ts';
 import type { TracksController, TracksState } from './controller.ts';
 import { installedPlugins, pluginById, recipes } from './mixer-state.ts';
 import { gridSteps, inspectorLocks, inspectorWindow, summarize } from './view-model.ts';
+import type { Form } from '../../domain/forms/form.ts';
 
 /** Le dépôt du code d'Oulipao, ouvert sous licence MIT. */
 export const SOURCE_URL = 'https://github.com/constructions-incongrues/oulipao';
@@ -68,6 +69,8 @@ export function App({ state, controller, onTheme = () => {} }: AppProps): VNode 
         copyMessage=${state.copyMessage}
         onCopy=${() => void controller.copy()}
         syllables=${view.syllables}
+        form=${state.mixer.form ?? 'none'}
+        onForm=${(form: Form) => controller.dispatch({ type: 'set-form', form })}
       />`}
       <${Source}
         input=${state.input}

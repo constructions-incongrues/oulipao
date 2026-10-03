@@ -34,7 +34,7 @@ export type Recipe = z.infer<typeof RecipeSchema> & {
 const VOWELS = [...'aeiouy'];
 const lipograms = (letters: readonly string[]): RecipeStep[] => letters.map((letter) => ({ type: 'lipogram', params: { letter }, targets: [...CATEGORIES] }));
 const trackOptions = CATEGORIES.map((track) => ({ value: track, label: TRACK_NAMES[track] }));
-const ACCENTS = 'Les voyelles accentuées passent, comme dans le lipogramme.';
+const ACCENTS = 'Une lettre accentuée compte pour sa lettre nue, comme chez Perec.';
 
 /** La date julienne d'un jour, à midi : le 3 octobre 2026 donne 2461317. */
 export const julianDay = (date: Date) => Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 86_400_000 + 2_440_588;

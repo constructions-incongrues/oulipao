@@ -123,9 +123,13 @@ export function runChain(text: string, tagged: readonly TaggedWord[], steps: rea
   const marks = new Map<number, WordMark>();
   const reports: StepReport[] = [];
   const stages: StageWord[][] = [];
+  const earlier = new Map<string, ParameterValues[]>();
   for (const { id, plugin, values, targets, closed = new Set<number>(), locks = new Map<number, ParameterValues>() } of steps) {
     const current = reread(words, tail, tagged);
-    const result = plugin.apply(current.text, current.tagged, values, resources, targets, scopeOf(current.origin, closed, locks));
+    const sameType = earlier.get(plugin.id) ?? [];
+    const own = plugin.inherit ? plugin.inherit(values, sameType) : values;
+    earlier.set(plugin.id, [...sameType, values]);
+    const result = plugin.apply(current.text, current.tagged, own, resources, targets, scopeOf(current.origin, closed, locks));
     if (result.words.length !== current.origin.length) throw new Error(`${plugin.id} : la sortie ne suit pas les mots du texte`);
     const before = words;
     words = fold(result.words, current.origin, tagged.length);

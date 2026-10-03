@@ -16,7 +16,7 @@ test('état initial : toutes les pistes s’entendent, aucune contrainte ; la ch
   ]);
   assert.deepEqual(Object.keys(state.tracks), ['noun', 'verb', 'adjective', 'adverb', 'other']);
   assert.ok(Object.values(state.tracks).every((t) => !t.muted && !t.solo));
-  assert.deepEqual(installedPlugins.map((plugin) => plugin.id), ['s7', 'lipogram', 'track-sort', 'edge', 'lineation', 'rn', 'monorhyme', 'antirhyme', 'homophony']);
+  assert.deepEqual(installedPlugins.map((plugin) => plugin.id), ['s7', 'lipogram', 'track-sort', 'edge', 'lineation', 'rn', 'monorhyme', 'antirhyme', 'homophony', 'rhyme-scheme', 'anterhyme', 'berrychonne']);
   assert.throws(() => pluginById('inconnu'), /plugin inconnu : inconnu/);
 });
 
@@ -139,4 +139,12 @@ test('nouveau texte : tous les pas rouverts, aucun verrou', () => {
   const state = after({ type: 'toggle-step', index: 5 }, { type: 'set-lock', id: 's7-1', index: 3, key: 'offset', value: 3 }, { type: 'reset-steps' });
   assert.deepEqual(state.closed, []);
   assert.ok(state.instances.every((candidate) => candidate.locks?.length === 0));
+});
+
+test('forme à refrain : aucune par défaut, choisie par un geste, une forme inconnue refusée', () => {
+  assert.equal(initialState.form, undefined);
+  const rondel = reduce(initialState, { type: 'set-form', form: 'rondel' });
+  assert.equal(rondel.form, 'rondel');
+  assert.equal(reduce(rondel, { type: 'set-form', form: 'none' }).form, 'none');
+  assert.throws(() => reduce(initialState, { type: 'set-form', form: 'sonnet' } as never));
 });

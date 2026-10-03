@@ -2,7 +2,7 @@
 
 Ouvroir de Littérature Potentielle Assistée par Ordinateur. Collez un texte français : Oulipao
 le range en pistes (noms, verbes, adjectifs, adverbes, mots-outils) et y branche des
-contraintes de l'Oulipo, S+7, lipogramme, Haï-kaïsation…, que l'on règle en direct comme les
+contraintes de l'Oulipo, S+7, lipogramme, Haï-kaïsation, rimes embrassées, sonnet monorime…, que l'on règle en direct comme les
 effets d'une table de mixage.
 
 Tout tourne dans le navigateur : le texte ne part nulle part.

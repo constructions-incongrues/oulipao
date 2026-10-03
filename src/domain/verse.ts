@@ -2,10 +2,11 @@ import type { Category } from './categories.ts';
 import type { TaggedWord } from './tagged-word.ts';
 import { tokenize } from './tokenizer.ts';
 
-/** La place d'un mot dans le poème : son vers, sa strophe (comptés depuis 1), et s'il finit son vers. */
+/** La place d'un mot dans le poème : son vers, sa strophe (comptés depuis 1), et s'il ouvre ou finit son vers. */
 export interface VersePlace {
   line: number;
   stanza: number;
+  lineStart: boolean;
   lineEnd: boolean;
 }
 
@@ -25,7 +26,7 @@ export function layoutVerse(text: string, tagged: readonly TaggedWord[]): VerseP
     const gap = text.slice(k ? tokens[k - 1]!.end : 0, token.start);
     if (k && /\n[^\S\n]*\n/.test(gap)) [line, stanza] = [line + 1, stanza + 1];
     else if (k && gap.includes('\n')) line++;
-    return { line, stanza, lineEnd: false };
+    return { line, stanza, lineStart: false, lineEnd: false };
   });
   // Le dernier mot plein de chaque vers.
   for (let k = places.length - 1, seen = 0; k >= 0; k--) {
@@ -34,6 +35,12 @@ export function layoutVerse(text: string, tagged: readonly TaggedWord[]): VerseP
       places[k]!.lineEnd = true;
       seen = places[k]!.line;
     }
+  }
+  // Le premier mot plein de chaque vers.
+  for (let k = 0, seen = 0; k < places.length; k++) {
+    if (places[k]!.line === seen || !FULL_WORDS.has(tagged[k]!.category)) continue;
+    places[k]!.lineStart = true;
+    seen = places[k]!.line;
   }
   return places;
 }

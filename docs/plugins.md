@@ -39,6 +39,7 @@ n'est pas dans `tracks`, une contrainte non ciblable ne déclare pas les cinq pi
 | `track-sort` | Tri par piste | les cinq (noms) | `mode` (`remove`, `keep`), `layout` (`as-is`, `one-per-line`) | `src/domain/track-sort/plugin.ts` |
 | `edge` | Bord | non ciblable | `mode` (`ends`, `head-tail`, `inside`), `n` (1 à 9) | `src/domain/edge/plugin.ts` |
 | `lineation` | Mise en vers | non ciblable | `cut` (`every`, `punctuation`, `number`), `n` (1 à 99), `number` (1 à 9 999 999) | `src/domain/lineation/plugin.ts` |
+| `rn`, `monorhyme`, `antirhyme`, `homophony`, `rhyme-scheme`, `anterhyme`, `berrychonne` | filtres de rime | noms, adjectifs, verbes, adverbes | voir plus bas | `src/domain/rhyme/` |
 
 La liste fait foi dans `installedPlugins` (`src/ui/tracks/mixer-state.ts`).
 
@@ -121,6 +122,10 @@ peut-être en revanche revoir `track` et `marks`, pensés pour une contrainte at
 - Une chaîne de contraintes, tenue par la page : le contrat lui-même n'a pas eu à changer pour
   qu'une contrainte lise la sortie d'une autre.
 
+- `inherit` (facultatif) : dans une chaîne, une instance reçoit aussi les réglages des instances
+  du même type placées avant elle. Le lipogramme s'en sert pour cumuler les lettres bannies : un
+  lipogramme en e après un lipogramme en a ne remet pas de « a ».
+
 ## Ce que la mise en page a changé au contrat
 
 - Une contrainte peut ne pas viser de pistes (`targetable: false`) : elle compte tous les mots,
@@ -132,7 +137,7 @@ peut-être en revanche revoir `track` et `marks`, pensés pour une contrainte at
 
 ## Ce que les filtres de rime ont changé au contrat
 
-Quatre contraintes phonétiques (`src/domain/rhyme/`) : R+n, monorime, antirime, homophonies.
+Sept contraintes phonétiques (`src/domain/rhyme/`) : R+n, monorime, antirime, homophonies, et les schémas de rimes (plus bas).
 
 - `phonetic: true` dans la déclaration : la page charge alors les prononciations à la demande
   (`resources.phonetics`, port `PhoneticsRepository`), comme les verbes. D'ici là, chaque mot
@@ -152,6 +157,38 @@ Quatre contraintes phonétiques (`src/domain/rhyme/`) : R+n, monorime, antirime,
 | Monorime | la rime, dans la liste des 30 plus fréquentes (`frequent-rhymes.ts`, généré) | en /ɔ̃/ : « la chaise » en fin de vers → « la maison » |
 | Antirime | richesse | « la table / la fable / la rose / la chose » → « la table / la fraise / la rose / la maison » |
 | Homophonies | rang | « un vers » → « un vert » |
+
+### Les schémas de rimes
+
+Trois contraintes de plus, plus un réglage pour le monorime. Les quatre se décident strophe par
+strophe et dans l'ordre du texte, alors que le moteur décide mot à mot et dans l'ordre des
+catégories. Elles passent donc par une pré-passe partagée, `planByVerse` (`engine.ts`) : la
+contrainte reçoit les mots retenus de chaque strophe et note, par `settle`, ceux qui changent.
+`settle` rend la prononciation que le mot aura (celle du voisin prévu par `probe`), si bien
+qu'une fin remplacée compte ensuite par sa rime nouvelle. L'antirime y passe aussi.
+
+- **Le genre de la rime** (`rhymeGender`, `src/domain/phonetics/rhyme.ts`). La rime est féminine
+  si le mot finit par un e muet écrit que la prononciation n'a pas (« rose », « chantent »), et
+  masculine sinon (« souvent », « été »).
+- **Les lettres** (`lettersFor`, `src/domain/rhyme/scheme.ts`). Un schéma de longueur fixe se
+  répète avec des lettres nouvelles : six vers croisés donnent ABAB CD. L'étreinte se lit en
+  miroir sur toute la strophe, et le vers du milieu d'une strophe impaire est libre.
+- **Un vers sans voisin.** S'il n'a aucun voisin qui convienne, il garde son mot, avec sa raison.
+  La rime de sa lettre ne change pas.
+- **L'inspecteur.** Il montre le genre de la rime et, sous un schéma de rimes actif, la lettre de
+  la fin de vers (`schemeLetters`).
+
+| Contrainte | Réglages | Exemple |
+|---|---|---|
+| Monorime | + genre : indifférent, masculin, féminin, alterné (sonnet monorime) | en /ɛʁ/ alterné : « le vert / le chat / le ver » → « le vert / le verre / le ver » |
+| Schéma de rimes (`rhyme-scheme`) | schéma (plates, croisées, embrassées, étreinte, rime bisexuelle), richesse, genre (indifférent ou alterné) | embrassées : « la chaise / la table / la rose / la chose » → « la chaise / la table / la table / la fraise » |
+| Antérime (`anterhyme`) | richesse | « la chaise dort / la table dort » → « la chaise dort / la braise dort » |
+| Rime berrychonne (`berrychonne`) | aucun | « le vert / la chose / la table » → « … / la braise » (/ɛ/ de l'un, /z/ de l'autre) |
+
+Les schémas « rondel » (ABBAABABBA) et « villanelle » (ABAABABABABAB) donnent leurs lettres
+aux seuls vers de l'auteur. Les deux formes ajoutent des vers, et une contrainte doit rendre un
+mot par mot qu'elle lit : elles ne sont donc pas des contraintes. Elles se posent après la
+chaîne (`layoutForm`, voir `docs/tracks.md`), et aucun filtre ne peut agir après elles.
 
 ## Côté page
 

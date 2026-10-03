@@ -14,7 +14,11 @@ import { containsLetter, neighbourAdjective, neighbourAdverb, neighbourNoun } fr
 
 const LETTERS = [...'abcdefghijklmnopqrstuvwxyz'];
 
-const ParamsSchema = z.object({ letter: z.enum(LETTERS as [string, ...string[]]).default('e') });
+const ParamsSchema = z.object({
+  letter: z.enum(LETTERS as [string, ...string[]]).default('e'),
+  /** Les lettres bannies par les lipogrammes placés avant dans la chaîne (voir `inherit`). */
+  banned: z.string().regex(/^[a-z]*$/).optional(),
+});
 const params = (values: ParameterValues) => ParamsSchema.parse(values);
 
 
@@ -78,6 +82,7 @@ export const lipogramPlugin = definePlugin({
   parameters: [{ kind: 'choice', key: 'letter', label: 'Lettre', options: LETTERS.map((letter) => ({ value: letter, label: letter })) }],
   defaults: ParamsSchema.parse({}),
   parse: params,
+  inherit: (values, earlier) => ({ ...values, banned: earlier.map((previous) => params(previous).letter).join('') }),
   acts: () => true,
   title: (values) => `Lipogramme en ${params(values).letter}`,
   label: (values) => `lipogramme en ${params(values).letter}`,
@@ -86,7 +91,9 @@ export const lipogramPlugin = definePlugin({
     return `Chaque mot qui contient « ${letter} » devient le premier mot qui le suit dans le dictionnaire sans cette lettre ; les verbes gardent leur temps et leur personne, « être » et « avoir » restent.`;
   },
   apply(text, tagged, values, { morphology, verbs }, targets, scope = FULL_SCOPE) {
-    const { letter } = params(values);
+    const { letter: own, banned = '' } = params(values);
+    // La lettre de l'instance et celles des lipogrammes d'avant : aucune ne doit revenir.
+    const letter = own + banned;
     const skip = new Set(scope.skip);
     const tokens = tokenize(text);
     const apostrophe = text.includes('’') ? '’' : "'";

@@ -6,18 +6,23 @@ import { morphology } from '../../support/morphology.ts';
 
 const m = morphology();
 
-test('containsLetter : sans tenir compte de la casse ; « é » n’est pas « e »', () => {
+test('containsLetter : sans tenir compte de la casse ni des accents, comme chez Perec ; plusieurs lettres', () => {
   assert.equal(containsLetter('Ferme', 'e'), true);
   assert.equal(containsLetter('FERME', 'e'), true);
   assert.equal(containsLetter('école', 'e'), true);
-  assert.equal(containsLetter('héros', 'e'), false);
+  assert.equal(containsLetter('héros', 'e'), true);
+  assert.equal(containsLetter('Âtre', 'a'), true);
+  assert.equal(containsLetter('à', 'a'), true);
+  assert.equal(containsLetter('cœur', 'e'), true);
+  assert.equal(containsLetter('chat', 'ei'), false);
+  assert.equal(containsLetter('chat', 'ea'), true);
 });
 
 test('neighbourNoun : le premier nom suivant, au même genre et au même nombre, sans la lettre', () => {
-  // ferme (f, s) : fermoir est masculin, héros et hôtel aussi ; horloge contient « e » ; maison convient.
+  // ferme (f, s) : fermoir est masculin, hôtel aussi ; héros et horloge contiennent « e » ; maison convient.
   assert.deepEqual(neighbourNoun('ferme', {}, 'e', m), { status: 'replaced', replacement: 'maison', gender: 'f', number: 's', originalGender: 'f' });
-  // chats (m, p) : cheval… contiennent « e » ? chevaux oui ; fermoirs oui ; héros (m, i) sans « e »
-  assert.equal(neighbourNoun('chats', {}, 'e', m).replacement, 'héros');
+  // chats (m, p) : chevaux, fermoirs, héros contiennent « e » ; voisins non
+  assert.equal(neighbourNoun('chats', {}, 'e', m).replacement, 'voisins');
   // la majuscule ne trompe pas la lecture
   assert.equal(neighbourNoun('Ferme', {}, 'e', m).replacement, 'maison');
   // un nom épicène prend le genre de la phrase

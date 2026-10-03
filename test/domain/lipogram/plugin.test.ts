@@ -28,8 +28,8 @@ test('déclaration : sur toutes les pistes, un paramètre « Lettre », « e » 
 });
 
 test('noms remplacés par leur voisin, avec leur groupe ; adverbes et mots-outils aussi', () => {
-  const { text, marks } = run('Le chat est très vite et la vieille horloge dort.');
-  assert.equal(text, 'Un chat est très ainsi ou la vieille maison dort.');
+  const { text, marks } = run('Le chat est trop vite et la vieille horloge dort.');
+  assert.equal(text, 'Un chat est trop ainsi ou la vieille maison dort.');
   assert.deepEqual(marks, [
     { index: 0, original: 'Le', replacement: 'Un' },
     { index: 2, original: 'est', reason: AUXILIARY },
@@ -80,26 +80,26 @@ test('les noms passent par la même réécriture que le S+7', () => {
 });
 
 test('pistes visées : seuls leurs mots perdent la lettre', () => {
-  const text = 'Le chat est très vite et la vieille horloge dort.';
+  const text = 'Le chat est trop vite et la vieille horloge dort.';
   // sur les seuls noms : « horloge » change, mais pas « Le », « vite », « et »
   const nouns = run(text, 'e', {}, ['noun']);
-  assert.equal(nouns.text, 'Le chat est très vite et la vieille maison dort.');
+  assert.equal(nouns.text, 'Le chat est trop vite et la vieille maison dort.');
   assert.deepEqual(nouns.marks.map((mark) => mark.index), [8]);
   // sans les noms : les mots-outils et l'adverbe changent, « horloge » reste
   const others = run(text, 'e', {}, ['adverb', 'other']);
-  assert.equal(others.text, 'Un chat est très ainsi ou la vieille horloge dort.');
+  assert.equal(others.text, 'Un chat est trop ainsi ou la vieille horloge dort.');
   assert.ok(!others.marks.some((mark) => mark.index === 8));
 });
 
 test('portée par mot : un pas bouché garde son mot et son groupe', () => {
-  const text = 'Le chat est très vite et la vieille horloge dort.';
+  const text = 'Le chat est trop vite et la vieille horloge dort.';
   const apply = (skip: number[]) => {
     const result = lipogramPlugin.apply(text, tag(text), { letter: 'e' }, { morphology: m }, new Set(CATEGORIES), { skip, overrides: [] });
     return result.words.map((w) => w.gap + w.output).join('') + result.tail;
   };
   // « horloge » (8) et son groupe bouchés, « vite » (4) aussi : le reste suit le lipogramme.
-  assert.equal(apply([4, 6, 7, 8]), 'Un chat est très vite ou la vieille horloge dort.');
-  assert.equal(apply([]), 'Un chat est très ainsi ou la vieille maison dort.');
+  assert.equal(apply([4, 6, 7, 8]), 'Un chat est trop vite ou la vieille horloge dort.');
+  assert.equal(apply([]), 'Un chat est trop ainsi ou la vieille maison dort.');
 });
 
 test('Verbe fautif : le premier verbe suivant sans la lettre, au même temps et à la même personne', () => {
