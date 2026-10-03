@@ -308,3 +308,17 @@ test('retoucher une entrée : écrite, relue, et la réouverture redonne le rés
   assert.equal(broken.state.notebookMessage, 'Retouche impossible : plein');
   assert.equal(broken.state.notebook[0]!.edited, "L'oncle dort.");
 });
+
+test('éclipse : le texte d’origine puis son S+7, copié et gardé en entier', async () => {
+  const copied: string[] = [];
+  const { controller } = setup(fakeNotebook().notebook, { copy: async (text) => void copied.push(text) });
+  controller.setInput('La ferme.');
+  await controller.run();
+  controller.dispatch({ type: 'set-form', form: 'eclipse' });
+  assert.equal(controller.state.view!.result, "La ferme.\n\nL'oncle.");
+  assert.equal(controller.state.view!.segments[0]!.index, undefined);
+  await controller.copy();
+  assert.equal(copied[0], "La ferme.\n\nL'oncle.\n\n— S+7 sur les noms · éclipse (Oulipao)");
+  controller.keep();
+  assert.equal(controller.state.notebook[0]!.result, "La ferme.\n\nL'oncle.");
+});

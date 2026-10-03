@@ -11,7 +11,7 @@ test('état initial : toutes les pistes s’entendent, aucune contrainte ; la ch
   const state = MixerStateSchema.parse(initialState);
   assert.deepEqual(state.instances, []);
   assert.deepEqual(MixerStateSchema.parse(seededState).instances, [
-    { id: 's7-1', type: 's7', enabled: true, params: { offset: 7, mode: 'reagree' }, targets: ['noun'] },
+    { id: 's7-1', type: 's7', enabled: true, params: { offset: 7, mode: 'reagree', draw: 'fixed', seed: 1 }, targets: ['noun'] },
     { id: 'lipogram-1', type: 'lipogram', enabled: false, params: { letters: 'e', mode: 'forbidden' }, targets: ['noun', 'verb', 'adjective', 'adverb', 'other'] },
   ]);
   assert.deepEqual(Object.keys(state.tracks), ['noun', 'verb', 'adjective', 'adverb', 'other']);

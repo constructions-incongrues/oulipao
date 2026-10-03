@@ -123,7 +123,8 @@ export function reduce(state: MixerState, action: MixerAction): MixerState {
           targets: CATEGORIES.filter((track) => step.targets.includes(track)),
         });
       }
-      return { ...state, instances };
+      // Une recette qui pose une forme (Éclipse) remplace la forme courante.
+      return { ...state, instances, ...(recipe.form && { form: recipe.form }) };
     }
     case 'duplicate-instance': {
       // Le double porte les verrous de l'original ; il va en fin de chaîne.

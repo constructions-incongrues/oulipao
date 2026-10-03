@@ -11,9 +11,14 @@ import { S7ModeSchema, type SubstitutionStatus } from './types.ts';
 const MIN_OFFSET = -99;
 const MAX_OFFSET = 99;
 
+const MAX_SEED = 9_999_999;
+
 const ParamsSchema = z.object({
   offset: z.number().int().min(MIN_OFFSET).max(MAX_OFFSET).default(7),
   mode: S7ModeSchema.default('reagree'),
+  /** Le décalage : le même pour tous les mots, ou tiré au dé pour chacun (le S+dé). */
+  draw: z.enum(['fixed', 'dice']).default('fixed'),
+  seed: z.number().int().min(1).max(MAX_SEED).default(1),
 });
 const params = (values: ParameterValues) => ParamsSchema.parse(values);
 
@@ -27,9 +32,21 @@ const REASONS: Record<Exclude<SubstitutionStatus, 'replaced'>, string> = {
 /** La raison d'un mot laissé parce que son pas est bouché. */
 export const CLOSED = 'pas bouché';
 
-/** « S+7 », « S−3 » : avec un vrai signe moins. */
+/**
+ * Le dé du S+dé : une face de 1 à 6, déduite de la graine et de la position du mot seulement, pour
+ * que le tirage soit le même à chaque calcul et à chaque réouverture (mélange de Murmur3, 32 bits).
+ */
+export function dieRoll(seed: number, index: number): number {
+  let h = Math.imul(seed ^ Math.imul(index + 1, 0x9e3779b9), 0x85ebca6b);
+  h = Math.imul(h ^ (h >>> 13), 0xc2b2ae35);
+  h ^= h >>> 16;
+  return ((h >>> 0) % 6) + 1;
+}
+
+/** « S+7 », « S−3 » : avec un vrai signe moins ; « S+dé » quand le décalage est tiré au dé. */
 const title = (values: ParameterValues) => {
-  const { offset } = params(values);
+  const { offset, draw } = params(values);
+  if (draw === 'dice') return 'S+dé';
   return `S${offset < 0 ? '−' : '+'}${Math.abs(offset)}`;
 };
 
@@ -52,15 +69,26 @@ export const s7Plugin = definePlugin({
         { value: 'same-gender', label: AMONG['same-gender'] },
       ],
     },
+    {
+      kind: 'choice',
+      key: 'draw',
+      label: 'Tirage',
+      options: [
+        { value: 'fixed', label: 'fixe' },
+        { value: 'dice', label: 'au dé' },
+      ],
+    },
+    { kind: 'integer', key: 'seed', label: 'Graine', min: 1, max: MAX_SEED },
   ],
   defaults: ParamsSchema.parse({}),
   parse: params,
-  acts: (values) => params(values).offset !== 0,
+  acts: (values) => params(values).draw === 'dice' || params(values).offset !== 0,
   title,
   // « parmi tous les noms » est le réglage par défaut : on ne le dit que s'il change.
   label: (values) => (params(values).mode === 'reagree' ? title(values) : `${title(values)}, parmi ${AMONG['same-gender']}`),
   help(values, targets = new Set(['noun'])) {
-    const { offset, mode } = params(values);
+    const { offset, mode, draw } = params(values);
+    if (draw === 'dice') return 'S+dé : chaque mot visé avance d’un nombre de places tiré au dé, de 1 à 6, selon la graine ; changez la graine pour relancer le dé. Un verrou garde son décalage.';
     if (offset === 0) return 'S+0 : aucun changement.';
     const rank = `${Math.abs(offset)}${Math.abs(offset) === 1 ? 'er' : 'e'}`;
     const direction = offset > 0 ? 'suit' : 'précède';
@@ -80,7 +108,7 @@ export const s7Plugin = definePlugin({
     const skip = new Set(scope.skip);
     // Un verrou se complète des réglages de l'instance et passe par la même validation.
     const locked = new Map(scope.overrides.map(({ index, values: own }) => [index, params({ ...values, ...own }).offset]));
-    const offsetAt = (index: number) => locked.get(index) ?? settings.offset;
+    const offsetAt = (index: number) => locked.get(index) ?? (settings.draw === 'dice' ? dieRoll(settings.seed, index) : settings.offset);
     let words;
     let tail;
     const marks: WordMark[] = [];

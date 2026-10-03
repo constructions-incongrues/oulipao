@@ -158,7 +158,7 @@ test('rack : un second S+n sur les adjectifs, rappelé par leur tranche, puis mo
   (find(unit(), (e) => e.type === 'input').props['onInput'] as (event: Event) => void)(inputEvent('3'));
   click(unit(), (e) => byClass('chip')(e) && byClass('adjective')(e));
   click(unit(), (e) => byClass('chip')(e) && byClass('noun')(e));
-  assert.deepEqual(controller.state.mixer.instances[2], { id: 's7-2', type: 's7', enabled: true, params: { offset: 3, mode: 'reagree' }, targets: ['adjective'] });
+  assert.deepEqual(controller.state.mixer.instances[2], { id: 's7-2', type: 's7', enabled: true, params: { offset: 3, mode: 'reagree', draw: 'fixed', seed: 1 }, targets: ['adjective'] });
   const out = renderToString(app());
   assert.equal(elements(app()).filter((e) => byClass('pos')(e)).length, 3);
   assert.match(renderToString(find(app(), byLabel('Piste Adjectifs'))), /<p class="reminder">2\. [^·]* \(coupé\) · 3\. S\+3<\/p>/);
