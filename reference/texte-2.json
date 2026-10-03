@@ -1,0 +1,808 @@
+{
+  "titre": "Les bibliothèques (article au présent)",
+  "source": "écrit pour l'essai par l'assistant IA, 2026-10-03 ; aucun droit de tiers",
+  "annotateur": "assistant IA (Claude), 2026-10-03, avant tout essai d'étiqueteur — à relire par le fondateur",
+  "texte": "Depuis quelques années, les bibliothèques municipales changent profondément de visage. On y vient encore pour emprunter des romans, naturellement, mais aussi pour réparer un vélo, apprendre à coudre ou suivre un atelier numérique. Cette évolution répond à une demande réelle : beaucoup d'habitants cherchent un lieu gratuit, chauffé et ouvert tard, où personne ne leur demande de consommer. Les bibliothécaires décrivent un métier devenu plus social que documentaire. Ils accueillent des étudiants pressés, des retraités bavards, des familles entières le mercredi. Certains regrettent le silence ancien et craignent que le livre devienne secondaire. D'autres estiment au contraire que la lecture progresse quand les gens se sentent chez eux. Les chiffres restent fragiles, car peu de communes mesurent sérieusement la fréquentation. Une étude récente montre pourtant que les prêts augmentent légèrement dans les établissements rénovés. Le financement demeure la question principale : agrandir les horaires coûte cher, et les budgets culturels baissent souvent avant les autres. Plusieurs maires défendent néanmoins ces dépenses, qu'ils jugent utiles à toute la ville. Reste une inquiétude sourde : ces nouveaux services reposent largement sur des bénévoles et sur des contrats courts. Si les équipes s'épuisent, l'élan actuel retombera vite, préviennent déjà plusieurs directrices.",
+  "mots": [
+    {
+      "mot": "Depuis",
+      "categorie": "autre"
+    },
+    {
+      "mot": "quelques",
+      "categorie": "autre"
+    },
+    {
+      "mot": "années",
+      "categorie": "nom"
+    },
+    {
+      "mot": "les",
+      "categorie": "autre"
+    },
+    {
+      "mot": "bibliothèques",
+      "categorie": "nom"
+    },
+    {
+      "mot": "municipales",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "changent",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "profondément",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "de",
+      "categorie": "autre"
+    },
+    {
+      "mot": "visage",
+      "categorie": "nom"
+    },
+    {
+      "mot": "On",
+      "categorie": "autre"
+    },
+    {
+      "mot": "y",
+      "categorie": "autre"
+    },
+    {
+      "mot": "vient",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "encore",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "pour",
+      "categorie": "autre"
+    },
+    {
+      "mot": "emprunter",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "des",
+      "categorie": "autre"
+    },
+    {
+      "mot": "romans",
+      "categorie": "nom"
+    },
+    {
+      "mot": "naturellement",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "mais",
+      "categorie": "autre"
+    },
+    {
+      "mot": "aussi",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "pour",
+      "categorie": "autre"
+    },
+    {
+      "mot": "réparer",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "un",
+      "categorie": "autre"
+    },
+    {
+      "mot": "vélo",
+      "categorie": "nom"
+    },
+    {
+      "mot": "apprendre",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "à",
+      "categorie": "autre"
+    },
+    {
+      "mot": "coudre",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "ou",
+      "categorie": "autre"
+    },
+    {
+      "mot": "suivre",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "un",
+      "categorie": "autre"
+    },
+    {
+      "mot": "atelier",
+      "categorie": "nom"
+    },
+    {
+      "mot": "numérique",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "Cette",
+      "categorie": "autre"
+    },
+    {
+      "mot": "évolution",
+      "categorie": "nom"
+    },
+    {
+      "mot": "répond",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "à",
+      "categorie": "autre"
+    },
+    {
+      "mot": "une",
+      "categorie": "autre"
+    },
+    {
+      "mot": "demande",
+      "categorie": "nom"
+    },
+    {
+      "mot": "réelle",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "beaucoup",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "d'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "habitants",
+      "categorie": "nom"
+    },
+    {
+      "mot": "cherchent",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "un",
+      "categorie": "autre"
+    },
+    {
+      "mot": "lieu",
+      "categorie": "nom"
+    },
+    {
+      "mot": "gratuit",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "chauffé",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "et",
+      "categorie": "autre"
+    },
+    {
+      "mot": "ouvert",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "tard",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "où",
+      "categorie": "autre"
+    },
+    {
+      "mot": "personne",
+      "categorie": "autre"
+    },
+    {
+      "mot": "ne",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "leur",
+      "categorie": "autre"
+    },
+    {
+      "mot": "demande",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "de",
+      "categorie": "autre"
+    },
+    {
+      "mot": "consommer",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "Les",
+      "categorie": "autre"
+    },
+    {
+      "mot": "bibliothécaires",
+      "categorie": "nom"
+    },
+    {
+      "mot": "décrivent",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "un",
+      "categorie": "autre"
+    },
+    {
+      "mot": "métier",
+      "categorie": "nom"
+    },
+    {
+      "mot": "devenu",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "plus",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "social",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "que",
+      "categorie": "autre"
+    },
+    {
+      "mot": "documentaire",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "Ils",
+      "categorie": "autre"
+    },
+    {
+      "mot": "accueillent",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "des",
+      "categorie": "autre"
+    },
+    {
+      "mot": "étudiants",
+      "categorie": "nom"
+    },
+    {
+      "mot": "pressés",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "des",
+      "categorie": "autre"
+    },
+    {
+      "mot": "retraités",
+      "categorie": "nom"
+    },
+    {
+      "mot": "bavards",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "des",
+      "categorie": "autre"
+    },
+    {
+      "mot": "familles",
+      "categorie": "nom"
+    },
+    {
+      "mot": "entières",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "le",
+      "categorie": "autre"
+    },
+    {
+      "mot": "mercredi",
+      "categorie": "nom"
+    },
+    {
+      "mot": "Certains",
+      "categorie": "autre"
+    },
+    {
+      "mot": "regrettent",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "le",
+      "categorie": "autre"
+    },
+    {
+      "mot": "silence",
+      "categorie": "nom"
+    },
+    {
+      "mot": "ancien",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "et",
+      "categorie": "autre"
+    },
+    {
+      "mot": "craignent",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "que",
+      "categorie": "autre"
+    },
+    {
+      "mot": "le",
+      "categorie": "autre"
+    },
+    {
+      "mot": "livre",
+      "categorie": "nom"
+    },
+    {
+      "mot": "devienne",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "secondaire",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "D'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "autres",
+      "categorie": "autre"
+    },
+    {
+      "mot": "estiment",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "au",
+      "categorie": "autre"
+    },
+    {
+      "mot": "contraire",
+      "categorie": "nom"
+    },
+    {
+      "mot": "que",
+      "categorie": "autre"
+    },
+    {
+      "mot": "la",
+      "categorie": "autre"
+    },
+    {
+      "mot": "lecture",
+      "categorie": "nom"
+    },
+    {
+      "mot": "progresse",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "quand",
+      "categorie": "autre"
+    },
+    {
+      "mot": "les",
+      "categorie": "autre"
+    },
+    {
+      "mot": "gens",
+      "categorie": "nom"
+    },
+    {
+      "mot": "se",
+      "categorie": "autre"
+    },
+    {
+      "mot": "sentent",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "chez",
+      "categorie": "autre"
+    },
+    {
+      "mot": "eux",
+      "categorie": "autre"
+    },
+    {
+      "mot": "Les",
+      "categorie": "autre"
+    },
+    {
+      "mot": "chiffres",
+      "categorie": "nom"
+    },
+    {
+      "mot": "restent",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "fragiles",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "car",
+      "categorie": "autre"
+    },
+    {
+      "mot": "peu",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "de",
+      "categorie": "autre"
+    },
+    {
+      "mot": "communes",
+      "categorie": "nom"
+    },
+    {
+      "mot": "mesurent",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "sérieusement",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "la",
+      "categorie": "autre"
+    },
+    {
+      "mot": "fréquentation",
+      "categorie": "nom"
+    },
+    {
+      "mot": "Une",
+      "categorie": "autre"
+    },
+    {
+      "mot": "étude",
+      "categorie": "nom"
+    },
+    {
+      "mot": "récente",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "montre",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "pourtant",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "que",
+      "categorie": "autre"
+    },
+    {
+      "mot": "les",
+      "categorie": "autre"
+    },
+    {
+      "mot": "prêts",
+      "categorie": "nom"
+    },
+    {
+      "mot": "augmentent",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "légèrement",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "dans",
+      "categorie": "autre"
+    },
+    {
+      "mot": "les",
+      "categorie": "autre"
+    },
+    {
+      "mot": "établissements",
+      "categorie": "nom"
+    },
+    {
+      "mot": "rénovés",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "Le",
+      "categorie": "autre"
+    },
+    {
+      "mot": "financement",
+      "categorie": "nom"
+    },
+    {
+      "mot": "demeure",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "la",
+      "categorie": "autre"
+    },
+    {
+      "mot": "question",
+      "categorie": "nom"
+    },
+    {
+      "mot": "principale",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "agrandir",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "les",
+      "categorie": "autre"
+    },
+    {
+      "mot": "horaires",
+      "categorie": "nom"
+    },
+    {
+      "mot": "coûte",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "cher",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "et",
+      "categorie": "autre"
+    },
+    {
+      "mot": "les",
+      "categorie": "autre"
+    },
+    {
+      "mot": "budgets",
+      "categorie": "nom"
+    },
+    {
+      "mot": "culturels",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "baissent",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "souvent",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "avant",
+      "categorie": "autre"
+    },
+    {
+      "mot": "les",
+      "categorie": "autre"
+    },
+    {
+      "mot": "autres",
+      "categorie": "autre"
+    },
+    {
+      "mot": "Plusieurs",
+      "categorie": "autre"
+    },
+    {
+      "mot": "maires",
+      "categorie": "nom"
+    },
+    {
+      "mot": "défendent",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "néanmoins",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "ces",
+      "categorie": "autre"
+    },
+    {
+      "mot": "dépenses",
+      "categorie": "nom"
+    },
+    {
+      "mot": "qu'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "ils",
+      "categorie": "autre"
+    },
+    {
+      "mot": "jugent",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "utiles",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "à",
+      "categorie": "autre"
+    },
+    {
+      "mot": "toute",
+      "categorie": "autre"
+    },
+    {
+      "mot": "la",
+      "categorie": "autre"
+    },
+    {
+      "mot": "ville",
+      "categorie": "nom"
+    },
+    {
+      "mot": "Reste",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "une",
+      "categorie": "autre"
+    },
+    {
+      "mot": "inquiétude",
+      "categorie": "nom"
+    },
+    {
+      "mot": "sourde",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "ces",
+      "categorie": "autre"
+    },
+    {
+      "mot": "nouveaux",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "services",
+      "categorie": "nom"
+    },
+    {
+      "mot": "reposent",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "largement",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "sur",
+      "categorie": "autre"
+    },
+    {
+      "mot": "des",
+      "categorie": "autre"
+    },
+    {
+      "mot": "bénévoles",
+      "categorie": "nom"
+    },
+    {
+      "mot": "et",
+      "categorie": "autre"
+    },
+    {
+      "mot": "sur",
+      "categorie": "autre"
+    },
+    {
+      "mot": "des",
+      "categorie": "autre"
+    },
+    {
+      "mot": "contrats",
+      "categorie": "nom"
+    },
+    {
+      "mot": "courts",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "Si",
+      "categorie": "autre"
+    },
+    {
+      "mot": "les",
+      "categorie": "autre"
+    },
+    {
+      "mot": "équipes",
+      "categorie": "nom"
+    },
+    {
+      "mot": "s'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "épuisent",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "l'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "élan",
+      "categorie": "nom"
+    },
+    {
+      "mot": "actuel",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "retombera",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "vite",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "préviennent",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "déjà",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "plusieurs",
+      "categorie": "autre"
+    },
+    {
+      "mot": "directrices",
+      "categorie": "nom"
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+# Résultats de l'essai technique
+
+Étiquetage grammatical du français dans le navigateur et lexique libre.
+Mesures du 2026-10-03. Échéance de la décision : 18 octobre 2026.
+
+Pour refaire les mesures : `node scripts/mesurer.js --erreurs`.
+
+## Lexiques
+
+Lexique retenu : **Grammalecte / Dicollecte v7.7**, licence MPL 2.0.
+
+- Redistribution permise dans un dépôt public ; le fichier dérivé `data/lexique-potao.tsv`
+  reste sous MPL 2.0 et porte sa notice. Le reste du dépôt peut avoir une autre licence.
+- 115 184 formes de noms communs portant un genre, pour 54 233 lemmes distincts (seuil du
+  PRD : 20 000).
+- Genre et nombre présents sur chaque forme de nom.
+- 476 104 formes au total, dont 51 957 admettent plusieurs des cinq catégories.
+- Seul lexique examiné encore maintenu (décembre 2025).
+
+Les cinq lexiques examinés sont tous redistribuables. Le détail, les licences exactes et les
+sources sont dans `docs/lexiques.md`.
+
+## Approches
+
+Trois textes de référence de 200 mots (`reference/`). « Mots de contenu » : les mots qui ne
+sont pas « autre » dans la référence ; ce score n'est pas gonflé par les mots-outils.
+
+| Approche | Texte 1 | Texte 2 | Texte 3 | Ensemble | Mots de contenu (ensemble) |
+|---|---|---|---|---|---|
+| CamemBERT, modèle neuronal local | 195/200 (97,5 %) | 194/200 (97,0 %) | 190/200 (95,0 %) | 579/600 (96,5 %) | 327/342 (95,6 %) |
+| Lexique, consultation seule | 181/200 (90,5 %) | 177/200 (88,5 %) | 174/200 (87,0 %) | 532/600 (88,7 %) | 279/342 (81,6 %) |
+| fr-compromise, règles contextuelles | 150/200 (75,0 %) | 167/200 (83,5 %) | 169/200 (84,5 %) | 486/600 (81,0 %) | 279/342 (81,6 %) |
+
+Seuil du PRD : au moins 9 mots sur 10 sur chacun des trois textes. Seul le modèle neuronal le
+tient ; il le tient aussi sur les seuls mots de contenu (94,0 % au plus bas, texte 3).
+
+Poids téléchargé par le navigateur :
+
+| Approche | Poids | Détail |
+|---|---|---|
+| CamemBERT | environ 141 Mo au premier chargement | poids du modèle 111,3 Mo ; moteur WebAssembly 26,9 Mo (5,5 Mo transférés) ; découpeur 2,4 Mo ; bibliothèque 0,6 Mo. Mis en cache ensuite. |
+| Lexique | 6,6 Mo (1,3 Mo compressé) | `data/lexique-potao.tsv` |
+| fr-compromise | 0,27 Mo (0,10 Mo compressé) | `vendor/fr-compromise.mjs` |
+
+Temps observé dans le navigateur sur le texte 3 (non optimisé, noté pour mémoire) : CamemBERT
+20,5 s la première fois, téléchargement compris, puis 1,5 s ; lexique 0,2 s ; fr-compromise
+0,01 s.
+
+Le texte reste dans le navigateur : pendant l'étiquetage par les trois approches, toutes les
+requêtes observées sont des téléchargements de fichiers statiques (scripts, lexique, modèle),
+sans paramètre ni corps. Aucune ne contient le texte collé.
+
+Erreurs du modèle neuronal (21 sur 600) :
+
+- Participe passé employé comme adjectif, classé verbe : chauffé, devenu, déçu. Le modèle n'a
+  pas d'étiquette distincte pour cet emploi ; c'est un écart de convention autant qu'une erreur.
+- Verbe en tête de phrase ou à l'impératif, classé nom : méfie, Apporte, Réponds.
+- Mots ambigus du texte 3 : « ferme » verbe classé adjectif, « ferme » adjectif classé nom,
+  « l'est » classé nom propre. La ferme (nom), la porte, le livre, « elle livre », « est » et
+  « été » sont bien classés.
+- Divers : cher (adverbe) classé adjectif deux fois, pourquoi, puis, Personne, documentaire,
+  autres, toute, Salut, désolé, jusqu', ta.
+
+Limites des deux approches légères :
+
+- Le lexique seul ne peut pas choisir entre nom, adjectif et verbe : presque toutes ses erreurs
+  sont des adjectifs ou des verbes pris pour des noms (vieille, petit, laisse, ferme, livre).
+- fr-compromise découpe le texte autrement et classe mal les mots-outils (que, si, où, ne) ; il
+  classe « ferme » adverbe dans ses trois emplois.
+
+## Ambiguïtés
+
+D'après le lexique, 197 des 600 mots de référence (33 %) ont une forme qui admet plusieurs
+catégories : 60 dans le texte 1, 62 dans le texte 2, 75 dans le texte 3.
+
+Un mot sur trois est donc ambigu hors contexte. Le modèle neuronal en tranche correctement la
+grande majorité, mais se trompe encore sur 21 mots sur 600. Cela pèse sur la décision
+d'interface laissée ouverte par le PRD : si l'outil tranche toujours, environ 1 mot sur 30
+ira dans la mauvaise piste ; le lexique permet de savoir lesquels sont à risque et de les
+signaler.
+
+## Réserves
+
+- **Annotation de référence.** Les trois textes ont été écrits et annotés par l'assistant IA,
+  avant tout essai d'étiqueteur, et non par le fondateur. Ils sont à relire
+  (`reference/texte-N.annote.txt`, mode d'emploi dans `reference/FORMAT.md`). Tant que ce n'est
+  pas fait, les scores reposent sur cette seule annotation. Le fondateur l'a acceptée telle
+  quelle le 2026-10-03.
+- **Textes.** Le texte 3 est volontairement chargé en mots ambigus. Aucun des trois n'est un
+  texte qu'un lecteur aurait collé de lui-même.
+- **Licence du modèle.** `Xenova/french-camembert-postag-model` ne déclare aucune licence, et
+  son corpus d'entraînement est sous LGPL-LR. On peut le faire télécharger par le navigateur
+  depuis Hugging Face ; le redistribuer dans le dépôt demande de clarifier ce point.
+- **Dépendance à des tiers.** La bibliothèque et le modèle sont servis par jsDelivr et Hugging
+  Face. Le texte n'y est pas envoyé, mais l'outil ne marche pas sans eux.
+- **Poids.** 141 Mo au premier chargement est lourd pour « un jouet qu'on ouvre par curiosité ».
+- **Seuil.** 9 sur 10 reste une proposition, pas une mesure de ce qu'un lecteur tolère.
+
+## Décision
+
+Validée par le fondateur le 2026-10-03, sur la proposition de l'assistant et en acceptant
+l'annotation de référence telle quelle, sans relecture :
+
+**On continue avec une réserve : l'étiquetage dans le navigateur tient le seuil (96,5 %) et un lexique libre existe (Grammalecte, MPL 2.0), mais seulement avec un modèle de 141 Mo dont la licence est à clarifier.**

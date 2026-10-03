@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Potao — essai d'étiquetage</title>
+<style>
+  body { font: 16px/1.6 system-ui, sans-serif; max-width: 46rem; margin: 2rem auto; padding: 0 1rem; }
+  textarea { width: 100%; height: 10rem; font: inherit; box-sizing: border-box; }
+  .commandes { display: flex; gap: .75rem; align-items: center; margin: .75rem 0; flex-wrap: wrap; }
+  #sortie { white-space: pre-wrap; border-top: 1px solid #ccc; padding-top: 1rem; }
+  #sortie span, .legende span { border-radius: 3px; padding: 0 2px; }
+  /* Couleur + soulignement : la catégorie reste lisible sans distinguer les teintes. */
+  .nom { background: #ffd8a8; }
+  .verbe { background: #a5d8ff; text-decoration: underline; }
+  .adjectif { background: #b2f2bb; text-decoration: underline dotted; }
+  .adverbe { background: #eebefa; text-decoration: underline wavy; }
+  .autre { color: #666; }
+  #etat { color: #666; }
+  #etat.erreur { color: #c00; }
+</style>
+</head>
+<body>
+<h1>Potao — essai d'étiquetage</h1>
+<p>Le texte collé reste dans ce navigateur : il n'est envoyé nulle part.</p>
+<label for="texte">Texte à étiqueter</label>
+<textarea id="texte" placeholder="Collez un texte en français…"></textarea>
+<div class="commandes">
+  <label for="etiqueteur">Étiqueteur</label>
+  <select id="etiqueteur"></select>
+  <button id="lancer">Étiqueter</button>
+  <span id="etat" role="status" aria-live="polite"></span>
+</div>
+<p class="legende" id="legende"></p>
+<div id="sortie"></div>
+<script type="module" src="src/page.js"></script>
+</body>
+</html>

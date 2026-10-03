@@ -1,0 +1,808 @@
+{
+  "titre": "L'horloge (récit au passé)",
+  "source": "écrit pour l'essai par l'assistant IA, 2026-10-03 ; aucun droit de tiers",
+  "annotateur": "assistant IA (Claude), 2026-10-03, avant tout essai d'étiqueteur — à relire par le fondateur",
+  "texte": "Le matin où la vieille horloge s'arrêta, personne ne le remarqua vraiment. Marthe préparait le café dans la cuisine étroite, comme elle le faisait depuis trente ans, et son mari lisait le journal sans lever les yeux. Dehors, la pluie tombait doucement sur les toits gris du village. Ce fut le petit voisin qui, en entrant pour rendre un panier vide, leva la tête et demanda pourquoi il était toujours sept heures. Marthe posa sa tasse. Elle regarda longtemps les aiguilles immobiles, puis elle sourit, un peu tristement. Cette horloge avait appartenu à sa mère, et avant elle à une tante dont on ne parlait jamais. Personne n'avait su la réparer quand elle retardait ; on s'était simplement habitué à son léger mensonge. Maintenant qu'elle se taisait, la maison paraissait plus grande et curieusement plus froide. Le mari replia enfin son journal. Il dit qu'il connaissait quelqu'un en ville, un ancien horloger très patient, mais que cela coûterait sûrement cher. Marthe haussa les épaules. Certaines choses, répondit-elle, méritent qu'on les laisse tranquilles. Le garçon, déçu, reprit son panier et sortit sous la pluie. Derrière lui, la porte claqua sèchement, et le silence revint aussitôt.",
+  "mots": [
+    {
+      "mot": "Le",
+      "categorie": "autre"
+    },
+    {
+      "mot": "matin",
+      "categorie": "nom"
+    },
+    {
+      "mot": "où",
+      "categorie": "autre"
+    },
+    {
+      "mot": "la",
+      "categorie": "autre"
+    },
+    {
+      "mot": "vieille",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "horloge",
+      "categorie": "nom"
+    },
+    {
+      "mot": "s'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "arrêta",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "personne",
+      "categorie": "autre"
+    },
+    {
+      "mot": "ne",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "le",
+      "categorie": "autre"
+    },
+    {
+      "mot": "remarqua",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "vraiment",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "Marthe",
+      "categorie": "autre"
+    },
+    {
+      "mot": "préparait",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "le",
+      "categorie": "autre"
+    },
+    {
+      "mot": "café",
+      "categorie": "nom"
+    },
+    {
+      "mot": "dans",
+      "categorie": "autre"
+    },
+    {
+      "mot": "la",
+      "categorie": "autre"
+    },
+    {
+      "mot": "cuisine",
+      "categorie": "nom"
+    },
+    {
+      "mot": "étroite",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "comme",
+      "categorie": "autre"
+    },
+    {
+      "mot": "elle",
+      "categorie": "autre"
+    },
+    {
+      "mot": "le",
+      "categorie": "autre"
+    },
+    {
+      "mot": "faisait",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "depuis",
+      "categorie": "autre"
+    },
+    {
+      "mot": "trente",
+      "categorie": "autre"
+    },
+    {
+      "mot": "ans",
+      "categorie": "nom"
+    },
+    {
+      "mot": "et",
+      "categorie": "autre"
+    },
+    {
+      "mot": "son",
+      "categorie": "autre"
+    },
+    {
+      "mot": "mari",
+      "categorie": "nom"
+    },
+    {
+      "mot": "lisait",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "le",
+      "categorie": "autre"
+    },
+    {
+      "mot": "journal",
+      "categorie": "nom"
+    },
+    {
+      "mot": "sans",
+      "categorie": "autre"
+    },
+    {
+      "mot": "lever",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "les",
+      "categorie": "autre"
+    },
+    {
+      "mot": "yeux",
+      "categorie": "nom"
+    },
+    {
+      "mot": "Dehors",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "la",
+      "categorie": "autre"
+    },
+    {
+      "mot": "pluie",
+      "categorie": "nom"
+    },
+    {
+      "mot": "tombait",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "doucement",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "sur",
+      "categorie": "autre"
+    },
+    {
+      "mot": "les",
+      "categorie": "autre"
+    },
+    {
+      "mot": "toits",
+      "categorie": "nom"
+    },
+    {
+      "mot": "gris",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "du",
+      "categorie": "autre"
+    },
+    {
+      "mot": "village",
+      "categorie": "nom"
+    },
+    {
+      "mot": "Ce",
+      "categorie": "autre"
+    },
+    {
+      "mot": "fut",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "le",
+      "categorie": "autre"
+    },
+    {
+      "mot": "petit",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "voisin",
+      "categorie": "nom"
+    },
+    {
+      "mot": "qui",
+      "categorie": "autre"
+    },
+    {
+      "mot": "en",
+      "categorie": "autre"
+    },
+    {
+      "mot": "entrant",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "pour",
+      "categorie": "autre"
+    },
+    {
+      "mot": "rendre",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "un",
+      "categorie": "autre"
+    },
+    {
+      "mot": "panier",
+      "categorie": "nom"
+    },
+    {
+      "mot": "vide",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "leva",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "la",
+      "categorie": "autre"
+    },
+    {
+      "mot": "tête",
+      "categorie": "nom"
+    },
+    {
+      "mot": "et",
+      "categorie": "autre"
+    },
+    {
+      "mot": "demanda",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "pourquoi",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "il",
+      "categorie": "autre"
+    },
+    {
+      "mot": "était",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "toujours",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "sept",
+      "categorie": "autre"
+    },
+    {
+      "mot": "heures",
+      "categorie": "nom"
+    },
+    {
+      "mot": "Marthe",
+      "categorie": "autre"
+    },
+    {
+      "mot": "posa",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "sa",
+      "categorie": "autre"
+    },
+    {
+      "mot": "tasse",
+      "categorie": "nom"
+    },
+    {
+      "mot": "Elle",
+      "categorie": "autre"
+    },
+    {
+      "mot": "regarda",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "longtemps",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "les",
+      "categorie": "autre"
+    },
+    {
+      "mot": "aiguilles",
+      "categorie": "nom"
+    },
+    {
+      "mot": "immobiles",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "puis",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "elle",
+      "categorie": "autre"
+    },
+    {
+      "mot": "sourit",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "un",
+      "categorie": "autre"
+    },
+    {
+      "mot": "peu",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "tristement",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "Cette",
+      "categorie": "autre"
+    },
+    {
+      "mot": "horloge",
+      "categorie": "nom"
+    },
+    {
+      "mot": "avait",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "appartenu",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "à",
+      "categorie": "autre"
+    },
+    {
+      "mot": "sa",
+      "categorie": "autre"
+    },
+    {
+      "mot": "mère",
+      "categorie": "nom"
+    },
+    {
+      "mot": "et",
+      "categorie": "autre"
+    },
+    {
+      "mot": "avant",
+      "categorie": "autre"
+    },
+    {
+      "mot": "elle",
+      "categorie": "autre"
+    },
+    {
+      "mot": "à",
+      "categorie": "autre"
+    },
+    {
+      "mot": "une",
+      "categorie": "autre"
+    },
+    {
+      "mot": "tante",
+      "categorie": "nom"
+    },
+    {
+      "mot": "dont",
+      "categorie": "autre"
+    },
+    {
+      "mot": "on",
+      "categorie": "autre"
+    },
+    {
+      "mot": "ne",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "parlait",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "jamais",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "Personne",
+      "categorie": "autre"
+    },
+    {
+      "mot": "n'",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "avait",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "su",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "la",
+      "categorie": "autre"
+    },
+    {
+      "mot": "réparer",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "quand",
+      "categorie": "autre"
+    },
+    {
+      "mot": "elle",
+      "categorie": "autre"
+    },
+    {
+      "mot": "retardait",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "on",
+      "categorie": "autre"
+    },
+    {
+      "mot": "s'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "était",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "simplement",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "habitué",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "à",
+      "categorie": "autre"
+    },
+    {
+      "mot": "son",
+      "categorie": "autre"
+    },
+    {
+      "mot": "léger",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "mensonge",
+      "categorie": "nom"
+    },
+    {
+      "mot": "Maintenant",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "qu'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "elle",
+      "categorie": "autre"
+    },
+    {
+      "mot": "se",
+      "categorie": "autre"
+    },
+    {
+      "mot": "taisait",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "la",
+      "categorie": "autre"
+    },
+    {
+      "mot": "maison",
+      "categorie": "nom"
+    },
+    {
+      "mot": "paraissait",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "plus",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "grande",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "et",
+      "categorie": "autre"
+    },
+    {
+      "mot": "curieusement",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "plus",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "froide",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "Le",
+      "categorie": "autre"
+    },
+    {
+      "mot": "mari",
+      "categorie": "nom"
+    },
+    {
+      "mot": "replia",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "enfin",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "son",
+      "categorie": "autre"
+    },
+    {
+      "mot": "journal",
+      "categorie": "nom"
+    },
+    {
+      "mot": "Il",
+      "categorie": "autre"
+    },
+    {
+      "mot": "dit",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "qu'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "il",
+      "categorie": "autre"
+    },
+    {
+      "mot": "connaissait",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "quelqu'un",
+      "categorie": "autre"
+    },
+    {
+      "mot": "en",
+      "categorie": "autre"
+    },
+    {
+      "mot": "ville",
+      "categorie": "nom"
+    },
+    {
+      "mot": "un",
+      "categorie": "autre"
+    },
+    {
+      "mot": "ancien",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "horloger",
+      "categorie": "nom"
+    },
+    {
+      "mot": "très",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "patient",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "mais",
+      "categorie": "autre"
+    },
+    {
+      "mot": "que",
+      "categorie": "autre"
+    },
+    {
+      "mot": "cela",
+      "categorie": "autre"
+    },
+    {
+      "mot": "coûterait",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "sûrement",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "cher",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "Marthe",
+      "categorie": "autre"
+    },
+    {
+      "mot": "haussa",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "les",
+      "categorie": "autre"
+    },
+    {
+      "mot": "épaules",
+      "categorie": "nom"
+    },
+    {
+      "mot": "Certaines",
+      "categorie": "autre"
+    },
+    {
+      "mot": "choses",
+      "categorie": "nom"
+    },
+    {
+      "mot": "répondit",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "elle",
+      "categorie": "autre"
+    },
+    {
+      "mot": "méritent",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "qu'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "on",
+      "categorie": "autre"
+    },
+    {
+      "mot": "les",
+      "categorie": "autre"
+    },
+    {
+      "mot": "laisse",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "tranquilles",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "Le",
+      "categorie": "autre"
+    },
+    {
+      "mot": "garçon",
+      "categorie": "nom"
+    },
+    {
+      "mot": "déçu",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "reprit",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "son",
+      "categorie": "autre"
+    },
+    {
+      "mot": "panier",
+      "categorie": "nom"
+    },
+    {
+      "mot": "et",
+      "categorie": "autre"
+    },
+    {
+      "mot": "sortit",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "sous",
+      "categorie": "autre"
+    },
+    {
+      "mot": "la",
+      "categorie": "autre"
+    },
+    {
+      "mot": "pluie",
+      "categorie": "nom"
+    },
+    {
+      "mot": "Derrière",
+      "categorie": "autre"
+    },
+    {
+      "mot": "lui",
+      "categorie": "autre"
+    },
+    {
+      "mot": "la",
+      "categorie": "autre"
+    },
+    {
+      "mot": "porte",
+      "categorie": "nom"
+    },
+    {
+      "mot": "claqua",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "sèchement",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "et",
+      "categorie": "autre"
+    },
+    {
+      "mot": "le",
+      "categorie": "autre"
+    },
+    {
+      "mot": "silence",
+      "categorie": "nom"
+    },
+    {
+      "mot": "revint",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "aussitôt",
+      "categorie": "adverbe"
+    }
+  ]
+}

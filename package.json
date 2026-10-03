@@ -1,0 +1,12 @@
+{
+  "name": "potao",
+  "private": true,
+  "type": "module",
+  "description": "Potentialité Assistée par Ordinateur — essai technique : étiquetage grammatical du français dans le navigateur",
+  "scripts": {
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "@huggingface/transformers": "^4.3.0"
+  }
+}

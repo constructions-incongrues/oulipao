@@ -1,0 +1,808 @@
+{
+  "titre": "La ferme (message familier, volontairement riche en mots ambigus : ferme, porte, livre, est, été)",
+  "source": "écrit pour l'essai par l'assistant IA, 2026-10-03 ; aucun droit de tiers",
+  "annotateur": "assistant IA (Claude), 2026-10-03, avant tout essai d'étiqueteur — à relire par le fondateur",
+  "texte": "Salut Camille, je t'écris vite parce que la ferme de mon oncle a enfin trouvé un acheteur. On déménage tout samedi prochain et franchement on manque de bras. Tu serais libre ? Il faut vider la grange, trier les vieux outils et porter trois armoires énormes jusqu'au camion. La porte du grenier ferme mal, alors méfie-toi si tu montes. J'ai retrouvé là-haut un livre que ton père m'avait prêté l'été dernier ; il a un peu pris l'eau, désolé. Ma tante est triste, évidemment, elle a été heureuse ici pendant quarante ans. Elle livre encore ses œufs au marché jusqu'à la fin du mois, par fierté je crois. Mon oncle, lui, reste ferme : il ne veut plus entendre parler de vaches. Si tu viens, apporte des gants solides et de bonnes chaussures, le sol est boueux vers l'est du terrain. On mangera ensemble le soir, ma cousine prépare une soupe et des tartes. Elle demande seulement si tu manges toujours aussi peu de viande. Apporte aussi ta guitare, le vieux piano du salon part demain chez un brocanteur et la maison sera muette. Réponds-moi vite, même brièvement. Je t'embrasse fort. Louis",
+  "mots": [
+    {
+      "mot": "Salut",
+      "categorie": "autre"
+    },
+    {
+      "mot": "Camille",
+      "categorie": "autre"
+    },
+    {
+      "mot": "je",
+      "categorie": "autre"
+    },
+    {
+      "mot": "t'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "écris",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "vite",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "parce",
+      "categorie": "autre"
+    },
+    {
+      "mot": "que",
+      "categorie": "autre"
+    },
+    {
+      "mot": "la",
+      "categorie": "autre"
+    },
+    {
+      "mot": "ferme",
+      "categorie": "nom"
+    },
+    {
+      "mot": "de",
+      "categorie": "autre"
+    },
+    {
+      "mot": "mon",
+      "categorie": "autre"
+    },
+    {
+      "mot": "oncle",
+      "categorie": "nom"
+    },
+    {
+      "mot": "a",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "enfin",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "trouvé",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "un",
+      "categorie": "autre"
+    },
+    {
+      "mot": "acheteur",
+      "categorie": "nom"
+    },
+    {
+      "mot": "On",
+      "categorie": "autre"
+    },
+    {
+      "mot": "déménage",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "tout",
+      "categorie": "autre"
+    },
+    {
+      "mot": "samedi",
+      "categorie": "nom"
+    },
+    {
+      "mot": "prochain",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "et",
+      "categorie": "autre"
+    },
+    {
+      "mot": "franchement",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "on",
+      "categorie": "autre"
+    },
+    {
+      "mot": "manque",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "de",
+      "categorie": "autre"
+    },
+    {
+      "mot": "bras",
+      "categorie": "nom"
+    },
+    {
+      "mot": "Tu",
+      "categorie": "autre"
+    },
+    {
+      "mot": "serais",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "libre",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "Il",
+      "categorie": "autre"
+    },
+    {
+      "mot": "faut",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "vider",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "la",
+      "categorie": "autre"
+    },
+    {
+      "mot": "grange",
+      "categorie": "nom"
+    },
+    {
+      "mot": "trier",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "les",
+      "categorie": "autre"
+    },
+    {
+      "mot": "vieux",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "outils",
+      "categorie": "nom"
+    },
+    {
+      "mot": "et",
+      "categorie": "autre"
+    },
+    {
+      "mot": "porter",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "trois",
+      "categorie": "autre"
+    },
+    {
+      "mot": "armoires",
+      "categorie": "nom"
+    },
+    {
+      "mot": "énormes",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "jusqu'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "au",
+      "categorie": "autre"
+    },
+    {
+      "mot": "camion",
+      "categorie": "nom"
+    },
+    {
+      "mot": "La",
+      "categorie": "autre"
+    },
+    {
+      "mot": "porte",
+      "categorie": "nom"
+    },
+    {
+      "mot": "du",
+      "categorie": "autre"
+    },
+    {
+      "mot": "grenier",
+      "categorie": "nom"
+    },
+    {
+      "mot": "ferme",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "mal",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "alors",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "méfie",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "toi",
+      "categorie": "autre"
+    },
+    {
+      "mot": "si",
+      "categorie": "autre"
+    },
+    {
+      "mot": "tu",
+      "categorie": "autre"
+    },
+    {
+      "mot": "montes",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "J'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "ai",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "retrouvé",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "là-haut",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "un",
+      "categorie": "autre"
+    },
+    {
+      "mot": "livre",
+      "categorie": "nom"
+    },
+    {
+      "mot": "que",
+      "categorie": "autre"
+    },
+    {
+      "mot": "ton",
+      "categorie": "autre"
+    },
+    {
+      "mot": "père",
+      "categorie": "nom"
+    },
+    {
+      "mot": "m'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "avait",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "prêté",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "l'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "été",
+      "categorie": "nom"
+    },
+    {
+      "mot": "dernier",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "il",
+      "categorie": "autre"
+    },
+    {
+      "mot": "a",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "un",
+      "categorie": "autre"
+    },
+    {
+      "mot": "peu",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "pris",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "l'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "eau",
+      "categorie": "nom"
+    },
+    {
+      "mot": "désolé",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "Ma",
+      "categorie": "autre"
+    },
+    {
+      "mot": "tante",
+      "categorie": "nom"
+    },
+    {
+      "mot": "est",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "triste",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "évidemment",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "elle",
+      "categorie": "autre"
+    },
+    {
+      "mot": "a",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "été",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "heureuse",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "ici",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "pendant",
+      "categorie": "autre"
+    },
+    {
+      "mot": "quarante",
+      "categorie": "autre"
+    },
+    {
+      "mot": "ans",
+      "categorie": "nom"
+    },
+    {
+      "mot": "Elle",
+      "categorie": "autre"
+    },
+    {
+      "mot": "livre",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "encore",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "ses",
+      "categorie": "autre"
+    },
+    {
+      "mot": "œufs",
+      "categorie": "nom"
+    },
+    {
+      "mot": "au",
+      "categorie": "autre"
+    },
+    {
+      "mot": "marché",
+      "categorie": "nom"
+    },
+    {
+      "mot": "jusqu'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "à",
+      "categorie": "autre"
+    },
+    {
+      "mot": "la",
+      "categorie": "autre"
+    },
+    {
+      "mot": "fin",
+      "categorie": "nom"
+    },
+    {
+      "mot": "du",
+      "categorie": "autre"
+    },
+    {
+      "mot": "mois",
+      "categorie": "nom"
+    },
+    {
+      "mot": "par",
+      "categorie": "autre"
+    },
+    {
+      "mot": "fierté",
+      "categorie": "nom"
+    },
+    {
+      "mot": "je",
+      "categorie": "autre"
+    },
+    {
+      "mot": "crois",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "Mon",
+      "categorie": "autre"
+    },
+    {
+      "mot": "oncle",
+      "categorie": "nom"
+    },
+    {
+      "mot": "lui",
+      "categorie": "autre"
+    },
+    {
+      "mot": "reste",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "ferme",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "il",
+      "categorie": "autre"
+    },
+    {
+      "mot": "ne",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "veut",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "plus",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "entendre",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "parler",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "de",
+      "categorie": "autre"
+    },
+    {
+      "mot": "vaches",
+      "categorie": "nom"
+    },
+    {
+      "mot": "Si",
+      "categorie": "autre"
+    },
+    {
+      "mot": "tu",
+      "categorie": "autre"
+    },
+    {
+      "mot": "viens",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "apporte",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "des",
+      "categorie": "autre"
+    },
+    {
+      "mot": "gants",
+      "categorie": "nom"
+    },
+    {
+      "mot": "solides",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "et",
+      "categorie": "autre"
+    },
+    {
+      "mot": "de",
+      "categorie": "autre"
+    },
+    {
+      "mot": "bonnes",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "chaussures",
+      "categorie": "nom"
+    },
+    {
+      "mot": "le",
+      "categorie": "autre"
+    },
+    {
+      "mot": "sol",
+      "categorie": "nom"
+    },
+    {
+      "mot": "est",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "boueux",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "vers",
+      "categorie": "autre"
+    },
+    {
+      "mot": "l'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "est",
+      "categorie": "nom"
+    },
+    {
+      "mot": "du",
+      "categorie": "autre"
+    },
+    {
+      "mot": "terrain",
+      "categorie": "nom"
+    },
+    {
+      "mot": "On",
+      "categorie": "autre"
+    },
+    {
+      "mot": "mangera",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "ensemble",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "le",
+      "categorie": "autre"
+    },
+    {
+      "mot": "soir",
+      "categorie": "nom"
+    },
+    {
+      "mot": "ma",
+      "categorie": "autre"
+    },
+    {
+      "mot": "cousine",
+      "categorie": "nom"
+    },
+    {
+      "mot": "prépare",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "une",
+      "categorie": "autre"
+    },
+    {
+      "mot": "soupe",
+      "categorie": "nom"
+    },
+    {
+      "mot": "et",
+      "categorie": "autre"
+    },
+    {
+      "mot": "des",
+      "categorie": "autre"
+    },
+    {
+      "mot": "tartes",
+      "categorie": "nom"
+    },
+    {
+      "mot": "Elle",
+      "categorie": "autre"
+    },
+    {
+      "mot": "demande",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "seulement",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "si",
+      "categorie": "autre"
+    },
+    {
+      "mot": "tu",
+      "categorie": "autre"
+    },
+    {
+      "mot": "manges",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "toujours",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "aussi",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "peu",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "de",
+      "categorie": "autre"
+    },
+    {
+      "mot": "viande",
+      "categorie": "nom"
+    },
+    {
+      "mot": "Apporte",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "aussi",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "ta",
+      "categorie": "autre"
+    },
+    {
+      "mot": "guitare",
+      "categorie": "nom"
+    },
+    {
+      "mot": "le",
+      "categorie": "autre"
+    },
+    {
+      "mot": "vieux",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "piano",
+      "categorie": "nom"
+    },
+    {
+      "mot": "du",
+      "categorie": "autre"
+    },
+    {
+      "mot": "salon",
+      "categorie": "nom"
+    },
+    {
+      "mot": "part",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "demain",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "chez",
+      "categorie": "autre"
+    },
+    {
+      "mot": "un",
+      "categorie": "autre"
+    },
+    {
+      "mot": "brocanteur",
+      "categorie": "nom"
+    },
+    {
+      "mot": "et",
+      "categorie": "autre"
+    },
+    {
+      "mot": "la",
+      "categorie": "autre"
+    },
+    {
+      "mot": "maison",
+      "categorie": "nom"
+    },
+    {
+      "mot": "sera",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "muette",
+      "categorie": "adjectif"
+    },
+    {
+      "mot": "Réponds",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "moi",
+      "categorie": "autre"
+    },
+    {
+      "mot": "vite",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "même",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "brièvement",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "Je",
+      "categorie": "autre"
+    },
+    {
+      "mot": "t'",
+      "categorie": "autre"
+    },
+    {
+      "mot": "embrasse",
+      "categorie": "verbe"
+    },
+    {
+      "mot": "fort",
+      "categorie": "adverbe"
+    },
+    {
+      "mot": "Louis",
+      "categorie": "autre"
+    }
+  ]
+}
