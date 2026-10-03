@@ -15,6 +15,8 @@ export const IntegerParameterSchema = z.object({
   label: z.string().min(1),
   min: z.number().int(),
   max: z.number().int(),
+  /** Un mot peut recevoir sa propre valeur (un verrou) : seulement si `apply` lit `scope.overrides` pour ce paramètre. */
+  lockable: z.literal(true).optional(),
 });
 
 /** Un paramètre à choix : l'hôte en fait une liste. */

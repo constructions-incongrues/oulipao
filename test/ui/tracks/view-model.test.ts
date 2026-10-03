@@ -175,7 +175,7 @@ test('pages de pas : 16, 8 ou 4 selon la largeur', () => {
   assert.deepEqual([0, 15, 16, 43].map((index) => pageOf(index, 16)), [0, 0, 1, 2]);
 });
 
-test('inspecteur : un champ de verrou par paramètre entier, pour les instances en marche qui visent la piste', () => {
+test('inspecteur : un champ de verrou par paramètre verrouillable, pour les instances en marche qui visent la piste', () => {
   const locked = reduce(offsetOne, { type: 'set-lock', id: 's7-1', index: 4, key: 'offset', value: 3 });
   assert.deepEqual(inspectorLocks(locked, 4, 'noun'), [
     { id: 's7-1', fields: [{ key: 'offset', label: 'Décalage', min: -99, max: 99, value: 3 }], note: 'S+3 sur ce mot' },
@@ -187,6 +187,9 @@ test('inspecteur : un champ de verrou par paramètre entier, pour les instances 
   assert.deepEqual(inspectorLocks(both, 5, 'verb'), []);
   // Contrainte coupée : pas de verrou à poser.
   assert.deepEqual(inspectorLocks(reduce(locked, { type: 'toggle-instance', id: 's7-1' }), 4, 'noun'), []);
+  // Bord et Mise en vers visent toutes les pistes mais ne lisent pas les verrous : aucun champ.
+  const layout = [{ type: 'add-instance', plugin: 'edge' }, { type: 'add-instance', plugin: 'lineation' }] as const;
+  assert.deepEqual(inspectorLocks(layout.reduce(reduce, locked), 4, 'noun').map((entry) => entry.id), ['s7-1']);
 });
 
 test('S+7 sur les verbes : mention par instance, verbes servis à la chaîne, auxiliaire compté parmi les laissés', () => {

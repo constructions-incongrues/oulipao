@@ -115,6 +115,8 @@ test('verrous : posés par instance et par mot, validés comme un réglage, reti
   assert.throws(() => after({ type: 'set-lock', id: 's7-1', index: 3, key: 'offset', value: 120 }));
   assert.throws(() => after({ type: 'set-lock', id: 's7-1', index: 3, key: 'mode', value: 1 }));
   assert.throws(() => after({ type: 'set-lock', id: 'lipogram-1', index: 3, key: 'letter', value: 1 }));
+  // Bord ne lit pas les verrous : son paramètre entier n'en accepte pas.
+  assert.throws(() => after({ type: 'add-instance', plugin: 'edge' }, { type: 'set-lock', id: 'edge-1', index: 3, key: 'n', value: 2 }));
   // Vider le champ retire le verrou.
   const cleared = after({ type: 'set-lock', id: 's7-1', index: 3, key: 'offset', value: 3 }, { type: 'clear-lock', id: 's7-1', index: 3, key: 'offset' });
   assert.deepEqual(instance(cleared, 's7-1').locks, []);

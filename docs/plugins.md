@@ -61,6 +61,15 @@ sont facultatifs : la page ne les charge que quand une instance active vise la p
 recalcule le texte à leur arrivée. D'ici là, une contrainte laisse chaque verbe visé avec la
 raison « conjugaisons en cours de chargement » ; `apply` reste synchrone.
 
+## La portée par mot
+
+`apply` reçoit `scope` (`WordScope`), que la chaîne tire de l'instance : `skip`, les mots
+d'origine dont le pas est bouché, à laisser tels quels ; `overrides`, les verrous, une valeur
+de paramètre propre à un mot. Une contrainte qui lit `overrides` pour un paramètre entier le
+déclare `lockable: true` ; l'inspecteur ne propose de verrou que pour ces paramètres, et la
+table refuse les autres. Aujourd'hui, seul le décalage du S+7 est verrouillable : Bord lit
+`skip` mais pas `overrides`, et Mise en vers ne lit pas `scope`.
+
 ## Ce que le S+7 a appris au contrat
 
 Le S+7 (`src/domain/s7/plugin.ts`) est branché sur les noms, mais il **réécrit aussi les autres
