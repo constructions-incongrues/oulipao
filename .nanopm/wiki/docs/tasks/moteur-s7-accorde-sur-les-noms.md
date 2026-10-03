@@ -175,7 +175,7 @@ Max parallel width: 4. Critical path: 5 waves.
 - Total effort: 7,5 jours (3 S à une demi-journée, 6 M à une journée)
 - Waves: 5 (Waves 0-1 foundation + 3 later waves; max parallel width 4)
 - Handoff target: openspec
-- Handoff path: openspec/changes/moteur-s7-accorde-sur-les-noms
+- Handoff path: openspec/changes/archive/2026-10-03-moteur-s7-accorde-sur-les-noms
 
 ---
 
