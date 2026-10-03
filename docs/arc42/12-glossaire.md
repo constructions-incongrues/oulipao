@@ -62,7 +62,7 @@ terme en gras est le terme retenu, celui que toute la documentation doit employe
 | CamemBERT | — | Le modèle neuronal d'étiquetage, `Xenova/french-camembert-postag-model`, quantifié en q8 et exécuté dans le navigateur (ADR-002). |
 | CDN | Content Delivery Network | jsDelivr, le CDN de Hugging Face et celui de GitHub Pages : ils servent les fichiers ; aucun ne reçoit le texte. |
 | CI | Intégration continue | Le workflow GitHub Actions `pages.yml` : typecheck, tests, assemblage, publication. |
-| CSP | Content Security Policy | Une politique qui limiterait les hôtes contactés par la page. Il n'y en a pas aujourd'hui (RISK-02, QS-02). |
+| CSP | Content Security Policy | La politique déclarée dans une balise `<meta>` de chaque page : elle borne les requêtes au site, à jsDelivr et à Hugging Face, même pour un code tiers altéré (QS-02, RISK-02). |
 | DEBT-xx | — | L'identifiant d'une dette technique de la section 11. |
 | DOM | Document Object Model | Seuls les points d'entrée des pages y touchent. Ils sont exclus de la couverture de tests. |
 | ESM | ECMAScript Modules | Le format du code assemblé par esbuild et du module Transformers.js importé. |
