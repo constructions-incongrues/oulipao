@@ -13,8 +13,12 @@ import type { TaggedWord } from '../tagged-word.ts';
 import { nthVerb, rewriteVerbs } from '../verb.ts';
 import { layoutVerse, type VersePlace } from '../verse.ts';
 
-/** Ce qu'un filtre de rime fait d'un mot : le n-ième voisin que `accept` retient, ou la raison de le laisser. */
-export type Decision = { offset: number; accept: (form: string) => boolean; none: string } | { reason: string };
+/**
+ * Ce qu'un filtre de rime fait d'un mot : le n-ième voisin que `accept` retient, ou la raison de le
+ * laisser. `among`, s'il est donné, borne la recherche à ces formes : `accept` ne doit retenir
+ * aucune forme hors de `among`, sinon des voisins seraient manqués.
+ */
+export type Decision = { offset: number; accept: (form: string) => boolean; none: string; among?: ReadonlySet<string> } | { reason: string };
 
 /** La raison d'un mot laissé parce que son pas est bouché (comme au S+n). */
 export const CLOSED = 'pas bouché';
@@ -26,10 +30,21 @@ export interface Sounds {
   of(word: string, category: Category): readonly Phoneme[] | undefined;
   /** Les formes d'une catégorie qui se prononcent exactement comme ces phonèmes. */
   homophones(phonemes: readonly Phoneme[], category: Category): ReadonlySet<string>;
+  /** Les formes d'une catégorie qui ont cette rime, devinées comprises : les candidates d'un R+n. */
+  rhyming(rhyme: string, category: Category): ReadonlySet<string>;
 }
 
-// ponytail: une mémoire par passage, sans index « rime → lemmes ». Plafond : une rime riche rare
-// fait parcourir tout le dictionnaire de la catégorie ; précalculer l'index à la dérivation si ça traîne.
+// Les candidates d'une rime, en ensemble, gardées d'un passage à l'autre : la textbank rend toujours
+// le même tableau pour une rime, et les positions de ses lemmes se calculent une fois (neighbours.ts).
+const asSets = new WeakMap<readonly string[], ReadonlySet<string>>();
+const asSet = (forms: readonly string[]) => {
+  let set = asSets.get(forms);
+  if (!set) asSets.set(forms, (set = new Set(forms)));
+  return set;
+};
+
+// Une mémoire par passage pour les prononciations. Les candidates d'une rime viennent de l'index de
+// la textbank, qui couvre toutes les formes du dictionnaire (prononciations devinées comprises).
 function soundsOf(phonetics: PhoneticsRepository): Sounds {
   const memo = new Map<string, readonly Phoneme[] | undefined>();
   return {
@@ -41,7 +56,8 @@ function soundsOf(phonetics: PhoneticsRepository): Sounds {
       }
       return memo.get(key);
     },
-    homophones: (phonemes, category) => new Set(phonetics.homophones(phonemes.join(''), category)),
+    homophones: (phonemes, category) => asSet(phonetics.homophones(phonemes.join(''), category)),
+    rhyming: (rhyme, category) => asSet(phonetics.rhyming(rhyme, category)),
   };
 }
 
@@ -61,15 +77,15 @@ export interface RhymeFilter {
 export function probe(word: string, category: Category, decision: Decision, resources: PluginResources): string | undefined {
   if ('reason' in decision) return undefined;
   const { morphology, verbs } = resources;
-  const { offset, accept } = decision;
+  const { offset, accept, among } = decision;
   if (category === 'noun') {
-    const choice = nthNoun(word, {}, offset, accept, morphology);
+    const choice = nthNoun(word, {}, offset, accept, morphology, among);
     return choice.status === 'replaced' ? choice.replacement : undefined;
   }
-  if (category === 'adjective') return nthAdjective(word, {}, offset, accept, morphology)?.form;
-  if (category === 'adverb') return nthAdverb(word, offset, accept, morphology);
+  if (category === 'adjective') return nthAdjective(word, {}, offset, accept, morphology, among)?.form;
+  if (category === 'adverb') return nthAdverb(word, offset, accept, morphology, among);
   if (category === 'verb' && verbs) {
-    const shift = nthVerb(word, [], offset, accept, verbs, '');
+    const shift = nthVerb(word, [], offset, accept, verbs, '', among);
     return 'form' in shift ? shift.form : undefined;
   }
   return undefined;
@@ -129,7 +145,7 @@ export function applyRhymeFilter(
       if (tagged[index]!.category !== 'noun') return keepNoun(word);
       const rule = ruleAt(index, word);
       if (!rule) return keepNoun(word);
-      const choice = nthNoun(word, hints, rule.offset, rule.accept, morphology);
+      const choice = nthNoun(word, hints, rule.offset, rule.accept, morphology, rule.among);
       if (choice.status !== 'replaced') marks.push({ index, original: word, reason: choice.status === 'unknown-noun' ? UNKNOWN : rule.none });
       return choice;
     },
@@ -154,9 +170,9 @@ export function applyRhymeFilter(
       const reading = morphology.adjectiveReadings(original.toLowerCase())[0];
       gender = reading && reading.gender !== 'e' ? reading.gender : 'm';
       const wanted = { ...(reading && reading.gender !== 'e' && { gender: reading.gender }), ...(reading && reading.number !== 'i' && { number: reading.number }) };
-      replacement = nthAdjective(original, wanted, rule.offset, rule.accept, morphology)?.form;
+      replacement = nthAdjective(original, wanted, rule.offset, rule.accept, morphology, rule.among)?.form;
     } else {
-      replacement = nthAdverb(original, rule.offset, rule.accept, morphology);
+      replacement = nthAdverb(original, rule.offset, rule.accept, morphology, rule.among);
     }
     if (!replacement) return marks.push({ index, original, reason: rule.none });
     word.output = matchCase(original, replacement);
@@ -177,7 +193,7 @@ export function applyRhymeFilter(
       },
       (word, previous, repository, index) => {
         const rule = verbRules.get(index)!;
-        return nthVerb(word, previous, rule.offset, rule.accept, repository, rule.none);
+        return nthVerb(word, previous, rule.offset, rule.accept, repository, rule.none, rule.among);
       },
       verbs,
       apostrophe,

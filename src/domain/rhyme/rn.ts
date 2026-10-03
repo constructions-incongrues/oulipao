@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { rhymes, RICHNESS_LABELS, RichnessSchema } from '../phonetics/rhyme.ts';
+import { rhymeOf, rhymes, RICHNESS_LABELS, RichnessSchema } from '../phonetics/rhyme.ts';
 import { definePlugin, FULL_SCOPE, type ParameterValues } from '../plugin.ts';
 import { applyRhymeFilter } from './engine.ts';
 
@@ -70,6 +70,8 @@ export const rnPlugin = definePlugin({
         if (offset === 0) return { reason: 'R+0 sur ce mot' };
         return {
           offset,
+          // Deux mots ne riment, à quelque richesse que ce soit, que s'ils ont la même rime.
+          among: sounds.rhyming(rhymeOf(original), category),
           accept: (form) => {
             const sound = sounds.of(form, category);
             return !!sound && form.toLowerCase() !== word.toLowerCase() && rhymes(original, sound, settings.richness);

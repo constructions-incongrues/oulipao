@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { VerbRepository } from '../ports/verbs.ts';
 import { containsLetter } from './lipogram/neighbour.ts';
+import { aroundAmong, candidatePositions } from './neighbours.ts';
 import type { WordMark } from './plugin.ts';
 import { GenderSchema, GrammaticalNumberSchema, type OutputWord } from './s7/types.ts';
 import type { TaggedWord } from './tagged-word.ts';
@@ -113,14 +114,26 @@ export function shiftVerb(word: string, previous: readonly string[], offset: num
  * Le n-ième verbe qui suit dans le dictionnaire (`offset` négatif : qui précède) et qui a, aux
  * mêmes traits, une forme que `accept` retient ; `none` est la raison s'il n'y en a pas assez.
  */
-export function nthVerb(word: string, previous: readonly string[], offset: number, accept: (form: string) => boolean, verbs: VerbRepository, none: string): VerbShift {
+export function nthVerb(
+  word: string,
+  previous: readonly string[],
+  offset: number,
+  accept: (form: string) => boolean,
+  verbs: VerbRepository,
+  none: string,
+  among?: ReadonlySet<string>,
+): VerbShift {
   const found = locate(word, previous, verbs);
   if ('reason' in found) return found;
   const infinitives = verbs.infinitives();
   const step = Math.sign(offset) || 1;
   let remaining = Math.abs(offset);
-  for (let k = 1; k < infinitives.length; k++) {
-    const target = infinitives[(((found.start + k * step) % infinitives.length) + infinitives.length) % infinitives.length]!;
+  // Avec `among`, seuls les infinitifs des formes candidates sont essayés, dans l'ordre du tour (voir neighbours.ts).
+  const positions = among
+    ? aroundAmong(candidatePositions(infinitives, among, (form) => verbs.readings(form).map((r) => r.infinitive)), found.start, step)
+    : Array.from({ length: infinitives.length - 1 }, (_, k) => (((found.start + (k + 1) * step) % infinitives.length) + infinitives.length) % infinitives.length);
+  for (const position of positions) {
+    const target = infinitives[position]!;
     const form = verbs.forms(target).find((candidate) => fits(candidate, found.reading) && accept(candidate.form));
     if (form && --remaining === 0) return { form: matchCase(word, form.form) };
   }

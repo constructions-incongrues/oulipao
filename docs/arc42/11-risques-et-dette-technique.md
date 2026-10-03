@@ -11,11 +11,13 @@ l'ADR-007 (textbank phonétique). RISK-08 et RISK-09 viennent d'objectifs de qua
 qui ne sont pas encore tenus ou pas encore vérifiés : ce sont les scénarios QS-06 et QS-11
 (section 10.3). QS-02, qui relevait de RISK-02, est tenu depuis la politique de sécurité du contenu. Les deux dettes ont été relevées en écrivant les sections 6 et 5.
 
-Aucun risque n'est critique. Quatre sont de priorité haute :
+Aucun risque n'est critique. Trois sont de priorité haute :
 - **RISK-01 :** la dépendance à deux distributeurs tiers ;
 - **RISK-03 :** la licence du modèle ;
-- **RISK-04 :** la perte du texte faute de sauvegarde ;
-- **RISK-11 :** des filtres de rime plus lents que le réglage en direct ne le permet.
+- **RISK-04 :** la perte du texte faute de sauvegarde.
+
+RISK-11 (des filtres de rime trop lents) est passé de haute à basse le 2026-10-03, avec l'index
+des rimes (changement OpenSpec `index-des-rimes`).
 
 RISK-05 (le coût d'une nouvelle contrainte) est passé de haute à moyenne le 2026-10-03 : trois
 contraintes ont été ajoutées sans toucher aux ports ni aux adaptateurs.
@@ -42,13 +44,13 @@ le tableau du toolkit.*
 | RISK-01 | jsDelivr ou Hugging Face indisponible, ou le modèle retiré | Dépendance | Moyenne | Haut | Haute | Ouvert |
 | RISK-03 | Licence du modèle d'étiquetage non déclarée | Données et conformité | Haute | Moyen | Haute | Accepté |
 | RISK-04 | Le texte est perdu quand l'onglet se ferme | Données | Haute | Moyen | Haute | Accepté |
-| RISK-11 | Les filtres de rime sont plus lents que le réglage en direct ne le permet | Architecture | Haute | Moyen | Haute | Ouvert |
 | RISK-05 | Ajouter une contrainte oblige à toucher plusieurs briques | Architecture | Moyenne | Moyen | Moyenne | Ouvert |
 | RISK-06 | Fautes d'accord hors du voisinage, et erreurs d'étiquetage propagées | Architecture | Haute | Bas | Moyenne | Accepté |
 | RISK-08 | Le réglage en direct est proche de la limite de 100 ms | Architecture | Moyenne | Moyen | Moyenne | Ouvert |
 | RISK-09 | Usage au clavier et affichage à 375 px non revérifiés | Architecture | Moyenne | Moyen | Moyenne | Ouvert |
 | RISK-10 | Des rimes fausses : prononciations devinées, justesse pas encore relue | Données | Moyenne | Moyen | Moyenne | Ouvert |
 | RISK-02 | Code tiers chargé sans vérification d'intégrité | Sécurité | Basse | Moyen | Basse | Atténué |
+| RISK-11 | Les filtres de rime sont plus lents que le réglage en direct ne le permet | Architecture | Basse | Moyen | Basse | Atténué |
 | RISK-07 | Version d'adresse des fichiers dérivés mise à jour à la main | Intégration | Moyenne | Bas | Basse | Ouvert |
 | DEBT-01 | Un préchargement raté arrête la mise en pistes sans message propre | Accidentelle | — | Bas | Basse | Ouvert |
 | DEBT-02 | Le découpage en mots garde les mots composés d'un seul tenant | Délibérée | — | Bas | Basse | Ouvert |
@@ -99,20 +101,6 @@ le tableau du toolkit.*
 | **Statut** | Accepté : « comptes, sauvegarde de projets » sont hors des objectifs du trimestre, à revoir « quand le fondateur perd un travail faute de sauvegarde » (`objectives.md`). Une sauvegarde locale dans le navigateur respecterait l'ADR-001. |
 
 **Contexte :** ADR-001.
-
-### RISK-11 : les filtres de rime sont plus lents que le réglage en direct ne le permet
-
-| Attribut | Valeur |
-|----------|--------|
-| **Type** | Architecture |
-| **Description** | Pour trouver le n-ième voisin qui rime, le moteur peut parcourir tout le dictionnaire d'une catégorie (environ 50 000 noms), en interrogeant la textbank à chaque lemme. Mesuré sous Node sur un poème de quatre vers (`RESULTATS.md`) : R+1 sur les noms, les adjectifs et les verbes, 78 à 98 ms ; homophonies, 318 à 363 ms. |
-| **Probabilité** | Haute : le dépassement est déjà mesuré pour les homophonies, sur un texte bien plus court que 200 mots. |
-| **Impact** | Moyen : le réglage cesse de paraître immédiat dès qu'un filtre de rime est dans la chaîne (objectif 3, QS-06). |
-| **Priorité** | Haute |
-| **Mitigation** | Actuelle : une mémoire `forme → rime` par appel (commentaire `ponytail:`). Prévue (design de la textbank, D6) : un index `rime → lemmes` précalculé à la dérivation, si la latence se confirme dans le navigateur. |
-| **Statut** | Ouvert |
-
-**Contexte :** ADR-007 ; objectif 3 de la section 1.2 ; voisin de RISK-08.
 
 ### RISK-05 : ajouter une contrainte oblige à toucher plusieurs briques
 
@@ -198,6 +186,20 @@ lexicale : les filtres de rime ont demandé un port (I-06) et deux adaptateurs, 
 | **Statut** | Atténué : reste ouvert tant qu'il n'y a pas de SRI. |
 
 **Contexte :** ADR-002 ; sections 7.1 et 8.2.
+
+### RISK-11 : les filtres de rime sont plus lents que le réglage en direct ne le permet
+
+| Attribut | Valeur |
+|----------|--------|
+| **Type** | Architecture |
+| **Description** | Pour trouver le n-ième voisin qui rime, le moteur parcourait tout le dictionnaire d'une catégorie (environ 54 000 noms), en prononçant chaque candidat. Mesuré le 2026-10-03 sous Node, sur les trois textes de référence de 200 mots, toutes les pistes, au 95e percentile : R+1 de 0,3 à 1,1 s, R+3 de 1,2 à 1,7 s, homophonies de 2,8 à 4,0 s. |
+| **Probabilité** | Basse depuis l'index des rimes : R+1 de 27 à 87 ms, R+3 de 57 à 89 ms, homophonies de 5 à 6 ms, dans les mêmes conditions. Dans le navigateur, un changement de décalage d'un R+n sur toutes les pistes d'un poème de quatre vers prend de 23 à 82 ms. *Révisée le 2026-10-03 (elle était haute).* |
+| **Impact** | Moyen : le réglage cesserait de paraître immédiat dès qu'un filtre de rime est dans la chaîne (objectif 3, QS-06). |
+| **Priorité** | Basse |
+| **Mitigation** | Faite : la dérivation écrit une prononciation pour chaque forme candidate, y compris empruntée ou devinée. La textbank rend les formes d'une rime (`rhyming`), et la recherche du voisin ne visite que leurs lemmes, dont les positions sont gardées d'un passage à l'autre. Les sorties sont identiques mot à mot sur les textes de référence. Reste : le tout premier R+n d'une session coûte jusqu'à 410 ms, le temps de calculer les positions des rimes rencontrées. |
+| **Statut** | Atténué : la cible tient sous Node et dans le navigateur. Reste à mesurer sur un téléphone (RISK-08). |
+
+**Contexte :** ADR-007 ; objectif 3 de la section 1.2 ; voisin de RISK-08.
 
 ### RISK-07 : version d'adresse des fichiers dérivés mise à jour à la main
 

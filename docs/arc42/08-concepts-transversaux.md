@@ -138,7 +138,9 @@ du Domaine.
 
 - **Persistance :** aucune. Rien n'est sauvegardé (ADR-001, RISK-04).
 - **Données de référence, en lecture seule :** les trois fichiers TSV dérivés de Grammalecte, et
-  celui des prononciations, dérivé de GLÀFF (ADR-007). Le
+  celui des prononciations, dérivé de GLÀFF (ADR-007). Ce dernier porte aussi une prononciation
+  empruntée ou devinée pour chaque forme candidate des filtres, avec sa source (G, A, R), pour que
+  l'index des rimes soit complet. Le
   même cycle traverse quatre briques :
   - les **Outils** les écrivent (`npm run build:*`) ;
   - les **Données dérivées** les servent telles quelles ;
