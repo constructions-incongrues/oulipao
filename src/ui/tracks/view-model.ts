@@ -279,7 +279,7 @@ export function inspectorWindow(view: TracksView, index: number, radius: number)
   };
 }
 
-/** Un champ de verrou de l'inspecteur : un paramètre entier d'une instance, pour le mot choisi. */
+/** Un champ de verrou de l'inspecteur : un paramètre verrouillable d'une instance, pour le mot choisi. */
 export interface LockField {
   key: string;
   label: string;
@@ -304,7 +304,7 @@ export function inspectorLocks(mixer: MixerState, index: number, track: Category
     .flatMap((instance) => {
       const plugin = lookup(instance.type);
       const fields = plugin.parameters.flatMap((parameter) =>
-        parameter.kind === 'integer'
+        parameter.kind === 'integer' && parameter.lockable
           ? [{ key: parameter.key, label: parameter.label, min: parameter.min, max: parameter.max, value: instance.locks?.find((lock) => lock.index === index && lock.key === parameter.key)?.value }]
           : [],
       );

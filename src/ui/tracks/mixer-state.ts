@@ -140,7 +140,7 @@ export function reduce(state: MixerState, action: MixerAction): MixerState {
       const instance = instanceOf(state, checked.id);
       const plugin = pluginById(instance.type);
       const parameter = plugin.parameters.find((candidate) => candidate.key === checked.key);
-      if (parameter?.kind !== 'integer') throw new Error(`paramètre entier inconnu : ${checked.key}`);
+      if (parameter?.kind !== 'integer' || !parameter.lockable) throw new Error(`paramètre non verrouillable : ${checked.key}`);
       // Le verrou passe par la même validation qu'un réglage : hors bornes, il est refusé.
       plugin.parse({ ...instance.params, [checked.key]: checked.value });
       const others = (instance.locks ?? []).filter((lock) => lock.index !== checked.index || lock.key !== checked.key);
