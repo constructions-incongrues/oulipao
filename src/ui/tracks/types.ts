@@ -59,6 +59,11 @@ export const MixerActionSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('set-targets'), id: z.string().min(1), targets: z.array(CategorySchema).min(1) }),
   /** Ajoute une instance d'un type, en fin de chaîne. */
   z.object({ type: z.literal('add-instance'), plugin: z.string().min(1) }),
+  /**
+   * Branche une recette en fin de chaîne : son réglage choisi, s'il en a un, et le jour du
+   * branchement (« 2026-10-03 »), pour que le geste reste rejouable.
+   */
+  z.object({ type: z.literal('add-recipe'), recipe: z.string().min(1), choice: z.string().min(1).optional(), today: z.string().date() }),
   z.object({ type: z.literal('duplicate-instance'), id: z.string().min(1) }),
   z.object({ type: z.literal('remove-instance'), id: z.string().min(1) }),
   /** Place une instance à une position de la chaîne. */

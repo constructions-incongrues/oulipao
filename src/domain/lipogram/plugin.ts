@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
 import { definePlugin, FULL_SCOPE, type ParameterValues, type WordMark } from '../plugin.ts';
+import { matchCase, removeWord } from '../removal.ts';
 import { keepNoun, rewriteNouns } from '../s7/engine.ts';
 import { elides } from '../s7/elision.ts';
 import type { OutputWord } from '../s7/types.ts';
@@ -16,9 +17,6 @@ const LETTERS = [...'abcdefghijklmnopqrstuvwxyz'];
 const ParamsSchema = z.object({ letter: z.enum(LETTERS as [string, ...string[]]).default('e') });
 const params = (values: ParameterValues) => ParamsSchema.parse(values);
 
-/** Reporte la majuscule initiale du mot d'origine sur le mot nouveau. */
-const matchCase = (original: string, replacement: string) =>
-  original[0] !== original[0]!.toLowerCase() ? replacement[0]!.toUpperCase() + replacement.slice(1) : replacement;
 
 const NO_NEIGHBOUR = 'aucun voisin sans la lettre';
 
@@ -103,6 +101,7 @@ export const lipogramPlugin = definePlugin({
       morphology,
     );
     const words = nouns.words.map((word) => ({ ...word }));
+    let tail = nouns.tail;
     const marks: WordMark[] = [];
     for (const substitution of nouns.substitutions) {
       if (substitution.status === 'replaced') marks.push({ index: substitution.index, original: substitution.original, replacement: words[substitution.index]!.output });
@@ -120,11 +119,8 @@ export const lipogramPlugin = definePlugin({
         word.output = fate.replacement;
         marks.push({ index, original, replacement: fate.replacement });
       } else if ('removed' in fate) {
-        // Un mot retiré en tête de phrase lègue sa majuscule au suivant.
-        const next = words[index + 1];
-        if (next && word.output[0] !== word.output[0]!.toLowerCase()) next.output = matchCase(word.output, next.output);
-        word.output = '';
-        word.gap = '';
+        // Son blanc passe au mot suivant ; en tête de phrase, sa majuscule aussi.
+        tail = removeWord(words, index, tail);
         marks.push({ index, original, removed: true });
       } else {
         marks.push({ index, original, reason: fate.reason });
@@ -150,6 +146,6 @@ export const lipogramPlugin = definePlugin({
     for (const mark of marks) if (mark.replacement !== undefined) elide(words, mark.index, apostrophe, morphology);
     for (const mark of marks) if (mark.replacement !== undefined) mark.replacement = words[mark.index]!.output;
 
-    return { words, tail: nouns.tail, marks: marks.sort((a, b) => a.index - b.index) };
+    return { words, tail, marks: marks.sort((a, b) => a.index - b.index) };
   },
 });

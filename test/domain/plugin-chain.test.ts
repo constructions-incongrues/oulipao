@@ -69,7 +69,7 @@ test('un seul plugin : exactement sa sortie et ses marques', () => {
   const result = runChain(text, tag(text), [step(s7Plugin, { offset: 1 })], resources);
   assert.deepEqual(result.words, alone.words);
   assert.equal(result.tail, alone.tail);
-  assert.deepEqual(result.steps, [{ id: 's7', replaced: 2, removed: 0, kept: 0 }]);
+  assert.deepEqual(result.steps, [{ id: 's7', replaced: 2, removed: 0, relaid: 0, kept: 0 }]);
   assert.deepEqual(result.marks.get(2), { index: 2, original: 'ferme', replacement: 'fermoir' });
 });
 
@@ -86,10 +86,11 @@ test('deux plugins : le second lit la sortie du premier, ramenée aux mots d’o
   assert.deepEqual(result.marks.get(1), { index: 1, original: 'ferme', replacement: 'fermoir' });
   assert.deepEqual(result.steps.map((s) => s.id), ['s7', 'sans-v']);
   // chaque étape, alignée sur les mots d'origine : la contraction reste à sa place, le mot retiré est vide
-  assert.deepEqual(result.stages, [
+  assert.deepEqual(result.stages.map((stage) => stage.map((word) => word.output)), [
     ['Le', 'fermoir', 'de la', 'ville', 'dort'],
     ['Le', 'fermoir', 'de la', '', 'dort'],
   ]);
+  assert.ok(result.stages.flat().every((word) => !word.newline));
 });
 
 test('un mot remplacé par plusieurs, puis relu par un autre plugin', () => {
@@ -102,7 +103,7 @@ test('un mot remplacé par plusieurs, puis relu par un autre plugin', () => {
   // un mot laissé tel quel après avoir été remplacé garde sa marque de remplacement
   const twice = runChain(text, tag(text), [step(s7Plugin, { offset: 1 }), step(expand, {})], resources);
   assert.deepEqual(twice.marks.get(3), { index: 3, original: 'village', replacement: 'ville' });
-  assert.deepEqual(twice.steps.at(-1), { id: 'deplie', replaced: 0, removed: 0, kept: 1 });
+  assert.deepEqual(twice.steps.at(-1), { id: 'deplie', replaced: 0, removed: 0, relaid: 0, kept: 1 });
 });
 
 test('une sortie qui ne suit pas les mots du texte est refusée', () => {
@@ -144,5 +145,42 @@ test('S+7 sur les verbes puis lipogramme en e : un verbe sans « e », au même 
   ];
   // dormir −1 → chanter (« chante », avec un « e »), puis le premier verbe suivant sans « e » à la 1re personne : dormir.
   const chain = runChain(text, tag(text, { je: 'other', dors: 'verb' }), steps, { ...resources, verbs: verbs() });
-  assert.deepEqual(chain.stages.map((stage) => stage[1]), ['chante', 'dors']);
+  assert.deepEqual(chain.stages.map((stage) => stage[1]!.output), ['chante', 'dors']);
+});
+
+/** Un plugin d'essai qui met chaque mot à la ligne, sans le changer. */
+const lineByLine = definePlugin({
+  id: 'ligne',
+  name: 'Ligne',
+  targetable: false,
+  tracks: [...CATEGORIES],
+  defaultTargets: [...CATEGORIES],
+  parameters: [],
+  defaults: {},
+  parse: (values) => values,
+  acts: () => true,
+  title: () => 'Ligne',
+  label: () => 'ligne',
+  help: () => '',
+  apply(text) {
+    const { words, tail } = plainWords(text);
+    const marks = words.slice(1).map((word) => {
+      word.gap = '\n';
+      return { index: word.index, original: word.output, relaid: true as const };
+    });
+    return { words, tail, marks };
+  },
+});
+
+test('remis en ligne : compté, sans effacer un remplacement ; l’étape note les sauts nouveaux', () => {
+  const text = 'La ferme dort.';
+  const result = runChain(text, tag(text), [step(s7Plugin, { offset: 1 }), step(lineByLine, {})], resources);
+  assert.equal(join(result.words, result.tail), 'Le\nfermoir\ndort.'); // l'article suit le nouveau nom
+  assert.deepEqual(result.steps.at(-1), { id: 'ligne', replaced: 0, removed: 0, relaid: 2, kept: 0 });
+  assert.deepEqual(result.marks.get(1), { index: 1, original: 'ferme', replacement: 'fermoir' }); // le remplacement l'emporte
+  assert.deepEqual(result.marks.get(2), { index: 2, original: 'dort', relaid: true });
+  assert.deepEqual(result.stages.map((stage) => stage.map((word) => word.newline)), [[false, false, false], [false, true, true]]);
+  // Remis en ligne une seconde fois : le saut n'est plus nouveau.
+  const twice = runChain(text, tag(text), [step(lineByLine, {}), { ...step(lineByLine, {}), id: 'encore' }], resources);
+  assert.deepEqual(twice.stages[1]!.map((word) => word.newline), [false, false, false]);
 });

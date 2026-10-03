@@ -17,10 +17,10 @@ test('plugin actif : texte transformé, noms remplacés comptés, bandes de l’
   const view = buildView(session, offsetOne, m);
   assert.equal(view.result, 'Le vieux fermoir de la ville est gris, et la Zorglub aussi.');
   assert.deepEqual(view.counts, { noun: 3, verb: 1, adjective: 2, adverb: 0, other: 5 });
-  assert.deepEqual(view.steps, [{ id: 's7-1', replaced: 2, removed: 0, kept: 1 }]);
+  assert.deepEqual(view.steps, [{ id: 's7-1', replaced: 2, removed: 0, relaid: 0, kept: 1 }]);
   assert.deepEqual(view.stages.map((stage) => stage.label), ['Origine', 'S+1 sur les noms']);
-  assert.deepEqual(view.stages[0]!.words.slice(0, 5), ['La', 'vieille', 'ferme', 'du', 'village']);
-  assert.deepEqual(view.stages[1]!.words.slice(0, 5), ['Le', 'vieux', 'fermoir', 'de la', 'ville']); // la contraction reste à sa place
+  assert.deepEqual(view.stages[0]!.words.slice(0, 5).map((word) => word.output), ['La', 'vieille', 'ferme', 'du', 'village']);
+  assert.deepEqual(view.stages[1]!.words.slice(0, 5).map((word) => word.output), ['Le', 'vieux', 'fermoir', 'de la', 'ville']); // la contraction reste à sa place
   assert.equal(view.tracks[2], 'noun');
 });
 
@@ -44,12 +44,14 @@ test('fenêtre de l’inspecteur : le mot au centre, bornée au texte, « · » 
   const view = buildView(session, offsetOne, m);
   const middle = inspectorWindow(view, 5, 2);
   assert.deepEqual(middle.columns, [3, 4, 5, 6, 7].map((index) => ({ index, distance: Math.abs(index - 5) })));
-  assert.deepEqual(middle.bands[0], { id: 'origin', label: 'Origine', cells: ['du', 'village', 'est', 'grise', 'et'] });
-  assert.deepEqual(middle.bands[1]!.cells, ['de la', 'ville', 'est', 'gris', 'et']);
+  const texts = (band: { cells: { text: string }[] }) => band.cells.map((cell) => cell.text);
+  assert.deepEqual({ ...middle.bands[0]!, cells: texts(middle.bands[0]!) }, { id: 'origin', label: 'Origine', cells: ['du', 'village', 'est', 'grise', 'et'] });
+  assert.deepEqual(texts(middle.bands[1]!), ['de la', 'ville', 'est', 'gris', 'et']);
+  assert.ok(middle.bands.every((band) => band.cells.every((cell) => !cell.newline)));
   assert.deepEqual(inspectorWindow(view, 0, 2).columns.map((c) => c.index), [0, 1, 2]); // début du texte
   assert.deepEqual(inspectorWindow(view, 10, 6).columns.at(-1), { index: 10, distance: 0 }); // fin du texte
-  const removed = { ...view, stages: [...view.stages, { id: 'x', label: 'X', words: view.stages[1]!.words.map((w, k) => (k === 4 ? '' : w)) }] };
-  assert.equal(inspectorWindow(removed, 4, 0).bands[2]!.cells[0], '·');
+  const removed = { ...view, stages: [...view.stages, { id: 'x', label: 'X', words: view.stages[1]!.words.map((w, k) => (k === 4 ? { output: '', newline: true } : w)) }] };
+  assert.deepEqual(inspectorWindow(removed, 4, 0).bands[2]!.cells[0], { text: '·', newline: true });
 });
 
 test('marques des noms : remplacé, ou laissé tel quel avec sa raison ; rien quand le plugin n’agit pas', () => {
@@ -111,13 +113,13 @@ test('chaîne avec un plugin sur toutes les pistes : résumé, mention, mots ret
   // S+1 : « La vieille ferme » → « Le vieux fermoir » ; puis sans « e » : « Le », « vieux », « fermoir » retirés
   assert.equal(view.result, 'dort.');
   assert.deepEqual(view.marks.get(2), { state: 'removed', original: 'ferme' });
-  assert.deepEqual(view.steps, [{ id: 's7-1', replaced: 1, removed: 0, kept: 0 }, { id: 'sans-1', replaced: 0, removed: 3, kept: 0 }]);
+  assert.deepEqual(view.steps, [{ id: 's7-1', replaced: 1, removed: 0, relaid: 0, kept: 0 }, { id: 'sans-1', replaced: 0, removed: 3, relaid: 0, kept: 0 }]);
   // trois bandes : l'origine, puis chaque contrainte active dans l'ordre de la chaîne
-  assert.deepEqual(view.stages.map((stage) => [stage.label, stage.words[2]]), [['Origine', 'ferme'], ['S+1 sur les noms', 'fermoir'], ['sans e', '']]);
-  assert.equal(summarize(mixer, view, lookup), 'S+1 sur les noms : 1 nom remplacé sur 1. sans e : 0 mot remplacé, 3 retirés, 0 laissé tel quel.');
+  assert.deepEqual(view.stages.map((stage) => [stage.label, stage.words[2]!.output]), [['Origine', 'ferme'], ['S+1 sur les noms', 'fermoir'], ['sans e', '']]);
+  assert.equal(summarize(mixer, view, lookup), 'S+1 sur les noms : 1 nom remplacé sur 1. sans e : 3 mots retirés.');
   assert.equal(ruleMention(mixer, view.audible, lookup), '\n\n— S+1 sur les noms · sans e (Oulipao)');
   const verbs = buildView({ text: 'Le chat est vite.', tagged: tag('Le chat est vite.') }, mixer, m, lookup);
-  assert.match(summarize(mixer, verbs, lookup), /3 retirés, 1 laissé tel quel\.$/); // « Le cheval » et « vite » retirés, « est » laissé
+  assert.match(summarize(mixer, verbs, lookup), /3 mots retirés, 1 laissé tel quel\.$/); // « Le cheval » et « vite » retirés, « est » laissé
   // tous coupés
   const off = { ...mixer, instances: mixer.instances.map((instance) => ({ ...instance, enabled: false })) };
   assert.equal(summarize(off, buildView(short, off, m, lookup), lookup), 'Contraintes coupées : texte d’origine.');
@@ -141,9 +143,9 @@ test('instances : pistes nommées sauf quand elles couvrent le type ; phrase à 
 test('pas bouché : le mot reste tel quel, les autres noms changent', () => {
   const open = buildView(session, offsetOne, m);
   const closed = buildView(session, reduce(offsetOne, { type: 'toggle-step', index: 2 }), m);
-  assert.notEqual(open.stages.at(-1)!.words[2], 'ferme');
-  assert.equal(closed.stages.at(-1)!.words[2], 'ferme');
-  assert.equal(closed.stages.at(-1)!.words[4], open.stages.at(-1)!.words[4]);
+  assert.notEqual(open.stages.at(-1)!.words[2]!.output, 'ferme');
+  assert.equal(closed.stages.at(-1)!.words[2]!.output, 'ferme');
+  assert.equal(closed.stages.at(-1)!.words[4]!.output, open.stages.at(-1)!.words[4]!.output);
   assert.match(closed.result, /vieille ferme/);
 });
 
@@ -151,13 +153,13 @@ test('verrou : le mot verrouillé prend sa valeur, les autres suivent l’instan
   const s2 = buildView(session, reduce(seededState, { type: 'set-param', id: 's7-1', key: 'offset', value: 2 }), m);
   const locked = buildView(session, reduce(offsetOne, { type: 'set-lock', id: 's7-1', index: 4, key: 'offset', value: 2 }), m);
   const open = buildView(session, offsetOne, m);
-  assert.equal(locked.stages.at(-1)!.words[4], s2.stages.at(-1)!.words[4]);
-  assert.equal(locked.stages.at(-1)!.words[2], open.stages.at(-1)!.words[2]);
+  assert.equal(locked.stages.at(-1)!.words[4]!.output, s2.stages.at(-1)!.words[4]!.output);
+  assert.equal(locked.stages.at(-1)!.words[2]!.output, open.stages.at(-1)!.words[2]!.output);
 });
 
 test('grille : percé si une contrainte agit sur la piste, contour sinon, bouché, et verrous', () => {
   const view = buildView(session, offsetOne, m);
-  const words = view.stages[0]!.words;
+  const words = view.stages[0]!.words.map((word) => word.output);
   const mixer = reduce(reduce(offsetOne, { type: 'toggle-step', index: 2 }), { type: 'set-lock', id: 's7-1', index: 4, key: 'offset', value: 3 });
   const steps = gridSteps(mixer, view.tracks, words);
   assert.equal(steps.length, words.length);
@@ -195,4 +197,24 @@ test('S+7 sur les verbes : mention par instance, verbes servis à la chaîne, au
   const view = buildView(sleeping, verbsOnly, m, undefined, verbs());
   assert.equal(view.result, 'Le chat chante, il est là.');
   assert.equal(summarize(verbsOnly, view), 'S+7 sur les verbes : 1 verbe remplacé sur 2.'); // « est », auxiliaire, reste
+});
+
+test('résumé d’un retrait et d’une mise en page : seulement ce qui a eu lieu', () => {
+  const poem = { text: 'Le chat dort sur le mur.', tagged: tag('Le chat dort sur le mur.', { chat: 'noun', mur: 'noun' }) };
+  const withSort = reduce(reduce(seededState, { type: 'remove-instance', id: 's7-1' }), { type: 'add-instance', plugin: 'track-sort' });
+  const sorted = buildView(poem, withSort, m);
+  assert.match(summarize(withSort, sorted), /^retrait sur les noms : 2 mots retirés\./);
+  // Un tri qui n'a rien retiré ne parle pas de remplacement.
+  const nothing = { text: 'Le dort.', tagged: tag('Le dort.') };
+  assert.match(summarize(withSort, buildView(nothing, withSort, m)), /^retrait sur les noms : aucun changement\./);
+  const lined = reduce(withSort, { type: 'add-instance', plugin: 'lineation' });
+  const both = reduce(reduce(lined, { type: 'set-param', id: 'lineation-1', key: 'n', value: 2 }), { type: 'toggle-instance', id: 'track-sort-1' });
+  const view = buildView(poem, both, m);
+  assert.equal(view.result, 'Le chat\ndort sur\nle mur.');
+  assert.match(summarize(both, view), /mise en vers tous les 2 mots : 2 mots remis en ligne\./);
+  assert.deepEqual(view.marks.get(2), { state: 'relaid', original: 'dort' });
+  assert.deepEqual(view.stages.at(-1)!.words.map((word) => word.newline), [false, false, true, false, true, false]);
+  // Rien à faire : on le dit.
+  const flat = { text: 'Le chat.', tagged: tag('Le chat.') };
+  assert.match(summarize(both, buildView(flat, both, m)), /mise en vers tous les 2 mots : aucun changement\./);
 });

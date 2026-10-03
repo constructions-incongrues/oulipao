@@ -16,6 +16,7 @@ ce contrat a de faux.
 | Champ | Rôle |
 |---|---|
 | `id`, `name` | identifiant, et nom court du bouton de marche (« S+7 ») |
+| `targetable` | `false` pour une mise en page qui agit sur tout le texte (Bord, Mise en vers) : elle déclare les cinq pistes, toutes visées, et la page n'affiche pas de puces |
 | `tracks`, `defaultTargets` | les pistes que la contrainte sait traiter (S+n : noms et adjectifs ; lipogramme : les cinq), et celles qu'une instance neuve vise |
 | `parameters` | les paramètres, dans l'ordre d'affichage : entier borné (champ numérique) ou choix (liste) |
 | `defaults` | les valeurs à l'ouverture |
@@ -27,7 +28,15 @@ ce contrat a de faux.
 `apply` rend, comme `plainWords`, un élément par mot du texte qu'il a lu (`words`, `tail`) : la
 page peut ensuite couper des pistes et montrer chaque étape dans l'inspecteur sans connaître la contrainte. Il
 rend aussi `marks` : pour chaque mot qu'il a touché, le remplaçant, le fait qu'il l'a retiré
-(`removed`), ou la raison pour laquelle il l'a laissé tel quel.
+(`removed`), le fait qu'il n'en a changé que le blanc d'avant, une coupe de ligne (`relaid`),
+ou la raison pour laquelle il l'a laissé tel quel.
+
+**Retirer un mot.** Une contrainte qui retire passe par `removeWord` (`src/domain/removal.ts`) :
+le blanc du mot retiré (ponctuation, sauts de ligne) se fond dans celui du mot suivant. Les
+sauts de ligne restent ; une suite de ponctuation se réduit à son signe le plus fort ; les
+espaces suivent l'usage français ; la ponctuation tombe en tête de texte ; des guillemets ou des
+parenthèses qui n'entourent plus rien tombent ensemble ; un mot retiré en tête de phrase lègue
+sa majuscule. Les vers restent des vers.
 
 ## Type et instance
 
@@ -67,11 +76,21 @@ peut-être en revanche revoir `track` et `marks`, pensés pour une contrainte at
 - Une chaîne de contraintes, tenue par la page : le contrat lui-même n'a pas eu à changer pour
   qu'une contrainte lise la sortie d'une autre.
 
+## Ce que la mise en page a changé au contrat
+
+- Une contrainte peut ne pas viser de pistes (`targetable: false`) : elle compte tous les mots,
+  pas bouchés compris, mais ne retire ni ne remplace un mot bouché.
+- Une marque `relaid` pour un mot remis en ligne ; la chaîne les compte (`StepReport.relaid`) et
+  une remise en ligne n'écrase ni un remplacement ni un retrait d'une étape précédente.
+- Chaque étape de la chaîne dit, mot par mot, si elle a mis le mot à la ligne
+  (`stages[k][i].newline`) : l'inspecteur y met « ↵ ».
+
 ## Côté page
 
-`installedPlugins` (`src/ui/tracks/mixer-state.ts`) est la seule liste qui nomme les types.
+`installedPlugins` (`src/ui/tracks/mixer-state.ts`) est la seule liste qui nomme les types ;
+`RECIPES` (`src/ui/tracks/recipes.ts`) nomme les recettes, validées au chargement contre eux.
 L'état de la table est une liste ordonnée d'instances `{id, type, enabled, params, targets}` ;
-l'ordre de la liste est celui de la chaîne. Gestes : `add-instance`, `duplicate-instance`,
+l'ordre de la liste est celui de la chaîne. Gestes : `add-instance`, `add-recipe` (une recette, son choix, le jour), `duplicate-instance`,
 `remove-instance`, `toggle-instance`, `set-param` (validé par `parse`), `set-targets` (pistes
-du type seulement, au moins une), `move-instance`. Le résumé et la mention nomment chaque
+du type seulement, au moins une ; refusé pour un type non ciblable), `move-instance`. Le résumé et la mention nomment chaque
 instance avec ses pistes, sauf quand elle vise toutes celles de son type.

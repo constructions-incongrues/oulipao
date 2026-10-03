@@ -3,13 +3,13 @@
   "configurations": [
     {
       "name": "oulipao",
-      "runtimeExecutable": "python3",
+      "runtimeExecutable": "sh",
       "runtimeArgs": [
-        "-m",
-        "http.server",
-        "8765"
+        "-c",
+        "npm run build >/dev/null && exec python3 -m http.server \"${PORT:-8765}\""
       ],
-      "port": 8765
+      "port": 8765,
+      "autoPort": true
     },
     {
       "name": "oulipao-site",

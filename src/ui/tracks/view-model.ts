@@ -1,7 +1,7 @@
 import { CATEGORIES, type Category } from '../../domain/categories.ts';
 import { audibleCategories, mixSegments, type MixedSegment } from '../../domain/mixing.ts';
 import type { ConstraintPlugin, ParameterValues } from '../../domain/plugin.ts';
-import { runChain, type ChainStep, type StepReport } from '../../domain/plugin-chain.ts';
+import { runChain, type ChainStep, type StageWord, type StepReport } from '../../domain/plugin-chain.ts';
 import type { TaggedWord } from '../../domain/tagged-word.ts';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
 import type { VerbRepository } from '../../ports/verbs.ts';
@@ -14,9 +14,9 @@ export interface Session {
   tagged: TaggedWord[];
 }
 
-/** Ce que la chaîne de plugins a fait d'un mot : remplacé, retiré, ou laissé tel quel, et pourquoi. */
+/** Ce que la chaîne de plugins a fait d'un mot : remplacé, retiré, remis en ligne, ou laissé tel quel, et pourquoi. */
 export interface Mark {
-  state: 'replaced' | 'removed' | 'kept';
+  state: 'replaced' | 'removed' | 'relaid' | 'kept';
   original: string;
   /** Pour un mot laissé tel quel : la raison, en clair. */
   reason?: string;
@@ -29,8 +29,8 @@ export interface Stage {
   id: string;
   /** « Origine », ou la contrainte nommée comme dans le résumé : « S+7 sur les noms ». */
   label: string;
-  /** Chaîne vide pour un mot retiré. */
-  words: string[];
+  /** Un élément par mot d'origine : chaîne vide pour un mot retiré, et s'il a été mis à la ligne. */
+  words: StageWord[];
 }
 
 export interface TracksView {
@@ -142,11 +142,13 @@ export function buildView(
   const chain = runChain(text, tagged, activeSteps(mixer, lookup), { morphology, verbs });
   const active = mixer.instances.filter((instance) => chain.steps.some((step) => step.id === instance.id));
   const marks = new Map<number, Mark>();
-  for (const { index, original, replacement, removed, reason } of chain.marks.values()) {
+  for (const { index, original, replacement, removed, relaid, reason } of chain.marks.values()) {
     if (replacement !== undefined) {
       marks.set(index, { state: 'replaced', original });
     } else if (removed) {
       marks.set(index, { state: 'removed', original });
+    } else if (relaid) {
+      marks.set(index, { state: 'relaid', original });
     } else {
       marks.set(index, { state: 'kept', original, reason });
     }
@@ -158,7 +160,7 @@ export function buildView(
   const segments = mixSegments(chain.words, tagged, audible, chain.tail, chain.steps.some((step) => step.removed > 0));
   return {
     stages: [
-      { id: 'origin', label: 'Origine', words: tagged.map((word) => word.word) },
+      { id: 'origin', label: 'Origine', words: tagged.map((word) => ({ output: word.word, newline: false })) },
       ...active.map((instance, k) => ({ id: instance.id, label: describeInstance(instance, lookup), words: chain.stages[k]! })),
     ],
     tracks: tagged.map((word) => word.category),
@@ -187,13 +189,30 @@ function stepSentence(instance: Instance, view: TracksView, lookup: PluginLookup
   const plugin = lookup(instance.type);
   if (!plugin.acts(instance.params)) return plugin.help(instance.params);
   const name = describeInstance(instance, lookup);
-  const { replaced, removed, kept } = view.steps.find((step) => step.id === instance.id)!;
-  if (instance.targets.length > 1) {
+  const { replaced, removed, relaid, kept } = view.steps.find((step) => step.id === instance.id)!;
+  // « 12 noms remplacés sur 13 » ne vaut que pour une contrainte qui a remplacé des mots.
+  const substitution = plugin.targetable !== false && relaid === 0 && replaced > 0;
+  if (substitution && instance.targets.length > 1) {
     return `${name} : ${plural(replaced, 'mot remplacé', 'mots remplacés')}, ${plural(removed, 'retiré', 'retirés')}, ${plural(kept, 'laissé tel quel', 'laissés tels quels')}.`;
   }
-  const [track] = instance.targets as [Category];
-  const [one, many] = TRACK_UNITS[track];
-  return `${name} : ${plural(replaced, `${one} remplacé`, `${many} remplacés`)} sur ${view.counts[track]}.`;
+  if (substitution && removed === 0) {
+    const [track] = instance.targets as [Category];
+    const [one, many] = TRACK_UNITS[track];
+    return `${name} : ${plural(replaced, `${one} remplacé`, `${many} remplacés`)} sur ${view.counts[track]}.`;
+  }
+  // Un retrait ou une mise en page : seulement ce qui a eu lieu.
+  const parts = (
+    [
+      [replaced, 'remplacé', 'remplacés'],
+      [removed, 'retiré', 'retirés'],
+      [relaid, 'remis en ligne', 'remis en ligne'],
+      [kept, 'laissé tel quel', 'laissés tels quels'],
+    ] as const
+  ).filter(([count]) => count > 0);
+  if (!parts.length) return `${name} : aucun changement.`;
+  // Le premier compte nomme les mots : « 12 mots remis en ligne, 3 retirés ».
+  const counts = parts.map(([count, one, many], k) => (k ? plural(count, one, many) : plural(count, `mot ${one}`, `mots ${many}`)));
+  return `${name} : ${counts.join(', ')}.`;
 }
 
 /** La phrase qui résume l'état du texte, affichée et annoncée après chaque geste. */
@@ -233,10 +252,16 @@ export interface InspectorColumn {
   distance: number;
 }
 
+/** Une case de l'inspecteur : le mot à cette étape (« · » s'il est retiré), et si l'étape l'a mis à la ligne. */
+export interface InspectorCell {
+  text: string;
+  newline: boolean;
+}
+
 /** Ce que montre l'inspecteur : les colonnes autour du mot choisi, et chaque bande sur ces colonnes. */
 export interface InspectorWindow {
   columns: InspectorColumn[];
-  bands: { id: string; label: string; cells: string[] }[];
+  bands: { id: string; label: string; cells: InspectorCell[] }[];
 }
 
 /** La fenêtre de l'inspecteur : le mot choisi et `radius` voisins de chaque côté, bornés au texte ; « · » pour un mot retiré. */
@@ -246,7 +271,11 @@ export function inspectorWindow(view: TracksView, index: number, radius: number)
   const columns = Array.from({ length: to - from + 1 }, (_, k) => ({ index: from + k, distance: Math.abs(from + k - index) }));
   return {
     columns,
-    bands: view.stages.map(({ id, label, words }) => ({ id, label, cells: columns.map((column) => words[column.index] || '·') })),
+    bands: view.stages.map(({ id, label, words }) => ({
+      id,
+      label,
+      cells: columns.map((column) => ({ text: words[column.index]!.output || '·', newline: words[column.index]!.newline })),
+    })),
   };
 }
 
