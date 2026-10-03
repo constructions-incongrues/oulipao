@@ -29,7 +29,8 @@ cpSync(source('styles/'), new URL('styles/', site), { recursive: true });
 cpSync(source('fonts/'), new URL('fonts/', site), { recursive: true });
 // Seulement les données dérivées : data/brut/ (le lexique d'origine, 700 Mo) reste hors du site.
 for (const name of ['lexique-oulipao.tsv', 'morpho-oulipao.tsv', 'verbes-oulipao.tsv', 'phonetique-oulipao.tsv']) copyFileSync(source(`data/${name}`), new URL(`data/${name}`, site));
-for (const name of ['LICENSE', 'THIRD_PARTY_LICENSES.md']) copyFileSync(source(name), new URL(name, site));
+// L'icône et l'image d'aperçu de lien : og-image.png est tiré de og/og-image.html.
+for (const name of ['LICENSE', 'THIRD_PARTY_LICENSES.md', 'favicon.svg', 'og-image.png']) copyFileSync(source(name), new URL(name, site));
 // Pages sert les fichiers tels quels (pas de Jekyll) et garde le domaine personnalisé à chaque déploiement.
 writeFileSync(new URL('.nojekyll', site), '');
 writeFileSync(new URL('CNAME', site), `${DOMAIN}\n`);
