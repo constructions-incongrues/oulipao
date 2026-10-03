@@ -108,12 +108,17 @@ The system SHALL keep the resulting text on screen while the page scrolls: once 
 - **THEN** la bande collée montre trois lignes au plus et la page ne défile pas à l'horizontale
 
 ### Requirement: Ordre de la page
-The system SHALL present, from top to bottom: the resulting text, the source text, the filter chain, the step grid with its track strips, the inspector, then the notebook.
+The system SHALL present, from top to bottom: the resulting text, the notebook panel, the source text, the filter chain, the step grid with its track strips, then the inspector. The notebook panel SHALL NOT be pinned with the resulting text.
 
 #### Scenario: Lecture au clavier
 - **GIVEN** la page des pistes
 - **WHEN** l'utilisateur la parcourt avec la touche Tab
-- **THEN** il atteint la copie du texte et le bouton « Garder », puis la saisie, puis les filtres, puis les pistes et leurs pas, puis l'inspecteur, puis le carnet
+- **THEN** il atteint la copie du texte et le bouton « Garder », puis l'en-tête du carnet, puis la saisie, puis les filtres, puis les pistes et leurs pas, puis l'inspecteur
+
+#### Scenario: Carnet replié en haut de page
+- **GIVEN** un texte mis en pistes et un carnet de 3 entrées, replié
+- **WHEN** l'utilisateur fait défiler la page jusqu'à la grille
+- **THEN** seule la bande du texte résultant reste collée en haut de l'écran ; le carnet replié n'occupe qu'une ligne sous elle
 
 ### Requirement: Syllabes par vers
 The system SHALL show, next to each line of the result text, its syllable count, counted from the pronunciations of the textbank and including a final mute e before a consonant inside the line, once the textbank is loaded; the count SHALL be hidden when the chain has no phonetic filter.

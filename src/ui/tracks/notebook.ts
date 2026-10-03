@@ -14,6 +14,8 @@ export const NotebookEntrySchema = z.object({
   mention: z.string(),
   source: z.object({ text: z.string().min(1), tagged: z.array(TaggedWordSchema) }),
   mixer: MixerStateSchema,
+  /** La retouche du fondateur, gardée à côté du résultat produit ; absente : aucune. */
+  edited: z.string().optional(),
 });
 export type NotebookEntry = z.infer<typeof NotebookEntrySchema>;
 
@@ -72,3 +74,24 @@ export function exportFileName(date: Date): string {
   const pad = (n: number) => String(n).padStart(2, '0');
   return `oulipao-carnet-${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}.json`;
 }
+
+/** Retouche le résultat d'une entrée ; un texte vide, ou égal au résultat produit, retire la retouche. */
+export function editEntry(entries: readonly NotebookEntry[], id: string, text: string): NotebookEntry[] {
+  return entries.map((entry) => {
+    if (entry.id !== id) return entry;
+    const { edited: _, ...rest } = entry;
+    return !text.trim() || text === entry.result ? rest : { ...rest, edited: text };
+  });
+}
+
+/** Une entrée copiée d'un bloc, comme dans un mail : l'original, le résultat (retouché), la chaîne. */
+export const entryClipboard = (entry: NotebookEntry) => `${entry.source.text}\n\n${entry.edited ?? entry.result}${entry.mention}`;
+
+/** Les jours de calendrier, en heure locale, entre une garde et aujourd'hui : 23 h 50 la veille compte 1. */
+export function daysSince(iso: string, today: Date): number {
+  const day = (date: Date) => Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+  return Math.round((day(today) - day(new Date(iso))) / 86_400_000);
+}
+
+/** « aujourd'hui », « hier », « il y a 3 jours ». */
+export const lastKeptLabel = (days: number) => (days <= 0 ? 'aujourd’hui' : days === 1 ? 'hier' : `il y a ${days} jours`);

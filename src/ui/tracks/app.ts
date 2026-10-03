@@ -22,19 +22,22 @@ export interface AppProps {
   state: TracksState;
   controller: Pick<
     TracksController,
-    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook'
+    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook' | 'copyEntry' | 'editEntry'
   >;
   /** Bascule le thème clair ou sombre ; posé par le montage, qui seul touche au document. */
   onTheme?: () => void;
   /** La version publiée (« 0.2.0 »), injectée au build et passée par le montage. */
   version: string;
+  /** Le jour où l'on regarde, pour les jours depuis la dernière garde ; posé par le montage à chaque rendu. */
+  today?: Date;
 }
 
 /**
  * La page des pistes, de haut en bas : le texte résultant (collé en haut de l'écran quand on
- * descend), la saisie, la chaîne de contraintes, la grille des pistes, l'inspecteur, puis le carnet.
+ * descend), le carnet replié, la saisie, la chaîne de contraintes, la grille des pistes, puis
+ * l'inspecteur.
  */
-export function App({ state, controller, onTheme = () => {}, version }: AppProps): VNode {
+export function App({ state, controller, onTheme = () => {}, version, today = new Date() }: AppProps): VNode {
   const { mixer, view, stale } = state;
   const release = versionLink(version);
   const audible = view?.audible ?? audibleCategories(mixer.tracks);
@@ -79,6 +82,17 @@ export function App({ state, controller, onTheme = () => {}, version }: AppProps
         form=${state.mixer.form ?? 'none'}
         onForm=${(form: Form) => controller.dispatch({ type: 'set-form', form })}
       />`}
+      <${Notebook}
+        entries=${state.notebook}
+        message=${state.notebookMessage}
+        today=${today}
+        onReopen=${(id: string) => void controller.reopen(id)}
+        onRemove=${controller.remove}
+        onExport=${controller.exportNotebook}
+        onImport=${controller.importNotebook}
+        onCopy=${(id: string) => void controller.copyEntry(id)}
+        onEdit=${controller.editEntry}
+      />
       <${Source}
         input=${state.input}
         words=${view ? Object.values(view.counts).reduce((a, b) => a + b, 0) : 0}
@@ -129,14 +143,6 @@ export function App({ state, controller, onTheme = () => {}, version }: AppProps
             onClose=${controller.closeInspector}
             pronunciation=${view.pronunciations[selected]}
           />`)}
-      <${Notebook}
-        entries=${state.notebook}
-        message=${state.notebookMessage}
-        onReopen=${(id: string) => void controller.reopen(id)}
-        onRemove=${controller.remove}
-        onExport=${controller.exportNotebook}
-        onImport=${controller.importNotebook}
-      />
     </main>
   ` as VNode;
 }

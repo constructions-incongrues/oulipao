@@ -85,7 +85,7 @@ test('chaque réglage de la page passe par le contrôleur', async () => {
   assert.equal(controller.state.view!.result, 'dort.');
   click(app(), byLabel('S+7 actif'));
   assert.match(renderToString(app()), /Contraintes coupées : texte d’origine\. Pistes coupées : noms, adjectifs, adverbes, autres\./);
-  (find(app(), (e) => e.type === 'input').props['onInput'] as (event: Event) => void)(inputEvent('3'));
+  (find(app(), (e) => e.type === 'input' && e.props['type'] === 'number').props['onInput'] as (event: Event) => void)(inputEvent('3'));
   (find(app(), (e) => e.type === 'select' && e.props['class'] !== 'form').props['onChange'] as (event: Event) => void)(inputEvent('same-gender'));
   assert.deepEqual(actions, [
     { type: 'toggle-mute', category: 'adjective' },
@@ -227,17 +227,18 @@ test('grille : un clic bouche un pas, l’inspecteur s’ouvre depuis l’en-tê
   assert.equal(controller.state.page, 1);
 });
 
-test('carnet : en bas de page ; « Garder » range le texte, « Rouvrir » le remet', async () => {
+test('carnet : replié sous le texte résultant ; « Garder » range le texte, « Rouvrir » le remet', async () => {
   const { controller, app } = setup();
-  assert.match(renderToString(app()), /<section class="notebook"[\s\S]*Aucun texte gardé/);
+  assert.match(renderToString(app()), /<details class="notebook">[\s\S]*Aucun texte gardé/);
   controller.setInput('La ferme.');
   await controller.run();
   const kept = controller.state.view!.result;
   click(app(), byClass('keep'));
   const out = renderToString(app());
   assert.match(out, /Gardé\./);
-  assert.match(out, /1 texte gardé[\s\S]*<p class="kept-text">/);
-  assert.ok(out.indexOf('class="notebook"') > out.indexOf('class="inspector-hint"')); // après l'inspecteur
+  assert.match(out, /1 texte gardé · dernier texte aujourd’hui[\s\S]*<p class="kept-text">/);
+  const notebook = out.indexOf('class="notebook"');
+  assert.ok(out.indexOf('class="result') < notebook && notebook < out.indexOf('class="source')); // entre la bande de sortie et la saisie
   controller.dispatch({ type: 'toggle-solo', category: 'adverb' });
   click(app(), byClass('reopen'));
   await tick();

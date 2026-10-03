@@ -99,22 +99,34 @@ Preact ; les composants (`components/`, `app.ts`) sont des fonctions de cet éta
 - **Lecteurs d'écran** : l'inspecteur est un tableau dont chaque ligne est nommée par son
   étape ; sa légende annonce le mot choisi.
 - **Sous 1024 px** : une seule colonne. Sous 768 px, l'inspecteur ne montre que deux voisins.
-- **Carnet** : « Garder », à côté de « Copier », range le texte résultant dans le carnet, en bas
-  de page. Le bouton est actif quand « Copier » l'est, et « Copier » ne range rien. Chaque entrée
-  garde sa date, sa mention (la même que celle de la copie), le texte d'origine avec son
-  étiquetage, et l'état de la table : instances, réglages, verrous, pas bouchés, pistes coupées
-  et forme.
-  - **Rouvrir** remet tout cela sans réétiqueter. Les verrous et les pas bouchés, qui désignent
-    les mots par leur position, retombent donc sur les mêmes mots, et le texte redevient celui
-    qui a été gardé. Seul un changement du lexique peut l'altérer.
+- **Carnet** : « Garder », à côté de « Copier », range le texte résultant dans le carnet. Le
+  bouton est actif quand « Copier » l'est, et « Copier » ne range rien. Chaque entrée garde sa
+  date, sa mention (la même que celle de la copie), le texte d'origine avec son étiquetage, et
+  l'état de la table : instances, réglages, verrous, pas bouchés, pistes coupées et forme.
+  - **Sa place** : un panneau replié juste sous la bande du texte résultant. Il ne reste pas
+    collé avec elle. Son en-tête donne le compte et les jours depuis la dernière garde
+    (« dernier texte aujourd'hui », « hier », « il y a 3 jours »), comptés en jours de
+    calendrier.
+  - **Copier** une entrée met dans le presse-papiers un bloc à coller dans un mail :
+    l'original, une ligne vide, le résultat (retouché s'il l'a été), une ligne vide, puis la
+    mention (« — S+7 sur les noms (Oulipao) »).
+  - **Retoucher** déplie le résultat en champ. La retouche est gardée à côté du résultat
+    produit (`edited`), et elle est affichée, copiée et exportée avec la mention « retouché ».
+    Vider le champ, ou y remettre le résultat produit, retire la retouche.
+  - **Rouvrir** remet le texte d'origine, son étiquetage et la table sans réétiqueter. Les
+    verrous et les pas bouchés, qui désignent les mots par leur position, retombent donc sur les
+    mêmes mots, et le texte redevient le résultat produit (pas la retouche). Seul un changement
+    du lexique peut l'altérer. Si un geste a changé le texte en pistes depuis la dernière garde
+    ou la dernière réouverture, une confirmation est d'abord demandée.
   - **Supprimer** demande une confirmation.
   - Le carnet vit dans le `localStorage` du navigateur, sous la clé `oulipao.notebook`. Rien
     n'est envoyé. Avant de vider les données du navigateur ou de changer d'appareil,
     **Exporter** télécharge `oulipao-carnet-AAAA-MM-JJ.json`, et **Importer** relit un tel
     fichier.
   - Le format du fichier : `{ "version": 1, "entries": [...] }`. Chaque entrée est validée
-    (`NotebookEntrySchema`, dans `src/ui/tracks/notebook.ts`). À l'import, une entrée déjà
-    présente (même `id`) est ignorée, et une entrée illisible est comptée puis laissée de côté.
+    (`NotebookEntrySchema`, dans `src/ui/tracks/notebook.ts`), et `edited` est facultatif. À
+    l'import, une entrée déjà présente (même `id`) est ignorée, et une entrée illisible est
+    comptée puis laissée de côté.
 - **Apparence** : variables et polices de `styles/tokens.css`, décrites dans `DESIGN.md`.
 
 ## Tests

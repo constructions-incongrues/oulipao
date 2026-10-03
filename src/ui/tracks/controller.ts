@@ -5,7 +5,7 @@ import type { PhoneticsRepository } from '../../ports/phonetics.ts';
 import type { Tagger } from '../../ports/tagger.ts';
 import type { VerbRepository } from '../../ports/verbs.ts';
 import { initialState, pluginById, reduce } from './mixer-state.ts';
-import { addEntry, exportFileName, mergeEntries, parseNotebook, removeEntry, serializeNotebook, type NotebookEntry } from './notebook.ts';
+import { addEntry, editEntry, entryClipboard, exportFileName, mergeEntries, parseNotebook, removeEntry, serializeNotebook, type NotebookEntry } from './notebook.ts';
 import { MixerStateSchema, type MixerAction, type MixerState } from './types.ts';
 import { buildView, changedWords, pageOf, ruleMention, stepsPerPage, type Session, type TracksView } from './view-model.ts';
 
@@ -87,6 +87,8 @@ export interface TracksState {
   notebook: NotebookEntry[];
   /** Message du carnet : entrées illisibles, import, réouverture impossible. */
   notebookMessage: string;
+  /** Un texte en pistes a changé, par un geste, depuis la dernière garde ou réouverture. */
+  unsaved: boolean;
   /** Le chargement des verbes : `idle` tant qu'aucune instance ne les vise. */
   verbs: Loading;
   /** Le chargement des prononciations : `idle` tant qu'aucun filtre phonétique n'est en marche. */
@@ -139,6 +141,10 @@ export interface TracksController {
   exportNotebook(): void;
   /** Ajoute au carnet les entrées nouvelles d'un fichier exporté. */
   importNotebook(text: string): void;
+  /** Copie une entrée d'un bloc : l'original, le résultat (retouché), la chaîne. */
+  copyEntry(id: string): Promise<void>;
+  /** Retouche le résultat d'une entrée ; vide ou égal au résultat produit, la retouche tombe. */
+  editEntry(id: string, text: string): void;
   /** La grille a changé de largeur : le pas qui était en tête de page reste visible. */
   resize(width: number): void;
   /** Affiche une page de la grille, bornée aux pages existantes. */
@@ -174,6 +180,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     copyMessage: '',
     notebook: stored.entries,
     notebookMessage: stored.error ?? unreadable(stored.rejected),
+    unsaved: false,
     verbs: { status: 'idle', error: '' },
     phonetics: { status: 'idle', error: '' },
     perPage: 16,
@@ -256,7 +263,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
         // Nouvel étiquetage, nouvelles positions : les pas se rouvrent, les verrous tombent, l'inspecteur se ferme.
         const mixer = reduce(state.mixer, { type: 'reset-steps' });
         const view = buildView(session, mixer, morphology!, undefined, verbs, phonetics);
-        update({ tagging: false, editing: false, stale: state.input !== text, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0 });
+        update({ tagging: false, editing: false, stale: state.input !== text, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, unsaved: true });
         wantResources(mixer);
       } catch (error) {
         if (run === runs) update({ tagging: false, inputMessage: `Échec de l’étiquetage : ${messageOf(error)}. Vous pouvez relancer.` });
@@ -289,7 +296,8 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       }
     },
     dispatch(action) {
-      rebuild({ mixer: reduce(state.mixer, action) });
+      // Seul un geste rend le travail « non gardé » : le chargement d'une textbank ne compte pas.
+      rebuild({ mixer: reduce(state.mixer, action), unsaved: session !== undefined });
     },
     select(index) {
       // La grille montre la page du mot choisi.
@@ -340,7 +348,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       const entries = addEntry(state.notebook, entry);
       try {
         notebook.storage.write(serializeNotebook(entries));
-        update({ notebook: entries, copyMessage: 'Gardé.' });
+        update({ notebook: entries, copyMessage: 'Gardé.', unsaved: false });
       } catch (error) {
         update({ copyMessage: `Impossible de garder : ${messageOf(error)}` });
       }
@@ -353,6 +361,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       } catch (error) {
         return update({ notebookMessage: `Ce texte ne peut pas être rouvert : ${messageOf(error)}.` });
       }
+      if (state.unsaved && !notebook.confirm('Le texte en cours n’est pas gardé. Rouvrir quand même ?')) return;
       const run = ++runs; // une mise en pistes en cours ne doit pas l'écraser
       update({ notebookMessage: '', inputMessage: '' });
       await controller.preload();
@@ -360,7 +369,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       session = entry.source;
       const mixer = MixerStateSchema.parse(entry.mixer);
       const view = buildView(session, mixer, morphology, undefined, verbs, phonetics);
-      update({ input: session.text, tagging: false, editing: false, stale: false, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, copyMessage: '' });
+      update({ input: session.text, tagging: false, editing: false, stale: false, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, copyMessage: '', unsaved: false });
       wantResources(mixer);
     },
     remove(id) {
@@ -387,6 +396,25 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       const counts = [count(merged.added, 'texte ajouté', 'textes ajoutés'), count(merged.present, 'déjà présent', 'déjà présents')];
       if (merged.rejected) counts.push(count(merged.rejected, 'illisible', 'illisibles'));
       update({ notebook: merged.entries, notebookMessage: `Import : ${counts.join(', ')}.` });
+    },
+    async copyEntry(id) {
+      const entry = state.notebook.find((candidate) => candidate.id === id);
+      if (!entry) return;
+      try {
+        await dependencies.copy(entryClipboard(entry));
+        update({ notebookMessage: 'Copié.' });
+      } catch (error) {
+        update({ notebookMessage: `Copie impossible : ${messageOf(error)}` });
+      }
+    },
+    editEntry(id, text) {
+      const entries = editEntry(state.notebook, id, text);
+      try {
+        notebook.storage.write(serializeNotebook(entries));
+        update({ notebook: entries, notebookMessage: '' });
+      } catch (error) {
+        update({ notebookMessage: `Retouche impossible : ${messageOf(error)}` });
+      }
     },
     async copy() {
       const view = state.view;

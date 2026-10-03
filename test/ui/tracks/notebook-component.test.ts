@@ -22,27 +22,35 @@ test('le compte des textes gardés, au singulier et au pluriel', () => {
   assert.match(keptDate('2026-10-04T19:00:00.000Z'), /2026/);
 });
 
-test('Carnet : le compte, les entrées dans l’ordre reçu, leur date, texte et mention ; les gestes', async () => {
+const TODAY = new Date(2026, 9, 12, 9);
+const handlers = (calls: string[]) => ({
+  onReopen: (id: string) => calls.push(`rouvrir ${id}`),
+  onRemove: (id: string) => calls.push(`supprimer ${id}`),
+  onExport: () => calls.push('exporter'),
+  onImport: (text: string) => calls.push(`importer ${text}`),
+  onCopy: (id: string) => calls.push(`copier ${id}`),
+  onEdit: (id: string, text: string) => calls.push(`retoucher ${id} : ${text}`),
+});
+
+test('Carnet : un panneau replié dont l’en-tête donne le compte et les jours ; les entrées et leurs gestes', async () => {
   const calls: string[] = [];
   const props = {
-    entries: [entry('c', '2026-10-09T20:00:00.000Z'), entry('a', '2026-10-04T20:00:00.000Z', '')],
+    entries: [{ ...entry('c', new Date(2026, 9, 9, 22).toISOString()), edited: 'Texte c retouché.' }, entry('a', '2026-10-04T20:00:00.000Z', '')],
     message: 'Import : 1 texte ajouté, 0 déjà présent.',
-    onReopen: (id: string) => calls.push(`rouvrir ${id}`),
-    onRemove: (id: string) => calls.push(`supprimer ${id}`),
-    onExport: () => calls.push('exporter'),
-    onImport: (text: string) => calls.push(`importer ${text}`),
+    today: TODAY,
+    ...handlers(calls),
   };
   const notebook = html`<${Notebook} ...${props} />`;
   const out = renderToString(notebook);
-  assert.match(out, /<h2 class="silk" id="notebook-title">Carnet<\/h2><span class="notebook-count">2 textes gardés<\/span>/);
-  assert.match(out, /<time class="kept-at" datetime="2026-10-09T20:00:00.000Z">.*<p class="kept-text">Texte c\.<\/p><p class="kept-mention">S\+7 sur les noms \(Oulipao\)<\/p>.*Texte a\./s);
-  assert.equal(out.match(/kept-mention/g)!.length, 1); // le texte d'origine n'a pas de mention
+  assert.match(out, /^<details class="notebook"><summary class="notebook-summary"><span class="silk">Carnet<\/span><span class="notebook-count">2 textes gardés · dernier texte il y a 3 jours<\/span><\/summary>/);
+  assert.match(out, /<p class="kept-text">Texte c retouché\.<\/p><p class="kept-mention">S\+7 sur les noms \(Oulipao\) · retouché<\/p>.*<p class="kept-text">Texte a\.<\/p><div class="kept-actions">/s);
+  assert.match(out, /<textarea name="text" rows="6" aria-label="Texte retouché">Texte c retouché\.<\/textarea>/);
   assert.match(out, /role="status" aria-live="polite">Import : 1 texte ajouté/);
   assert.match(out, /Le carnet vit dans ce navigateur/);
-  const buttons = elements(notebook).filter((e) => e.type === 'button');
+  const buttons = elements(notebook).filter((e) => e.type === 'button' && e.props['type'] === 'button');
   for (const button of buttons) (button.props['onClick'] as () => void)();
-  assert.deepEqual(calls, ['exporter', 'rouvrir c', 'supprimer c', 'rouvrir a', 'supprimer a']);
-  assert.match(String(buttons[1]!.props['aria-label']), /^Rouvrir le texte du .*2026/);
+  assert.deepEqual(calls, ['exporter', 'copier c', 'rouvrir c', 'supprimer c', 'copier a', 'rouvrir a', 'supprimer a']);
+  assert.match(String(buttons[1]!.props['aria-label']), /^Copier le texte du .*2026/);
 
   const input = find(notebook, (e) => e.type === 'input');
   assert.equal(input.props['accept'], 'application/json,.json');
@@ -52,14 +60,33 @@ test('Carnet : le compte, les entrées dans l’ordre reçu, leur date, texte et
   assert.equal(calls.at(-1), 'importer {"version":1}');
   assert.equal(target.value, '');
   await onChange({ currentTarget: { files: [] } } as unknown as Event); // aucun fichier choisi
-  assert.equal(calls.length, 6);
+  assert.equal(calls.length, 8);
 });
 
-test('Carnet vide : aucun texte, pas de liste, export désactivé', () => {
-  const out = renderToString(html`<${Notebook} entries=${[]} message="" onReopen=${() => {}} onRemove=${() => {}} onExport=${() => {}} onImport=${() => {}} />`);
-  assert.match(out, /Aucun texte gardé/);
-  assert.doesNotMatch(out, /notebook-entries/);
+test('Retoucher : enregistrer envoie le brouillon et replie ; annuler replie sans rien envoyer', () => {
+  const calls: string[] = [];
+  const notebook = html`<${Notebook} entries=${[entry('a', '2026-10-04T20:00:00.000Z')]} message="" today=${TODAY} ...${handlers(calls)} />`;
+  const form = find(notebook, (e) => e.type === 'form');
+  const details = { open: true };
+  const formElement = { elements: { namedItem: () => ({ value: "L'oncle dort." }) }, closest: () => details };
+  let prevented = false;
+  (form.props['onSubmit'] as (event: Event) => void)({ preventDefault: () => (prevented = true), currentTarget: formElement } as unknown as Event);
+  assert.deepEqual(calls, ["retoucher a : L'oncle dort."]);
+  assert.equal(prevented, true);
+  assert.equal(details.open, false);
+  details.open = true;
+  (form.props['onReset'] as (event: Event) => void)({ currentTarget: { closest: () => details } } as unknown as Event);
+  assert.equal(details.open, false);
+  (form.props['onReset'] as (event: Event) => void)({ currentTarget: { closest: () => null } } as unknown as Event); // hors d'un panneau : rien à replier
+  assert.equal(calls.length, 1);
+});
+
+test('Carnet vide : aucun texte, pas de jours, pas de liste, export désactivé', () => {
+  const out = renderToString(html`<${Notebook} entries=${[]} message="" today=${TODAY} ...${handlers([])} />`);
+  assert.match(out, /<span class="notebook-count">Aucun texte gardé<\/span>/);
+  assert.doesNotMatch(out, /notebook-entries|dernier texte/);
   assert.match(out, /class="key export" disabled/);
+  assert.doesNotMatch(out, /<details class="notebook" open/);
 });
 
 test('Texte résultant : « Garder » suit « Copier », désactivé comme lui', () => {
