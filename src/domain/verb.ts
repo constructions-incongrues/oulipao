@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { VerbRepository } from '../ports/verbs.ts';
 import { containsLetter } from './lipogram/neighbour.ts';
-import { aroundAmong, candidatePositions } from './neighbours.ts';
+import { aroundAmong, before, candidatePositions } from './neighbours.ts';
 import type { WordMark } from './plugin.ts';
 import { GenderSchema, GrammaticalNumberSchema, type OutputWord } from './s7/types.ts';
 import type { TaggedWord } from './tagged-word.ts';
@@ -122,16 +122,19 @@ export function nthVerb(
   verbs: VerbRepository,
   none: string,
   among?: ReadonlySet<string>,
+  from?: (entry: string) => string,
 ): VerbShift {
   const found = locate(word, previous, verbs);
   if ('reason' in found) return found;
   const infinitives = verbs.infinitives();
+  // `from` : partir d'ailleurs que du verbe lui-même (le tautogramme part de l'infinitif à l'initiale changée).
+  const start = from ? before(infinitives, from(found.reading.infinitive)) : found.start;
   const step = Math.sign(offset) || 1;
   let remaining = Math.abs(offset);
   // Avec `among`, seuls les infinitifs des formes candidates sont essayés, dans l'ordre du tour (voir neighbours.ts).
   const positions = among
-    ? aroundAmong(candidatePositions(infinitives, among, (form) => verbs.readings(form).map((r) => r.infinitive)), found.start, step)
-    : Array.from({ length: infinitives.length - 1 }, (_, k) => (((found.start + (k + 1) * step) % infinitives.length) + infinitives.length) % infinitives.length);
+    ? aroundAmong(candidatePositions(infinitives, among, (form) => verbs.readings(form).map((r) => r.infinitive)), start, step)
+    : Array.from({ length: infinitives.length - (from ? 0 : 1) }, (_, k) => (((start + (k + 1) * step) % infinitives.length) + infinitives.length) % infinitives.length);
   for (const position of positions) {
     const target = infinitives[position]!;
     const form = verbs.forms(target).find((candidate) => fits(candidate, found.reading) && accept(candidate.form));

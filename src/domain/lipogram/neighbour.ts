@@ -1,11 +1,9 @@
 import type { MorphologyRepository } from '../../ports/morphology.ts';
+import { bare } from '../letters.ts';
 import { nthAdjective, nthAdverb, nthNoun } from '../neighbours.ts';
 import type { NounChoice, NounHints } from '../s7/substitution.ts';
 import type { AdjectiveForm, ConcreteGender, ConcreteNumber } from '../s7/types.ts';
 
-/** Le mot contient-il la lettre ? Sans tenir compte de la casse ; « é » n'est pas « e ». */
-/** Le mot sans accents ni ligatures, comme chez Perec : « é » compte pour « e », « œ » pour « o » et « e ». */
-const bare = (word: string) => word.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '').replace(/œ/g, 'oe').replace(/æ/g, 'ae');
 
 /** Le mot contient-il l'une des lettres bannies ? `letters` en tient une ou plusieurs : « e », « ae ». */
 export const containsLetter = (word: string, letters: string) => [...bare(letters)].some((letter) => bare(word).includes(letter));

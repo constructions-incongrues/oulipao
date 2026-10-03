@@ -4,6 +4,7 @@ import type { ConstraintPlugin } from '../../domain/plugin.ts';
 import { edgePlugin } from '../../domain/edge/plugin.ts';
 import { lineationPlugin } from '../../domain/lineation/plugin.ts';
 import { lipogramPlugin } from '../../domain/lipogram/plugin.ts';
+import { tautogramPlugin } from '../../domain/tautogram/plugin.ts';
 import { anterhymePlugin } from '../../domain/rhyme/anterhyme.ts';
 import { antirhymePlugin } from '../../domain/rhyme/antirhyme.ts';
 import { berrychonnePlugin } from '../../domain/rhyme/berrychonne.ts';
@@ -17,7 +18,7 @@ import { RECIPES, validRecipes, type Recipe } from './recipes.ts';
 import { MixerActionSchema, type Instance, type MixerAction, type MixerState } from './types.ts';
 
 /** Les types de contraintes qu'on peut brancher sur la table. */
-export const installedPlugins: readonly ConstraintPlugin[] = [s7Plugin, lipogramPlugin, trackSortPlugin, edgePlugin, lineationPlugin, rnPlugin, monorhymePlugin, antirhymePlugin, homophonyPlugin, rhymeSchemePlugin, anterhymePlugin, berrychonnePlugin];
+export const installedPlugins: readonly ConstraintPlugin[] = [s7Plugin, lipogramPlugin, trackSortPlugin, edgePlugin, lineationPlugin, rnPlugin, monorhymePlugin, antirhymePlugin, homophonyPlugin, rhymeSchemePlugin, anterhymePlugin, berrychonnePlugin, tautogramPlugin];
 
 /** Les recettes proposées : celles qui tiennent avec les types installés. */
 export const recipes: readonly Recipe[] = validRecipes(RECIPES, installedPlugins);
