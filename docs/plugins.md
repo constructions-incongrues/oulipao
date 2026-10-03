@@ -17,19 +17,55 @@ ce contrat a de faux.
 |---|---|
 | `id`, `name` | identifiant, et nom court du bouton de marche (« S+7 ») |
 | `targetable` | `false` pour une mise en page qui agit sur tout le texte (Bord, Mise en vers) : elle déclare les cinq pistes, toutes visées, et la page n'affiche pas de puces |
-| `tracks`, `defaultTargets` | les pistes que la contrainte sait traiter (S+n : noms et adjectifs ; lipogramme : les cinq), et celles qu'une instance neuve vise |
-| `parameters` | les paramètres, dans l'ordre d'affichage : entier borné (champ numérique) ou choix (liste) |
+| `tracks`, `defaultTargets` | les pistes que la contrainte sait traiter (S+n : noms, adjectifs et verbes ; lipogramme : les cinq), et celles qu'une instance neuve vise |
+| `parameters` | les paramètres, dans l'ordre d'affichage : entier borné (`integer`, avec `min` et `max` : un champ numérique) ou choix (`choice`, avec `options` : une liste) ; chacun a une `key` et un `label` |
 | `defaults` | les valeurs à l'ouverture |
 | `parse(values)` | valide des valeurs et complète celles qui manquent ; lève sinon |
 | `acts(values)` | ces réglages changent-ils le texte ? (Le S+0, non : la page n'affiche alors ni marques ni mention) |
 | `title`, `label`, `help` | « S+3 » ; « S+3, parmi tous les noms » (résumé et mention copiée) ; l'effet en une phrase, selon les pistes visées si on les lui donne (« Chaque adjectif devient… ») |
-| `apply(text, tagged, values, resources, targets)` | le texte transformé, sur les pistes visées par l'instance |
+| `apply(text, tagged, values, resources, targets, scope?)` | le texte transformé, sur les pistes visées par l'instance, en respectant la portée par mot (voir plus bas) |
+
+`definePlugin` lève au chargement si : la déclaration ne suit pas son schéma (`id`, `name` vides,
+aucune piste), deux paramètres partagent une `key`, un entier a `min > max`, une piste par défaut
+n'est pas dans `tracks`, une contrainte non ciblable ne déclare pas les cinq pistes, ou
+`parse(defaults)` lève.
+
+## Les types installés
+
+| `id` | `name` | Pistes (par défaut) | Paramètres | Module |
+|---|---|---|---|---|
+| `s7` | S+7 | noms, adjectifs, verbes (noms) | `offset` (−99 à 99), `mode` (`reagree`, `same-gender`) | `src/domain/s7/plugin.ts`, voir `docs/s7.md` |
+| `lipogram` | Lipogramme | les cinq (les cinq) | `letter` (choix) | `src/domain/lipogram/plugin.ts` |
+| `track-sort` | Tri par piste | les cinq (noms) | `mode` (`remove`, `keep`), `layout` (`as-is`, `one-per-line`) | `src/domain/track-sort/plugin.ts` |
+| `edge` | Bord | non ciblable | `mode` (`ends`, `head-tail`, `inside`), `n` (1 à 9) | `src/domain/edge/plugin.ts` |
+| `lineation` | Mise en vers | non ciblable | `cut` (`every`, `punctuation`, `number`), `n` (1 à 99), `number` (1 à 9 999 999) | `src/domain/lineation/plugin.ts` |
+
+La liste fait foi dans `installedPlugins` (`src/ui/tracks/mixer-state.ts`).
 
 `apply` rend, comme `plainWords`, un élément par mot du texte qu'il a lu (`words`, `tail`) : la
 page peut ensuite couper des pistes et montrer chaque étape dans l'inspecteur sans connaître la contrainte. Il
 rend aussi `marks` : pour chaque mot qu'il a touché, le remplaçant, le fait qu'il l'a retiré
 (`removed`), le fait qu'il n'en a changé que le blanc d'avant, une coupe de ligne (`relaid`),
 ou la raison pour laquelle il l'a laissé tel quel.
+
+**La portée par mot.** Le dernier argument de `apply`, `scope` (`WordScope`), vient de la grille
+de pas et des verrous de l'inspecteur. Il est facultatif : sans lui, la contrainte prend
+`FULL_SCOPE` (aucune exception).
+
+| Champ | Contenu | Ce que la contrainte en fait |
+|---|---|---|
+| `skip` | positions des pas bouchés, dans le texte reçu | laisser le mot tel quel, avec la marque `reason: CLOSED` (« pas bouché », exporté par `src/domain/s7/plugin.ts`) |
+| `overrides` | `{ index, values }` : les valeurs verrouillées d'un mot | traiter ce mot avec `parse({ ...values, ...override })` au lieu des réglages de l'instance |
+
+Les positions sont celles du texte que la contrainte reçoit : `runChain` les traduit depuis les
+mots d'origine (`scopeOf`, `src/domain/plugin-chain.ts`). Un mot d'origine relu en deux mots
+(« du » → « de la ») fait sauter ou verrouiller les deux.
+
+Qui lit quoi aujourd'hui : S+7, lipogramme, Tri par piste et Bord respectent `skip` ; Mise en vers
+ne reçoit pas `scope` (elle ne retire ni ne remplace de mot). Seul le S+7 lit `overrides`. Or
+l'inspecteur propose un verrou pour chaque paramètre entier de chaque instance en marche qui vise
+la piste du mot (`inspectorLocks`, `src/ui/tracks/view-model.ts`) : un verrou posé sur `n` de Bord
+ou de Mise en vers est gardé, affiché, et sans effet.
 
 **Retirer un mot.** Une contrainte qui retire passe par `removeWord` (`src/domain/removal.ts`) :
 le blanc du mot retiré (ponctuation, sauts de ligne) se fond dans celui du mot suivant. Les
@@ -94,3 +130,9 @@ l'ordre de la liste est celui de la chaîne. Gestes : `add-instance`, `add-recip
 `remove-instance`, `toggle-instance`, `set-param` (validé par `parse`), `set-targets` (pistes
 du type seulement, au moins une ; refusé pour un type non ciblable), `move-instance`. Le résumé et la mention nomment chaque
 instance avec ses pistes, sauf quand elle vise toutes celles de son type.
+
+## Voir aussi
+
+- [Votre première contrainte](tutoriel-premiere-contrainte.md) (tutoriel)
+- [Comment écrire une contrainte](guides/ecrire-une-contrainte.md)
+- [Comment ajouter une recette](guides/ajouter-une-recette.md)
