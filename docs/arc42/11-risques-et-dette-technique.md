@@ -7,8 +7,8 @@ matrice et dans une courte liste).
 
 Cette section suit neuf risques et deux dettes. Les risques RISK-01 à RISK-07 viennent des
 champs « Risques créés » des ADR (section 9). RISK-08 et RISK-09 viennent d'objectifs de qualité
-qui ne sont pas encore tenus ou pas encore vérifiés (section 1.2), puisque la section 10 n'existe
-pas encore. Les deux dettes ont été relevées en écrivant les sections 6 et 5.
+qui ne sont pas encore tenus ou pas encore vérifiés : ce sont les scénarios QS-06 et QS-11
+(section 10.3). Le troisième scénario non tenu, QS-02, relève de RISK-02. Les deux dettes ont été relevées en écrivant les sections 6 et 5.
 
 Aucun risque n'est critique. Trois sont de priorité haute :
 - **RISK-01 :** la dépendance à deux distributeurs tiers ;
