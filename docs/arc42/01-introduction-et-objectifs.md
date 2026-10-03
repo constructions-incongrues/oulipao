@@ -53,7 +53,7 @@ pendant 6 semaines.
 ## 1.2 Objectifs de qualité
 
 > Les cinq exigences de qualité qui comptent le plus. Toute décision d'architecture doit les servir.
-> ⚠️ **À valider par le fondateur (1.3) avant la suite du travail d'architecture.**
+> ✅ **Validés par le fondateur (1.3) le 2026-10-03.** Les seuils des objectifs 3 à 5 ont été proposés à partir des mesures existantes, puis acceptés tels quels.
 
 | Priorité | Objectif de qualité | Scénario concret |
 |:--------:|---------------------|------------------|
