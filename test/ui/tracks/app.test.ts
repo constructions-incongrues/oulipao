@@ -4,6 +4,7 @@ import { SEED } from '../../support/chain.ts';
 import { html } from 'htm/preact';
 import { renderToString } from 'preact-render-to-string';
 import { App, SOURCE_URL } from '../../../src/ui/tracks/app.ts';
+import { CHANGELOG_URL } from '../../../src/ui/version.ts';
 import { createTracksController } from '../../../src/ui/tracks/controller.ts';
 import type { MixerAction } from '../../../src/ui/tracks/types.ts';
 import { morphology, tag } from '../../support/morphology.ts';
@@ -17,7 +18,7 @@ const setup = () => {
     preload: async () => {},
     copy: async (text) => void copied.push(text),
   });
-  const app = () => html`<${App} state=${controller.state} controller=${controller} />`;
+  const app = () => html`<${App} state=${controller.state} controller=${controller} version="0.2.0" />`;
   for (const action of SEED) controller.dispatch(action);
   return { controller, app, copied };
 };
@@ -34,7 +35,7 @@ test('avant l’étiquetage : saisie, chaîne, cinq pistes vides, pas de texte r
   assert.match(out, /<span class="count mono">0<\/span>/);
   assert.equal(elements(app()).filter(byClass('step')).length, 0);
   assert.match(out, /<button type="button" class="key theme">Clair \/ sombre<\/button>/);
-  assert.match(out, new RegExp(`<a class="key source-link" href="${SOURCE_URL}">Code source</a><button type="button" class="key theme">`));
+  assert.match(out, new RegExp(`<a class="key version-link" href="${CHANGELOG_URL}" title="Journal des versions">v0.2.0</a><a class="key source-link" href="${SOURCE_URL}">Code source</a><button type="button" class="key theme">`));
   assert.equal(SOURCE_URL, 'https://github.com/constructions-incongrues/oulipao');
   assert.doesNotMatch(out, /class="score|Cliquez un mot/); // ni partition, ni invitation avant le texte
   assert.doesNotMatch(out, /Texte résultant/);
@@ -125,7 +126,7 @@ test('premier contact : l’exemple et le chargement du modèle passent par le c
     preload: async () => {},
     copy: async () => {},
   });
-  click(html`<${App} state=${waiting.state} controller=${waiting} />`, byClass('load'));
+  click(html`<${App} state=${waiting.state} controller=${waiting} version="0.2.0" />`, byClass('load'));
   await tick();
   assert.equal(waiting.state.model.status, 'ready');
 });

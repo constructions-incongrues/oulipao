@@ -1,0 +1,66 @@
+# Versions et publication d'Oulipao (https://oulipao.incongru.org).
+# À chaque poussée sur main, release-please tient à jour la PR de version (numéro et CHANGELOG.md)
+# d'après les titres de PR conventionnels. Le site n'est publié qu'à la fusion de cette PR, ou à la
+# main depuis l'onglet Actions. Les tests passent d'abord : s'ils échouent, le site reste celui d'avant.
+name: Versions et publication
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+    steps:
+      - id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  build:
+    needs: release
+    # Une release créée avec le GITHUB_TOKEN ne déclenche pas d'autre workflow : le déploiement
+    # vit donc ici, derrière la sortie de release-please.
+    if: needs.release.outputs.release_created == 'true' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build:site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    # Un seul déploiement à la fois ; celui en cours va à son terme.
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

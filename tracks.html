@@ -34,6 +34,8 @@
     color: var(--ink); background: var(--panel); border: var(--rule) solid var(--ink); border-radius: var(--radius); padding: 4px 9px; min-height: 28px;
     display: inline-flex; align-items: center; text-decoration: none; box-sizing: border-box; }
   a.key:hover { background: var(--ink); color: var(--panel); }
+  /* La version garde son « v » minuscule : « v0.2.0 », pas « V0.2.0 ». */
+  a.version-link { text-transform: none; }
   button:disabled { opacity: .45; cursor: default; }
   input, select, textarea { background: var(--paper); border: var(--rule) solid var(--ink); border-radius: var(--radius); }
   input[type="number"], select { font-family: var(--font-mono); font-size: var(--size-small); min-height: 28px; padding: 2px 4px; }

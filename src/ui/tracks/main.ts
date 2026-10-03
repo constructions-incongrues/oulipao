@@ -16,7 +16,7 @@ const onTheme = () => {
   page.dataset['theme'] = nextTheme(page.dataset['theme'] as Theme | undefined, matchMedia('(prefers-color-scheme: dark)').matches);
 };
 const draw = (state: TracksState) => {
-  render(html`<${App} state=${state} controller=${controller} onTheme=${onTheme} />`, root);
+  render(html`<${App} state=${state} controller=${controller} onTheme=${onTheme} version=${__OULIPAO_VERSION__} />`, root);
   if (state.selected !== undefined && !inspecting) root.querySelector<HTMLElement>('.inspector')?.focus();
   inspecting = state.selected !== undefined;
 };

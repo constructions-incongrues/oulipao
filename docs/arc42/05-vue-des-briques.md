@@ -259,5 +259,5 @@ on l'oublie, un navigateur peut garder l'ancienne copie en cache.
 `build:site`.
 
 **Limites connues :** seul `build:site` tourne en intégration continue
-(`.github/workflows/pages.yml`, après `typecheck` et `test`). La régénération des données et la
+(`.github/workflows/release.yml`, après `typecheck` et `test`). La régénération des données et la
 mise à jour des versions d'adresse restent des étapes manuelles.
