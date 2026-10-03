@@ -133,7 +133,18 @@ export function nthVerb(
   let remaining = Math.abs(offset);
   // Avec `among`, seuls les infinitifs des formes candidates sont essayés, dans l'ordre du tour (voir neighbours.ts).
   const positions = among
-    ? aroundAmong(candidatePositions(infinitives, among, (form) => verbs.readings(form).map((r) => r.infinitive)), start, step)
+    ? aroundAmong(
+        // Seuls les infinitifs dont une forme candidate a déjà les traits voulus : une rime comme /ɔ̃/
+        // touche presque tous les verbes (« -ons »), mais rarement à la troisième du singulier.
+        candidatePositions(
+          infinitives,
+          among,
+          (form) => verbs.readings(form).filter((reading) => fits(reading, found.reading)).map((reading) => reading.infinitive),
+          [found.reading.tense, found.reading.person, found.reading.gender, found.reading.number].join('|'),
+        ),
+        start,
+        step,
+      )
     : Array.from({ length: infinitives.length - (from ? 0 : 1) }, (_, k) => (((start + (k + 1) * step) % infinitives.length) + infinitives.length) % infinitives.length);
   for (const position of positions) {
     const target = infinitives[position]!;

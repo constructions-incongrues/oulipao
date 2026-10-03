@@ -62,6 +62,14 @@ fusionnant la PR de version que release-please tient à jour.
    le même flux enchaîne alors `npm ci`, `npm run typecheck`, `npm test`, `npm run build:site`,
    puis publie `_site/`. La version publiée s'affiche dans la barre de marque.
 
+   Le check « check » (workflow `ci.yml`) est obligatoire pour fusionner sur `main`. La PR de
+   version ne le reçoit jamais : GitHub ne lance pas de workflow sur une PR ouverte par le
+   `GITHUB_TOKEN`. Fusionnez-la en contournant la règle, avec le rôle d'administrateur :
+
+   ```bash
+   gh pr merge <numéro> --squash --admin
+   ```
+
 **Publier à la main** (dépannage) : onglet Actions du dépôt, « Versions et publication »,
 « Run workflow ». Le site est reconstruit depuis `main` tel quel, y compris des changements pas
 encore versionnés ; la version affichée reste celle de `package.json`.

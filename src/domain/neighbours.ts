@@ -52,20 +52,23 @@ export function* aroundAmong(sorted: readonly number[], start: number, step: num
   }
 }
 
-// Les positions triées des lemmes d'un ensemble de candidates, calculées une fois par ensemble et
-// par liste : un filtre de rime redonne le même ensemble pour tous les mots d'une même rime.
-const sortedPositions = new WeakMap<readonly string[], WeakMap<ReadonlySet<string>, number[]>>();
-export function candidatePositions(list: readonly string[], among: ReadonlySet<string>, keysOf: (form: string) => Iterable<string>): number[] {
+// Les positions triées des lemmes d'un ensemble de candidates, calculées une fois par ensemble, par
+// liste et par variante : un filtre de rime redonne le même ensemble pour tous les mots d'une même
+// rime. La variante distingue des `keysOf` différents sur le même ensemble (les traits d'un verbe).
+const sortedPositions = new WeakMap<readonly string[], WeakMap<ReadonlySet<string>, Map<string, number[]>>>();
+export function candidatePositions(list: readonly string[], among: ReadonlySet<string>, keysOf: (form: string) => Iterable<string>, variant = ''): number[] {
   let byList = sortedPositions.get(list);
   if (!byList) sortedPositions.set(list, (byList = new WeakMap()));
-  let sorted = byList.get(among);
+  let byVariant = byList.get(among);
+  if (!byVariant) byList.set(among, (byVariant = new Map()));
+  let sorted = byVariant.get(variant);
   if (!sorted) {
     const positions = new Set<number>();
     for (const form of among) for (const key of keysOf(form)) {
       const position = positionOf(list, key);
       if (position !== undefined) positions.add(position);
     }
-    byList.set(among, (sorted = [...positions].sort((a, b) => a - b)));
+    byVariant.set(variant, (sorted = [...positions].sort((a, b) => a - b)));
   }
   return sorted;
 }

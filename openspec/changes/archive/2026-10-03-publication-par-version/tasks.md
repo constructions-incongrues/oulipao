@@ -25,5 +25,5 @@
 ## 5. Mise en service
 
 - [x] 5.1 Régler le dépôt avec `gh` : squash-merge seul (titre de PR comme titre du commit, description comme corps) et GitHub Actions autorisé à créer des PR. Vérifié avec `gh api repos/constructions-incongrues/oulipao` et `…/actions/permissions/workflow`.
-- [ ] 5.2 Fusionner ce changement en squash sous le titre `ci: publication par version` ; vérifier que le workflow `release.yml` réussit sans ouvrir de PR de version ni déployer.
+- [x] 5.2 Fusionner ce changement en squash sous le titre `ci: publication par version` ; vérifier que le workflow `release.yml` réussit sans ouvrir de PR de version ni déployer.
 - [ ] 5.3 À la première PR `feat:` ou `fix:` fusionnée ensuite, vérifier que release-please ouvre une PR de version avec un `CHANGELOG.md` en français et le bon numéro. Après la fusion de cette PR de version, vérifier le tag `v0.x.y`, la release GitHub et la version affichée sur `https://oulipao.incongru.org`.
