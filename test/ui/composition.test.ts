@@ -63,7 +63,7 @@ test('les prononciations sont cherchées à côté de dist/, une seule fois, et 
   const original = globalThis.fetch;
   const urls: string[] = [];
   let calls = 0;
-  globalThis.fetch = async (url) => (urls.push(String(url)), calls++ === 0 ? new Response('', { status: 503 }) : new Response('chaise\tN\tʃɛz\tɛz\n'));
+  globalThis.fetch = async (url) => (urls.push(String(url)), calls++ === 0 ? new Response('', { status: 503 }) : new Response('chaise\tN\tʃɛz\tɛz\tG\n'));
   try {
     const load = createPhoneticsLoader('http://localhost/dist/tracks.js');
     await assert.rejects(load());

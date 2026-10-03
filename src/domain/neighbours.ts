@@ -1,5 +1,13 @@
 import type { MorphologyRepository } from '../ports/morphology.ts';
 import { compatible, pickReading, positionOf, type NounChoice, type NounHints } from './s7/substitution.ts';
+
+/**
+ * `among`, dans les fonctions qui suivent : les seules formes que `accept` peut retenir (par exemple
+ * celles qui ont la même rime). La recherche ne visite alors que leurs lemmes, dans l'ordre du tour,
+ * au lieu de tout le dictionnaire ; le résultat est le même si `accept(forme)` implique que la forme
+ * est dans `among`.
+ */
+
 import type { AdjectiveForm, ConcreteGender, ConcreteNumber, NounForm } from './s7/types.ts';
 
 // Les voisins d'un mot dans le dictionnaire qui passent un critère : le premier pour le lipogramme
@@ -17,10 +25,57 @@ function* around<T>(entries: readonly T[], start: number, step: number): Generat
   for (let k = 1; k < entries.length; k++) yield entries[(((start + k * step) % entries.length) + entries.length) % entries.length]!;
 }
 
-/** Le `count`-ième élément qui passe le critère, en tournant à partir de `start` ; rien s'il n'y en a pas assez. */
-function nth<T, R>(entries: readonly T[], start: number, offset: number, pick: (entry: T) => R | undefined): R | undefined {
+/**
+ * Les positions que `around` rencontrerait en partant de `start`, réduites à `sorted` (positions
+ * triées, sans doublon) et dans le même ordre : le tour restreint aux entrées qui peuvent passer le
+ * critère. Une recherche dichotomique trouve le départ ; on ne trie rien à chaque appel.
+ */
+export function* aroundAmong(sorted: readonly number[], start: number, step: number): Generator<number> {
+  let low = 0;
+  let high = sorted.length;
+  while (low < high) {
+    const middle = (low + high) >> 1;
+    if (sorted[middle]! < start) low = middle + 1;
+    else high = middle;
+  }
+  // `low` : la première position >= start.
+  const at = low < sorted.length && sorted[low] === start ? low : -1;
+  const count = sorted.length - (at >= 0 ? 1 : 0);
+  let k = step > 0 ? (at >= 0 ? low + 1 : low) : low - 1;
+  for (let seen = 0; seen < count; seen++, k += step) {
+    const index = ((k % sorted.length) + sorted.length) % sorted.length;
+    yield sorted[index]!;
+  }
+}
+
+// Les positions triées des lemmes d'un ensemble de candidates, calculées une fois par ensemble et
+// par liste : un filtre de rime redonne le même ensemble pour tous les mots d'une même rime.
+const sortedPositions = new WeakMap<readonly string[], WeakMap<ReadonlySet<string>, number[]>>();
+export function candidatePositions(list: readonly string[], among: ReadonlySet<string>, keysOf: (form: string) => Iterable<string>): number[] {
+  let byList = sortedPositions.get(list);
+  if (!byList) sortedPositions.set(list, (byList = new WeakMap()));
+  let sorted = byList.get(among);
+  if (!sorted) {
+    const positions = new Set<number>();
+    for (const form of among) for (const key of keysOf(form)) {
+      const position = positionOf(list, key);
+      if (position !== undefined) positions.add(position);
+    }
+    byList.set(among, (sorted = [...positions].sort((a, b) => a - b)));
+  }
+  return sorted;
+}
+
+/**
+ * Le `count`-ième élément qui passe le critère, en tournant à partir de `start` ; rien s'il n'y en
+ * a pas assez. Avec `among`, seules ces positions sont essayées : le résultat est le même tant
+ * qu'aucune autre entrée ne peut passer le critère.
+ */
+function nth<T, R>(entries: readonly T[], start: number, offset: number, pick: (entry: T) => R | undefined, among?: readonly number[]): R | undefined {
   let remaining = Math.abs(offset);
-  for (const entry of around(entries, start, Math.sign(offset) || 1)) {
+  const step = Math.sign(offset) || 1;
+  const tour = among ? (function* () { for (const position of aroundAmong(among, start, step)) yield entries[position]!; })() : around(entries, start, step);
+  for (const entry of tour) {
     const found = pick(entry);
     if (found !== undefined && --remaining === 0) return found;
   }
@@ -37,7 +92,14 @@ function closest<T extends { form: string; gender: string; number: string }>(for
  * Le n-ième nom qui suit (`offset` négatif : qui précède) dans le dictionnaire et qui a une forme
  * au même genre et au même nombre que le nom dans la phrase, forme que `accept` retient.
  */
-export function nthNoun(word: string, hints: NounHints, offset: number, accept: (form: string) => boolean, morphology: MorphologyRepository): NounChoice {
+export function nthNoun(
+  word: string,
+  hints: NounHints,
+  offset: number,
+  accept: (form: string) => boolean,
+  morphology: MorphologyRepository,
+  among?: ReadonlySet<string>,
+): NounChoice {
   const reading = pickReading(word, hints, morphology);
   const lemmas = morphology.nounLemmas();
   const start = reading && positionOf(lemmas, reading.lemma);
@@ -47,7 +109,8 @@ export function nthNoun(word: string, hints: NounHints, offset: number, accept: 
   if (!reading || start === undefined) return unchanged('unknown-noun');
 
   const fits = (form: NounForm) => plain(form.form) && compatible(form.gender, gender) && (form.number === number || form.number === 'i') && accept(form.form);
-  const best = nth(lemmas, start, offset, (lemma) => closest(morphology.nounForms(lemma).filter(fits), gender, number));
+  const candidates = among && candidatePositions(lemmas, among, (form) => morphology.nounReadings(form).map((r) => r.lemma));
+  const best = nth(lemmas, start, offset, (lemma) => closest(morphology.nounForms(lemma).filter(fits), gender, number), candidates);
   return best ? { status: 'replaced', replacement: best.form, gender, number, originalGender: gender } : unchanged('missing-form');
 }
 
@@ -61,6 +124,7 @@ export function nthAdjective(
   offset: number,
   accept: (form: string) => boolean,
   morphology: MorphologyRepository,
+  among?: ReadonlySet<string>,
 ): AdjectiveForm | undefined {
   const readings = morphology.adjectiveReadings(word.toLowerCase());
   const reading = readings.find((r) => (!wanted.gender || compatible(r.gender, wanted.gender)) && (!wanted.number || r.number === wanted.number || r.number === 'i')) ?? readings[0];
@@ -70,15 +134,16 @@ export function nthAdjective(
   const gender = wanted.gender ?? (reading.gender === 'e' ? 'm' : reading.gender);
   const number = wanted.number ?? (reading.number === 'i' ? 's' : reading.number);
   const fits = (form: AdjectiveForm) => plain(form.form) && compatible(form.gender, gender) && (form.number === number || form.number === 'i') && accept(form.form);
-  return nth(paradigms, start, offset, (paradigm) => closest(morphology.adjectiveForms(paradigm).filter(fits), gender, number));
+  const candidates = among && candidatePositions(paradigms, among, (form) => morphology.adjectiveReadings(form).map((r) => r.paradigm));
+  return nth(paradigms, start, offset, (paradigm) => closest(morphology.adjectiveForms(paradigm).filter(fits), gender, number), candidates);
 }
 
 /** Le n-ième adverbe qui suit dans le dictionnaire et que `accept` retient. */
-export function nthAdverb(word: string, offset: number, accept: (form: string) => boolean, morphology: MorphologyRepository): string | undefined {
+export function nthAdverb(word: string, offset: number, accept: (form: string) => boolean, morphology: MorphologyRepository, among?: ReadonlySet<string>): string | undefined {
   const adverbs = morphology.adverbs();
   const lower = word.toLowerCase();
   // Un adverbe absent du dictionnaire part de la place qu'il y aurait.
   let start = adverbs.indexOf(lower);
   if (start < 0) start = adverbs.findIndex((adverb) => collator.compare(adverb, lower) > 0) - 1;
-  return nth(adverbs, start < 0 ? adverbs.length - 1 : start, offset, (adverb) => (plain(adverb) && accept(adverb) ? adverb : undefined));
+  return nth(adverbs, start < 0 ? adverbs.length - 1 : start, offset, (adverb) => (plain(adverb) && accept(adverb) ? adverb : undefined), among && candidatePositions(adverbs, among, (form) => [form]));
 }

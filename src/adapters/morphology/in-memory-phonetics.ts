@@ -10,6 +10,8 @@ export interface PhoneticEntry {
   form: string;
   category: Category;
   reading: PhoneticReading;
+  /** GLÀFF dans la catégorie (`G`, par défaut), GLÀFF dans une autre catégorie (`A`), ou les règles (`R`). */
+  source?: 'G' | 'A' | 'R';
 }
 
 const NONE: readonly never[] = [];
@@ -24,11 +26,15 @@ const push = <T>(map: Map<string, T[]>, key: string, value: T) => {
 export class InMemoryPhonetics implements PhoneticsRepository {
   readonly #byForm = new Map<string, PhoneticEntry[]>();
   readonly #bySound = new Map<string, string[]>();
+  readonly #byRhyme = new Map<string, string[]>();
 
   constructor(entries: readonly PhoneticEntry[]) {
     for (const entry of entries) {
       push(this.#byForm, entry.form, entry);
-      push(this.#bySound, `${entry.category}\t${phonemesOf(entry.reading).join('')}`, entry.form);
+      const phonemes = phonemesOf(entry.reading);
+      // Les homophones restent ceux du lexique : une prononciation empruntée ou devinée n'en fait pas.
+      if ((entry.source ?? 'G') === 'G') push(this.#bySound, `${entry.category}\t${phonemes.join('')}`, entry.form);
+      push(this.#byRhyme, `${entry.category}\t${rhymeOf(phonemes)}`, entry.form);
     }
     for (const forms of this.#bySound.values()) forms.sort(collator.compare);
   }
@@ -40,20 +46,23 @@ export class InMemoryPhonetics implements PhoneticsRepository {
   homophones(phonemes: string, category: Category): readonly string[] {
     return this.#bySound.get(`${category}\t${phonemes}`) ?? NONE;
   }
+  rhyming(rhyme: string, category: Category): readonly string[] {
+    return this.#byRhyme.get(`${category}\t${rhyme}`) ?? NONE;
+  }
 }
 
 const CATEGORIES: Record<string, Category> = { N: 'noun', A: 'adjective', V: 'verb', R: 'adverb', O: 'other' };
-const RowSchema = z.tuple([z.string().min(1), z.enum(['N', 'A', 'V', 'R', 'O']), z.string().min(1), z.string().min(1)]);
+const RowSchema = z.tuple([z.string().min(1), z.enum(['N', 'A', 'V', 'R', 'O']), z.string().min(1), z.string().min(1), z.enum(['G', 'A', 'R'])]);
 
-/** Lit le fichier dérivé ; lève si une ligne n'est pas conforme (phonème inconnu, rime fausse). */
+/** Lit le fichier dérivé ; lève si une ligne n'est pas conforme (phonème inconnu, rime fausse, source inconnue). */
 export function parsePhonetics(tsv: string): PhoneticEntry[] {
   const entries: PhoneticEntry[] = [];
   for (const line of tsv.split('\n')) {
     if (!line || line.startsWith('#')) continue;
     const row = RowSchema.safeParse(line.split('\t'));
-    const reading = row.success ? parseReading(row.data[2]) : undefined;
+    const reading = row.success ? parseReading(row.data[2], row.data[4] === 'R') : undefined;
     if (!row.success || !reading || rhymeOf(phonemesOf(reading)) !== row.data[3]) throw new Error(`phonétique : ligne non conforme « ${line} »`);
-    entries.push({ form: row.data[0], category: CATEGORIES[row.data[1]]!, reading });
+    entries.push({ form: row.data[0], category: CATEGORIES[row.data[1]]!, reading, source: row.data[4] });
   }
   return entries;
 }

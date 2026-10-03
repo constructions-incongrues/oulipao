@@ -10,4 +10,9 @@ export interface PhoneticsRepository {
   readings(form: string, category?: Category): readonly PhoneticReading[];
   /** Les formes d'une catégorie qui se prononcent exactement ainsi (phonèmes sans les points), dans l'ordre du dictionnaire. */
   homophones(phonemes: string, category: Category): readonly string[];
+  /**
+   * Les formes d'une catégorie dont la prononciation a cette rime, devinées comprises : toutes les
+   * candidates d'un filtre de rime, sans parcourir le dictionnaire.
+   */
+  rhyming(rhyme: string, category: Category): readonly string[];
 }

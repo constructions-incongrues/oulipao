@@ -373,6 +373,8 @@ Vérification du 2026-10-03 : sous Node avec les fichiers dérivés, puis dans l
 |---|---|
 | Données | `data/phonetique-oulipao.tsv` tiré de GLÀFF 1.2.2 : 406 215 lignes, 382 669 formes. 19,6 % des 476 104 formes de Grammalecte n'y sont pas (surtout des noms composés) et passent par la prononciation devinée |
 | Poids | 12,5 Mo bruts, 1,98 Mo compressés en gzip ; chargés seulement quand un filtre phonétique est en marche. Lecture et validation sous Node : 1,6 s |
+| Index des rimes (2026-10-03) | Le fichier porte aussi une prononciation pour chaque forme candidate des filtres que GLÀFF ne donne pas dans sa catégorie ou dans sa casse : 32 326 empruntées à une autre ligne, 89 393 devinées par les règles. 17,4 Mo bruts, 3,2 Mo compressés en gzip |
+| Temps des filtres de rime, avant et après l'index (2026-10-03) | Sous Node, trois textes de référence de 200 mots, toutes les pistes, 95e percentile. Avant : R+1 de 0,3 à 1,1 s, R+3 de 1,2 à 1,7 s, homophonies de 2,8 à 4,0 s. Après : R+1 de 27 à 87 ms, R+3 de 57 à 89 ms, homophonies de 5 à 6 ms. Le tout premier R+n d'une session coûte jusqu'à 410 ms, le temps de calculer les positions des rimes rencontrées. Sorties identiques mot à mot et raison par raison sur les neuf passages |
 | Rimes | « chaise » /ʃɛz/, rime /ɛz/ ; « couvent » /ku.vɑ̃/ (nom), /kuv/ (verbe) ; « glorbiture » devinée, rime /yʁ/ |
 | Syllabes | « Je fais souvent ce rêve étrange et pénétrant » : 12 |
 | Filtres sous Node | Sur « Le vieux chat dort sur la chaise / Pendant que tombe la pluie / Il rêve de la cuisine / Et du jardin dans le soir noir » : R+1 (noms, adjectifs, verbes) 78 à 98 ms ; monorime en /ɔ̃/ 3 ms ; antirime 0 ms (aucune fin de vers ne rime) ; homophonies 318 à 363 ms (« chat » → « schah ») |
