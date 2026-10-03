@@ -11,3 +11,4 @@
 ## [2026-10-03] ingest | pm-roadmap: wrote docs/roadmap.md
 ## [2026-10-03] ingest | pm-prd: wrote docs/prds/essai-technique-lexique-etiquetage.md
 ## [2026-10-03] ingest | pm-prd: wrote docs/prds/moteur-s7-accorde-sur-les-noms.md
+## [2026-10-03] ingest | pm-prd: wrote docs/prds/interface-a-pistes-reglage-en-direct.md
