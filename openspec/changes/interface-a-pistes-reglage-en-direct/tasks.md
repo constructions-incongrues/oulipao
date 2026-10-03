@@ -15,45 +15,45 @@ Contraintes du projet (voir `openspec/config.yaml`) : TypeScript strict, archite
 
 ## 1. Wave 0 — Fondation
 
-- [ ] 1.1 Outillage Preact et squelette de la page (S, dépend de : rien ; exigences non fonctionnelles)
+- [x] 1.1 Outillage Preact et squelette de la page (S, dépend de : rien ; exigences non fonctionnelles)
   - Couche : ui. Dépendances : `preact`, `htm` ; pour les tests, `preact-render-to-string`.
   - `tracks.html` et `src/ui/tracks/main.ts` : une page vide qui monte un composant racine provisoire ; seconde entrée dans la commande `npm run build`.
   - Un composant témoin et son test, rendu en texte sous Node, pour fixer la façon de tester les composants.
   - Acceptance : `npm run build` produit les deux pages ; `tracks.html` s'ouvre ; le test du composant passe ; `npm test` reste au-dessus de 90 %.
-- [ ] 1.2 Contrats de l'interface (S, dépend de : rien ; exigences 1, 2, 4, 5)
+- [x] 1.2 Contrats de l'interface (S, dépend de : rien ; exigences 1, 2, 4, 5)
   - Couches : domain et ui. Schémas zod, types déduits.
   - `src/domain/s7/types.ts` : `S7Result.words`, la sortie du moteur mot par mot — `{index, output, gap}` pour chaque mot du texte d'origine.
   - `src/ui/tracks/types.ts` : `MixerState` (par piste `{muted, solo}` ; plugin `{enabled, offset, mode}`) ; `ScoreLayout` (systèmes → règle + cinq pistes → blocs `{index, label, column, width}`, `label` portant le mot affiché, remplacé ou non).
-  - Signatures : `audibleCategories(tracks)` et `mixText(words, tagged, audible)` dans `src/domain/mixing.ts` ; `layoutScore(text, tagged, labels, width)` dans `src/ui/tracks/score-layout.ts` ; `reduce(state, action)` et `initialState` dans `src/ui/tracks/mixer-state.ts`.
+  - Signatures (modules écrits directement avec leur corps, une seule personne implémentant les vagues à la suite) : `audibleCategories(tracks)` et `mixText(words, tagged, audible, tail)` dans `src/domain/mixing.ts` ; `layoutScore(text, tagged, labels, width)` dans `src/ui/tracks/score-layout.ts` ; `reduce(state, action)` et `initialState` dans `src/ui/tracks/mixer-state.ts`.
   - `docs/tracks.md` : vocabulaire (piste, tranche, système, bloc) et enchaînement moteur → mixage → disposition.
   - Les tâches suivantes ne modifient ces fichiers que pour remplir le corps de leur propre module.
   - Acceptance : Le projet compile ; un test valide un exemple de chaque entité par son schéma.
 
 ## 2. Wave 1 — En parallèle
 
-- [ ] 2.1 Texte résultant selon mute et solo (M, dépend de : 1.2 ; exigences 4, 5)
+- [x] 2.1 Texte résultant selon mute et solo (M, dépend de : 1.2 ; exigences 4, 5)
   - Couche : domain. `src/domain/s7/engine.ts` remplit `S7Result.words` sans changer le texte rendu ; `src/domain/mixing.ts` et leurs tests.
   - `audibleCategories` : sans solo, toutes les pistes non muettes ; avec au moins un solo, les seules pistes en solo.
   - `mixText` : les mots des pistes inaudibles disparaissent ; le texte se resserre (pas de double espace, pas d'espace avant une virgule ou un point) ; la ponctuation reste.
   - La piste « autres » obéit à la même règle.
   - Acceptance : « la vieille horloge s'arrêta » sans les adjectifs donne « la horloge s'arrêta » ; en solo sur les verbes il ne reste que « arrêta » ; toutes pistes audibles, le texte est exactement celui du moteur.
-- [ ] 2.2 Disposition de la partition (M, dépend de : 1.2 ; exigences 1, 6)
+- [x] 2.2 Disposition de la partition (M, dépend de : 1.2 ; exigences 1, 6)
   - Couche : ui. `src/ui/tracks/score-layout.ts` et son test uniquement.
   - Retour à la ligne en systèmes : coupure entre deux mots à une largeur donnée, et à chaque saut de ligne du texte.
   - Par système : la règle (la ligne du texte d'origine) et cinq pistes ; un bloc par mot, sur la piste de sa catégorie, à la colonne du mot dans la règle.
   - Les blocs des noms portent le mot remplacé quand le plugin est actif.
   - Acceptance : Un texte de 200 mots donne des systèmes d'au plus la largeur demandée, cinq pistes chacun ; chaque mot a exactement un bloc ; aucun mot n'est coupé.
-- [ ] 2.3 État de la table de mixage (S, dépend de : 1.2 ; exigences 2, 3, 4)
+- [x] 2.3 État de la table de mixage (S, dépend de : 1.2 ; exigences 2, 3, 4)
   - Couche : ui. `src/ui/tracks/mixer-state.ts` et son test uniquement.
   - Actions : couper ou rétablir une piste, solo, régler le décalage, choisir le mode, activer ou couper le plugin.
   - État initial : aucune piste muette ni en solo ; plugin actif, décalage 7, mode « réaccord ».
   - Acceptance : Chaque action produit l'état attendu, validé par le schéma ; un décalage non entier est refusé.
-- [ ] 2.4 Composants des tranches et du plugin (M, dépend de : 1.1, 1.2 ; exigences 2, 3 ; clavier)
+- [x] 2.4 Composants des tranches et du plugin (M, dépend de : 1.1, 1.2 ; exigences 2, 3 ; clavier)
   - Couche : ui. `src/ui/tracks/components/strip.ts`, `plugin-slot.ts` et leurs tests uniquement.
   - Tranche : nom de la piste, nombre de mots, boutons mute et solo (`aria-pressed`), emplacement de plugin, vide sauf pour les noms.
   - Plugin S+7 : bouton actif ou coupé, champ du décalage, sélecteur de mode ; tout est atteignable au clavier et porte un libellé.
   - Acceptance : Rendus en texte, les composants montrent le nom, le nombre de mots et l'état des boutons ; un emplacement vide le dit.
-- [ ] 2.5 Composants de la partition et du texte résultant (M, dépend de : 1.1, 1.2 ; exigences 1, 6, 7)
+- [x] 2.5 Composants de la partition et du texte résultant (M, dépend de : 1.1, 1.2 ; exigences 1, 6, 7)
   - Couche : ui. `src/ui/tracks/components/score.ts`, `result.ts` et leurs tests uniquement.
   - Partition : pour chaque système, la règle et les cinq pistes avec leurs blocs ; la catégorie n'est jamais portée par la couleur seule.
   - Texte résultant et bouton de copie.
@@ -61,8 +61,8 @@ Contraintes du projet (voir `openspec/config.yaml`) : TypeScript strict, archite
 
 ## 3. Wave 2 — Assemblage
 
-- [ ] 3.1 Assemblage de la page (M, dépend de : 2.1, 2.2, 2.3, 2.4, 2.5 ; exigences 1 à 8)
-  - Couche : ui. `src/ui/tracks/app.ts`, `main.ts`, `tracks.html` (styles) ; `src/ui/composition.ts`, câblage de l'étiqueteur et de la morphologie extrait de `src/ui/page.ts`, qui s'en sert aussi.
+- [x] 3.1 Assemblage de la page (M, dépend de : 2.1, 2.2, 2.3, 2.4, 2.5 ; exigences 1 à 8)
+  - Couche : ui. `src/ui/tracks/app.ts`, `controller.ts` (état de la page, sans Preact), `view-model.ts` (la chaîne moteur → mixage → disposition), `main.ts`, `tracks.html` (styles) ; `src/ui/composition.ts`, câblage de l'étiqueteur et de la morphologie extrait de `src/ui/page.ts`, qui s'en sert aussi.
   - Coller un texte, étiqueter une seule fois avec le modèle neuronal ; chaque geste rejoue moteur → mixage → disposition sans réétiqueter.
   - États d'attente et d'échec visibles pendant le chargement du modèle et du dictionnaire ; la page reste utilisable après un échec.
   - Copie du texte résultant dans le presse-papiers.
@@ -71,7 +71,24 @@ Contraintes du projet (voir `openspec/config.yaml`) : TypeScript strict, archite
 
 ## 4. Wave 3 — Vérification
 
-- [ ] 4.1 Vérification dans le navigateur et compte rendu (S, dépend de : 3.1 ; critères de réussite)
+- [x] 4.1 Vérification dans le navigateur et compte rendu (S, dépend de : 3.1 ; critères de réussite)
   - Session de vérification sur un texte de 200 mots : cinq pistes, au moins 5 décalages, temps de mise à jour, plugin coupé et rétabli, mode, mute et solo, copie, onglet réseau.
   - Capture de l'interface versionnée dans `resultats/pistes/` ; section « Interface à pistes » dans `RESULTATS.md` avec les mesures.
   - Acceptance : `RESULTATS.md` donne le résultat de chaque critère du PRD, avec le temps de mise à jour mesuré et la capture, avant le 22 novembre 2026.
+
+## 5. Wave 4 — Revue de design du 2026-10-03
+
+Tâches issues de la revue de design (22 décisions, détaillées dans `design.md`, section « Revue de design du 2026-10-03 »). T1 d'abord ; T2 à T10 ensuite ; T11 en dernier.
+
+- [ ] 5.1 Système de design : `DESIGN.md`, variables CSS partagées, trois polices servies par le projet (M ; décisions 14, 15, 18)
+- [ ] 5.2 Disposition : texte résultant en haut, saisie repliable, table de mixage en lignes (M ; décisions 1, 2, 16)
+- [ ] 5.3 Premier contact : définition du S+7, bouton d'exemple, préchargement avec progression (M ; décisions 4, 5 ; revue d'ingénierie D9, D10, D12 : `preload(onProgress)` fourni par l'assemblage, bouton si le navigateur demande d'économiser les données, relance après échec)
+- [ ] 5.4 États : texte périmé, texte vide ou coupé, messages par zone, bornes du décalage (M ; décisions 6, 8, 9, 10)
+- [ ] 5.5 Libellés : « Muet », « Seul » ; paramètres « Décalage » et « Parmi » (S ; décisions 11, 17)
+- [ ] 5.6 Blocs et texte : trois aspects de bloc, original → remplaçant, noms soulignés, éclat au changement (M ; décisions 7, 12)
+- [ ] 5.7 Copie : mention de la règle ajoutée au texte copié (S ; décision 13 précisée par D11 : mention seulement si le texte a changé, pistes coupées comprises)
+- [ ] 5.8 Partition : pistes vides masquées, largeur calculée entre 48 et 72 caractères (M ; décisions 3, 22 ; calcul de largeur pur et testé, `setWidth` sur le contrôleur)
+- [ ] 5.9 Petit écran : page lisible sous 1024 px, partition repliée (M ; décision 19)
+- [ ] 5.10 Accessibilité : liste équivalente à la partition, annonce après chaque geste (M ; décisions 20, 21)
+- [ ] 5.11 Vérification dans le navigateur, capture et compte rendu refaits (S ; toutes les décisions)
+

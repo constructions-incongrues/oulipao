@@ -6,7 +6,7 @@ import { identifyDeterminer, isTout, VARIABLE_FORMS, type IdentifiedDeterminer }
 import { elides, realizeDeterminer } from './elision.ts';
 import { substituteNoun, type NounChoice } from './substitution.ts';
 import { adjectiveChain, findPredicate, isImpersonal, LINKING_PREPOSITIONS, SUBJECT_PRONOUNS, subjectPronoun, TextView } from './syntax.ts';
-import { S7OptionsSchema, type ConcreteGender, type ConcreteNumber, type S7OptionsInput, type S7Result, type Substitution } from './types.ts';
+import { S7OptionsSchema, type ConcreteGender, type ConcreteNumber, type OutputWord, type S7OptionsInput, type S7Result, type Substitution } from './types.ts';
 
 /** Ce qu'on change à un mot du texte : sa forme, et ce qui le sépare du mot précédent. */
 interface Override {
@@ -192,11 +192,10 @@ export function applyS7(
     agreePredicate(i, gender, pronoun.number);
   });
 
-  let out = '';
-  tokens.forEach((token, i) => {
-    const override = overrides.get(i);
-    out += (override?.gap ?? view.gap(i)) + (override?.word ?? token.word);
+  const words: OutputWord[] = tokens.map((token, index) => {
+    const override = overrides.get(index);
+    return { index, output: override?.word ?? token.word, gap: override?.gap ?? view.gap(index) };
   });
   const tail = tokens.length ? text.slice(tokens.at(-1)!.end) : text;
-  return { text: out + tail, substitutions };
+  return { text: words.map((w) => w.gap + w.output).join('') + tail, substitutions, words, tail };
 }

@@ -60,5 +60,22 @@ export const SubstitutionSchema = z.object({
 });
 export type Substitution = z.infer<typeof SubstitutionSchema>;
 
-export const S7ResultSchema = z.object({ text: z.string(), substitutions: z.array(SubstitutionSchema) });
+/** La sortie pour un mot du texte d'origine : ce qu'il devient, et ce qui le sépare du précédent. */
+export const OutputWordSchema = z.object({
+  /** Position du mot dans le découpage du texte d'origine. */
+  index: z.number().int().nonnegative(),
+  /** Vide quand le mot a été absorbé par son voisin (« de la » devenu « du »). */
+  output: z.string(),
+  gap: z.string(),
+});
+export type OutputWord = z.infer<typeof OutputWordSchema>;
+
+export const S7ResultSchema = z.object({
+  text: z.string(),
+  substitutions: z.array(SubstitutionSchema),
+  /** Le texte rendu, mot par mot : `text` est la suite des `gap + output`, puis `tail`. */
+  words: z.array(OutputWordSchema),
+  /** Ce qui suit le dernier mot (ponctuation finale). */
+  tail: z.string(),
+});
 export type S7Result = z.infer<typeof S7ResultSchema>;

@@ -1,30 +1,14 @@
 // Page d'essai : branchement sur le DOM. Exclu de la couverture de tests ; la logique
 // d'affichage testable est dans render.ts.
-import { CamembertTagger } from '../adapters/taggers/camembert-tagger.ts';
-import { createCamembertClassifier } from '../adapters/taggers/camembert-model.ts';
-import { FrCompromiseTagger } from '../adapters/taggers/fr-compromise-tagger.ts';
-import { LexiconLookupTagger } from '../adapters/taggers/lexicon-lookup-tagger.ts';
-import { fetchTextSource } from '../adapters/text-sources/fetch-text-source.ts';
-import { loadMorphology } from '../adapters/morphology/in-memory-morphology.ts';
 import { CATEGORIES } from '../domain/categories.ts';
 import { applyS7 } from '../domain/s7/engine.ts';
-import type { TaggedWord } from '../domain/tagged-word.ts';
-import type { MorphologyRepository } from '../ports/morphology.ts';
 import { tagText } from '../domain/tagging.ts';
-import type { Tagger } from '../ports/tagger.ts';
+import type { TaggedWord } from '../domain/tagged-word.ts';
+import { createMorphologyLoader, createTaggers } from './composition.ts';
 import { CATEGORY_LABELS, toSegments } from './render.ts';
 
-// Le script assemblé est servi depuis dist/ : les données sont un cran au-dessus.
-const taggers: Tagger[] = [
-  new CamembertTagger(createCamembertClassifier()),
-  new FrCompromiseTagger(),
-  new LexiconLookupTagger(fetchTextSource(new URL('../data/lexique-potao.tsv', import.meta.url))),
-];
-
-// Le dictionnaire du S+7 n'est chargé qu'à la première transformation.
-let morphology: Promise<MorphologyRepository> | undefined;
-const getMorphology = () =>
-  (morphology ??= loadMorphology(fetchTextSource(new URL('../data/morpho-potao.tsv', import.meta.url))));
+const taggers = createTaggers(import.meta.url);
+const getMorphology = createMorphologyLoader(import.meta.url);
 
 const byId = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const input = byId<HTMLTextAreaElement>('text');

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Potao — pistes</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1d1c1a; --muted: #6b6860; --line: #d9d5cc; --panel: #f1eee7;
+    --noun: #c2410c; --verb: #1d4ed8; --adjective: #15803d; --adverb: #7e22ce; --other: #57534e;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #171614; --fg: #ece9e2; --muted: #a39f95; --line: #3a3833; --panel: #22201d;
+      --noun: #fb923c; --verb: #7ea6ff; --adjective: #5fd38a; --adverb: #c79bf5; --other: #b3ada3;
+    }
+  }
+  body { font: 16px/1.5 system-ui, sans-serif; background: var(--bg); color: var(--fg); margin: 0; }
+  main { max-width: 68rem; min-width: 58rem; margin: 2rem auto; padding: 0 1.5rem; }
+  h1 { font-size: 1.4rem; margin: 0 0 .25rem; }
+  h2, h3 { font-size: 1rem; margin: 0; }
+  textarea { width: 100%; height: 8rem; font: inherit; box-sizing: border-box; background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 4px; padding: .5rem; }
+  button, input, select { font: inherit; color: inherit; }
+  button { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: .2rem .6rem; cursor: pointer; }
+  button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  button:disabled { opacity: .5; cursor: default; }
+  :focus-visible { outline: 2px solid var(--verb); outline-offset: 2px; }
+  .controls { display: flex; gap: .75rem; align-items: center; margin: .75rem 0 1.25rem; }
+  .status { color: var(--muted); }
+  .status.error { color: #dc2626; }
+
+  /* Table de mixage : une tranche par piste. */
+  /* La table reste visible à gauche pendant qu'on fait défiler la partition. */
+  .workspace { display: grid; grid-template-columns: 14rem 1fr; gap: 1.5rem; align-items: start; }
+  .mixer { position: sticky; top: .75rem; display: flex; flex-direction: column; gap: .4rem; max-height: calc(100vh - 1.5rem); overflow-y: auto; }
+  .strip { background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--track); border-radius: 4px; padding: .4rem .5rem .5rem; display: grid; grid-template-columns: 1fr auto; column-gap: .5rem; row-gap: .3rem; align-items: center; }
+  .strip h3 { grid-column: 1; }
+  .strip .count { grid-column: 1; margin: 0; color: var(--muted); font-size: .8rem; }
+  .strip .buttons { grid-column: 2; grid-row: 1 / span 2; display: flex; gap: .3rem; }
+  .strip .buttons button { width: 2rem; font-weight: 600; }
+  .strip .slot { grid-column: 1 / -1; }
+  .slot { border: 1px dashed var(--line); border-radius: 4px; padding: .3rem .4rem; font-size: .8rem; box-sizing: border-box; }
+  .slot.empty { color: var(--muted); display: flex; align-items: center; justify-content: center; }
+  .slot.plugin { border-style: solid; display: flex; flex-direction: column; gap: .35rem; }
+  .slot.plugin.off { opacity: .7; }
+  .slot label { display: flex; justify-content: space-between; align-items: center; gap: .4rem; }
+  .slot input { width: 4rem; }
+  .slot select { max-width: 9.5rem; }
+  .slot input, .slot select { background: var(--bg); border: 1px solid var(--line); border-radius: 4px; }
+  .noun { --track: var(--noun); } .verb { --track: var(--verb); } .adjective { --track: var(--adjective); }
+  .adverb { --track: var(--adverb); } .other { --track: var(--other); }
+  .summary { color: var(--muted); margin: 0 0 1rem; }
+
+  /* Partition : chaque système a sa règle et ses cinq pistes, alignées en colonnes de caractères. */
+  .score { font-family: var(--mono); font-size: 14px; }
+  .system { margin-bottom: 1.4rem; }
+  .lane { display: flex; height: 1.5rem; align-items: center; border-bottom: 1px solid var(--line); }
+  .lane-name { font-family: system-ui, sans-serif; font-size: .75rem; width: 5.5rem; flex: none; color: var(--track, var(--muted)); }
+  .lane.ruler { border-bottom: 2px solid var(--fg); height: 1.7rem; }
+  .cells { position: relative; flex: 1; height: 100%; white-space: pre; display: flex; align-items: center; }
+  .block { position: absolute; top: 2px; bottom: 2px; box-sizing: border-box; border-radius: 2px; background: color-mix(in srgb, var(--track) 22%, transparent); border-bottom: 2px solid var(--track); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: calc(1.5rem - 4px); }
+  .lane.silent .block { opacity: .3; text-decoration: line-through; }
+  .lane.silent .lane-name { opacity: .5; }
+
+  .result { border-top: 2px solid var(--fg); margin-top: 1.5rem; padding-top: .75rem; }
+  .result-header { display: flex; gap: .75rem; align-items: center; }
+  .result-text { white-space: pre-wrap; font-size: 1.05rem; line-height: 1.7; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script type="module" src="dist/tracks.js"></script>
+</body>
+</html>

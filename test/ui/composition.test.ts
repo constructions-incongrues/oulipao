@@ -1,0 +1,26 @@
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+import { createMorphologyLoader, createNeuralTagger, createTaggers } from '../../src/ui/composition.ts';
+
+test('les trois étiqueteurs de l’essai, le neuronal en premier', () => {
+  const taggers = createTaggers('http://localhost/dist/page.js');
+  assert.deepEqual(taggers.map((t) => t.name), [
+    'CamemBERT (modèle neuronal local)', 'fr-compromise (règles contextuelles)', 'lexique (consultation seule)',
+  ]);
+  assert.equal(createNeuralTagger().name, taggers[0]!.name);
+});
+
+test('le dictionnaire est cherché à côté de dist/, une seule fois', async () => {
+  const original = globalThis.fetch;
+  const urls: string[] = [];
+  globalThis.fetch = async (url) => (urls.push(String(url)), new Response('N\thorloge\thorloge\tf\ts\t0\n'));
+  try {
+    const load = createMorphologyLoader('http://localhost/dist/tracks.js');
+    const [a, b] = await Promise.all([load(), load()]);
+    assert.equal(a, b);
+    assert.deepEqual(a.nounLemmas(), ['horloge']);
+    assert.deepEqual(urls, ['http://localhost/data/morpho-potao.tsv']);
+  } finally {
+    globalThis.fetch = original;
+  }
+});

@@ -198,3 +198,40 @@ texte : « Personne n'avait su » devient « Perspiration n'avait su », « Salu
 
 **Réaccord (S+7 strict)**, choisi par le fondateur le 2026-10-03. Le mode « même genre » reste
 disponible.
+
+---
+
+# Interface à pistes
+
+Vérification du 2026-10-03 dans le navigateur, sur le texte de référence 1 (200 mots), étiqueté
+par le modèle neuronal. Page : `tracks.html`. Capture : `resultats/pistes/interface-texte-1.jpg`.
+
+| Critère du PRD | Constat |
+|---|---|
+| Les pistes s'affichent | 20 systèmes, cinq pistes chacun, 200 blocs pour 200 mots, chacun sous son mot |
+| Le réglage est en direct | 5 décalages essayés (3, 1, 12, −7, 2) : 5 textes différents ; mise à jour en 2 à 4 ms mesurés, sans nouvel étiquetage |
+| Le plugin se coupe et se rétablit | Coupé : le texte d'origine, à l'identique ; rétabli : le même texte transformé qu'avant |
+| Le mode se choisit | Le texte change entre S+7 strict et « même genre » |
+| Mute et solo | Adjectifs muets : ils disparaissent du texte, la piste est estompée sur la partition ; verbes en solo : « arrêta, remarqua. préparait, faisait, lisait lever. tombait. » |
+| Le résultat se copie | Le texte envoyé au presse-papiers est exactement le texte résultant ; la page affiche « Copié. » |
+| Le texte reste dans le navigateur | Aucune requête ne contient le texte |
+| Clavier | Tous les boutons, champs et sélecteurs reçoivent le focus et portent un libellé |
+
+Premier affichage : 2,7 secondes sur cette machine, modèle déjà en cache ; le premier
+chargement réel reste d'une vingtaine de secondes (mesure de l'essai technique).
+
+Le temps de mise à jour est mesuré autour du geste, attente de l'affichage déduite ; le seuil du
+PRD était d'une demi-seconde.
+
+## Écarts et limites
+
+- **Les tranches ne sont pas à gauche de chaque piste** comme le prévoyait le PRD : la partition
+  revenant à la ligne, chaque piste apparaît dans chaque système. Les cinq tranches forment une
+  table de mixage dans une colonne à gauche, qui reste visible pendant le défilement (choix du
+  fondateur, 2026-10-03) ; dans les systèmes, chaque piste porte son nom.
+- **Le presse-papiers réel** n'a pas pu être relu depuis la session de vérification
+  automatisée : c'est le texte remis au navigateur qui a été comparé.
+- **La falsification du PRD** (3 testeurs sur 5 changent le décalage et coupent une piste en
+  moins de 2 minutes) reste à mesurer : elle attend la mise en ligne et les cinq testeurs.
+- En solo ou en mute, le texte résultant est une suite de mots, pas une phrase : la règle
+  s'applique telle quelle (« la horloge »).

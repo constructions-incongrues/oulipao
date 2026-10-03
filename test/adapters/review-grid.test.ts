@@ -5,6 +5,8 @@ import type { S7Result } from '../../src/domain/s7/types.ts';
 
 const result: S7Result = {
   text: 'Le fermoir.\nLa Zorglub | les arbres\n',
+  words: [],
+  tail: '',
   substitutions: [
     { index: 1, original: 'ferme', replacement: 'fermoir', status: 'replaced', before: 'La ferme', after: 'Le fermoir' },
     { index: 3, original: 'Zorglub', replacement: 'Zorglub', status: 'unknown-noun', before: 'La Zorglub |', after: 'La Zorglub |' },
