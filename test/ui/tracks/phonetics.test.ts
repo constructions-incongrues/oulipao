@@ -51,7 +51,7 @@ test('Premier R+n ajouté : d’abord la raison du chargement, puis le recalcul'
   assert.equal(controller.state.phonetics.status, 'ready');
   assert.equal(controller.state.view!.result, 'sur la fraise\nla raison');
   assert.deepEqual(controller.state.view!.syllables, [3, 3]);
-  assert.equal(controller.state.view!.pronunciations[2], '/ʃɛz/ · 1 syllabe · rime /ɛz/');
+  assert.equal(controller.state.view!.pronunciations[2], '/ʃɛz/ · 1 syllabe · rime /ɛz/ féminine');
   await controller.loadPhonetics(); // déjà là : rien de plus
   assert.equal(controller.state.phonetics.status, 'ready');
 });
@@ -138,5 +138,20 @@ test('App : l’inspecteur montre la prononciation du mot ouvert', async () => {
   await controller.run();
   await tick();
   controller.select(2);
-  assert.match(renderToString(html`<${App} state=${controller.state} controller=${controller} version="0.2.0" />`), /<p class="pronunciation"><span class="silk">Prononciation<\/span> \/ʃɛz\/ · 1 syllabe · rime \/ɛz\/<\/p>/);
+  assert.match(renderToString(html`<${App} state=${controller.state} controller=${controller} version="0.2.0" />`), /<p class="pronunciation"><span class="silk">Prononciation<\/span> \/ʃɛz\/ · 1 syllabe · rime \/ɛz\/ féminine<\/p>/);
+});
+
+test('Schéma de rimes : l’inspecteur montre la lettre de la fin de vers ; un mot hors fin de vers n’en a pas', async () => {
+  const controller = setup({ loadPhonetics: async () => rhymePhonetics() });
+  controller.dispatch({ type: 'add-instance', plugin: 'rhyme-scheme' });
+  controller.setInput('la chaise\nla table\nla rose\nla chose');
+  await controller.run();
+  await tick();
+  const view = controller.state.view!;
+  assert.equal(view.result, 'la chaise\nla table\nla table\nla fraise');
+  assert.equal(view.pronunciations[7], '/ʃoz/ · 1 syllabe · rime /oz/ féminine · lettre A');
+  assert.equal(view.pronunciations[5], '/ʁoz/ · 1 syllabe · rime /oz/ féminine · lettre B');
+  assert.equal(view.pronunciations[0], '/la/ · 1 syllabe · rime /a/ masculine');
+  controller.select(7);
+  assert.match(renderToString(html`<${App} state=${controller.state} controller=${controller} version="0.2.0" />`), /rime \/oz\/ féminine · lettre A<\/p>/);
 });

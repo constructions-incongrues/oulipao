@@ -102,6 +102,11 @@ export interface ConstraintPlugin {
   defaults: ParameterValues;
   /** Valide des valeurs et complète celles qui manquent ; lève si elles ne conviennent pas. */
   parse(values: ParameterValues): ParameterValues;
+  /**
+   * Dans une chaîne, les réglages complétés par ceux des instances du même type placées avant :
+   * un lipogramme en e après un lipogramme en a bannit les deux lettres.
+   */
+  inherit?(values: ParameterValues, earlier: readonly ParameterValues[]): ParameterValues;
   /** Ces réglages changent-ils le texte ? (Le S+0, non.) */
   acts(values: ParameterValues): boolean;
   /** Le titre court du réglage en cours : « S+3 ». */
