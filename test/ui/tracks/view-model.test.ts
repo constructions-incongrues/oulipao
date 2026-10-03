@@ -75,7 +75,7 @@ test('résumé annoncé après chaque geste', () => {
   assert.equal(view(reduce(offsetOne, { type: 'set-param', id: 's7-1', key: 'offset', value: -1 })), 'S−1 sur les noms : 2 noms remplacés sur 3.');
   assert.equal(view(reduce(offsetOne, { type: 'set-param', id: 's7-1', key: 'mode', value: 'same-gender' })), 'S+1, parmi les noms du même genre, sur les noms : 2 noms remplacés sur 3.');
   assert.equal(view(reduce(offsetOne, { type: 'set-param', id: 's7-1', key: 'offset', value: 0 })), 'S+0 : aucun changement.');
-  assert.equal(view(reduce(offsetOne, { type: 'toggle-instance', id: 's7-1' })), 'Filtres coupés : texte d’origine.');
+  assert.equal(view(reduce(offsetOne, { type: 'toggle-instance', id: 's7-1' })), 'Contraintes coupées : texte d’origine.');
   assert.equal(view(reduce(offsetOne, { type: 'toggle-mute', category: 'adjective' })), 'S+1 sur les noms : 2 noms remplacés sur 3. Pistes coupées : adjectifs.');
   const single = { text: 'La ferme.', tagged: tag('La ferme.') };
   assert.equal(summarize(offsetOne, buildView(single, offsetOne, m)), 'S+1 sur les noms : 1 nom remplacé sur 1.');
@@ -111,7 +111,7 @@ test('chaîne avec un plugin sur toutes les pistes : résumé, mention, mots ret
   assert.equal(view.result, 'dort.');
   assert.deepEqual(view.marks.get(2), { state: 'removed', original: 'ferme' });
   assert.deepEqual(view.steps, [{ id: 's7-1', replaced: 1, removed: 0, kept: 0 }, { id: 'sans-1', replaced: 0, removed: 3, kept: 0 }]);
-  // trois bandes : l'origine, puis chaque filtre actif dans l'ordre de la chaîne
+  // trois bandes : l'origine, puis chaque contrainte active dans l'ordre de la chaîne
   assert.deepEqual(view.stages.map((stage) => [stage.label, stage.words[2]]), [['Origine', 'ferme'], ['S+1 sur les noms', 'fermoir'], ['sans e', '']]);
   assert.equal(summarize(mixer, view, lookup), 'S+1 sur les noms : 1 nom remplacé sur 1. sans e : 0 mot remplacé, 3 retirés, 0 laissé tel quel.');
   assert.equal(ruleMention(mixer, view.audible, lookup), '\n\n— S+1 sur les noms · sans e (Oulipao)');
@@ -119,7 +119,7 @@ test('chaîne avec un plugin sur toutes les pistes : résumé, mention, mots ret
   assert.match(summarize(mixer, verbs, lookup), /3 retirés, 1 laissé tel quel\.$/); // « Le cheval » et « vite » retirés, « est » laissé
   // tous coupés
   const off = { ...mixer, instances: mixer.instances.map((instance) => ({ ...instance, enabled: false })) };
-  assert.equal(summarize(off, buildView(short, off, m, lookup), lookup), 'Filtres coupés : texte d’origine.');
+  assert.equal(summarize(off, buildView(short, off, m, lookup), lookup), 'Contraintes coupées : texte d’origine.');
 });
 
 test('instances : pistes nommées sauf quand elles couvrent le type ; phrase à trois comptes sur plusieurs pistes', () => {
@@ -133,7 +133,7 @@ test('instances : pistes nommées sauf quand elles couvrent le type ; phrase à 
   assert.equal(view.result, 'Le beau fermoir de la ville est petit, et la Zorglub aussi.'); // « vieille », « grise » décalés aussi
   assert.equal(summarize(both, view), 'S+1 sur les noms et les adjectifs : 4 mots remplacés, 0 retiré, 1 laissé tel quel.');
   const none = { ...offsetOne, instances: [] };
-  assert.equal(summarize(none, buildView(session, none, m)), 'Aucun filtre : texte d’origine.');
+  assert.equal(summarize(none, buildView(session, none, m)), 'Aucune contrainte : texte d’origine.');
   assert.equal(ruleMention(none, new Set(CATEGORIES)), '');
 });
 
@@ -154,7 +154,7 @@ test('verrou : le mot verrouillé prend sa valeur, les autres suivent l’instan
   assert.equal(locked.stages.at(-1)!.words[2], open.stages.at(-1)!.words[2]);
 });
 
-test('grille : percé si un filtre agit sur la piste, contour sinon, bouché, et verrous', () => {
+test('grille : percé si une contrainte agit sur la piste, contour sinon, bouché, et verrous', () => {
   const view = buildView(session, offsetOne, m);
   const words = view.stages[0]!.words;
   const mixer = reduce(reduce(offsetOne, { type: 'toggle-step', index: 2 }), { type: 'set-lock', id: 's7-1', index: 4, key: 'offset', value: 3 });
@@ -162,8 +162,8 @@ test('grille : percé si un filtre agit sur la piste, contour sinon, bouché, et
   assert.equal(steps.length, words.length);
   assert.deepEqual(steps[2], { index: 2, word: 'ferme', track: 'noun', state: 'closed', locks: [] });
   assert.deepEqual(steps[4], { index: 4, word: 'village', track: 'noun', state: 'punched', locks: [{ id: 's7-1', key: 'offset', value: 3 }] });
-  assert.equal(steps[5]!.state, 'outline'); // « est » : aucun filtre ne vise les verbes
-  // Filtre coupé : plus rien n'est percé.
+  assert.equal(steps[5]!.state, 'outline'); // « est » : aucune contrainte ne vise les verbes
+  // Contrainte coupée : plus rien n'est percé.
   assert.ok(gridSteps(reduce(offsetOne, { type: 'toggle-instance', id: 's7-1' }), view.tracks, words).every((step) => step.state === 'outline'));
 });
 
@@ -178,11 +178,11 @@ test('inspecteur : un champ de verrou par paramètre entier, pour les instances 
     { id: 's7-1', fields: [{ key: 'offset', label: 'Décalage', min: -99, max: 99, value: 3 }], note: 'S+3 sur ce mot' },
   ]);
   assert.deepEqual(inspectorLocks(locked, 2, 'noun'), [{ id: 's7-1', fields: [{ key: 'offset', label: 'Décalage', min: -99, max: 99, value: undefined }] }]);
-  // Le lipogramme n'a pas de paramètre entier ; un verbe n'est visé par aucun filtre.
+  // Le lipogramme n'a pas de paramètre entier ; un verbe n'est visé par aucune contrainte.
   const both = reduce(locked, { type: 'toggle-instance', id: 'lipogram-1' });
   assert.deepEqual(inspectorLocks(both, 4, 'noun').map((entry) => entry.id), ['s7-1']);
   assert.deepEqual(inspectorLocks(both, 5, 'verb'), []);
-  // Filtre coupé : pas de verrou à poser.
+  // Contrainte coupée : pas de verrou à poser.
   assert.deepEqual(inspectorLocks(reduce(locked, { type: 'toggle-instance', id: 's7-1' }), 4, 'noun'), []);
 });
 

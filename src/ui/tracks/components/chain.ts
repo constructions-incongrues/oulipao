@@ -62,7 +62,7 @@ function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance
     row.removeAttribute('draggable');
   };
   return html`
-    <li class=${`slot ${enabled ? 'on' : 'off'}`} aria-label=${`Filtre ${rank} : ${plugin.name}`}
+    <li class=${`slot ${enabled ? 'on' : 'off'}`} aria-label=${`Contrainte ${rank} : ${plugin.name}`}
       onDragStart=${onDragStart} onDragOver=${onDragOver} onDragLeave=${(event: DragEvent) => (event.currentTarget as HTMLElement).classList.remove('drop-before', 'drop-after')}
       onDrop=${onDrop} onDragEnd=${release} onPointerUp=${release}>
       <span class="grip" aria-hidden="true" title="Glisser pour réordonner"
@@ -87,27 +87,27 @@ function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance
       <button type="button" class="key power" aria-pressed=${enabled} aria-label=${`${plugin.title(params)} ${enabled ? 'actif' : 'coupé'}`}
         onClick=${() => dispatch({ type: 'toggle-instance', id })}>${enabled ? 'Actif' : 'Coupé'}</button>
       <span class="slot-keys">
-        <button type="button" class="key up" aria-label=${`Monter le filtre ${rank}`} disabled=${position === 0}
+        <button type="button" class="key up" aria-label=${`Monter la contrainte ${rank}`} disabled=${position === 0}
           onClick=${() => dispatch({ type: 'move-instance', id, position: position - 1 })}>↑</button>
-        <button type="button" class="key down" aria-label=${`Descendre le filtre ${rank}`} disabled=${position === last}
+        <button type="button" class="key down" aria-label=${`Descendre la contrainte ${rank}`} disabled=${position === last}
           onClick=${() => dispatch({ type: 'move-instance', id, position: position + 1 })}>↓</button>
         <button type="button" class="key duplicate" onClick=${() => dispatch({ type: 'duplicate-instance', id })}>Dupliquer</button>
         <button type="button" class="key remove" onClick=${() => dispatch({ type: 'remove-instance', id })}>Retirer</button>
       </span>
-      <p class="help">${enabled ? plugin.help(params, new Set(targets)) : 'Filtre coupé : le texte passe tel quel.'}</p>
+      <p class="help">${enabled ? plugin.help(params, new Set(targets)) : 'Contrainte coupée : le texte passe tel quel.'}</p>
     </li>
   ` as VNode;
 }
 
 /**
- * La chaîne, au-dessus des pistes : les filtres dans l'ordre où le texte les traverse, une ligne
+ * La chaîne, au-dessus des pistes : les contraintes dans l'ordre où le texte les traverse, une ligne
  * de même largeur chacun ; en dessous, de quoi en ajouter un en fin de chaîne.
  */
 export function Chain({ instances, plugins, lookup, dispatch }: ChainProps): VNode {
   const ids = instances.map((instance) => instance.id);
   return html`
     <section class="chain" aria-labelledby="chain-title">
-      <h2 class="silk" id="chain-title">Filtres</h2>
+      <h2 class="silk" id="chain-title">Contraintes</h2>
       ${instances.length
         ? html`<ol class="slots">
             ${instances.map(
@@ -115,7 +115,7 @@ export function Chain({ instances, plugins, lookup, dispatch }: ChainProps): VNo
                 plugin=${lookup(instance.type)} dispatch=${dispatch} />`,
             )}
           </ol>`
-        : html`<p class="more">Aucun filtre : le texte passe tel quel.</p>`}
+        : html`<p class="more">Aucune contrainte : le texte passe tel quel.</p>`}
       <div class="adder">
         <span class="silk">Ajouter</span>
         ${plugins.map(

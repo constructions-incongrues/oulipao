@@ -24,7 +24,7 @@ export interface AppProps {
 
 /**
  * La page des pistes, de haut en bas : le texte résultant (collé en haut de l'écran quand on
- * descend), la saisie, la chaîne de filtres, la grille des pistes, puis l'inspecteur.
+ * descend), la saisie, la chaîne de contraintes, la grille des pistes, puis l'inspecteur.
  */
 export function App({ state, controller, onTheme = () => {} }: AppProps): VNode {
   const { mixer, view, stale } = state;
@@ -101,7 +101,7 @@ export function App({ state, controller, onTheme = () => {} }: AppProps): VNode 
       />
       ${view &&
       (selected === undefined
-        ? html`<p class="inspector-hint">Cliquez un mot pour voir ce que chaque filtre en a fait.</p>`
+        ? html`<p class="inspector-hint">Cliquez un mot pour voir ce que chaque contrainte en a fait.</p>`
         : html`<${Inspector}
             window=${inspectorWindow(view, selected, 6)}
             word=${words[selected]}

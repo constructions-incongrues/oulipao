@@ -55,11 +55,6 @@ export function Source(props: SourceProps): VNode {
   }
   return html`
     <div class="source">
-      ${!started &&
-      html`<p class="definition">
-        Le S+7, inventé par Jean Lescure à l'Oulipo, remplace chaque nom d'un texte par le septième nom qui le suit dans
-        le dictionnaire. Ici, le texte est d'abord découpé en pistes, comme dans un logiciel de musique.
-      </p>`}
       <label for="input">Texte</label>
       <textarea id="input" placeholder="Collez un texte en français…" value=${input}
         onInput=${(event: Event) => props.onInput((event.currentTarget as HTMLTextAreaElement).value)}></textarea>

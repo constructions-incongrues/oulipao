@@ -12,7 +12,7 @@ export interface StepGridProps {
   tracks: Tracks;
   /** Les pistes qu'on entend. */
   audible: ReadonlySet<Category>;
-  /** Rappel des filtres qui visent chaque piste, dans l'ordre de la chaîne. */
+  /** Rappel des contraintes qui visent chaque piste, dans l'ordre de la chaîne. */
   reminders: Record<Category, readonly string[]>;
   perPage: number;
   page: number;
@@ -31,8 +31,8 @@ export interface StepGridProps {
 const MAX_PAGE_BUTTONS = 6;
 
 const STATE_LABELS: Record<GridStep['state'], string> = {
-  punched: 'percé, le filtre agit',
-  outline: 'aucun filtre sur cette piste',
+  punched: 'percé, la contrainte agit',
+  outline: 'aucune contrainte sur cette piste',
   closed: 'bouché, laissé tel quel',
 };
 
@@ -59,7 +59,7 @@ function Pages({ count, page, perPage, total, onPage }: { count: number; page: n
 
 /**
  * La grille du séquenceur : une ligne par piste avec sa tranche (poinçon, nom, compte, Muet,
- * Seul), une colonne par mot. Un pas percé laisse agir les filtres ; un clic le bouche.
+ * Seul), une colonne par mot. Un pas percé laisse agir les contraintes ; un clic le bouche.
  */
 export function StepGrid(props: StepGridProps): VNode {
   const { steps, tracks, audible, reminders, perPage, page, selected, generation } = props;
