@@ -1,0 +1,28 @@
+# Vérifie chaque PR avant sa fusion : types, tests (couverture ≥ 90 %) et assemblage du site.
+# Les mêmes étapes que la publication (release.yml), sans rien publier.
+name: Vérification
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+# Une nouvelle poussée sur la PR annule la vérification en cours.
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build:site
