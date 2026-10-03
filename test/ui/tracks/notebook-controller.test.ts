@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import { SEED } from '../../support/chain.ts';
 import { createTracksController, type NotebookDependencies, type TracksDependencies } from '../../../src/ui/tracks/controller.ts';
 import { serializeNotebook } from '../../../src/ui/tracks/notebook.ts';
-import { morphology, tag } from '../../support/morphology.ts';
+import { morphology, tag, verbs } from '../../support/morphology.ts';
 
 /** Un carnet factice : un stockage en mémoire, une horloge et des identifiants prévisibles. */
 const fakeNotebook = (initial: string | null = null, overrides: Partial<NotebookDependencies> = {}) => {
@@ -218,4 +218,93 @@ test('sans carnet branché : un carnet en mémoire', async () => {
   controller.remove(controller.state.notebook[0]!.id);
   controller.exportNotebook();
   assert.deepEqual(controller.state.notebook, []);
+});
+
+test('copier une entrée d’un bloc : l’original, le résultat, la chaîne ; échec signalé', async () => {
+  const copied: string[] = [];
+  const { controller } = setup(fakeNotebook().notebook, { copy: async (text) => void copied.push(text) });
+  controller.setInput('La ferme.');
+  await controller.run();
+  controller.keep();
+  await controller.copyEntry('inconnu');
+  assert.deepEqual(copied, []);
+  await controller.copyEntry('t1');
+  assert.deepEqual(copied, ["La ferme.\n\nL'oncle.\n\n— S+7 sur les noms (Oulipao)"]);
+  assert.equal(controller.state.notebookMessage, 'Copié.');
+  const stored = fakeNotebook(serializeNotebook(controller.state.notebook)).notebook;
+  const denied = setup(stored, { copy: async () => { throw new Error('refusé'); } }).controller;
+  await denied.copyEntry('t1');
+  assert.equal(denied.state.notebookMessage, 'Copie impossible : refusé');
+});
+
+test('rouvrir après un geste non gardé : confirmation, et un refus ne change rien', async () => {
+  let answer = false;
+  const fake = fakeNotebook(null, { confirm: (message) => (fake.confirmations.push(message), answer) });
+  const { controller } = setup(fake.notebook);
+  controller.setInput('La ferme.');
+  await controller.run();
+  assert.equal(controller.state.unsaved, true);
+  controller.keep();
+  assert.equal(controller.state.unsaved, false);
+  await controller.reopen('t1'); // juste gardé : rien à perdre
+  assert.deepEqual(fake.confirmations, []);
+  controller.dispatch({ type: 'set-param', id: 's7-1', key: 'offset', value: 2 });
+  assert.equal(controller.state.unsaved, true);
+  const before = controller.state;
+  await controller.reopen('t1');
+  assert.deepEqual(fake.confirmations, ['Le texte en cours n’est pas gardé. Rouvrir quand même ?']);
+  assert.equal(controller.state.mixer, before.mixer);
+  assert.equal(controller.state.view, before.view);
+  answer = true;
+  await controller.reopen('t1');
+  assert.equal(controller.state.view!.result, "L'oncle.");
+  assert.equal(controller.state.unsaved, false);
+  await controller.reopen('t1'); // après une réouverture : pas de confirmation
+  assert.equal(fake.confirmations.length, 2);
+});
+
+test('rouvrir sans texte en pistes : pas de confirmation ; un geste sans texte ne compte pas', async () => {
+  const fake = fakeNotebook();
+  const first = setup(fake.notebook).controller;
+  first.setInput('La ferme.');
+  await first.run();
+  first.keep();
+  const later = setup(fakeNotebook(fake.written.at(-1)!, { confirm: () => assert.fail('pas de confirmation attendue') }).notebook).controller;
+  later.dispatch({ type: 'set-param', id: 's7-1', key: 'offset', value: 2 });
+  assert.equal(later.state.unsaved, false);
+  await later.reopen('t1');
+  assert.equal(later.state.view!.result, "L'oncle.");
+});
+
+test('le chargement des verbes après une réouverture ne rend pas le travail « non gardé »', async () => {
+  const fake = fakeNotebook();
+  const { controller } = setup(fake.notebook, { loadVerbs: async () => verbs() });
+  controller.setInput('La ferme dort.');
+  await controller.run();
+  controller.dispatch({ type: 'toggle-instance', id: 'lipogram-1' }); // le lipogramme vise les verbes
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  controller.keep();
+  const later = setup(fakeNotebook(fake.written.at(-1)!).notebook, { loadVerbs: async () => verbs() }).controller;
+  await later.reopen('t1');
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  assert.equal(later.state.verbs.status, 'ready');
+  assert.equal(later.state.unsaved, false);
+});
+
+test('retoucher une entrée : écrite, relue, et la réouverture redonne le résultat produit', async () => {
+  const fake = fakeNotebook();
+  const { controller } = setup(fake.notebook);
+  controller.setInput('La ferme.');
+  await controller.run();
+  controller.keep();
+  controller.editEntry('t1', "L'oncle dort.");
+  assert.equal(controller.state.notebook[0]!.edited, "L'oncle dort.");
+  const later = setup(fakeNotebook(fake.written.at(-1)!).notebook).controller;
+  assert.equal(later.state.notebook[0]!.edited, "L'oncle dort.");
+  await later.reopen('t1');
+  assert.equal(later.state.view!.result, "L'oncle.");
+  const broken = setup(fakeNotebook(fake.written.at(-1)!, { storage: { read: () => fake.written.at(-1)!, write: () => { throw new Error('plein'); } } }).notebook).controller;
+  broken.editEntry('t1', 'autre');
+  assert.equal(broken.state.notebookMessage, 'Retouche impossible : plein');
+  assert.equal(broken.state.notebook[0]!.edited, "L'oncle dort.");
 });

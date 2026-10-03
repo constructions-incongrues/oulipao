@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { initialState } from '../../../src/ui/tracks/mixer-state.ts';
-import { addEntry, exportFileName, mergeEntries, parseNotebook, removeEntry, serializeNotebook, type NotebookEntry } from '../../../src/ui/tracks/notebook.ts';
+import { addEntry, daysSince, editEntry, entryClipboard, exportFileName, lastKeptLabel, mergeEntries, parseNotebook, removeEntry, serializeNotebook, type NotebookEntry } from '../../../src/ui/tracks/notebook.ts';
 
 const entry = (id: string, keptAt: string): NotebookEntry => ({
   id,
@@ -59,4 +59,30 @@ test('fusion : seules les entrées nouvelles s’ajoutent, les doublons sont com
 
 test('le nom du fichier exporté porte la date du jour', () => {
   assert.equal(exportFileName(new Date(2026, 9, 3, 23, 30)), 'oulipao-carnet-2026-10-03.json');
+});
+
+test('retouche : posée, gardée à la sérialisation, retirée si vide ou égale au résultat', () => {
+  const edited = editEntry([a, b], 'a', "L'oncle dort.");
+  assert.equal(edited[0]!.edited, "L'oncle dort.");
+  assert.equal(edited[1], b);
+  assert.deepEqual(parseNotebook(serializeNotebook(edited)).entries.find((e) => e.id === 'a')!.edited, "L'oncle dort.");
+  assert.equal('edited' in editEntry(edited, 'a', '  ')[0]!, false);
+  assert.equal('edited' in editEntry(edited, 'a', a.result)[0]!, false);
+  assert.deepEqual(editEntry([a], 'z', 'x'), [a]);
+  assert.equal(parseNotebook(serializeNotebook([a])).entries[0]!.edited, undefined); // une entrée sans retouche reste valide
+});
+
+test('copie d’une entrée : l’original, une ligne vide, le résultat (retouché), la chaîne', () => {
+  const entry = { ...a, source: { ...a.source, text: 'La ferme.' }, result: "L'oncle." };
+  assert.equal(entryClipboard(entry), "La ferme.\n\nL'oncle.\n\n— S+7 sur les noms (Oulipao)");
+  assert.equal(entryClipboard({ ...entry, edited: "L'oncle dort." }), "La ferme.\n\nL'oncle dort.\n\n— S+7 sur les noms (Oulipao)");
+  assert.equal(entryClipboard({ ...entry, mention: '' }), "La ferme.\n\nL'oncle.");
+});
+
+test('jours depuis la dernière garde, en jours de calendrier', () => {
+  const late = new Date(2026, 9, 12, 23, 50).toISOString();
+  assert.equal(daysSince(late, new Date(2026, 9, 12, 23, 59)), 0);
+  assert.equal(daysSince(late, new Date(2026, 9, 13, 0, 10)), 1);
+  assert.equal(daysSince(new Date(2026, 9, 9, 12).toISOString(), new Date(2026, 9, 12, 8)), 3);
+  assert.deepEqual([0, 1, 3].map(lastKeptLabel), ['aujourd’hui', 'hier', 'il y a 3 jours']);
 });
