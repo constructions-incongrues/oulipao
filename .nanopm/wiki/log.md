@@ -25,3 +25,4 @@
 ## [2026-10-03] rename | le projet s'appelle désormais Oulipao (« Ouvroir de Littérature Potentielle Assistée par Ordinateur ») ; les entrées ci-dessus gardent l'ancien nom
 ## [2026-10-03] ingest | pm-breakdown: wrote docs/tasks/mise-en-ligne-d-oulipao.md
 ## [2026-10-03] ingest | pm-breakdown: domaine oulipao.incongru.org ajouté (DNS par le connecteur Cloudflare)
+## [2026-10-03] ingest | pm-roadmap: wrote docs/roadmap.md
