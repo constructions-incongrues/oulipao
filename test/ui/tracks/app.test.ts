@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
+import { SEED } from '../../support/chain.ts';
 import { html } from 'htm/preact';
 import { renderToString } from 'preact-render-to-string';
 import { App } from '../../../src/ui/tracks/app.ts';
@@ -17,6 +18,7 @@ const setup = () => {
     copy: async (text) => void copied.push(text),
   });
   const app = () => html`<${App} state=${controller.state} controller=${controller} />`;
+  for (const action of SEED) controller.dispatch(action);
   return { controller, app, copied };
 };
 const tick = () => new Promise((resolve) => setTimeout(resolve, 0));

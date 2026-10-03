@@ -18,8 +18,7 @@ Page : `tracks.html` (script assemblé `dist/tracks.js`, par `npm run build`). L
   traiter (enfoncée si elle est visée ; la dernière visée ne s'éteint pas), et ↑, ↓,
   « Dupliquer », « Retirer ». En bas, un bouton par type (« + S+7 », « + Lipogramme ») ajoute un
   filtre en fin de chaîne, aux réglages et pistes par défaut du type ; une copie va aussi en fin
-  de chaîne. À l'ouverture : un S+7 sur les noms, en marche, puis un lipogramme en « e » sur
-  toutes les pistes, coupé.
+  de chaîne. À l'ouverture, la chaîne est vide : le texte passe tel quel.
 - **Texte résultant** : ce qu'on lit et qu'on copie, une fois les filtres appliqués et les
   pistes coupées. Un mot remplacé est souligné de la couleur de sa piste ; son infobulle nomme
   la piste et le mot d'origine (« Noms : cuisine → cuissot »), ou dit pourquoi un mot est laissé

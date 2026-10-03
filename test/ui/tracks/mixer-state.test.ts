@@ -1,14 +1,16 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
+import { seededState } from '../../support/chain.ts';
 import { initialState, installedPlugins, pluginById, reduce } from '../../../src/ui/tracks/mixer-state.ts';
 import { MixerStateSchema, type MixerAction } from '../../../src/ui/tracks/types.ts';
 
-const after = (...actions: MixerAction[]) => MixerStateSchema.parse(actions.reduce(reduce, initialState));
+const after = (...actions: MixerAction[]) => MixerStateSchema.parse(actions.reduce(reduce, seededState));
 const instance = (state: ReturnType<typeof after>, id: string) => state.instances.find((candidate) => candidate.id === id)!;
 
-test('état initial : toutes les pistes s’entendent ; S+7 sur les noms en marche, puis un lipogramme coupé', () => {
+test('état initial : toutes les pistes s’entendent, aucune contrainte ; la chaîne des tests en ajoute deux', () => {
   const state = MixerStateSchema.parse(initialState);
-  assert.deepEqual(state.instances, [
+  assert.deepEqual(state.instances, []);
+  assert.deepEqual(MixerStateSchema.parse(seededState).instances, [
     { id: 's7-1', type: 's7', enabled: true, params: { offset: 7, mode: 'reagree' }, targets: ['noun'] },
     { id: 'lipogram-1', type: 'lipogram', enabled: false, params: { letter: 'e' }, targets: ['noun', 'verb', 'adjective', 'adverb', 'other'] },
   ]);
@@ -23,8 +25,8 @@ test('mute et solo basculent, piste par piste', () => {
   assert.deepEqual(state.tracks.adjective, { muted: true, solo: false });
   assert.deepEqual(state.tracks.verb, { muted: false, solo: true });
   assert.deepEqual(state.tracks.noun, { muted: false, solo: false });
-  assert.deepEqual(after({ type: 'toggle-mute', category: 'other' }, { type: 'toggle-mute', category: 'other' }), initialState);
-  assert.deepEqual(after({ type: 'toggle-solo', category: 'noun' }, { type: 'toggle-solo', category: 'noun' }), initialState);
+  assert.deepEqual(after({ type: 'toggle-mute', category: 'other' }, { type: 'toggle-mute', category: 'other' }), seededState);
+  assert.deepEqual(after({ type: 'toggle-solo', category: 'noun' }, { type: 'toggle-solo', category: 'noun' }), seededState);
 });
 
 test('une instance : en marche ou coupée, réglages bornés', () => {
@@ -53,8 +55,8 @@ test('ajouter, dupliquer, retirer : chaque instance a son identifiant et ses ré
 test('pistes visées : parmi celles du type, dans l’ordre de la table, au moins une', () => {
   assert.deepEqual(instance(after({ type: 'set-targets', id: 's7-1', targets: ['adjective', 'noun', 'noun'] }), 's7-1').targets, ['noun', 'adjective']);
   assert.deepEqual(instance(after({ type: 'set-targets', id: 'lipogram-1', targets: ['noun'] }), 'lipogram-1').targets, ['noun']);
-  assert.throws(() => reduce(initialState, { type: 'set-targets', id: 's7-1', targets: ['adverb'] }), /S\+7 ne traite pas : adverb/);
-  assert.throws(() => reduce(initialState, { type: 'set-targets', id: 's7-1', targets: [] }));
+  assert.throws(() => reduce(seededState, { type: 'set-targets', id: 's7-1', targets: ['adverb'] }), /S\+7 ne traite pas : adverb/);
+  assert.throws(() => reduce(seededState, { type: 'set-targets', id: 's7-1', targets: [] }));
 });
 
 test('ordre de la chaîne : une instance se place à une position, bornée à la fin', () => {
@@ -65,18 +67,18 @@ test('ordre de la chaîne : une instance se place à une position, bornée à la
 });
 
 test('un geste ne modifie pas l’état précédent', () => {
-  reduce(initialState, { type: 'toggle-mute', category: 'noun' });
-  reduce(initialState, { type: 'toggle-instance', id: 's7-1' });
-  assert.equal(initialState.tracks.noun.muted, false);
-  assert.equal(initialState.instances[0]!.enabled, true);
+  reduce(seededState, { type: 'toggle-mute', category: 'noun' });
+  reduce(seededState, { type: 'toggle-instance', id: 's7-1' });
+  assert.equal(seededState.tracks.noun.muted, false);
+  assert.equal(seededState.instances[0]!.enabled, true);
 });
 
 test('refuse un geste non conforme', () => {
-  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7-1', key: 'offset', value: 1.5 }));
-  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7-1', key: 'offset', value: 100 })); // décalage borné à ±99
-  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7-1', key: 'offset', value: -100 }));
-  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7-1', key: 'mode', value: 'au hasard' }));
-  assert.throws(() => reduce(initialState, { type: 'set-param', id: 's7-1', key: 'vitesse', value: 3 }), /paramètre inconnu : vitesse/);
+  assert.throws(() => reduce(seededState, { type: 'set-param', id: 's7-1', key: 'offset', value: 1.5 }));
+  assert.throws(() => reduce(seededState, { type: 'set-param', id: 's7-1', key: 'offset', value: 100 })); // décalage borné à ±99
+  assert.throws(() => reduce(seededState, { type: 'set-param', id: 's7-1', key: 'offset', value: -100 }));
+  assert.throws(() => reduce(seededState, { type: 'set-param', id: 's7-1', key: 'mode', value: 'au hasard' }));
+  assert.throws(() => reduce(seededState, { type: 'set-param', id: 's7-1', key: 'vitesse', value: 3 }), /paramètre inconnu : vitesse/);
   for (const action of [
     { type: 'toggle-instance', id: 'x' },
     { type: 'set-param', id: 'x', key: 'offset', value: 3 },
@@ -85,11 +87,11 @@ test('refuse un geste non conforme', () => {
     { type: 'remove-instance', id: 'x' },
     { type: 'move-instance', id: 'x', position: 0 },
   ] as MixerAction[]) {
-    assert.throws(() => reduce(initialState, action), /instance inconnue : x/);
+    assert.throws(() => reduce(seededState, action), /instance inconnue : x/);
   }
-  assert.throws(() => reduce(initialState, { type: 'add-instance', plugin: 'inconnu' }), /plugin inconnu/);
-  assert.throws(() => reduce(initialState, { type: 'toggle-mute', category: 'pronom' as never }));
-  assert.throws(() => reduce(initialState, { type: 'danser' } as never));
+  assert.throws(() => reduce(seededState, { type: 'add-instance', plugin: 'inconnu' }), /plugin inconnu/);
+  assert.throws(() => reduce(seededState, { type: 'toggle-mute', category: 'pronom' as never }));
+  assert.throws(() => reduce(seededState, { type: 'danser' } as never));
 });
 
 test('pas bouchés : un clic bouche, un second rouvre ; valable pour toute la chaîne', () => {
