@@ -18,8 +18,8 @@ Le découpage sert directement trois objectifs de la section 1.2. Il sert l'obje
 puisque aucune brique ne tourne sur un serveur. Il sert l'objectif 2 (`#suitable`), puisque le
 Domaine vérifie le contrat de tout étiqueteur. Il vise l'objectif 4 (`#flexible`) : une contrainte
 vit dans le Domaine, derrière le contrat de plugin. Cet objectif n'est pas encore atteint, puisque
-le lipogramme a dû étendre un port et deux adaptateurs (voir la section 1.2). La section 4 (stratégie) n'existe
-pas encore.
+le lipogramme a dû étendre un port et deux adaptateurs (voir la section 1.2). La section 4 résume la stratégie
+dont découle ce découpage.
 
 ---
 
