@@ -209,7 +209,7 @@ Outils, suivis dans le dépôt et copiés tels quels dans le site publié. Le le
 
 | ID | Description | Type | Technologie |
 |----|-------------|------|-------------|
-| IF-05 | `lexique-oulipao.tsv`, `morpho-oulipao.tsv`, `verbes-oulipao.tsv` | Fournie | TSV, servi en statique |
+| IF-05 | `lexique-oulipao.tsv`, `morpho-oulipao.tsv`, `verbes-oulipao.tsv`, `phonetique-oulipao.tsv` | Fournie | TSV, servi en statique |
 
 **Emplacement :** `data/`. Les formats sont décrits en tête de
 `src/adapters/morphology/in-memory-morphology.ts` et `in-memory-verbs.ts`.

@@ -2,7 +2,7 @@
 // teste est dans controller.ts, view-model.ts et les composants.
 import { html } from 'htm/preact';
 import { render } from 'preact';
-import { createMorphologyLoader, createNeuralTagging, createVerbsLoader } from '../composition.ts';
+import { createMorphologyLoader, createNeuralTagging, createPhoneticsLoader, createVerbsLoader } from '../composition.ts';
 import { App } from './app.ts';
 import { createTracksController, type TracksState } from './controller.ts';
 import { nextTheme, type Theme } from './components/theme-toggle.ts';
@@ -27,6 +27,7 @@ const controller = createTracksController(
     preload,
     loadMorphology: createMorphologyLoader(import.meta.url),
     loadVerbs: createVerbsLoader(import.meta.url),
+    loadPhonetics: createPhoneticsLoader(import.meta.url),
     copy: (text) => navigator.clipboard.writeText(text),
     saveData: connection?.saveData === true,
   },

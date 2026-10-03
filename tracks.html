@@ -58,6 +58,7 @@
   @keyframes flash { from { background: color-mix(in srgb, var(--track, var(--ink)) 22%, transparent); } }
   .notice { font-size: var(--size-small); color: var(--muted); margin: var(--space-2) 0 0; }
   .stale .result-text { opacity: .45; }
+  .syllables { font: 400 var(--size-label) var(--font-mono); color: var(--muted); margin-left: var(--space-2); vertical-align: middle; user-select: none; }
 
   /* Saisie : dépliée, ou repliée en une ligne */
   .source { border: var(--rule) solid var(--line); padding: var(--space-3); margin-bottom: var(--space-4); }
@@ -137,6 +138,8 @@
   .inspector table { border-collapse: collapse; font: 15px/1.4 var(--font-read); }
   .inspector caption { text-align: left; font: 600 var(--size-ui) var(--font-ui); padding-bottom: var(--space-2); }
   .step-state { font-weight: 400; color: var(--muted); }
+  .pronunciation { margin: 0 0 var(--space-2); font: var(--size-small) var(--font-mono); }
+  .pronunciation .silk { margin-right: var(--space-2); }
   .inspector th { text-align: left; font: var(--size-small) var(--font-ui); color: var(--muted); padding-right: var(--space-3); white-space: nowrap; }
   .lock-field { display: inline-flex; gap: var(--space-1); align-items: center; margin-left: var(--space-2); }
   .lock-field input { width: 3.5rem; }

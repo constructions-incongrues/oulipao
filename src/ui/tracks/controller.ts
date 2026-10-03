@@ -1,8 +1,9 @@
 import { tagText } from '../../domain/tagging.ts';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
+import type { PhoneticsRepository } from '../../ports/phonetics.ts';
 import type { Tagger } from '../../ports/tagger.ts';
 import type { VerbRepository } from '../../ports/verbs.ts';
-import { initialState, reduce } from './mixer-state.ts';
+import { initialState, pluginById, reduce } from './mixer-state.ts';
 import type { MixerAction, MixerState } from './types.ts';
 import { buildView, changedWords, pageOf, ruleMention, stepsPerPage, type Session, type TracksView } from './view-model.ts';
 
@@ -12,6 +13,8 @@ export interface TracksDependencies {
   loadMorphology: () => Promise<MorphologyRepository>;
   /** Les verbes, demandés seulement quand une instance active vise leur piste. */
   loadVerbs?: () => Promise<VerbRepository>;
+  /** Les prononciations, demandées seulement quand une instance active est un filtre phonétique. */
+  loadPhonetics?: () => Promise<PhoneticsRepository>;
   /** Télécharge le modèle d'étiquetage, en signalant l'avancement en octets. */
   preload: (onProgress: (loaded: number, total: number) => void) => Promise<void>;
   /** Place un texte dans le presse-papiers. */
@@ -27,6 +30,12 @@ export interface ModelState {
   /** Octets reçus et attendus ; `total` vaut 0 tant que la taille n'est pas connue. */
   loaded: number;
   total: number;
+  error: string;
+}
+
+/** Le chargement d'une textbank demandée à la volée. */
+export interface Loading {
+  status: 'idle' | 'loading' | 'ready' | 'error';
   error: string;
 }
 
@@ -50,7 +59,9 @@ export interface TracksState {
   /** Message à côté du bouton de copie. */
   copyMessage: string;
   /** Le chargement des verbes : `idle` tant qu'aucune instance ne les vise. */
-  verbs: { status: 'idle' | 'loading' | 'ready' | 'error'; error: string };
+  verbs: Loading;
+  /** Le chargement des prononciations : `idle` tant qu'aucun filtre phonétique n'est en marche. */
+  phonetics: Loading;
   /** Le mot d'origine ouvert dans l'inspecteur ; aucun : l'inspecteur est fermé. */
   selected?: number;
   /** La grille : pas par page (selon sa largeur) et page affichée. */
@@ -75,6 +86,8 @@ export interface TracksController {
   example(): Promise<void>;
   /** Charge les verbes ; relance après un échec. Le texte résultant se recalcule à leur arrivée. */
   loadVerbs(): Promise<void>;
+  /** Charge les prononciations ; relance après un échec. Le texte résultant se recalcule à leur arrivée. */
+  loadPhonetics(): Promise<void>;
   /** Applique un geste à la table et met la vue à jour, sans réétiqueter. */
   dispatch(action: MixerAction): void;
   /** Ouvre l'inspecteur sur un mot d'origine. */
@@ -117,6 +130,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     generation: 0,
     copyMessage: '',
     verbs: { status: 'idle', error: '' },
+    phonetics: { status: 'idle', error: '' },
     perPage: 16,
     page: 0,
     pinned: false,
@@ -124,6 +138,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
   let session: Session | undefined;
   let morphology: MorphologyRepository | undefined;
   let verbs: VerbRepository | undefined;
+  let phonetics: PhoneticsRepository | undefined;
   let loading: Promise<void> | undefined;
   let runs = 0;
 
@@ -137,15 +152,20 @@ export function createTracksController(dependencies: TracksDependencies, onChang
   const rebuild = (patch: Partial<TracksState>) => {
     const mixer = patch.mixer ?? state.mixer;
     if (!session || !morphology) return update(patch);
-    const view = buildView(session, mixer, morphology, undefined, verbs);
+    const view = buildView(session, mixer, morphology, undefined, verbs, phonetics);
     const changed = changedWords(state.view, view);
     update({ ...patch, view, changed, generation: state.generation + 1, copyMessage: '' });
-    wantVerbs(mixer);
+    wantResources(mixer);
   };
 
-  /** Une instance active vise les verbes pour la première fois : on les charge, sans attendre. */
-  const wantVerbs = (mixer: MixerState) => {
-    if (state.verbs.status === 'idle' && mixer.instances.some((instance) => instance.enabled && instance.targets.includes('verb'))) void controller.loadVerbs();
+  /**
+   * Une instance active vise les verbes, ou est un filtre phonétique, pour la première fois : on
+   * charge ce qu'il lui faut, sans attendre.
+   */
+  const wantResources = (mixer: MixerState) => {
+    const enabled = mixer.instances.filter((instance) => instance.enabled);
+    if (state.verbs.status === 'idle' && enabled.some((instance) => instance.targets.includes('verb'))) void controller.loadVerbs();
+    if (state.phonetics.status === 'idle' && enabled.some((instance) => pluginById(instance.type).phonetic)) void controller.loadPhonetics();
   };
 
   const controller: TracksController = {
@@ -193,9 +213,9 @@ export function createTracksController(dependencies: TracksDependencies, onChang
         session = { text, tagged };
         // Nouvel étiquetage, nouvelles positions : les pas se rouvrent, les verrous tombent, l'inspecteur se ferme.
         const mixer = reduce(state.mixer, { type: 'reset-steps' });
-        const view = buildView(session, mixer, morphology!, undefined, verbs);
+        const view = buildView(session, mixer, morphology!, undefined, verbs, phonetics);
         update({ tagging: false, editing: false, stale: state.input !== text, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0 });
-        wantVerbs(mixer);
+        wantResources(mixer);
       } catch (error) {
         if (run === runs) update({ tagging: false, inputMessage: `Échec de l’étiquetage : ${messageOf(error)}. Vous pouvez relancer.` });
       }
@@ -213,6 +233,17 @@ export function createTracksController(dependencies: TracksDependencies, onChang
         rebuild({});
       } catch (error) {
         update({ verbs: { status: 'error', error: `Échec du chargement des verbes : ${messageOf(error)}.` } });
+      }
+    },
+    async loadPhonetics() {
+      if (!dependencies.loadPhonetics || state.phonetics.status === 'loading' || state.phonetics.status === 'ready') return;
+      update({ phonetics: { status: 'loading', error: '' } });
+      try {
+        phonetics = await dependencies.loadPhonetics();
+        update({ phonetics: { status: 'ready', error: '' } });
+        rebuild({});
+      } catch (error) {
+        update({ phonetics: { status: 'error', error: `Échec du chargement des prononciations : ${messageOf(error)}.` } });
       }
     },
     dispatch(action) {

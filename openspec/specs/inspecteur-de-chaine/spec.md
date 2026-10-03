@@ -116,3 +116,16 @@ The system SHALL show, in the band of each enabled instance that targets the cho
 - **GIVEN** un verrou à 3 sur « chat » pour le premier S+7
 - **WHEN** l'inspecteur s'ouvre sur « chat »
 - **THEN** la bande de ce S+7 montre un champ Décalage qui vaut 3 et sa légende dit « S+3 sur ce mot »
+
+### Requirement: Prononciation dans l'inspecteur
+The system SHALL show, for the word opened in the inspector, its pronunciation in IPA, its syllable count and its rhyme, once the phonetic textbank is loaded, and SHALL say when the pronunciation was guessed by rules.
+
+#### Scenario: Mot connu
+- **GIVEN** une chaîne avec un R+n et la textbank chargée
+- **WHEN** on ouvre « chaise » dans l'inspecteur
+- **THEN** l'inspecteur montre /ʃɛz/, 1 syllabe et la rime /ɛz/
+
+#### Scenario: Mot deviné
+- **GIVEN** un mot absent du lexique
+- **WHEN** on l'ouvre dans l'inspecteur
+- **THEN** sa prononciation porte la mention « devinée »

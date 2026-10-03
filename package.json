@@ -15,7 +15,8 @@
     "build:lexicon": "node scripts/build-lexicon.ts",
     "build:morphology": "node scripts/build-morphology.ts",
     "build:verbs": "node scripts/build-verbs.ts",
-    "transform:references": "node scripts/transform-references.ts"
+    "transform:references": "node scripts/transform-references.ts",
+    "build:phonetics": "node scripts/build-phonetics.ts"
   },
   "devDependencies": {
     "@huggingface/transformers": "^4.3.0",

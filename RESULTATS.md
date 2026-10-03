@@ -363,6 +363,35 @@ neuronal. Capture : `resultats/inspecteur/texte-1-inspecteur.jpg`.
   partagé ; aucune ne dépasse la demi-seconde.
 
 
+
+# Textbank phonétique et filtres de rime
+
+Vérification du 2026-10-03 : sous Node avec les fichiers dérivés, puis dans le navigateur
+(page à pistes, étiqueteur neuronal, poème de quatre vers).
+
+| Critère | Constat |
+|---|---|
+| Données | `data/phonetique-oulipao.tsv` tiré de GLÀFF 1.2.2 : 406 215 lignes, 382 669 formes. 19,6 % des 476 104 formes de Grammalecte n'y sont pas (surtout des noms composés) et passent par la prononciation devinée |
+| Poids | 12,5 Mo bruts, 1,98 Mo compressés en gzip ; chargés seulement quand un filtre phonétique est en marche. Lecture et validation sous Node : 1,6 s |
+| Rimes | « chaise » /ʃɛz/, rime /ɛz/ ; « couvent » /ku.vɑ̃/ (nom), /kuv/ (verbe) ; « glorbiture » devinée, rime /yʁ/ |
+| Syllabes | « Je fais souvent ce rêve étrange et pénétrant » : 12 |
+| Filtres sous Node | Sur « Le vieux chat dort sur la chaise / Pendant que tombe la pluie / Il rêve de la cuisine / Et du jardin dans le soir noir » : R+1 (noms, adjectifs, verbes) 78 à 98 ms ; monorime en /ɔ̃/ 3 ms ; antirime 0 ms (aucune fin de vers ne rime) ; homophonies 318 à 363 ms (« chat » → « schah ») |
+| Navigateur | R+7 sur les noms : 5 noms remplacés sur 6, « chaise » → « cinghalaise », comptes de syllabes en bout de vers. Homophonies puis monorime en /ɔ̃/ : « Le vieux schah dort sur la champagnisation / … la plumaison / … la cuisson / … le soir oblong ». L'inspecteur montre « /ʃɛz/ · 1 syllabe · rime /ɛz/ ». Aucune erreur dans la console ; à 375 px, la page ne défile pas à l'horizontale |
+| Justesse des rimes (9 sur 10) | **À relire par le fondateur.** Règle fixée d'avance : un remplacement est juste si sa rime phonétique (dernière voyelle et ce qui suit) est celle du mot d'origine, à l'oreille ; un mot dont la prononciation est devinée se compte à part ; un mot laissé tel quel ne compte pas. Relire 3 textes de 200 mots passés au R+7, rime suffisante |
+
+## Écarts et limites
+
+- **Mots composés.** GLÀFF n'a pas les noms composés : « œil-de-chat » est deviné partie par
+  partie. Les règles de repli donnent une rime plausible, pas une prononciation exacte.
+- **« que » devant un verbe nouveau.** Le R+n sur les verbes peut laisser « que abombe » : comme
+  au V+7, seul un pronom s'élide devant le verbe remplacé.
+- **Homophonies lentes** sur un mot dont l'homophone est loin dans le dictionnaire (300 ms
+  environ) : le moteur parcourt les lemmes un par un. Sous la demi-seconde.
+- **« ɔ̃ » ressemble à un « 5 »** dans les polices de l'interface : le monorime nomme donc
+  chaque rime avec un mot exemple (« /ɔ̃/ (formation) »).
+- **Le compte des syllabes** suit la prononciation du lexique, le e muet devant consonne et
+  l'élision devant voyelle ; ni diérèse ni synérèse.
+
 ---
 
 # Séances en ligne

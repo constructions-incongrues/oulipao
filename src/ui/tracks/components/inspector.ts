@@ -13,6 +13,8 @@ export interface InspectorProps {
   locks?: readonly InstanceLocks[];
   /** Pose (valeur) ou retire (`undefined`) un verrou. */
   onLock?: (id: string, key: string, value: number | undefined) => void;
+  /** La prononciation du mot choisi, en clair : « /ʃɛz/ · 1 syllabe · rime /ɛz/ ». */
+  pronunciation?: string;
 }
 
 const STEP_STATES: Record<GridStep['state'], string> = {
@@ -50,9 +52,10 @@ const NEAR = 2;
  * L'inspecteur : le mot choisi et ses voisins, une ligne par étape de la chaîne, de l'origine au
  * dernière contrainte ; chaque mot garde sa colonne d'une ligne à l'autre.
  */
-export function Inspector({ window, word, onClose, step, locks = [], onLock = () => {} }: InspectorProps): VNode {
+export function Inspector({ window, word, onClose, step, locks = [], onLock = () => {}, pronunciation }: InspectorProps): VNode {
   return html`
     <section class="inspector" tabindex="0" aria-label="Inspecteur">
+      ${pronunciation && html`<p class="pronunciation"><span class="silk">Prononciation</span> ${pronunciation}</p>`}
       <table>
         <caption>« ${word} » à chaque étape de la chaîne${step ? html` · <span class="step-state">${STEP_STATES[step]}</span>` : ''}</caption>
         <tbody>

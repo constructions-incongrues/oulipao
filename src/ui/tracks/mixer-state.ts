@@ -2,11 +2,15 @@ import { CATEGORIES } from '../../domain/categories.ts';
 import type { Tracks } from '../../domain/mixing.ts';
 import type { ConstraintPlugin } from '../../domain/plugin.ts';
 import { lipogramPlugin } from '../../domain/lipogram/plugin.ts';
+import { antirhymePlugin } from '../../domain/rhyme/antirhyme.ts';
+import { homophonyPlugin } from '../../domain/rhyme/homophony.ts';
+import { monorhymePlugin } from '../../domain/rhyme/monorhyme.ts';
+import { rnPlugin } from '../../domain/rhyme/rn.ts';
 import { s7Plugin } from '../../domain/s7/plugin.ts';
 import { MixerActionSchema, type Instance, type MixerAction, type MixerState } from './types.ts';
 
 /** Les types de contraintes qu'on peut brancher sur la table. */
-export const installedPlugins: readonly ConstraintPlugin[] = [s7Plugin, lipogramPlugin];
+export const installedPlugins: readonly ConstraintPlugin[] = [s7Plugin, lipogramPlugin, rnPlugin, monorhymePlugin, antirhymePlugin, homophonyPlugin];
 
 /** Un type de contrainte installé, par son identifiant ; lève s'il n'est pas installé. */
 export function pluginById(id: string): ConstraintPlugin {

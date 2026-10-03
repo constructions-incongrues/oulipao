@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { MorphologyRepository } from '../ports/morphology.ts';
+import type { PhoneticsRepository } from '../ports/phonetics.ts';
 import type { VerbRepository } from '../ports/verbs.ts';
 import { CategorySchema, type Category } from './categories.ts';
 import type { OutputWord } from './s7/types.ts';
@@ -66,10 +67,11 @@ export interface PluginResult {
   marks: WordMark[];
 }
 
-/** Ce que l'hôte prête à une contrainte : ses textbanks. Les verbes arrivent après, à la demande. */
+/** Ce que l'hôte prête à une contrainte : ses textbanks. Les verbes et les prononciations arrivent après, à la demande. */
 export interface PluginResources {
   morphology: MorphologyRepository;
   verbs?: VerbRepository;
+  phonetics?: PhoneticsRepository;
 }
 
 export interface ConstraintPlugin {
@@ -78,6 +80,8 @@ export interface ConstraintPlugin {
   name: string;
   /** Les pistes que la contrainte sait traiter : une instance choisit les siennes parmi elles. */
   tracks: readonly Category[];
+  /** La contrainte a-t-elle besoin des prononciations ? L'hôte les charge alors à la demande. */
+  phonetic?: boolean;
   /** Les pistes visées par une instance qu'on vient d'ajouter. */
   defaultTargets: readonly Category[];
   /** Les paramètres, dans l'ordre d'affichage. */

@@ -16,7 +16,7 @@ test('état initial : toutes les pistes s’entendent, aucune contrainte ; la ch
   ]);
   assert.deepEqual(Object.keys(state.tracks), ['noun', 'verb', 'adjective', 'adverb', 'other']);
   assert.ok(Object.values(state.tracks).every((t) => !t.muted && !t.solo));
-  assert.deepEqual(installedPlugins.map((plugin) => plugin.id), ['s7', 'lipogram']);
+  assert.deepEqual(installedPlugins.map((plugin) => plugin.id), ['s7', 'lipogram', 'rn', 'monorhyme', 'antirhyme', 'homophony']);
   assert.throws(() => pluginById('inconnu'), /plugin inconnu : inconnu/);
 });
 
