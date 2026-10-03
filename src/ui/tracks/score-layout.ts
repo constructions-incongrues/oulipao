@@ -21,11 +21,17 @@ export function systemWidth(availableChars: number): number {
 
 const emptyLanes = () => Object.fromEntries(CATEGORIES.map((category) => [category, [] as Block[]])) as Record<Category, Block[]>;
 
+// Blanc réservé après un mot dont le remplaçant est plus long : un caractère d'usage privé,
+// pour que le découpage en systèmes ne sépare pas le mot de sa réserve.
+const PAD = '\uE003';
+
 /**
  * Dispose le texte en partition : il revient à la ligne en systèmes, comme une partition de
  * musique. Chaque système a pour règle une ligne du texte d'origine, et pose chaque mot sur la
- * piste de sa catégorie, à sa colonne dans la règle. On ne coupe jamais un mot : un mot plus
- * long que la largeur occupe seul un système plus large.
+ * piste de sa catégorie, à sa colonne dans la règle. Les mots s'écrivent toujours en entier :
+ * quand un remplaçant est plus long que le mot d'origine, la règle reçoit des blancs après ce
+ * mot, et ce qui suit se décale d'autant. On ne coupe jamais un mot : un mot plus long que la
+ * largeur occupe seul un système plus large.
  * ponytail: les colonnes comptent des caractères ; juste avec une police à chasse fixe et des
  * caractères simples, approximatif pour les émojis.
  *
@@ -40,10 +46,23 @@ export function layoutScore(
   const tokens = tokenize(text);
   if (tokens.length !== tagged.length) throw new Error('les mots étiquetés ne correspondent pas au découpage du texte');
 
+  // Le texte élargi : chaque mot suivi de la place que demande son remplaçant.
+  let expanded = '';
+  let cursor = 0;
+  const starts = tokens.map((token, i) => {
+    expanded += text.slice(cursor, token.start);
+    const start = expanded.length;
+    const label = labels.get(i) ?? token.word;
+    expanded += token.word + PAD.repeat(Math.max(0, label.length - token.word.length));
+    cursor = token.end;
+    return start;
+  });
+  expanded += text.slice(cursor);
+
   // Étendue de chaque système : on remplit jusqu'à la largeur, on coupe entre deux blocs de texte.
   const spans: { start: number; end: number }[] = [];
   let lineStart = 0;
-  for (const line of text.split('\n')) {
+  for (const line of expanded.split('\n')) {
     let start: number | undefined;
     let end = 0;
     for (const chunk of line.matchAll(/\S+/g)) {
@@ -63,22 +82,12 @@ export function layoutScore(
   let next = 0; // premier mot pas encore posé
   const systems: System[] = spans.map(({ start, end }) => {
     const lanes = emptyLanes();
-    for (; next < tokens.length && tokens[next]!.start < end; next++) {
-      const token = tokens[next]!;
-      const lane = lanes[tagged[next]!.category];
-      const column = token.start - start;
-      const previous = lane.at(-1);
-      // Un mot remplacé plus long que l'original : le bloc précédent ne déborde pas sur celui-ci.
-      if (previous) previous.width = Math.min(previous.width, Math.max(1, column - previous.column - 1));
-      const label = labels.get(next) ?? token.word;
-      lane.push({ index: next, label, column, width: Math.max(token.word.length, label.length) });
+    for (; next < tokens.length && starts[next]! < end; next++) {
+      const word = tokens[next]!.word;
+      const label = labels.get(next) ?? word;
+      lanes[tagged[next]!.category].push({ index: next, label, column: starts[next]! - start, width: Math.max(word.length, label.length) });
     }
-    // Le dernier bloc d'une piste ne dépasse pas la fin du système.
-    for (const lane of Object.values(lanes)) {
-      const last = lane.at(-1);
-      if (last) last.width = Math.max(1, Math.min(last.width, Math.max(end - start, width) - last.column));
-    }
-    return { ruler: text.slice(start, end), lanes };
+    return { ruler: expanded.slice(start, end).replaceAll(PAD, ' '), lanes };
   });
   return { systems };
 }

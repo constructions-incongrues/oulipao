@@ -38,16 +38,23 @@ test('un mot plus long que la largeur n’est pas coupé', () => {
   assert.equal(systems[1]!.lanes.other[0]!.width, 25);
 });
 
-test('libellés : le mot remplacé, élargi sans déborder sur le bloc suivant ni sur la fin du système', () => {
+test('libellés : le remplaçant s’écrit en entier ; la règle reçoit des blancs et la suite se décale', () => {
   const text = 'le chat et le chat';
   const labels = new Map([[1, 'hippopotame'], [4, 'hippopotame']]);
-  const { systems } = layoutScore(text, tag(text), labels, 20);
+  const { systems } = layoutScore(text, tag(text), labels, 40);
+  assert.equal(systems[0]!.ruler, 'le chat        et le chat       ');
   assert.deepEqual(systems[0]!.lanes.noun, [
-    { index: 1, label: 'hippopotame', column: 3, width: 10 }, // jusqu'au bloc suivant de la piste, moins un
-    { index: 4, label: 'hippopotame', column: 14, width: 6 }, // jusqu'à la fin du système
+    { index: 1, label: 'hippopotame', column: 3, width: 11 },
+    { index: 4, label: 'hippopotame', column: 21, width: 11 },
   ]);
-  const short = layoutScore('le chat', tag('le chat'), new Map([[1, 'if']])).systems[0]!.lanes.noun[0]!;
-  assert.deepEqual(short, { index: 1, label: 'if', column: 3, width: 4 }); // jamais plus étroit que le mot d'origine
+  assert.deepEqual(systems[0]!.lanes.other.map((b) => b.column), [0, 15, 18]); // « et » et « le » décalés
+  // le mot et sa réserve ne sont jamais séparés par le retour à la ligne
+  const narrow = layoutScore(text, tag(text), labels, 16);
+  assert.deepEqual(narrow.systems.map((s) => s.ruler), ['le chat       ', 'et le', 'chat       ']);
+  assert.deepEqual(narrow.systems.flatMap((s) => s.lanes.noun.map((b) => [b.column, b.width])), [[3, 11], [0, 11]]);
+  const short = layoutScore('le chat', tag('le chat'), new Map([[1, 'if']])).systems[0]!;
+  assert.equal(short.ruler, 'le chat'); // un remplaçant plus court ne change pas la règle
+  assert.deepEqual(short.lanes.noun[0], { index: 1, label: 'if', column: 3, width: 4 }); // jamais plus étroit que le mot d'origine
 });
 
 test('texte de 200 mots : systèmes à la largeur demandée, cinq pistes, un bloc par mot', () => {

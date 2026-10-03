@@ -42,11 +42,12 @@ Preact ; les composants (`components/`, `app.ts`) sont des fonctions de cet éta
 
 - **Le mute ne répare pas la phrase.** Il s'applique à la sortie du moteur : couper les adjectifs
   de « la vieille école » donne « la école ». La règle est appliquée telle quelle.
-- **La partition montre le texte d'origine**, pas le texte résultant : la règle ne change pas
-  quand on règle le plugin ; seuls les blocs des noms changent de libellé.
+- **La partition montre le texte d'origine**, pas le texte résultant : seuls les blocs des noms
+  changent de libellé quand on règle le plugin, et la règle ne fait que s'élargir pour eux.
 - **Colonnes de caractères.** Les blocs s'alignent sous les mots grâce à une police à chasse
-  fixe. Un mot remplacé plus long que l'original est tronqué à l'écran (son libellé complet est
-  dans l'infobulle) pour ne pas recouvrir le bloc suivant.
+  fixe. Les mots s'écrivent toujours en entier : quand un remplaçant est plus long que le mot
+  d'origine, la règle reçoit des blancs après ce mot (« droits    . ») et ce qui suit se décale.
+  La règle change donc avec le réglage du plugin.
 - **Largeur des systèmes** : calculée d'après la place laissée à la partition, entre 48 et 72
   caractères (`systemWidth`), et recalculée au redimensionnement (`main.ts`).
 - **La copie dit d'où vient le texte.** Le texte copié est suivi, après une ligne vide, de ce qui

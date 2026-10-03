@@ -67,7 +67,7 @@ test('Score : la règle, les seules pistes non vides, trois aspects de bloc, une
   const score = html`<${Score} layout=${layout} audible=${new Set(['noun', 'verb', 'adverb', 'other'])} marks=${marks} />`;
   const out = renderToString(score);
   assert.match(out, /<div aria-hidden="true"><div class="system">/);
-  assert.match(out, /<span class="lane-name">Texte<\/span><span class="cells">La vieille ferme dort\.<\/span>/);
+  assert.match(out, /<span class="lane-name">Texte<\/span><span class="cells">La vieille ferme   dort\.<\/span>/);
   assert.doesNotMatch(out, /lane adverb/); // aucun adverbe : la piste est masquée
   assert.match(out, /<div class="lane adjective silent">/);
   assert.match(out, /<span class="block replaced" title="ferme → fermoir" style="left:11ch;width:7ch">fermoir<\/span>/);

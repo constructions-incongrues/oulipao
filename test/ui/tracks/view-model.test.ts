@@ -17,7 +17,8 @@ test('plugin actif : texte transformé, noms remplacés comptés, blocs des noms
   assert.equal(view.nouns, 3);
   const nouns = view.layout.systems.flatMap((s) => s.lanes.noun.map((b) => b.label));
   assert.deepEqual(nouns, ['fermoir', 'ville', 'Zorglub']); // le nom inconnu garde son mot
-  assert.equal(view.layout.systems[0]!.ruler, text); // la règle porte le texte d'origine
+  // la règle porte le texte d'origine, avec la place du remplaçant plus long (« fermoir »)
+  assert.equal(view.layout.systems[0]!.ruler, 'La vieille ferme   du village est grise, et la Zorglub aussi.');
 });
 
 test('plugin coupé : texte d’origine, blocs au mot d’origine', () => {
