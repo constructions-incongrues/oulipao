@@ -46,8 +46,11 @@ La sortie est ensuite ramenée aux mots du texte d'origine — une contraction r
 son mot d'origine, et porte au bout du compte ce que toute la chaîne en a fait. Une contrainte
 n'a donc rien à savoir de celles qui la précèdent.
 
-`resources` porte les textbanks que la page prête à la contrainte. Aujourd'hui, une seule : le
-dictionnaire du S+7 (`morphology`).
+`resources` porte les textbanks que la page prête à la contrainte : le dictionnaire des noms,
+adjectifs et adverbes (`morphology`), et les verbes (`verbs`, port `VerbRepository`). Les verbes
+sont facultatifs : la page ne les charge que quand une instance active vise la piste `verb`, et
+recalcule le texte à leur arrivée. D'ici là, une contrainte laisse chaque verbe visé avec la
+raison « conjugaisons en cours de chargement » ; `apply` reste synchrone.
 
 ## Ce que le S+7 a appris au contrat
 

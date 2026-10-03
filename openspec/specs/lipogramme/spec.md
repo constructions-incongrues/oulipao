@@ -14,12 +14,22 @@ The system SHALL provide a Lipogram plugin, written against the internal plugin 
 - **THEN** la lettre interdite est « e »
 
 ### Requirement: Remplacement par un voisin sans la lettre
-The system SHALL replace every noun, adjective or adverb containing the forbidden letter with the first word that follows it in dictionary order, of the same category and the same features, that does not contain the letter; nouns and adjectives keep their gender and number.
+The system SHALL replace every noun, adjective, adverb or verb containing the forbidden letter with the first word that follows it in dictionary order, of the same category and the same features, that does not contain the letter; nouns and adjectives keep their gender and number, verbs keep their tense and person (their gender and number for a past participle); the auxiliaries « être » and « avoir » stay unchanged.
 
 #### Scenario: Nom fautif
 - **GIVEN** la lettre « e » interdite et un nom qui contient « e »
 - **WHEN** le lipogramme s'applique
 - **THEN** le nom est remplacé par le premier nom suivant, au même genre et au même nombre, qui ne contient pas « e »
+
+#### Scenario: Verbe fautif
+- **GIVEN** la lettre « e » interdite et « elle mangeait »
+- **WHEN** le lipogramme s'applique
+- **THEN** « mangeait » est remplacé par le premier verbe suivant dont l'imparfait, troisième personne du singulier, ne contient pas « e »
+
+#### Scenario: Aucun verbe sans la lettre
+- **GIVEN** un verbe fautif dont aucun verbe suivant n'a de forme sans la lettre à ce temps et à cette personne
+- **WHEN** le lipogramme s'applique
+- **THEN** le verbe reste tel quel avec la raison « aucun voisin sans la lettre »
 
 ### Requirement: Réaccord
 The system SHALL re-agree determiners, adjectives, attributes and pronouns with a replaced noun, as the S+7 does.
@@ -36,14 +46,6 @@ The system SHALL replace a function word containing the forbidden letter with an
 - **GIVEN** un mot-outil fautif sans équivalent dans la table
 - **WHEN** le lipogramme s'applique
 - **THEN** le mot disparaît du texte résultant et le résumé le compte
-
-### Requirement: Verbes laissés en v1
-The system SHALL leave verbs containing the forbidden letter unchanged and SHALL count them in the summary.
-
-#### Scenario: Verbe fautif
-- **GIVEN** un verbe qui contient la lettre interdite
-- **WHEN** le lipogramme s'applique
-- **THEN** le verbe reste tel quel et le résumé le compte
 
 ### Requirement: Chaîne de plugins
 The system SHALL apply installed plugins in order, each receiving the previous plugin's output, with the S+7 before the lipogram by default, and SHALL let the user change the order.
@@ -62,7 +64,7 @@ The system SHALL update the result text without re-tagging when the lipogram is 
 - **THEN** le texte résultant change en moins d'une demi-seconde, sans nouvel étiquetage
 
 ### Requirement: Résumé et mention de la chaîne
-The system SHALL describe the whole active chain in the summary and in the note appended to the copied text, and SHALL count replaced words, removed words and verbs that keep the letter.
+The system SHALL describe the whole active chain in the summary and in the note appended to the copied text, and SHALL count replaced words, removed words and words that keep the letter.
 
 #### Scenario: Copie
 - **GIVEN** le S+7 et le lipogramme en « e » en marche

@@ -10,16 +10,6 @@
         "8765"
       ],
       "port": 8765
-    },
-    {
-      "name": "oulipao-8766",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": [
-        "-m",
-        "http.server",
-        "8766"
-      ],
-      "port": 8766
     }
   ]
 }

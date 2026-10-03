@@ -54,7 +54,7 @@
 
   Passer `verbs` à `buildView`, puis à `runChain`. Câbler `loadVerbs` dans `src/ui/tracks/main.ts`. Vérifier par `test/ui/tracks/controller.test.ts` les scénarios « Page ouverte sans verbes visés » (le chargeur n'est jamais appelé), « Verbes visés » (raison, puis recalcul sans nouvel étiquetage) et l'échec suivi d'une relance.
 - [x] 4.3 [ui] Vérifier dans `test/ui/tracks/view-model.test.ts` la mention « — S+7 sur les noms · S+7 sur les verbes (Oulipao) » et le résumé du lipogramme, qui compte les mots qui gardent la lettre et non plus les verbes à part.
-- [ ] 4.4 [ui] Recette dans le navigateur (aperçu de la page à pistes) :
+- [x] 4.4 [ui] Recette dans le navigateur (aperçu de la page à pistes) :
   - le fichier des verbes n'est pas demandé à l'ouverture (onglet réseau) ;
   - viser les verbes avec un S+7 les fait changer après le chargement ;
   - un lipogramme en e remplace « mangeait ».
@@ -63,5 +63,5 @@
 
 ## 5. Documentation et clôture
 
-- [ ] 5.1 Mettre à jour `docs/lexiques.md` (fichier des verbes, colonnes, commande, poids mesuré), `docs/plugins.md` (`verbs` dans les ressources, chargement à la demande) et `docs/s7.md` (V+n, heuristique du pronom, limites : temps composés, subjonctif sans pronom). Vérifier que chaque fichier mentionne `verbes-oulipao.tsv` ou le V+n.
-- [ ] 5.2 Lancer `npm test`, vérifier que la couverture reste au-dessus de 90 % (lignes, branches, fonctions) et que `openspec validate verbes-dans-la-morphologie --strict` passe.
+- [x] 5.1 Mettre à jour `docs/lexiques.md` (fichier des verbes, colonnes, commande, poids mesuré), `docs/plugins.md` (`verbs` dans les ressources, chargement à la demande) et `docs/s7.md` (V+n, heuristique du pronom, limites : temps composés, subjonctif sans pronom). Vérifier que chaque fichier mentionne `verbes-oulipao.tsv` ou le V+n.
+- [x] 5.2 Lancer `npm test`, vérifier que la couverture reste au-dessus de 90 % (lignes, branches, fonctions) et que `openspec validate verbes-dans-la-morphologie --strict` passe.

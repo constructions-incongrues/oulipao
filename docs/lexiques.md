@@ -82,3 +82,15 @@ sous-ensemble, qui reste sous la licence d'origine.
 
 Le fichier brut (55 Mo) n'est pas versionné : le télécharger dans `data/brut/`, puis lancer
 `npm run build:lexicon` pour régénérer `data/lexique-oulipao.tsv` (6,6 Mo, MPL 2.0).
+
+Les verbes ont leur propre fichier, `data/verbes-oulipao.tsv` (MPL 2.0), régénéré par
+`npm run build:verbs` (`src/adapters/lexicon/grammalecte-verbs.ts`) :
+
+- une ligne par lecture : `V`, forme, infinitif, temps, personne (`1s` … `3p`) ou genre et nombre
+  du participe passé (`ms`, `fp`, `ei`…) ou `-`, pas d'élision (`0` / `1`, note « pel ») ;
+- une ligne du lexique qui cumule des temps ou des personnes (« mange » : `ipre spre 1sg 3sg`)
+  s'éclate en autant de lignes ; les formes d'inversion (`1isg`, `1jsg`) ne sont pas gardées ;
+- les auxiliaires *être* et *avoir* (`v0`) restent, pour que les filtres les reconnaissent ;
+- mesuré le 2026-10-03 : 421 972 lignes, 8 403 infinitifs, 18,7 Mo brut, 2,8 Mo compressé.
+
+La page ne le télécharge que lorsqu'une instance de la chaîne vise la piste des verbes.
