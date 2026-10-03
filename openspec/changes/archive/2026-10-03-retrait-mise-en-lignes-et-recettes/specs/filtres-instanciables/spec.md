@@ -32,12 +32,17 @@ The system SHALL let the user choose a targetable instance's target tracks among
 - **THEN** seuls les noms ont perdu la lettre
 
 ### Requirement: Portée d'un filtre
-The system SHALL let a filter touch only the words of its target tracks, except for the re-agreement caused by a replaced noun, for a Tri par piste in « ne garder que » mode, which removes the words outside its target tracks, and for non-targetable filters, which act on every word.
+The system SHALL let a filter touch only the words of its target tracks whose steps are open, except for the re-agreement caused by a replaced noun, for a Tri par piste in « ne garder que » mode, which removes the words outside its target tracks, and for non-targetable filters, which act on every word but neither remove nor replace a word whose step is closed; it SHALL use for a word the value locked for that instance and that word when there is one.
 
 #### Scenario: S+n sur les noms seuls
 - **GIVEN** un S+n visant les seuls noms
 - **WHEN** il s'applique
 - **THEN** les adjectifs ne changent que pour s'accorder au nouveau nom
+
+#### Scenario: Pas bouché
+- **GIVEN** un S+7 sur les noms et le pas de « horloge » bouché
+- **WHEN** il s'applique
+- **THEN** « horloge » et son groupe nominal restent tels quels
 
 #### Scenario: Ne garder que les noms
 - **GIVEN** un Tri par piste en mode « ne garder que » visant les noms
