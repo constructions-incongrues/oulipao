@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<title>Oulipao — image d'aperçu</title>
+<!-- La composition de og-image.png (1200×630), d'après DESIGN.md. On la capture à la main
+     une fois les polices chargées (marque seule, choix du
+     fondateur du 2026-10-03). -->
+<link rel="stylesheet" href="../styles/tokens.css">
+<style>
+  html, body { margin: 0; }
+  body { width: 1200px; height: 630px; overflow: hidden; background: var(--panel); color: var(--ink); box-sizing: border-box;
+    border: var(--rule) solid var(--line); padding: 72px 88px; display: flex; flex-direction: column; justify-content: center; gap: 36px; }
+  h1 { font: 800 200px/0.85 var(--font-mark); text-transform: uppercase; letter-spacing: 0.01em; margin: 0; }
+  .silk { font-family: var(--font-ui); font-stretch: var(--silk-stretch); font-weight: 600; font-size: 26px; text-transform: uppercase;
+    letter-spacing: 0.04em; margin: 0; border-top: var(--rule) solid var(--ink); padding-top: 16px; }
+  .punches { display: flex; gap: 20px; }
+  .punches svg { width: 36px; height: 36px; }
+  .noun { color: var(--noun); } .verb { color: var(--verb); } .adjective { color: var(--adjective); }
+  .adverb { color: var(--adverb); } .other { color: var(--other); }
+</style>
+</head>
+<body>
+<h1>Oulipao</h1>
+<p class="silk">Ouvroir de littérature potentielle assistée par ordinateur</p>
+<div class="punches" aria-hidden="true">
+  <svg class="noun" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" fill="currentColor"/></svg>
+  <svg class="verb" viewBox="0 0 20 20"><rect x="3.5" y="3.5" width="13" height="13" fill="currentColor"/></svg>
+  <svg class="adjective" viewBox="0 0 20 20"><rect x="2" y="7.5" width="16" height="5" fill="currentColor"/></svg>
+  <svg class="adverb" viewBox="0 0 20 20"><polygon points="10,2.5 18,17 2,17" fill="currentColor"/></svg>
+  <svg class="other" viewBox="0 0 20 20"><path d="M4 7.2 7.2 4 10 6.8 12.8 4 16 7.2 13.2 10 16 12.8 12.8 16 10 13.2 7.2 16 4 12.8 6.8 10z" fill="currentColor"/></svg>
+</div>
+</body>
+</html>
