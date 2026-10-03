@@ -13,15 +13,13 @@
     },
     {
       "name": "oulipao-site",
-      "runtimeExecutable": "python3",
+      "runtimeExecutable": "sh",
       "runtimeArgs": [
-        "-m",
-        "http.server",
-        "8766",
-        "--directory",
-        "_site"
+        "-c",
+        "npm run build:site >/dev/null && exec python3 -m http.server \"${PORT:-8766}\" --directory _site"
       ],
-      "port": 8766
+      "port": 8766,
+      "autoPort": true
     }
   ]
 }

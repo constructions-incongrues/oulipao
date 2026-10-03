@@ -69,12 +69,14 @@ export function Browser({ recipes, plugins, dispatch, now = () => new Date() }: 
       <summary>Ajouter une contrainte</summary>
       <section aria-labelledby="recipes-title">
         <h3 class="silk" id="recipes-title">Recettes</h3>
+        <p class="section-hint">Les contraintes de l'Oulipo, par leur nom : chacune branche un ou plusieurs moteurs déjà réglés.</p>
         <ul class="recipes">
           ${recipes.map((recipe) => html`<${RecipeRow} key=${recipe.id} recipe=${recipe} dispatch=${dispatch} now=${now} />`)}
         </ul>
       </section>
       <section aria-labelledby="engines-title">
         <h3 class="silk" id="engines-title">Moteurs</h3>
+        <p class="section-hint">Les opérations de base qui font tourner les recettes : on les branche nues, puis on les règle soi-même dans la chaîne.</p>
         <div class="engines">
           ${plugins.map(
             (plugin) => html`<button type="button" class="add-instance" onClick=${() => dispatch({ type: 'add-instance', plugin: plugin.id })}>+ ${plugin.name}</button>`,
