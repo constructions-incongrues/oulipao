@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.7.0](https://github.com/constructions-incongrues/oulipao/compare/v0.6.2...v0.7.0) (2026-10-04)
+
+
+### Nouveautés
+
+* compte de syllabes par vers sous une mise en vers par syllabes ([#100](https://github.com/constructions-incongrues/oulipao/issues/100)) ([60275da](https://github.com/constructions-incongrues/oulipao/commit/60275dae1222b0b6827b8e6eb087342321a7d6ba))
+* lettrisme, discrépance, Ciselure et alphabet augmenté ([#98](https://github.com/constructions-incongrues/oulipao/issues/98)) ([b6d97b3](https://github.com/constructions-incongrues/oulipao/commit/b6d97b3aba4fce5e725d1cea2f766b9201f06e0e))
+* lien partageable vers une entrée du carnet ([#95](https://github.com/constructions-incongrues/oulipao/issues/95)) ([cffc233](https://github.com/constructions-incongrues/oulipao/commit/cffc2333454a0ad6069c61524b05c3e98ca104da))
+* mesure réglable pour chaque vers ([#101](https://github.com/constructions-incongrues/oulipao/issues/101)) ([861e155](https://github.com/constructions-incongrues/oulipao/commit/861e155cff8957f385123cc6ba948edb7ed02c6a))
+* mise en vers tous les n syllabes ([#99](https://github.com/constructions-incongrues/oulipao/issues/99)) ([028cc7c](https://github.com/constructions-incongrues/oulipao/commit/028cc7c6585bbd437be06c78ff2545a1557ce2b4))
+* nom de recette gardé, issue des pas dans la grille, contrôles à 44 px au doigt ([#93](https://github.com/constructions-incongrues/oulipao/issues/93)) ([4c34f42](https://github.com/constructions-incongrues/oulipao/commit/4c34f42f64e0e3e6acacd4fc7e3f3afed5148898))
+
+
+### Corrections
+
+* carnet à entrées repliées, prose signalée sous un Bord, bande sans défilement propre ([#96](https://github.com/constructions-incongrues/oulipao/issues/96)) ([7c4be2b](https://github.com/constructions-incongrues/oulipao/commit/7c4be2b40720c9ad8b181aca0ecc964a83578a4c))
+* espace gardée avant un guillemet fermant ([#97](https://github.com/constructions-incongrues/oulipao/issues/97)) ([42664d0](https://github.com/constructions-incongrues/oulipao/commit/42664d08ea3352f30b31d5d505543bd650bc2e73))
+
 ## [0.6.2](https://github.com/constructions-incongrues/oulipao/compare/v0.6.1...v0.6.2) (2026-10-04)
 
 
