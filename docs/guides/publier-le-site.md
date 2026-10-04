@@ -12,6 +12,9 @@ fusionnant la PR de version que release-please tient à jour.
 - Le droit de fusionner des PR sur le dépôt `constructions-incongrues/oulipao`.
 - Des PR fusionnées en squash avec un titre conventionnel (`feat: …`, `fix: …`) : ce titre
   devient l'entrée du journal des versions.
+- Une PR n'arrive sur `main` que par la file de fusion : `gh pr merge <numéro> --squash` la met
+  en file, et la file la fusionne une fois « check » passé sur `main` avec elle. Aucun rôle,
+  administrateur compris, ne peut fusionner autrement.
 
 ## Étapes
 
@@ -48,7 +51,7 @@ fusionnant la PR de version que release-please tient à jour.
    navigateur télécharge le modèle d'étiquetage depuis Hugging Face (141 Mo, barre de
    progression en Mo) ; ensuite il est en cache.
 
-3. **Fusionnez vos PR sur `main`.** À chaque fusion, le flux `.github/workflows/release.yml`
+3. **Fusionnez vos PR sur `main`** en les mettant en file (`gh pr merge <numéro> --squash`). À chaque fusion, le flux `.github/workflows/release.yml`
    (« Versions et publication ») ouvre ou met à jour la PR de version, intitulée
    `chore(main): release 0.x.y`. Elle porte le prochain numéro dans `package.json` et les
    entrées de `CHANGELOG.md` (« Nouveautés », « Corrections »). Une PR `docs:` ou `chore:` seule
@@ -62,13 +65,15 @@ fusionnant la PR de version que release-please tient à jour.
    le même flux enchaîne alors `npm ci`, `npm run typecheck`, `npm test`, `npm run build:site`,
    puis publie `_site/`. La version publiée s'affiche dans la barre de marque.
 
-   Le check « check » (workflow `ci.yml`) est obligatoire pour fusionner sur `main`. La PR de
-   version ne le reçoit jamais : GitHub ne lance pas de workflow sur une PR ouverte par le
-   `GITHUB_TOKEN`. Fusionnez-la en contournant la règle, avec le rôle d'administrateur :
+   La PR de version passe par la file comme les autres. Ouverte par `github-actions`, elle voit
+   son exécution de « check » (workflow `ci.yml`) attendre une approbation (`action_required`) :
+   sur la PR, cliquez « Approve workflows to run ». Une fois « check » passé, mettez-la en file :
 
    ```bash
-   gh pr merge <numéro> --squash --admin
+   gh pr merge <numéro> --squash
    ```
+
+   Chaque mise à jour de la PR de version par release-please redemande cette approbation.
 
 **Publier à la main** (dépannage) : onglet Actions du dépôt, « Versions et publication »,
 « Run workflow ». Le site est reconstruit depuis `main` tel quel, y compris des changements pas
@@ -93,6 +98,10 @@ l'ancienne version reste.
 | Le flux échoue à `npm test` | tests ou couverture sous 90 % | rien n'est publié, le site reste celui d'avant ; corriger, fusionner le correctif, puis la nouvelle PR de version |
 | Aucune PR de version n'apparaît | aucun titre `feat:` ou `fix:` depuis la dernière version | normal pour `docs:` ou `chore:` ; sinon vérifier le titre du commit de squash sur `main` |
 | Une PR manque au journal | titre non conventionnel | éditer la PR de version avant de la fusionner, ou publier à la main |
+| La PR de version ne peut pas entrer en file | son exécution de « check » attend une approbation | « Approve workflows to run » sur la PR, attendre « check », puis `gh pr merge <numéro> --squash` |
+| Une PR sort de la file | « check » échoue sur `main` + la PR (souvent une autre PR fusionnée entre-temps) | mettre la branche à jour avec `main`, corriger, puis la remettre en file |
+| La file n'avance pas | aucun « check » ne répond pour le groupe (déclencheur `merge_group` absent de `ci.yml`, Actions en panne) | au bout de 15 minutes la PR sort de la file ; vérifier `ci.yml` et l'état de GitHub Actions |
+| Plus rien ne peut fusionner (Actions en panne durable) | la file exige « check » et aucun rôle ne la contourne | rétablir le contournement administrateur dans le ruleset « main : vérification obligatoire », fusionner, puis le retirer ; le geste reste dans le journal du ruleset |
 | La page s'ouvre, mais la mise en pistes reste bloquée | jsDelivr ou Hugging Face ne répond pas | rien à corriger chez nous : le modèle vient de ces tiers (voir `TODOS.md`) |
 | Le dictionnaire est l'ancien | version inchangée dans `src/ui/composition.ts` | voir [régénérer les données](regenerer-les-donnees.md), étape 3 |
 | `essai.html` ou `tracks.html` en 404 en local | serveur lancé depuis le mauvais dossier | `_site/` pour le site assemblé, la racine du dépôt pour le développement |
