@@ -74,7 +74,7 @@ export function Inspector({ window, word, onClose, step, locks = [], onLock = ()
                 // Un mot que l'étape a mis à la ligne : « ↵ » devant lui, dit « à la ligne ».
                 return html`<td class=${classes || undefined} aria-current=${distance === 0 ? 'true' : undefined}>${cell.newline
                   ? html`<span class="newline" aria-hidden="true">↵ </span><span class="sr-only">à la ligne, </span>`
-                  : ''}${cell.text}</td>`;
+                  : ''}${cell.text}${cell.modulation && html`<span class="mod" title="Valeur donnée par le modulateur">${cell.modulation}</span>`}</td>`;
               })}
             </tr>`,
           )}

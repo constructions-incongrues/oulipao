@@ -43,7 +43,12 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
   const release = versionLink(version);
   const audible = view?.audible ?? audibleCategories(mixer.tracks);
   const words = view?.stages[0]!.words.map((word) => word.output) ?? [];
-  const steps = view ? gridSteps(mixer, view.tracks, words) : [];
+  const steps = view ? gridSteps(mixer, view.tracks, words, undefined, view.stages) : [];
+  // Le type d'une instance de la chaîne, pour écrire ses valeurs modulées dans l'inspecteur.
+  const instancePlugin = (id: string) => {
+    const instance = mixer.instances.find((candidate) => candidate.id === id);
+    return instance && pluginById(instance.type);
+  };
   const reminders = Object.fromEntries(
     CATEGORIES.map((category) => [
       category,
@@ -146,7 +151,7 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
       (selected === undefined
         ? html`<p class="inspector-hint">Cliquez un mot pour voir ce que chaque contrainte en a fait.</p>`
         : html`<${Inspector}
-            window=${inspectorWindow(view, selected, 6)}
+            window=${inspectorWindow(view, selected, 6, instancePlugin)}
             word=${words[selected]}
             step=${steps[selected]?.state}
             locks=${inspectorLocks(mixer, selected, view.tracks[selected]!)}

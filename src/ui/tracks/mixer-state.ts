@@ -160,6 +160,27 @@ export function reduce(state: MixerState, action: MixerAction): MixerState {
       const locks = (instance.locks ?? []).filter((lock) => lock.index !== checked.index || lock.key !== checked.key);
       return replace(state, { ...instance, locks });
     }
+    case 'set-modulator': {
+      const instance = instanceOf(state, checked.id);
+      const parameter = pluginById(instance.type).parameters.find((candidate) => candidate.key === checked.key);
+      if (parameter?.kind !== 'integer' || !parameter.lockable) throw new Error(`paramètre non modulable : ${checked.key}`);
+      return replace(state, { ...instance, modulators: { ...instance.modulators, [checked.key]: checked.modulator } });
+    }
+    case 'clear-modulator': {
+      const instance = instanceOf(state, checked.id);
+      const { [checked.key]: _, ...modulators } = instance.modulators ?? {};
+      return replace(state, { ...instance, modulators });
+    }
+    case 'set-gate': {
+      const instance = instanceOf(state, checked.id);
+      if (pluginById(instance.type).targetable === false) throw new Error('une mise en page n’a pas de porte');
+      return replace(state, { ...instance, gate: checked.gate });
+    }
+    case 'clear-gate': {
+      const { gate: _, ...instance } = instanceOf(state, checked.id);
+      return replace(state, instance);
+    }
+    // Les modulateurs ne désignent aucun mot : ils survivent à un nouvel étiquetage.
     case 'reset-steps':
       return { ...state, closed: [], instances: state.instances.map((instance) => ({ ...instance, locks: [] })) };
     case 'set-form':
