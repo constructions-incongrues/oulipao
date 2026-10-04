@@ -57,8 +57,8 @@ export const lineationPlugin = definePlugin({
   defaultTargets: [...CATEGORIES],
   parameters: [
     { kind: 'choice', key: 'cut', label: 'Coupe', options: Object.entries(CUTS).map(([value, label]) => ({ value, label })) },
-    { kind: 'integer', key: 'n', label: 'Mots par vers', min: 1, max: 99 },
-    { kind: 'integer', key: 'number', label: 'Nombre', min: 1, max: MAX_NUMBER },
+    { kind: 'integer', key: 'n', label: 'Mots par vers', min: 1, max: 99, when: { key: 'cut', values: ['every'] } },
+    { kind: 'integer', key: 'number', label: 'Nombre', min: 1, max: MAX_NUMBER, when: { key: 'cut', values: ['number'] } },
   ],
   defaults: ParamsSchema.parse({}),
   parse: params,

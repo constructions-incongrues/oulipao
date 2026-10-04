@@ -15,6 +15,8 @@ import type { Loading, TracksController, TracksState } from './controller.ts';
 import { installedPlugins } from '../../domain/registry.ts';
 import { pluginById, recipes } from './mixer-state.ts';
 import { gridSteps, inspectorLocks, inspectorWindow, summarize } from './view-model.ts';
+import { modulatedLabel } from './modulation-statement.ts';
+import type { Instance } from './types.ts';
 import { versionLink } from '../version.ts';
 import type { Form } from '../../domain/forms/form.ts';
 
@@ -25,7 +27,7 @@ export interface AppProps {
   state: TracksState;
   controller: Pick<
     TracksController,
-    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook' | 'copyEntry' | 'editEntry' | 'toggle' | 'setTempo' | 'setVoice'
+    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'iterate' | 'freeze' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook' | 'copyEntry' | 'editEntry' | 'toggle' | 'setTempo' | 'setVoice'
   >;
   /** Bascule le thème clair ou sombre ; posé par le montage, qui seul touche au document. */
   onTheme?: () => void;
@@ -47,17 +49,28 @@ function Fetching({ loading, label, onRetry }: { loading: Loading; label: string
  * descend), le carnet replié, la saisie, la chaîne de contraintes, la grille des pistes, puis
  * l'inspecteur.
  */
+/** Le nom court d'une instance sous les pistes : « S+7 », ou « S+lettres » quand son paramètre principal est modulé. */
+function reminderName(instance: Instance): string {
+  const plugin = pluginById(instance.type);
+  return Object.keys(instance.modulators ?? {}).length ? modulatedLabel(plugin, instance.params, instance.modulators).split(',')[0]! : plugin.title(instance.params);
+}
+
 export function App({ state, controller, onTheme = () => {}, version, today = new Date() }: AppProps): VNode {
   const { mixer, view, stale } = state;
   const release = versionLink(version);
   const audible = view?.audible ?? audibleCategories(mixer.tracks);
   const words = view?.stages[0]!.words.map((word) => word.output) ?? [];
-  const steps = view ? gridSteps(mixer, view.tracks, words) : [];
+  const steps = view ? gridSteps(mixer, view.tracks, words, undefined, view.stages) : [];
+  // Le type d'une instance de la chaîne, pour écrire ses valeurs modulées dans l'inspecteur.
+  const instancePlugin = (id: string) => {
+    const instance = mixer.instances.find((candidate) => candidate.id === id);
+    return instance && pluginById(instance.type);
+  };
   const reminders = Object.fromEntries(
     CATEGORIES.map((category) => [
       category,
       mixer.instances.flatMap((instance, position) =>
-        instance.targets.includes(category) ? [`${position + 1}. ${pluginById(instance.type).title(instance.params)}${instance.enabled ? '' : ' (coupé)'}`] : [],
+        instance.targets.includes(category) ? [`${position + 1}. ${reminderName(instance)}${instance.enabled ? '' : ' (coupé)'}`] : [],
       ),
     ]),
   ) as Record<Category, string[]>;
@@ -88,6 +101,9 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
         copyMessage=${state.copyMessage}
         onCopy=${() => void controller.copy()}
         onKeep=${controller.keep}
+        onIterate=${() => void controller.iterate()}
+        onFreeze=${() => void controller.freeze()}
+        busy=${state.tagging}
         syllables=${view.syllables}
         form=${state.mixer.form ?? 'none'}
         onForm=${(form: Form) => controller.dispatch({ type: 'set-form', form })}
@@ -155,7 +171,7 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
       (selected === undefined
         ? html`<p class="inspector-hint">Cliquez un mot pour voir ce que chaque contrainte en a fait.</p>`
         : html`<${Inspector}
-            window=${inspectorWindow(view, selected, 6)}
+            window=${inspectorWindow(view, selected, 6, instancePlugin)}
             word=${words[selected]}
             step=${steps[selected]?.state}
             locks=${inspectorLocks(mixer, selected, view.tracks[selected]!)}
