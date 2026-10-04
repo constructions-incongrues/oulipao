@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import { SEED } from '../../support/chain.ts';
 import { html } from 'htm/preact';
 import { renderToString } from 'preact-render-to-string';
+import { TEXT_DELAY } from '../../../src/ui/tracks/components/control.ts';
 import { App, SOURCE_URL } from '../../../src/ui/tracks/app.ts';
 import { CHANGELOG_URL } from '../../../src/ui/version.ts';
 import { createTracksController } from '../../../src/ui/tracks/controller.ts';
@@ -146,6 +147,8 @@ test('le lipogramme se met en marche dans la page, après le S+7, puis passe dev
   assert.ok(renderToString(app()).indexOf('Contrainte 1 : Lipogramme') > 0);
   assert.deepEqual(controller.state.mixer.instances.map((i) => i.id), ['lipogram-1', 's7-1']);
   (find(app(), (e) => e.type === 'input' && e.props['type'] === 'text' && String(e.props['value']) === 'e').props['onInput'] as (event: Event) => void)(inputEvent('a'));
+  assert.equal(controller.state.mixer.instances[0]!.params['letters'], 'e'); // pas encore : le champ attend le repos
+  await new Promise((resolve) => setTimeout(resolve, TEXT_DELAY + 20));
   assert.equal(controller.state.mixer.instances[0]!.params['letters'], 'a');
 });
 

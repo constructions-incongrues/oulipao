@@ -8,6 +8,7 @@ import { createLocalStoragePreferences } from '../../adapters/storage/local-stor
 import { safeStorage } from '../../adapters/storage/safe-storage.ts';
 import { createMorphologyLoader, createNeuralTagging, createPhoneticsLoader, createVerbsLoader } from '../composition.ts';
 import { App } from './app.ts';
+import { downloadText } from './download.ts';
 import { claimsSpace, createTracksController, type TracksState } from './controller.ts';
 import { nextTheme, type Theme } from './components/theme-toggle.ts';
 
@@ -44,12 +45,16 @@ const controller = createTracksController(
       newId: () => crypto.randomUUID(),
       confirm: (message) => window.confirm(message),
       // Un fichier proposé à l'enregistrement : rien ne quitte la machine.
-      download: (name, text) => {
-        const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
-        const link = Object.assign(document.createElement('a'), { href: url, download: name });
-        link.click();
-        URL.revokeObjectURL(url);
-      },
+      download: (name, text) =>
+        downloadText(
+          {
+            createObjectURL: (blob) => URL.createObjectURL(blob),
+            revokeObjectURL: (url) => URL.revokeObjectURL(url),
+            link: (href, download) => Object.assign(document.createElement('a'), { href, download }),
+          },
+          name,
+          text,
+        ),
     },
   },
   draw,

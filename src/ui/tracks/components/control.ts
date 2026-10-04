@@ -1,12 +1,19 @@
 import { html } from 'htm/preact';
 import type { VNode } from 'preact';
 import type { Parameter } from '../../../domain/plugin.ts';
+import { debounced, realSchedule, type Schedule } from '../schedule.ts';
 
 /** Reçoit la valeur d'un paramètre, une fois saisie valable. */
 export type ParamHandler = (key: string, value: number | string) => void;
 
+/** Le repos de la saisie après lequel un paramètre texte règle la contrainte. */
+export const TEXT_DELAY = 150;
+
+// Un envoi différé par champ texte : une rafale de frappes ne relance la chaîne qu'une fois.
+const pending = new WeakMap<EventTarget, (handler: ParamHandler | undefined, key: string, value: string) => void>();
+
 /** Un paramètre, tel que le plugin le déclare : un champ numérique borné, un champ texte, ou une liste. */
-export function Control({ parameter, value, onParam }: { parameter: Parameter; value: number | string | undefined; onParam?: ParamHandler }): VNode {
+export function Control({ parameter, value, onParam, schedule = realSchedule }: { parameter: Parameter; value: number | string | undefined; onParam?: ParamHandler; schedule?: Schedule }): VNode {
   if (parameter.kind === 'integer') {
     const { key, min, max } = parameter;
     return html`<input
@@ -24,7 +31,7 @@ export function Control({ parameter, value, onParam }: { parameter: Parameter; v
     />` as VNode;
   }
   if (parameter.kind === 'text') {
-    // Chaque frappe règle la contrainte : une saisie vide est valable, le plugin dit alors qu'il n'agit pas.
+    // La saisie règle la contrainte au repos (150 ms) : une saisie vide est valable, le plugin dit alors qu'il n'agit pas.
     return html`<input
       type="text"
       class="param-text"
@@ -32,7 +39,15 @@ export function Control({ parameter, value, onParam }: { parameter: Parameter; v
       placeholder=${parameter.placeholder}
       spellcheck="false"
       value=${value}
-      onInput=${(event: Event) => onParam?.(parameter.key, (event.currentTarget as HTMLInputElement).value)}
+      onInput=${(event: Event) => {
+        const field = event.currentTarget as HTMLInputElement;
+        let send = pending.get(field);
+        if (!send) {
+          send = debounced((handler: ParamHandler | undefined, key: string, text: string) => handler?.(key, text), TEXT_DELAY, schedule);
+          pending.set(field, send);
+        }
+        send(onParam, parameter.key, field.value);
+      }}
     />` as VNode;
   }
   return html`<select value=${value} onChange=${(event: Event) => onParam?.(parameter.key, (event.currentTarget as HTMLSelectElement).value)}>

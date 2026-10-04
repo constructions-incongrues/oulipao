@@ -44,12 +44,12 @@
 
 ## 6. Finitions
 
-- [ ] 6.1 (ui) Envoi différé d'environ 150 ms des paramètres texte (`components/control.ts`) ; test avec une horloge factice : une seule mise à jour pour une rafale de frappes, résultat en moins d'une demi-seconde
-- [ ] 6.2 (ui) Différer `URL.revokeObjectURL` après le clic d'export dans `main.ts`, par une fonction testée
-- [ ] 6.3 (adapters) `lexicon-lookup-tagger.ts` ne garde pas un échec de chargement ; test : échec puis succès au second appel
-- [ ] 6.4 (ui) `test/ui/tracks/recipes.test.ts` compare `recipes.length` à `RECIPES.length` au lieu d'un nombre figé
+- [x] 6.1 (ui) Envoi différé d'environ 150 ms des paramètres texte (`components/control.ts`) ; test avec une horloge factice : une seule mise à jour pour une rafale de frappes, résultat en moins d'une demi-seconde
+- [x] 6.2 (ui) Différer `URL.revokeObjectURL` après le clic d'export dans `main.ts`, par une fonction testée
+- [x] 6.3 (adapters) `lexicon-lookup-tagger.ts` ne garde pas un échec de chargement ; test : échec puis succès au second appel
+- [x] 6.4 (ui) `test/ui/tracks/recipes.test.ts` compare `recipes.length` à `RECIPES.length` au lieu d'un nombre figé
 
 ## 7. Vérification d'ensemble
 
-- [ ] 7.1 `npm run typecheck` et `npm test` verts, couverture ≥ 90 % en lignes, branches et fonctions
+- [x] 7.1 `npm run typecheck` et `npm test` verts, couverture ≥ 90 % en lignes, branches et fonctions
 - [ ] 7.2 Contrôle dans le navigateur (aperçu local) : stockage bloqué, deux onglets, chargement coupé puis relancé, clavier seul, thème sombre, 375, 768 et 1440 px

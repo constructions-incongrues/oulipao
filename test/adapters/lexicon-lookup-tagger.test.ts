@@ -40,3 +40,15 @@ test('le lexique dérivé versionné est conforme et se charge une seule fois', 
   assert.equal((await real.ambiguityPredicate())('ferme'), true);
   assert.equal(reads, 1);
 });
+
+test('un échec de chargement du lexique n’est pas gardé : l’essai suivant le redemande', async () => {
+  let calls = 0;
+  const flaky = new LexiconLookupTagger(async () => {
+    if (calls++ === 0) throw new Error('réseau coupé');
+    return TSV;
+  });
+  await assert.rejects(flaky.tag('le chat'), /réseau coupé/);
+  const words = await flaky.tag('le chat');
+  assert.equal(words.length, 2);
+  assert.equal(calls, 2);
+});
