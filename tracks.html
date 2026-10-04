@@ -146,7 +146,8 @@
   .rack-head { display: flex; flex-wrap: wrap; gap: var(--space-2); justify-content: space-between; align-items: center; padding: var(--space-2) var(--space-3); border-bottom: var(--rule) solid var(--line); }
   .pages { display: flex; gap: var(--space-1); align-items: center; }
   .pages .pos { font-size: var(--size-label); color: var(--ink); min-width: 9ch; text-align: center; }
-  .grid { --strip: 236px; display: grid; grid-template-columns: var(--strip) repeat(var(--per), minmax(0, 1fr)); position: relative; container-type: inline-size; }
+  .grid, .inspector { --strip: 236px; }
+  .grid { display: grid; grid-template-columns: var(--strip) repeat(var(--per), minmax(0, 1fr)); position: relative; container-type: inline-size; }
   .grid > * { border-bottom: var(--rule) solid var(--line); }
   .corner { padding: var(--space-2) var(--space-3); display: flex; align-items: end; }
   .hd { all: unset; box-sizing: border-box; padding: var(--space-2) 2px var(--space-1); text-align: center; border-left: var(--rule) solid var(--line); border-bottom: var(--rule) solid var(--line); cursor: pointer; min-width: 0; }
@@ -183,14 +184,17 @@
   @keyframes sweep { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(calc(100cqw - var(--strip))); } }
 
   /* Inspecteur : une ligne par étape, chaque mot dans sa colonne */
-  .inspector { border: var(--rule) solid var(--line); padding: var(--space-3); overflow-x: auto; } /* une fenêtre trop large défile dans l'inspecteur, pas la page */
+  /* Mêmes colonnes que la grille : la tranche, puis une colonne égale par pas de la page (DESIGN.md, Layout) */
+  .inspector { border: var(--rule) solid var(--line); padding-top: var(--space-3); }
   .inspector:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-  .inspector table { border-collapse: collapse; font: var(--size-ui)/1.4 var(--font-read); }
-  .inspector caption { text-align: left; font: 600 var(--size-ui) var(--font-ui); padding-bottom: var(--space-2); }
+  .inspector table { border-collapse: collapse; table-layout: fixed; width: 100%; font: var(--size-ui)/1.4 var(--font-read); }
+  .inspector col.strip { width: var(--strip); }
+  .inspector caption { text-align: left; font: 600 var(--size-ui) var(--font-ui); padding: 0 var(--space-3) var(--space-2); }
+  .pronunciation, .inspector-help { padding: 0 var(--space-3); }
   .step-state { font-weight: 400; color: var(--muted); }
   .pronunciation { margin: 0 0 var(--space-2); font: var(--size-small) var(--font-mono); }
   .pronunciation .silk { margin-right: var(--space-2); }
-  .inspector th { text-align: left; font: var(--size-small) var(--font-ui); color: var(--muted); padding-right: var(--space-3); white-space: nowrap; }
+  .inspector th { text-align: left; font: var(--size-small) var(--font-ui); color: var(--muted); padding: var(--space-1) var(--space-3); border-bottom: var(--rule) solid var(--line); }
   .lock-field { display: inline-flex; gap: var(--space-1); align-items: center; margin-left: var(--space-2); }
   .lock-field input { width: 3.5rem; }
   .lock-note { margin-left: var(--space-2); color: var(--ink); }
@@ -203,7 +207,7 @@
   .mod-settings summary, .gate summary { cursor: pointer; }
   .mod-settings input[type="number"], .gate input[type="number"] { width: 3.5rem; }
   input[type="text"].param-text.mod-letter { width: 2.5rem; }
-  .inspector td { padding: var(--space-1) var(--space-2); border-bottom: var(--rule) solid var(--line); text-align: center; white-space: nowrap; }
+  .inspector td { padding: var(--space-1) 2px; border-left: var(--rule) solid var(--line); border-bottom: var(--rule) solid var(--line); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .inspector td.chosen { background: var(--paper); font-weight: 600; }
   .inspector-help { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; color: var(--muted); font-size: var(--size-small); }
 
@@ -261,11 +265,10 @@
     /* Au doigt : des touches d'au moins 44 px (les pas, eux, font 48 px de haut et au moins 44 de large à 375 px) */
     button, a.key, label.key, .browser > summary, .retouch > summary { min-height: 44px; }
     .result.stuck .result-scroll { max-height: calc(3 * var(--size-read-compact) * 1.5); }
-    .grid { --strip: 116px; }
+    .grid, .inspector { --strip: 116px; }
     .ch { grid-template-columns: 14px 1fr; padding: var(--space-1) var(--space-2); }
     .ch-keys { grid-column: 1 / -1; }
     .ch .count, .reminder { display: none; }
-    .inspector .far { display: none; }
   }
 </style>
 </head>
