@@ -1,5 +1,5 @@
-import { wordsAtStep } from '../../domain/monitoring.ts';
-import { DEFAULT_PREFERENCES, MonitoringPreferencesSchema, tempoTiming, type MonitoringPreferencesStorage } from '../../ports/monitoring-preferences.ts';
+import { originalWordsAtStep, wordsAtStep } from '../../domain/monitoring.ts';
+import { DEFAULT_PREFERENCES, MonitoringPreferencesSchema, tempoTiming, type MonitoringPreferencesStorage, type VoiceSource } from '../../ports/monitoring-preferences.ts';
 import type { Speech } from '../../ports/speech.ts';
 import type { TracksState } from './controller.ts';
 
@@ -25,12 +25,13 @@ export interface ListeningController {
   toggle(): void;
   setTempo(tempo: number): void;
   setVoice(voice: string): void;
+  setSource(source: VoiceSource): void;
 }
 
-/** Les réglages de l'écoute au démarrage : tempo et voix gardés, voix du système. */
-export function initialListening({ speech, preferences }: ListeningDependencies): Pick<TracksState, 'playing' | 'tempo' | 'voice' | 'voices'> {
+/** Les réglages de l'écoute au démarrage : tempo, voix et source gardés, voix du système. */
+export function initialListening({ speech, preferences }: ListeningDependencies): Pick<TracksState, 'playing' | 'tempo' | 'voice' | 'source' | 'voices'> {
   const saved = preferences?.load() ?? DEFAULT_PREFERENCES;
-  return { playing: false, tempo: saved.tempo, voice: saved.voice, voices: speech?.voices() ?? [] };
+  return { playing: false, tempo: saved.tempo, voice: saved.voice, source: saved.source, voices: speech?.voices() ?? [] };
 }
 
 /** L'écoute : lire la page affichée en boucle, l'arrêter, régler tempo et voix. */
@@ -53,7 +54,11 @@ export function createListeningController(host: ListeningHost, { speech, prefere
       if (at < first || at >= end) at = first; // fin de page, ou page changée : premier pas de la page
       host.update({ playhead: at });
       const { rate, gap } = tempoTiming(host.state.tempo);
-      const words = wordsAtStep(host.state.view!.segments, at);
+      const view = host.state.view!;
+      // La discrépance : la voix dit l'original pendant que la page montre le résultat.
+      const original = host.state.source === 'original';
+      if (original && !host.state.discrepant) host.update({ discrepant: true });
+      const words = original ? originalWordsAtStep(view.stages[0]!.words[at]!.output, view.tracks[at]!, view.audible) : wordsAtStep(view.segments, at);
       if (words.length) await speech!.speak(words, { rate, voice: host.state.voice });
       if (token !== playback) return;
       await sleep(gap);
@@ -61,7 +66,7 @@ export function createListeningController(host: ListeningHost, { speech, prefere
     }
   };
 
-  const save = () => preferences?.save(MonitoringPreferencesSchema.parse({ tempo: host.state.tempo, voice: host.state.voice }));
+  const save = () => preferences?.save(MonitoringPreferencesSchema.parse({ tempo: host.state.tempo, voice: host.state.voice, source: host.state.source }));
 
   speech?.onVoices(() => host.update({ voices: speech.voices() }));
 
@@ -90,6 +95,11 @@ export function createListeningController(host: ListeningHost, { speech, prefere
     setVoice(voice) {
       if (!host.state.voices.some((candidate) => candidate.id === voice)) return;
       host.update({ voice });
+      save();
+    },
+    setSource(source) {
+      if (source !== 'result' && source !== 'original') return;
+      host.update({ source });
       save();
     },
   };

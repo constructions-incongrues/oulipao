@@ -22,9 +22,9 @@ test('les réglages de l’écoute font l’aller-retour sous leur clé ; absent
   const storage = fakeStorage();
   const preferences = createLocalStoragePreferences(storage);
   assert.deepEqual(preferences.load(), DEFAULT_PREFERENCES);
-  preferences.save({ tempo: 4, voice: 'fr-2' });
-  assert.equal(storage.items.get(MONITORING_KEY), '{"tempo":4,"voice":"fr-2"}');
-  assert.deepEqual(preferences.load(), { tempo: 4, voice: 'fr-2' });
+  preferences.save({ tempo: 4, voice: 'fr-2', source: 'original' });
+  assert.equal(storage.items.get(MONITORING_KEY), '{"tempo":4,"voice":"fr-2","source":"original"}');
+  assert.deepEqual(preferences.load(), { tempo: 4, voice: 'fr-2', source: 'original' });
 });
 
 test('une valeur illisible ou hors bornes : les réglages par défaut', () => {
@@ -39,5 +39,14 @@ test('une valeur illisible ou hors bornes : les réglages par défaut', () => {
 test('un stockage refusé : réglages par défaut, et l’enregistrement ne lève pas', () => {
   const preferences = createLocalStoragePreferences(fakeStorage(true));
   assert.deepEqual(preferences.load(), DEFAULT_PREFERENCES);
-  assert.doesNotThrow(() => preferences.save({ tempo: 2 }));
+  assert.doesNotThrow(() => preferences.save({ tempo: 2, source: 'result' }));
+});
+
+test('la source de la voix : absente d’une préférence ancienne ou inconnue, c’est le résultat, sans perdre le reste', () => {
+  const storage = fakeStorage();
+  const preferences = createLocalStoragePreferences(storage);
+  storage.items.set(MONITORING_KEY, '{"tempo":4,"voice":"fr-2"}');
+  assert.deepEqual(preferences.load(), { tempo: 4, voice: 'fr-2', source: 'result' });
+  storage.items.set(MONITORING_KEY, '{"tempo":4,"source":"envers"}');
+  assert.deepEqual(preferences.load(), { tempo: 4, source: 'result' });
 });

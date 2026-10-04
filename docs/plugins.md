@@ -40,6 +40,8 @@ n'est pas dans `tracks`, une contrainte non ciblable ne déclare pas les cinq pi
 | `track-sort` | Tri par piste | les cinq (noms) | `mode` (`remove`, `keep`), `layout` (`as-is`, `one-per-line`) | `src/domain/track-sort/plugin.ts` |
 | `edge` | Bord | non ciblable | `mode` (`ends`, `head-tail`, `inside`), `n` (1 à 9) | `src/domain/edge/plugin.ts` |
 | `lineation` | Mise en vers | non ciblable | `cut` (`every`, `punctuation`, `number`), `n` (1 à 99), `number` (1 à 9 999 999) | `src/domain/lineation/plugin.ts` |
+| `chisel` | Ciselure | non ciblable | `final` (1 à 5), `perTier` (1 à 9) | `src/domain/chisel/plugin.ts` |
+| `body-alphabet` | Alphabet augmenté | non ciblable | `replace` (`punctuation`, `sounds`, `both`) | `src/domain/body-alphabet/plugin.ts` |
 | `rn`, `monorhyme`, `antirhyme`, `homophony`, `rhyme-scheme`, `anterhyme`, `berrychonne` | filtres de rime | noms, adjectifs, verbes, adverbes | voir plus bas | `src/domain/rhyme/` |
 
 La liste fait foi dans `installedPlugins` (`src/ui/tracks/mixer-state.ts`).
@@ -63,7 +65,7 @@ Les positions sont celles du texte que la contrainte reçoit : `runChain` les tr
 mots d'origine (`scopeOf`, `src/domain/plugin-chain.ts`). Un mot d'origine relu en deux mots
 (« du » → « de la ») fait sauter ou verrouiller les deux.
 
-Qui lit quoi aujourd'hui : S+7, lipogramme, Tri par piste et Bord respectent `skip` ; Mise en vers
+Qui lit quoi aujourd'hui : S+7, lipogramme, Tri par piste, Bord, Ciselure et Alphabet augmenté respectent `skip` ; Mise en vers
 ne reçoit pas `scope` (elle ne retire ni ne remplace de mot). Seul le S+7 lit `overrides`. Or
 l'inspecteur propose un verrou pour chaque paramètre entier de chaque instance en marche qui vise
 la piste du mot (`inspectorLocks`, `src/ui/tracks/view-model.ts`) : un verrou posé sur `n` de Bord

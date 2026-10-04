@@ -68,6 +68,10 @@ Deux réserves valent pour tout le niveau A :
 | Étreinte, Rime bisexuelle | B | moteur Schéma de rimes, schémas « étreinte » et « rime bisexuelle » (E2) |
 | Rondel, Villanelle | C | forme à refrain posée après la chaîne, avec le schéma de rimes du même nom : le fondateur écrit les vers neufs, les refrains sont recopiés (E2, E3 en partie) |
 
+Hors du catalogue de l'Oulipo, et donc hors du décompte, deux moteurs lettristes (changement `lettrisme`, 2026-10-04) :
+- la **Ciselure**, d'après le « ciselage » d'Isou : le premier vers reste intact, puis le texte descend vers par vers jusqu'à la lettre et au souffle ;
+- l'**Alphabet augmenté**, d'après les lettres qu'Isou ajoute à l'alphabet : la ponctuation et les sons /s/, /f/ et /k/ deviennent souffles, claquements et sifflements.
+
 **Hors catalogue.** Le moteur R+n (remplacer un mot par le n-ième mot qui rime avec lui) ne correspond à aucune fiche. Il prépare Aphorime et Locurime, qui attendent encore E5.
 
 Familles suivantes, dans l'ordre :

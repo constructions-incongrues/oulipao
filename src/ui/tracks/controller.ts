@@ -6,7 +6,7 @@
 //
 // Les deux contrôleurs lisent et changent l'état par la façade (`host`) ; seule elle le tient.
 import { tagText } from '../../domain/tagging.ts';
-import type { MonitoringPreferencesStorage } from '../../ports/monitoring-preferences.ts';
+import type { MonitoringPreferencesStorage, VoiceSource } from '../../ports/monitoring-preferences.ts';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
 import type { PhoneticsRepository } from '../../ports/phonetics.ts';
 import type { ScaleRepository } from '../../ports/scales.ts';
@@ -130,6 +130,10 @@ export interface TracksState {
   playhead?: number;
   /** L'écoute a tourné depuis la dernière mise en pistes ou réouverture : la mention le dit. */
   listened: boolean;
+  /** Dans le même temps, l'écoute a tourné en disant l'original : la mention dit « écouté en discrépance ». */
+  discrepant: boolean;
+  /** Ce que dit la voix : le texte résultant, ou l'original. */
+  source: VoiceSource;
   /** Le tempo de l'écoute, de 1 à 5, et la voix choisie. */
   tempo: number;
   voice?: string;
@@ -203,6 +207,8 @@ export interface TracksController {
   setTempo(tempo: number): void;
   /** Choisit la voix de l'écoute, à partir du pas suivant. */
   setVoice(voice: string): void;
+  /** Fait dire à la voix le résultat ou l'original (la discrépance), à partir du pas suivant. */
+  setSource(source: VoiceSource): void;
 }
 
 /**
@@ -238,6 +244,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     page: 0,
     pinned: false,
     listened: false,
+    discrepant: false,
     ...initialListening(listeningDependencies),
   };
   let session: Session | undefined;
@@ -279,7 +286,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
 
   /** La mention de la chaîne, avec « réglé en écoutant » si l'écoute a tourné. */
   const mention = (view: TracksView) =>
-    withListening(composeMention(state.lineage?.passes ?? [], ruleBody(ruleMention(state.mixer, view.audible, undefined, view.folded))), state.listened);
+    withListening(composeMention(state.lineage?.passes ?? [], ruleBody(ruleMention(state.mixer, view.audible, undefined, view.folded))), state.listened, state.discrepant);
 
   /**
    * Met en pistes `text` : par la saisie, la filiation tombe ; par « Itérer » ou « Figer », elle
@@ -309,7 +316,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       // Nouvel étiquetage, nouvelles positions : les pas se rouvrent, les verrous tombent, l'inspecteur se ferme.
       const next = reduce(mixer, { type: 'reset-steps' });
       const view = buildView(session, next, morphology!, undefined, verbs, phonetics, scales);
-      update({ tagging: false, editing: false, stale: state.input !== text, mixer: next, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, unsaved: true, listened: false, lineage });
+      update({ tagging: false, editing: false, stale: state.input !== text, mixer: next, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, unsaved: true, listened: false, discrepant: false, lineage });
       wantResources(next);
     } catch (error) {
       if (run === runs) update({ tagging: false, inputMessage: `Échec de l’étiquetage : ${messageOf(error)}. Vous pouvez relancer.` });
@@ -373,7 +380,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
 
   const restoreAs = async (run: number, entry: NotebookEntry) => {
     controller.stop();
-    update({ notebookMessage: '', notebookError: undefined, inputMessage: '', listened: false });
+    update({ notebookMessage: '', notebookError: undefined, inputMessage: '', listened: false, discrepant: false });
     await controller.preload();
     if (run !== runs || !morphology) return;
     const mixer = MixerStateSchema.parse(entry.mixer);
@@ -508,6 +515,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     toggle: listening.toggle,
     setTempo: listening.setTempo,
     setVoice: listening.setVoice,
+    setSource: listening.setSource,
     keep: notebookController.keep,
     iterate: () => nextGeneration(true),
     freeze: () => nextGeneration(false),
