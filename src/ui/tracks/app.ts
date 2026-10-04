@@ -8,6 +8,7 @@ import { ErrorMessage } from './components/error-message.ts';
 import { Notebook } from './components/notebook.ts';
 import { Result } from './components/result.ts';
 import { Source } from './components/source.ts';
+import { exampleOf } from './examples.ts';
 import { StepGrid } from './components/step-grid.ts';
 import { ThemeToggle } from './components/theme-toggle.ts';
 import { Transport } from './components/transport.ts';
@@ -27,7 +28,7 @@ export interface AppProps {
   state: TracksState;
   controller: Pick<
     TracksController,
-    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'iterate' | 'freeze' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook' | 'copyEntry' | 'editEntry' | 'toggle' | 'setTempo' | 'setVoice'
+    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'loadScales' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'iterate' | 'freeze' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook' | 'copyEntry' | 'editEntry' | 'toggle' | 'setTempo' | 'setVoice'
   >;
   /** Bascule le thème clair ou sombre ; posé par le montage, qui seul touche au document. */
   onTheme?: () => void;
@@ -57,6 +58,7 @@ function reminderName(instance: Instance): string {
 
 export function App({ state, controller, onTheme = () => {}, version, today = new Date() }: AppProps): VNode {
   const { mixer, view, stale } = state;
+  const example = exampleOf(state.input);
   const release = versionLink(version);
   const audible = view?.audible ?? audibleCategories(mixer.tracks);
   const words = view?.stages[0]!.words.map((word) => word.output) ?? [];
@@ -125,7 +127,8 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
         input=${state.input}
         words=${view ? Object.values(view.counts).reduce((a, b) => a + b, 0) : 0}
         editing=${state.editing}
-        started=${view !== undefined}
+        exampleLabel=${!state.input.trim() || example ? (state.examplesShown ? 'Autre exemple' : 'Essayer avec un exemple') : undefined}
+        example=${example}
         tagging=${state.tagging}
         message=${state.inputMessage}
         model=${state.model}
@@ -140,6 +143,7 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
       <p class="summary" role="status" aria-live="polite">${view ? summarize(mixer, view) : ''}</p>
       <${Fetching} loading=${state.verbs} label="Chargement des verbes…" onRetry=${() => void controller.loadVerbs()} />
       <${Fetching} loading=${state.phonetics} label="Chargement des prononciations…" onRetry=${() => void controller.loadPhonetics()} />
+      <${Fetching} loading=${state.scales} label="Chargement des échelles…" onRetry=${() => void controller.loadScales()} />
       <${Chain} instances=${mixer.instances} plugins=${installedPlugins} recipes=${recipes} lookup=${pluginById} dispatch=${controller.dispatch} />
       ${view &&
       html`<${Transport}

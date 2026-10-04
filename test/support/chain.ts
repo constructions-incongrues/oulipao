@@ -9,3 +9,7 @@ export const SEED: readonly MixerAction[] = [
 ];
 
 export const seededState = SEED.reduce(reduce, initialState);
+
+/** Le texte de travail des tests de la page : ses noms sont connus du lexique factice. */
+export const SAMPLE_TEXT =
+  "Le matin où la vieille horloge du village s'arrêta, personne ne le remarqua vraiment. Le boulanger ouvrit sa boutique à l'heure habituelle, les enfants coururent vers l'école, et le chat du notaire dormit au soleil sur le mur de la mairie.";

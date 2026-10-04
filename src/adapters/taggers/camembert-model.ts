@@ -8,6 +8,11 @@
 import type { LabelledPiece, PieceClassifier } from './camembert-tagger.ts';
 
 const MODEL = 'Xenova/french-camembert-postag-model';
+/**
+ * La révision des poids, figée : le dépôt appartient à un tiers, et sa branche `main` peut changer
+ * sans prévenir. Relevée le 2026-10-04 ; dernière modification du dépôt le 2024-10-08.
+ */
+export const MODEL_REVISION = '39f044ac95da4c5fd3832cbc5658c027fc027127';
 const LIBRARY =
   typeof window === 'undefined'
     ? '@huggingface/transformers'
@@ -36,14 +41,21 @@ interface ProgressInfo {
   total?: number;
 }
 
-export function createCamembertClassifier(): CamembertClassifier {
+/** Ce que le chargement demande à Transformers.js : remplacé dans les tests pour vérifier les options. */
+export interface TransformersLibrary {
+  AutoTokenizer: { from_pretrained(model: string, options?: object): Promise<unknown> };
+  AutoModelForTokenClassification: { from_pretrained(model: string, options?: object): Promise<unknown> };
+}
+
+export function createCamembertClassifier(importLibrary: () => Promise<TransformersLibrary> = () => import(/* @vite-ignore */ LIBRARY)): CamembertClassifier {
   let loaded: Promise<Loaded> | undefined;
   const load = (onProgress?: (loaded: number, total: number) => void) =>
     (loaded ??= (async () => {
-      const { AutoTokenizer, AutoModelForTokenClassification } = await import(/* @vite-ignore */ LIBRARY);
+      const { AutoTokenizer, AutoModelForTokenClassification } = await importLibrary();
       const [tokenizer, model] = await Promise.all([
-        AutoTokenizer.from_pretrained(MODEL),
+        AutoTokenizer.from_pretrained(MODEL, { revision: MODEL_REVISION }),
         AutoModelForTokenClassification.from_pretrained(MODEL, {
+          revision: MODEL_REVISION,
           dtype: 'q8',
           progress_callback: (info: ProgressInfo) => {
             if (info.status === 'progress_total') onProgress?.(info.loaded ?? 0, info.total ?? 0);

@@ -1,0 +1,6478 @@
+{
+ "categories": [
+  "noun",
+  "verb",
+  "adjective",
+  "adverb",
+  "other"
+ ],
+ "entries": 527934,
+ "sample": [
+  {
+   "form": "açaï",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "a.saj",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "a.saj"
+   ],
+   "homophones": [
+    "açaï",
+    "açaïs"
+   ],
+   "rhyming": 287,
+   "rhymingHead": [
+    "açaï",
+    "açaïs",
+    "écaille",
+    "écailles",
+    "accordailles",
+    "aiguail",
+    "aiguails",
+    "ails",
+    "antiquaille",
+    "antiquailles"
+   ],
+   "ending": 287
+  },
+  {
+   "form": "abrégeassions",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "a.bʁe.ʒa.sjɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "a.bʁe.ʒa.sjɔ̃"
+   ],
+   "homophones": [
+    "abrégeassions"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 24205
+  },
+  {
+   "form": "accomplit",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "a.kɔ̃.pli",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "a.kɔ̃.pli"
+   ],
+   "homophones": [
+    "accompli",
+    "accomplie",
+    "accomplies",
+    "accomplis",
+    "accomplit",
+    "accomplît"
+   ],
+   "rhyming": 4413,
+   "rhymingHead": [
+    "abêtît",
+    "abêties",
+    "abêtie",
+    "abêtis",
+    "abêtit",
+    "abêti",
+    "ébahît",
+    "ébahies",
+    "ébahie",
+    "ébahis"
+   ],
+   "ending": 295
+  },
+  {
+   "form": "aciérages",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "a.sje.ʁaʒ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "a.sje.ʁaʒ"
+   ],
+   "homophones": [
+    "aciérage",
+    "aciérages"
+   ],
+   "rhyming": 4096,
+   "rhymingHead": [
+    "aérage",
+    "aérages",
+    "aérosondage",
+    "aérosondages",
+    "ébarbage",
+    "ébarbages",
+    "abatages",
+    "abattage",
+    "abattages",
+    "ébauchage"
+   ],
+   "ending": 4096
+  },
+  {
+   "form": "éculeront",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "e.ky.lə.ʁɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "e.ky.lə.ʁɔ̃"
+   ],
+   "homophones": [
+    "éculerons",
+    "éculeront"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 17961
+  },
+  {
+   "form": "affectionnâmes",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "a.fɛk.sjɔ.nam",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "a.fɛk.sjɔ.nam"
+   ],
+   "homophones": [
+    "affectionnâmes"
+   ],
+   "rhyming": 7526,
+   "rhymingHead": [
+    "aérâmes",
+    "aérosolisâmes",
+    "abéchâmes",
+    "abaissâmes",
+    "abîmâmes",
+    "abandonnâmes",
+    "abéquâmes",
+    "ébarbâmes",
+    "ébauchâmes",
+    "ébavurâmes"
+   ],
+   "ending": 7526
+  },
+  {
+   "form": "agrafassent",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "a.gʁa.fas",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "a.gʁa.fas"
+   ],
+   "homophones": [
+    "agrafasse",
+    "agrafassent",
+    "agrafasses"
+   ],
+   "rhyming": 22531,
+   "rhymingHead": [
+    "aérassent",
+    "aérasses",
+    "aérasse",
+    "aérosolisassent",
+    "aérosolisasses",
+    "aérosolisasse",
+    "abéchassent",
+    "abéchasses",
+    "abéchasse",
+    "abaissassent"
+   ],
+   "ending": 22531
+  },
+  {
+   "form": "alésé",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "a.le.ze",
+     "guessed": false
+    },
+    {
+     "ipa": "a.le.ze",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "a.le.ze"
+   ],
+   "homophones": [
+    "alésai",
+    "alésé",
+    "alésée",
+    "alésées",
+    "aléser",
+    "alésés",
+    "alésez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 6661
+  },
+  {
+   "form": "élucidait",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "e.ly.si.dɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "e.ly.si.dɛ"
+   ],
+   "homophones": [
+    "élucidaient",
+    "élucidais",
+    "élucidait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 1089
+  },
+  {
+   "form": "amorce",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "a.mɔʁs",
+     "guessed": false
+    },
+    {
+     "ipa": "a.mɔʁs",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "a.mɔʁs"
+   ],
+   "homophones": [
+    "amorce",
+    "amorces"
+   ],
+   "rhyming": 24,
+   "rhymingHead": [
+    "écorce",
+    "écorces",
+    "amorce",
+    "amorces",
+    "Corse",
+    "corse",
+    "détorse",
+    "détorses",
+    "divorce",
+    "divorces"
+   ],
+   "ending": 120
+  },
+  {
+   "form": "annellerons",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "a.nɛ.lʁɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "a.nɛ.lʁɔ̃"
+   ],
+   "homophones": [
+    "annellerons",
+    "annelleront"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 17961
+  },
+  {
+   "form": "épaulons",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "e.po.lɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "e.po.lɔ̃"
+   ],
+   "homophones": [
+    "épaulons"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 663
+  },
+  {
+   "form": "appelleras",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "a.pɛ.lʁa",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "a.pɛ.lʁa"
+   ],
+   "homophones": [
+    "appellera",
+    "appelleras"
+   ],
+   "rhyming": 39940,
+   "rhymingHead": [
+    "aéras",
+    "aérât",
+    "aéra",
+    "aèreras",
+    "aèrera",
+    "aérosolisas",
+    "aérosolisât",
+    "aérosolisa",
+    "aérosoliseras",
+    "aérosolisera"
+   ],
+   "ending": 19177
+  },
+  {
+   "form": "architectura",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "aʁ.ʃi.tɛk.ty.ʁa",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "aʁ.ʃi.tɛk.ty.ʁa"
+   ],
+   "homophones": [
+    "architectura",
+    "architecturas",
+    "architecturât"
+   ],
+   "rhyming": 39940,
+   "rhymingHead": [
+    "aéras",
+    "aérât",
+    "aéra",
+    "aèreras",
+    "aèrera",
+    "aérosolisas",
+    "aérosolisât",
+    "aérosolisa",
+    "aérosoliseras",
+    "aérosolisera"
+   ],
+   "ending": 19177
+  },
+  {
+   "form": "asphaltage",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "a.sfal.taʒ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "a.sfal.taʒ"
+   ],
+   "homophones": [
+    "asphaltage"
+   ],
+   "rhyming": 4096,
+   "rhymingHead": [
+    "aérage",
+    "aérages",
+    "aérosondage",
+    "aérosondages",
+    "ébarbage",
+    "ébarbages",
+    "abatages",
+    "abattage",
+    "abattages",
+    "ébauchage"
+   ],
+   "ending": 4096
+  },
+  {
+   "form": "étayent",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "e.tɛj",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "e.tɛj"
+   ],
+   "homophones": [
+    "étaye",
+    "étayent",
+    "étayes"
+   ],
+   "rhyming": 184,
+   "rhymingHead": [
+    "égayent",
+    "égayes",
+    "égaye",
+    "émerveillent",
+    "émerveilles",
+    "émerveille",
+    "appareillent",
+    "appareilles",
+    "appareille",
+    "érayent"
+   ],
+   "ending": 184
+  },
+  {
+   "form": "attribuer",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "a.tʁi.bɥe",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "a.tʁi.bɥe"
+   ],
+   "homophones": [
+    "attribuai",
+    "attribué",
+    "attribuée",
+    "attribuées",
+    "attribuer",
+    "attribués",
+    "attribuez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 504
+  },
+  {
+   "form": "évaporassiez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "e.va.pɔ.ʁa.sje",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "e.va.pɔ.ʁa.sje"
+   ],
+   "homophones": [
+    "évaporassiez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 28228
+  },
+  {
+   "form": "badez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ba.de",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ba.de"
+   ],
+   "homophones": [
+    "badai",
+    "badé",
+    "badée",
+    "badées",
+    "bader",
+    "badés",
+    "badez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 2111
+  },
+  {
+   "form": "banqueroutes",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "bɑ̃k.ʁut",
+     "guessed": false
+    },
+    {
+     "ipa": "bɑ̃k.ʁut",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "bɑ̃k.ʁut"
+   ],
+   "homophones": [
+    "banqueroute",
+    "banqueroutes"
+   ],
+   "rhyming": 241,
+   "rhymingHead": [
+    "aboutent",
+    "éboutent",
+    "aboutes",
+    "éboutes",
+    "aboute",
+    "éboute",
+    "absoutes",
+    "absoute",
+    "écoutent",
+    "écoutes"
+   ],
+   "ending": 241
+  },
+  {
+   "form": "baye",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "baj",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "baj"
+   ],
+   "homophones": [
+    "baille",
+    "bailles",
+    "baye",
+    "bayent",
+    "bayes"
+   ],
+   "rhyming": 198,
+   "rhymingHead": [
+    "égaillent",
+    "égailles",
+    "égaille",
+    "aillent",
+    "ailles",
+    "aille",
+    "émaillent",
+    "émailles",
+    "émaille",
+    "équivaillent"
+   ],
+   "ending": 198
+  },
+  {
+   "form": "birmans",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "biʁ.mɑ̃",
+     "guessed": false
+    },
+    {
+     "ipa": "biʁ.mɑ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "biʁ.mɑ̃"
+   ],
+   "homophones": [
+    "birman",
+    "birmans"
+   ],
+   "rhyming": 5034,
+   "rhymingHead": [
+    "abêtissement",
+    "abêtissements",
+    "ébahissement",
+    "ébahissements",
+    "abaissement",
+    "abaissements",
+    "abandonnement",
+    "abandonnements",
+    "abasourdissement",
+    "abasourdissements"
+   ],
+   "ending": 2680
+  },
+  {
+   "form": "bolchévisait",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "bɔl.ʃe.vi.zɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "bɔl.ʃe.vi.zɛ"
+   ],
+   "homophones": [
+    "bolchévisaient",
+    "bolchévisais",
+    "bolchévisait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 3073
+  },
+  {
+   "form": "bouquin",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "bu.kɛ̃",
+     "guessed": false
+    },
+    {
+     "ipa": "bu.kɛ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "bu.kɛ̃"
+   ],
+   "homophones": [
+    "bouquin",
+    "bouquins"
+   ],
+   "rhyming": 2445,
+   "rhymingHead": [
+    "aalénien",
+    "aaléniens",
+    "aérien",
+    "aériens",
+    "abéliens",
+    "abbevillien",
+    "abbevilliens",
+    "abiétins",
+    "éburnéen",
+    "éburnéens"
+   ],
+   "ending": 133
+  },
+  {
+   "form": "bridgeant",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "bʁid.ʒɑ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "bʁid.ʒɑ̃"
+   ],
+   "homophones": [
+    "bridgeant"
+   ],
+   "rhyming": 8371,
+   "rhymingHead": [
+    "aérant",
+    "aérosolisant",
+    "abêtissant",
+    "abéchant",
+    "ébahissant",
+    "abaissant",
+    "abîmant",
+    "abandonnant",
+    "abéquant",
+    "ébarbant"
+   ],
+   "ending": 232
+  },
+  {
+   "form": "butez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "by.te",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "by.te"
+   ],
+   "homophones": [
+    "butai",
+    "buté",
+    "butée",
+    "butées",
+    "buter",
+    "butés",
+    "butez",
+    "buttai",
+    "butté",
+    "buttée",
+    "buttées",
+    "butter",
+    "buttés",
+    "buttez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 7675
+  },
+  {
+   "form": "calculer",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "kal.ky.le",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "kal.ky.le"
+   ],
+   "homophones": [
+    "calculai",
+    "calculé",
+    "calculée",
+    "calculées",
+    "calculer",
+    "calculés",
+    "calculez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 4421
+  },
+  {
+   "form": "capitalisé",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ka.pi.ta.li.ze",
+     "guessed": false
+    },
+    {
+     "ipa": "ka.pi.ta.li.ze",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ka.pi.ta.li.ze"
+   ],
+   "homophones": [
+    "capitalisai",
+    "capitalisé",
+    "capitalisée",
+    "capitalisées",
+    "capitaliser",
+    "capitalisés",
+    "capitalisez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 6661
+  },
+  {
+   "form": "cascade",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "kas.kad",
+     "guessed": false
+    },
+    {
+     "ipa": "kas.kad",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "kas.kad"
+   ],
+   "homophones": [
+    "cascade",
+    "cascadent",
+    "cascades"
+   ],
+   "rhyming": 119,
+   "rhymingHead": [
+    "accoladent",
+    "accolades",
+    "accolade",
+    "œillades",
+    "œillade",
+    "aubades",
+    "aubade",
+    "évadent",
+    "évades",
+    "évade"
+   ],
+   "ending": 119
+  },
+  {
+   "form": "chakra",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "ʃa.kʁa",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʃa.kʁa"
+   ],
+   "homophones": [
+    "chakra",
+    "chakras"
+   ],
+   "rhyming": 3698,
+   "rhymingHead": [
+    "aa",
+    "aérostat",
+    "aérostats",
+    "aas",
+    "êta",
+    "êtas",
+    "abaca",
+    "abacas",
+    "abat",
+    "ébat"
+   ],
+   "ending": 427
+  },
+  {
+   "form": "chatterai",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "tʃa.tə.ʁe",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "tʃa.tə.ʁe"
+   ],
+   "homophones": [
+    "chatterai",
+    "chatterez",
+    "tchatterai",
+    "tchatterez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 21124
+  },
+  {
+   "form": "chorégraphieraient",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "kɔ.ʁe.gʁa.fi.ʁɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "kɔ.ʁe.gʁa.fi.ʁɛ"
+   ],
+   "homophones": [
+    "chorégraphieraient",
+    "chorégraphierais",
+    "chorégraphierait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 28583
+  },
+  {
+   "form": "clapserions",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "klap.sə.ʁjɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "klap.sə.ʁjɔ̃"
+   ],
+   "homophones": [
+    "clapserions"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 24205
+  },
+  {
+   "form": "cocotterait",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "kɔ.kɔ.tə.ʁɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "kɔ.kɔ.tə.ʁɛ"
+   ],
+   "homophones": [
+    "cocoteraient",
+    "cocoterais",
+    "cocoterait",
+    "cocotteraient",
+    "cocotterais",
+    "cocotterait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 28583
+  },
+  {
+   "form": "commentais",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "kɔ.mɑ̃.tɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "kɔ.mɑ̃.tɛ"
+   ],
+   "homophones": [
+    "commentaient",
+    "commentais",
+    "commentait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 3647
+  },
+  {
+   "form": "conchoïde",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "kɔ̃.kɔ.id",
+     "guessed": false
+    },
+    {
+     "ipa": "kɔ̃.kɔ.id",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "kɔ̃.kɔ.id"
+   ],
+   "homophones": [
+    "conchoïde"
+   ],
+   "rhyming": 850,
+   "rhymingHead": [
+    "Aïd",
+    "abside",
+    "absides",
+    "acaricide",
+    "acaricides",
+    "acaride",
+    "acarides",
+    "acétamide",
+    "acétamides",
+    "échinide"
+   ],
+   "ending": 850
+  },
+  {
+   "form": "conservations",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "kɔ̃.sɛʁ.va.sjɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "kɔ̃.sɛʁ.va.sjɔ̃"
+   ],
+   "homophones": [
+    "conservation",
+    "conservations"
+   ],
+   "rhyming": 9082,
+   "rhymingHead": [
+    "aération",
+    "aérations",
+    "aérodistorsion",
+    "aérostation",
+    "aérostations",
+    "abandon",
+    "abandons",
+    "ébauchons",
+    "abdication",
+    "abdications"
+   ],
+   "ending": 4100
+  },
+  {
+   "form": "contrefilets",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "kɔ̃.tʁə.fi.lɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "kɔ̃.tʁə.fi.lɛ"
+   ],
+   "homophones": [
+    "contrefilet",
+    "contrefilets"
+   ],
+   "rhyming": 1519,
+   "rhymingHead": [
+    "abcès",
+    "ableret",
+    "ablerets",
+    "abstrait",
+    "abstraits",
+    "accès",
+    "écossais",
+    "acquêt",
+    "acquêts",
+    "adret"
+   ],
+   "ending": 317
+  },
+  {
+   "form": "corédiger",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ko.ʁe.di.ʒe",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ko.ʁe.di.ʒe"
+   ],
+   "homophones": [
+    "corédigé",
+    "corédigeai",
+    "corédigée",
+    "corédigées",
+    "corédiger",
+    "corédigés",
+    "corédigez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 1560
+  },
+  {
+   "form": "courtier",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "kuʁtje",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "kuʁtje"
+   ],
+   "homophones": [
+    "courtier",
+    "courtiers"
+   ],
+   "rhyming": 9383,
+   "rhymingHead": [
+    "aînée",
+    "aînées",
+    "aîné",
+    "aînés",
+    "aéroélasticité",
+    "aérostier",
+    "aérostiers",
+    "abée",
+    "abées",
+    "abatée"
+   ],
+   "ending": 1635
+  },
+  {
+   "form": "crevât",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "kʁə.va",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "kʁə.va"
+   ],
+   "homophones": [
+    "creva",
+    "crevas",
+    "crevât"
+   ],
+   "rhyming": 39940,
+   "rhymingHead": [
+    "aéras",
+    "aérât",
+    "aéra",
+    "aèreras",
+    "aèrera",
+    "aérosolisas",
+    "aérosolisât",
+    "aérosolisa",
+    "aérosoliseras",
+    "aérosolisera"
+   ],
+   "ending": 377
+  },
+  {
+   "form": "curiethérapie",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "ky.ʁi.te.ʁa.pi",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ky.ʁi.te.ʁa.pi"
+   ],
+   "homophones": [
+    "curiethérapie",
+    "curiethérapies"
+   ],
+   "rhyming": 9912,
+   "rhymingHead": [
+    "aï",
+    "aïoli",
+    "aïolis",
+    "aérocolie",
+    "aérogastrie",
+    "aérologie",
+    "aérologies",
+    "aéromancie",
+    "aéropathie",
+    "aérophagie"
+   ],
+   "ending": 489
+  },
+  {
+   "form": "débourbez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "de.buʁ.be",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.buʁ.be"
+   ],
+   "homophones": [
+    "débourbai",
+    "débourbé",
+    "débourbée",
+    "débourbées",
+    "débourber",
+    "débourbés",
+    "débourbez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 469
+  },
+  {
+   "form": "décentreras",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "de.sɑ̃.tʁə.ʁa",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.sɑ̃.tʁə.ʁa"
+   ],
+   "homophones": [
+    "décentrera",
+    "décentreras"
+   ],
+   "rhyming": 39940,
+   "rhymingHead": [
+    "aéras",
+    "aérât",
+    "aéra",
+    "aèreras",
+    "aèrera",
+    "aérosolisas",
+    "aérosolisât",
+    "aérosolisa",
+    "aérosoliseras",
+    "aérosolisera"
+   ],
+   "ending": 19177
+  },
+  {
+   "form": "décommettrai",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "de.kɔ.mɛ.tʁe",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.kɔ.mɛ.tʁe"
+   ],
+   "homophones": [
+    "décommettrai",
+    "décommettrez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 21124
+  },
+  {
+   "form": "décroitras",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "de.kʁwa.tʁa",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.kʁwa.tʁa"
+   ],
+   "homophones": [
+    "décroitra",
+    "décroîtra",
+    "décroitras",
+    "décroîtras"
+   ],
+   "rhyming": 39940,
+   "rhymingHead": [
+    "aéras",
+    "aérât",
+    "aéra",
+    "aèreras",
+    "aèrera",
+    "aérosolisas",
+    "aérosolisât",
+    "aérosolisa",
+    "aérosoliseras",
+    "aérosolisera"
+   ],
+   "ending": 19177
+  },
+  {
+   "form": "défoliassions",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "de.fɔ.lja.sjɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.fɔ.lja.sjɔ̃"
+   ],
+   "homophones": [
+    "défoliassions"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 24205
+  },
+  {
+   "form": "dégraisserais",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "de.gʁɛ.sə.ʁɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.gʁɛ.sə.ʁɛ"
+   ],
+   "homophones": [
+    "dégraisseraient",
+    "dégraisserais",
+    "dégraisserait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 28583
+  },
+  {
+   "form": "délitage",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "de.li.taʒ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.li.taʒ"
+   ],
+   "homophones": [
+    "délitage",
+    "délitages"
+   ],
+   "rhyming": 4096,
+   "rhymingHead": [
+    "aérage",
+    "aérages",
+    "aérosondage",
+    "aérosondages",
+    "ébarbage",
+    "ébarbages",
+    "abatages",
+    "abattage",
+    "abattages",
+    "ébauchage"
+   ],
+   "ending": 4096
+  },
+  {
+   "form": "démontai",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "de.mɔ̃.te",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.mɔ̃.te"
+   ],
+   "homophones": [
+    "démontai",
+    "démonté",
+    "démontée",
+    "démontées",
+    "démonter",
+    "démontés",
+    "démontez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 7675
+  },
+  {
+   "form": "dépénalises",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "de.pe.na.liz",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.pe.na.liz"
+   ],
+   "homophones": [
+    "dépénalise",
+    "dépénalisent",
+    "dépénalises"
+   ],
+   "rhyming": 2558,
+   "rhymingHead": [
+    "aérosolisent",
+    "aérosolises",
+    "aérosolise",
+    "absolutisent",
+    "absolutises",
+    "absolutise",
+    "accessoirisent",
+    "accessoirises",
+    "accessoirise",
+    "achromatisent"
+   ],
+   "ending": 2558
+  },
+  {
+   "form": "dépotai",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "de.po.te",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.po.te"
+   ],
+   "homophones": [
+    "dépotai",
+    "dépoté",
+    "dépotée",
+    "dépotées",
+    "dépoter",
+    "dépotés",
+    "dépotez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 7675
+  },
+  {
+   "form": "déséchouage",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "de.ze.ʃu.aʒ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.ze.ʃu.aʒ"
+   ],
+   "homophones": [
+    "déséchouage"
+   ],
+   "rhyming": 4096,
+   "rhymingHead": [
+    "aérage",
+    "aérages",
+    "aérosondage",
+    "aérosondages",
+    "ébarbage",
+    "ébarbages",
+    "abatages",
+    "abattage",
+    "abattages",
+    "ébauchage"
+   ],
+   "ending": 4096
+  },
+  {
+   "form": "déscolarisée",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "de.skɔ.la.ʁi.ze",
+     "guessed": false
+    },
+    {
+     "ipa": "de.skɔ.la.ʁi.ze",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.skɔ.la.ʁi.ze"
+   ],
+   "homophones": [
+    "déscolarisai",
+    "déscolarisé",
+    "déscolarisée",
+    "déscolarisées",
+    "déscolariser",
+    "déscolarisés",
+    "déscolarisez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 6661
+  },
+  {
+   "form": "déshonnêtes",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "de.zɔ.nɛt",
+     "guessed": false
+    },
+    {
+     "ipa": "de.zɔ.nɛt",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.zɔ.nɛt"
+   ],
+   "homophones": [
+    "déshonnête",
+    "déshonnêtes"
+   ],
+   "rhyming": 236,
+   "rhymingHead": [
+    "abstraites",
+    "aigrelette",
+    "aigrelettes",
+    "aigrette",
+    "aigrettes",
+    "alphabète",
+    "alphabètes",
+    "analphabète",
+    "bête",
+    "bébête"
+   ],
+   "ending": 236
+  },
+  {
+   "form": "désunissant",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "de.zy.ni.sɑ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.zy.ni.sɑ̃"
+   ],
+   "homophones": [
+    "désunissant"
+   ],
+   "rhyming": 8371,
+   "rhymingHead": [
+    "aérant",
+    "aérosolisant",
+    "abêtissant",
+    "abéchant",
+    "ébahissant",
+    "abaissant",
+    "abîmant",
+    "abandonnant",
+    "abéquant",
+    "ébarbant"
+   ],
+   "ending": 871
+  },
+  {
+   "form": "déverguait",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "de.vɛʁ.gɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.vɛʁ.gɛ"
+   ],
+   "homophones": [
+    "déverguaient",
+    "déverguais",
+    "déverguait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 282
+  },
+  {
+   "form": "destitueraient",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "dɛs.ti.ty.ʁɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "dɛs.ti.ty.ʁɛ"
+   ],
+   "homophones": [
+    "destitueraient",
+    "destituerais",
+    "destituerait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 28583
+  },
+  {
+   "form": "discompteur",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "diskɔ̃.p.tœʁ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "diskɔ̃.p.tœʁ"
+   ],
+   "homophones": [
+    "discompteur",
+    "discompteurs"
+   ],
+   "rhyming": 3355,
+   "rhymingHead": [
+    "aérateur",
+    "aérateurs",
+    "aérogénérateur",
+    "aérogénérateurs",
+    "aéroglisseur",
+    "aéroglisseurs",
+    "aéromoteur",
+    "aéromoteurs",
+    "abaisseur",
+    "abaisseurs"
+   ],
+   "ending": 3355
+  },
+  {
+   "form": "dodelineraient",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "dɔd.li.nə.ʁɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "dɔd.li.nə.ʁɛ"
+   ],
+   "homophones": [
+    "dodelineraient",
+    "dodelinerais",
+    "dodelinerait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 28583
+  },
+  {
+   "form": "durent",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "dyʁ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "dyʁ"
+   ],
+   "homophones": [
+    "dure",
+    "durent",
+    "dures"
+   ],
+   "rhyming": 499,
+   "rhymingHead": [
+    "ébavurent",
+    "ébavures",
+    "ébavure",
+    "abjurent",
+    "abjures",
+    "abjure",
+    "absolurent",
+    "accoururent",
+    "accrurent",
+    "acculturent"
+   ],
+   "ending": 499
+  },
+  {
+   "form": "embouchés",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ɑ̃.bu.ʃe",
+     "guessed": false
+    },
+    {
+     "ipa": "ɑ̃.bu.ʃe",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ɑ̃.bu.ʃe"
+   ],
+   "homophones": [
+    "embouchai",
+    "embouché",
+    "embouchée",
+    "embouchées",
+    "emboucher",
+    "embouchés",
+    "embouchez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 1575
+  },
+  {
+   "form": "empattera",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ɑ̃.pa.tə.ʁa",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ɑ̃.pa.tə.ʁa"
+   ],
+   "homophones": [
+    "empâtera",
+    "empâteras",
+    "empattera",
+    "empatteras"
+   ],
+   "rhyming": 39940,
+   "rhymingHead": [
+    "aéras",
+    "aérât",
+    "aéra",
+    "aèreras",
+    "aèrera",
+    "aérosolisas",
+    "aérosolisât",
+    "aérosolisa",
+    "aérosoliseras",
+    "aérosolisera"
+   ],
+   "ending": 19177
+  },
+  {
+   "form": "enchaperonnasse",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ɑ̃.ʃap.ʁɔ.nas",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ɑ̃.ʃap.ʁɔ.nas"
+   ],
+   "homophones": [
+    "enchaperonnasse",
+    "enchaperonnassent",
+    "enchaperonnasses"
+   ],
+   "rhyming": 22531,
+   "rhymingHead": [
+    "aérassent",
+    "aérasses",
+    "aérasse",
+    "aérosolisassent",
+    "aérosolisasses",
+    "aérosolisasse",
+    "abéchassent",
+    "abéchasses",
+    "abéchasse",
+    "abaissassent"
+   ],
+   "ending": 22531
+  },
+  {
+   "form": "enferreront",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ɑ̃.fɛ.ʁə.ʁɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ɑ̃.fɛ.ʁə.ʁɔ̃"
+   ],
+   "homophones": [
+    "enferrerons",
+    "enferreront"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 17961
+  },
+  {
+   "form": "enjuiveraient",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ɑ̃.ʒɥi.və.ʁɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ɑ̃.ʒɥi.və.ʁɛ"
+   ],
+   "homophones": [
+    "enjuiveraient",
+    "enjuiverais",
+    "enjuiverait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 28583
+  },
+  {
+   "form": "entaillions",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ɑ̃.ta.jɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ɑ̃.ta.jɔ̃"
+   ],
+   "homophones": [
+    "entaillions",
+    "entaillons"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 24205
+  },
+  {
+   "form": "enveloppait",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ɑ̃.vlɔ.pɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ɑ̃.vlɔ.pɛ"
+   ],
+   "homophones": [
+    "enveloppaient",
+    "enveloppais",
+    "enveloppait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 503
+  },
+  {
+   "form": "essuyons",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "e.sɥi.jɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "e.sɥi.jɔ̃"
+   ],
+   "homophones": [
+    "essuyions",
+    "essuyons"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 24205
+  },
+  {
+   "form": "exhérèderons",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ɛg.ze.ʁɛ.də.ʁɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ɛg.ze.ʁɛ.də.ʁɔ̃"
+   ],
+   "homophones": [
+    "exhérèderons",
+    "exhérèderont"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 17961
+  },
+  {
+   "form": "fête",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "fɛt",
+     "guessed": false
+    },
+    {
+     "ipa": "fɛt",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "fɛt"
+   ],
+   "homophones": [
+    "faîte",
+    "faîtes",
+    "FET",
+    "fête",
+    "fêtes"
+   ],
+   "rhyming": 1740,
+   "rhymingHead": [
+    "ablette",
+    "ablettes",
+    "absinthes",
+    "échauguettes",
+    "éclairette",
+    "affichette",
+    "affichettes",
+    "agamète",
+    "agapète",
+    "aiglette"
+   ],
+   "ending": 1740
+  },
+  {
+   "form": "fauconniez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "fo.kɔ.nje",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "fo.kɔ.nje"
+   ],
+   "homophones": [
+    "fauconniez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 28228
+  },
+  {
+   "form": "filochions",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "fi.lɔ.ʃjɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "fi.lɔ.ʃjɔ̃"
+   ],
+   "homophones": [
+    "filochions"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 24205
+  },
+  {
+   "form": "fluidisait",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "flɥi.di.zɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "flɥi.di.zɛ"
+   ],
+   "homophones": [
+    "fluidisaient",
+    "fluidisais",
+    "fluidisait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 3073
+  },
+  {
+   "form": "fourgue",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "fuʁg",
+     "guessed": false
+    },
+    {
+     "ipa": "fuʁg",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "fuʁg"
+   ],
+   "homophones": [
+    "fourgue",
+    "fourgues"
+   ],
+   "rhyming": 6,
+   "rhymingHead": [
+    "fourgue",
+    "fourgues",
+    "limbourg",
+    "Limbourg",
+    "mecklembourg",
+    "Mecklembourg"
+   ],
+   "ending": 48
+  },
+  {
+   "form": "froissaient",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "fʁwa.sɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "fʁwa.sɛ"
+   ],
+   "homophones": [
+    "froissaient",
+    "froissais",
+    "froissait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 2594
+  },
+  {
+   "form": "gambergerais",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "gɑ̃.bɛʁ.ʒə.ʁɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "gɑ̃.bɛʁ.ʒə.ʁɛ"
+   ],
+   "homophones": [
+    "gambergeraient",
+    "gambergerais",
+    "gambergerait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 28583
+  },
+  {
+   "form": "gentrifiés",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ʒɑ̃.tʁi.fje",
+     "guessed": false
+    },
+    {
+     "ipa": "ʒɑ̃.tʁi.fje",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʒɑ̃.tʁi.fje"
+   ],
+   "homophones": [
+    "gentrifiai",
+    "gentrifié",
+    "gentrifiée",
+    "gentrifiées",
+    "gentrifier",
+    "gentrifiés",
+    "gentrifiez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 28228
+  },
+  {
+   "form": "gominâtes",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "gɔ.mi.nat",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "gɔ.mi.nat"
+   ],
+   "homophones": [
+    "gominâtes"
+   ],
+   "rhyming": 7732,
+   "rhymingHead": [
+    "aérâtes",
+    "aérosolisâtes",
+    "abéchâtes",
+    "abaissâtes",
+    "abîmâtes",
+    "abandonnâtes",
+    "abéquâtes",
+    "ébarbâtes",
+    "abattent",
+    "ébattent"
+   ],
+   "ending": 7732
+  },
+  {
+   "form": "gréviste",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "gʁe.vist",
+     "guessed": false
+    },
+    {
+     "ipa": "gʁe.vist",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "gʁe.vist"
+   ],
+   "homophones": [
+    "gréviste",
+    "grévistes"
+   ],
+   "rhyming": 2444,
+   "rhymingHead": [
+    "aéromodéliste",
+    "aéromodélistes",
+    "ébéniste",
+    "ébénistes",
+    "abolitionniste",
+    "absolutiste",
+    "absolutistes",
+    "abstentionniste",
+    "abstentionnistes",
+    "académiste"
+   ],
+   "ending": 2738
+  },
+  {
+   "form": "guillemetée",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "gij.mə.te",
+     "guessed": false
+    },
+    {
+     "ipa": "gij.mə.te",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "gij.mə.te"
+   ],
+   "homophones": [
+    "guillemetai",
+    "guillemeté",
+    "guillemetée",
+    "guillemetées",
+    "guillemeter",
+    "guillemetés",
+    "guillemetez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 7675
+  },
+  {
+   "form": "harpons",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "aʁ.pɔ̃",
+     "guessed": false
+    },
+    {
+     "ipa": "aʁ.pɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "aʁ.pɔ̃"
+   ],
+   "homophones": [
+    "harpons"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 172
+  },
+  {
+   "form": "houblonnassiez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "u.blɔ.na.sje",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "u.blɔ.na.sje"
+   ],
+   "homophones": [
+    "houblonnassiez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 28228
+  },
+  {
+   "form": "illicites",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "il.li.sit",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "il.li.sit"
+   ],
+   "homophones": [
+    "illicites"
+   ],
+   "rhyming": 380,
+   "rhymingHead": [
+    "écrite",
+    "écrites",
+    "adamite",
+    "alaouite",
+    "émérite",
+    "ammodyte",
+    "annamite",
+    "annamites",
+    "antimite",
+    "antiparasite"
+   ],
+   "ending": 380
+  },
+  {
+   "form": "inaugureront",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "i.nɔ.gy.ʁə.ʁɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "i.nɔ.gy.ʁə.ʁɔ̃"
+   ],
+   "homophones": [
+    "inaugurerons",
+    "inaugureront"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 17961
+  },
+  {
+   "form": "infecterai",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ɛ̃.fɛk.tə.ʁe",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ɛ̃.fɛk.tə.ʁe"
+   ],
+   "homophones": [
+    "infecterai",
+    "infecterez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 21124
+  },
+  {
+   "form": "instituer",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ɛ̃s.ti.tɥe",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ɛ̃s.ti.tɥe"
+   ],
+   "homophones": [
+    "instituai",
+    "institué",
+    "instituée",
+    "instituées",
+    "instituer",
+    "institués",
+    "instituez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 504
+  },
+  {
+   "form": "intriguant",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ɛ̃t.ʁi.gɑ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ɛ̃t.ʁi.gɑ̃"
+   ],
+   "homophones": [
+    "intriguant"
+   ],
+   "rhyming": 8371,
+   "rhymingHead": [
+    "aérant",
+    "aérosolisant",
+    "abêtissant",
+    "abéchant",
+    "ébahissant",
+    "abaissant",
+    "abîmant",
+    "abandonnant",
+    "abéquant",
+    "ébarbant"
+   ],
+   "ending": 92
+  },
+  {
+   "form": "japonais",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "ʒa.po.nɛ",
+     "guessed": false
+    },
+    {
+     "ipa": "ʒa.pɔ.nɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʒa.po.nɛ"
+   ],
+   "homophones": [
+    "japonais"
+   ],
+   "rhyming": 388,
+   "rhymingHead": [
+    "abstrait",
+    "abstraits",
+    "aigrelet",
+    "aigrelets",
+    "aigrets",
+    "albanais",
+    "anglais",
+    "angolais",
+    "angolaise",
+    "angolaises"
+   ],
+   "ending": 97
+  },
+  {
+   "form": "kidnapperons",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "kid.na.pə.ʁɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "kid.na.pə.ʁɔ̃"
+   ],
+   "homophones": [
+    "kidnapperons",
+    "kidnapperont"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 17961
+  },
+  {
+   "form": "laqués",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "la.ke",
+     "guessed": false
+    },
+    {
+     "ipa": "la.ke",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "la.ke"
+   ],
+   "homophones": [
+    "laquai",
+    "laqué",
+    "laquée",
+    "laquées",
+    "laquer",
+    "laqués",
+    "laquez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 1684
+  },
+  {
+   "form": "limogeaient",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "li.mɔ.ʒɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "li.mɔ.ʒɛ"
+   ],
+   "homophones": [
+    "limogeaient",
+    "limogeais",
+    "limogeait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 687
+  },
+  {
+   "form": "lunaisons",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "ly.nɛ.zɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ly.nɛ.zɔ̃"
+   ],
+   "homophones": [
+    "lunaison",
+    "lunaisons"
+   ],
+   "rhyming": 9082,
+   "rhymingHead": [
+    "aération",
+    "aérations",
+    "aérodistorsion",
+    "aérostation",
+    "aérostations",
+    "abandon",
+    "abandons",
+    "ébauchons",
+    "abdication",
+    "abdications"
+   ],
+   "ending": 219
+  },
+  {
+   "form": "mages",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "maʒ",
+     "guessed": false
+    },
+    {
+     "ipa": "maʒ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "maʒ"
+   ],
+   "homophones": [
+    "mage",
+    "mages",
+    "Maj"
+   ],
+   "rhyming": 4096,
+   "rhymingHead": [
+    "aérage",
+    "aérages",
+    "aérosondage",
+    "aérosondages",
+    "ébarbage",
+    "ébarbages",
+    "abatages",
+    "abattage",
+    "abattages",
+    "ébauchage"
+   ],
+   "ending": 4096
+  },
+  {
+   "form": "mannequiniez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "man.ki.nje",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "man.ki.nje"
+   ],
+   "homophones": [
+    "mannequiniez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 28228
+  },
+  {
+   "form": "masculinise",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ma.sky.li.niz",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ma.sky.li.niz"
+   ],
+   "homophones": [
+    "masculinise",
+    "masculinisent",
+    "masculinises"
+   ],
+   "rhyming": 2558,
+   "rhymingHead": [
+    "aérosolisent",
+    "aérosolises",
+    "aérosolise",
+    "absolutisent",
+    "absolutises",
+    "absolutise",
+    "accessoirisent",
+    "accessoirises",
+    "accessoirise",
+    "achromatisent"
+   ],
+   "ending": 2558
+  },
+  {
+   "form": "mensualisasse",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "mɑ̃.sɥa.li.zas",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "mɑ̃.sɥa.li.zas"
+   ],
+   "homophones": [
+    "mensualisasse",
+    "mensualisassent",
+    "mensualisasses"
+   ],
+   "rhyming": 22531,
+   "rhymingHead": [
+    "aérassent",
+    "aérasses",
+    "aérasse",
+    "aérosolisassent",
+    "aérosolisasses",
+    "aérosolisasse",
+    "abéchassent",
+    "abéchasses",
+    "abéchasse",
+    "abaissassent"
+   ],
+   "ending": 22531
+  },
+  {
+   "form": "miroitantes",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "mi.ʁwa.tɑ̃t",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "mi.ʁwa.tɑ̃t"
+   ],
+   "homophones": [
+    "miroitante",
+    "miroitantes"
+   ],
+   "rhyming": 3856,
+   "rhymingHead": [
+    "abaissante",
+    "abaissantes",
+    "abasourdissante",
+    "abasourdissantes",
+    "aberrante",
+    "aberrantes",
+    "éblouissante",
+    "éblouissantes",
+    "abondante",
+    "abondantes"
+   ],
+   "ending": 3856
+  },
+  {
+   "form": "moquettâtes",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "mɔ.kɛ.tat",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "mɔ.kɛ.tat"
+   ],
+   "homophones": [
+    "moquettâtes"
+   ],
+   "rhyming": 7732,
+   "rhymingHead": [
+    "aérâtes",
+    "aérosolisâtes",
+    "abéchâtes",
+    "abaissâtes",
+    "abîmâtes",
+    "abandonnâtes",
+    "abéquâtes",
+    "ébarbâtes",
+    "abattent",
+    "ébattent"
+   ],
+   "ending": 7732
+  },
+  {
+   "form": "multiplicandes",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "myl.ti.pli.kɑ̃d",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "myl.ti.pli.kɑ̃d"
+   ],
+   "homophones": [
+    "multiplicande",
+    "multiplicandes"
+   ],
+   "rhyming": 197,
+   "rhymingHead": [
+    "agende",
+    "allemande",
+    "allemandes",
+    "amande",
+    "amandes",
+    "amende",
+    "amendes",
+    "bande",
+    "bandes",
+    "brande"
+   ],
+   "ending": 197
+  },
+  {
+   "form": "narration",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "na.ʁa.sjɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "na.ʁa.sjɔ̃"
+   ],
+   "homophones": [
+    "narration",
+    "narrations"
+   ],
+   "rhyming": 9082,
+   "rhymingHead": [
+    "aération",
+    "aérations",
+    "aérodistorsion",
+    "aérostation",
+    "aérostations",
+    "abandon",
+    "abandons",
+    "ébauchons",
+    "abdication",
+    "abdications"
+   ],
+   "ending": 4100
+  },
+  {
+   "form": "nostalgiquement",
+   "category": "adverb",
+   "readings": [
+    {
+     "ipa": "nɔs.tal.ʒik.mɑ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "nɔs.tal.ʒik.mɑ̃"
+   ],
+   "homophones": [
+    "nostalgiquement"
+   ],
+   "rhyming": 1526,
+   "rhymingHead": [
+    "aérodynamiquement",
+    "abjectement",
+    "abominablement",
+    "abondamment",
+    "abréviativement",
+    "abruptement",
+    "absolument",
+    "abstraitement",
+    "absurdement",
+    "abusivement"
+   ],
+   "ending": 1492
+  },
+  {
+   "form": "offusqué",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ɔ.fys.ke",
+     "guessed": false
+    },
+    {
+     "ipa": "ɔ.fys.ke",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ɔ.fys.ke"
+   ],
+   "homophones": [
+    "offusquai",
+    "offusqué",
+    "offusquée",
+    "offusquées",
+    "offusquer",
+    "offusqués",
+    "offusquez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 1684
+  },
+  {
+   "form": "oscilleront",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ɔ.sij.ʁɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ɔ.sij.ʁɔ̃"
+   ],
+   "homophones": [
+    "oscillerons",
+    "oscilleront"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 17961
+  },
+  {
+   "form": "palabrassions",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "pa.la.bʁa.sjɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "pa.la.bʁa.sjɔ̃"
+   ],
+   "homophones": [
+    "palabrassions"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 24205
+  },
+  {
+   "form": "paralysai",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "pa.ʁa.li.ze",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "pa.ʁa.li.ze"
+   ],
+   "homophones": [
+    "paralysai",
+    "paralysé",
+    "paralysée",
+    "paralysées",
+    "paralyser",
+    "paralysés",
+    "paralysez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 6661
+  },
+  {
+   "form": "passée",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "pa.se",
+     "guessed": false
+    },
+    {
+     "ipa": "pa.se",
+     "guessed": false
+    },
+    {
+     "ipa": "pa.se",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "pa.se"
+   ],
+   "homophones": [
+    "passé",
+    "passée",
+    "passés"
+   ],
+   "rhyming": 9383,
+   "rhymingHead": [
+    "aînée",
+    "aînées",
+    "aîné",
+    "aînés",
+    "aéroélasticité",
+    "aérostier",
+    "aérostiers",
+    "abée",
+    "abées",
+    "abatée"
+   ],
+   "ending": 490
+  },
+  {
+   "form": "peinturent",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "pɛ̃.tyʁ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "pɛ̃.tyʁ"
+   ],
+   "homophones": [
+    "peinture",
+    "peinturent",
+    "peintures"
+   ],
+   "rhyming": 499,
+   "rhymingHead": [
+    "ébavurent",
+    "ébavures",
+    "ébavure",
+    "abjurent",
+    "abjures",
+    "abjure",
+    "absolurent",
+    "accoururent",
+    "accrurent",
+    "acculturent"
+   ],
+   "ending": 499
+  },
+  {
+   "form": "pestifèreriez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "pɛs.ti.fɛ.ʁə.ʁje",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "pɛs.ti.fɛ.ʁə.ʁje"
+   ],
+   "homophones": [
+    "pestifèreriez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 28228
+  },
+  {
+   "form": "pinassent",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "pi.nas",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "pi.nas"
+   ],
+   "homophones": [
+    "pinasse",
+    "pinassent",
+    "pinasses"
+   ],
+   "rhyming": 22531,
+   "rhymingHead": [
+    "aérassent",
+    "aérasses",
+    "aérasse",
+    "aérosolisassent",
+    "aérosolisasses",
+    "aérosolisasse",
+    "abéchassent",
+    "abéchasses",
+    "abéchasse",
+    "abaissassent"
+   ],
+   "ending": 22531
+  },
+  {
+   "form": "plâtrassiez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "plɑ.tʁa.sje",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "plɑ.tʁa.sje"
+   ],
+   "homophones": [
+    "plâtrassiez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 28228
+  },
+  {
+   "form": "polypeuse",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "pɔ.li.pøz",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "pɔ.li.pøz"
+   ],
+   "homophones": [
+    "polypeuse",
+    "polypeuses"
+   ],
+   "rhyming": 2050,
+   "rhymingHead": [
+    "ébouleuse",
+    "ébouleuses",
+    "abrutisseuse",
+    "abrutisseuses",
+    "écailleuse",
+    "écailleuses",
+    "acéteuse",
+    "acéteuses",
+    "accrocheuse",
+    "accrocheuses"
+   ],
+   "ending": 2050
+  },
+  {
+   "form": "poursuivions",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "puʁ.sɥi.vjɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "puʁ.sɥi.vjɔ̃"
+   ],
+   "homophones": [
+    "poursuivions"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 24205
+  },
+  {
+   "form": "prépayiez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "pʁe.pɛ.je",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "pʁe.pɛ.je"
+   ],
+   "homophones": [
+    "prépayée",
+    "prépayées",
+    "prépayés",
+    "prépayiez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 28228
+  },
+  {
+   "form": "profèrerons",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "pʁɔ.fɛ.ʁə.ʁɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "pʁɔ.fɛ.ʁə.ʁɔ̃"
+   ],
+   "homophones": [
+    "profèrerons",
+    "profèreront"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 17961
+  },
+  {
+   "form": "psychotez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "psi.kɔ.te",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "psi.kɔ.te"
+   ],
+   "homophones": [
+    "psychotai",
+    "psychoté",
+    "psychoter",
+    "psychotez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 7675
+  },
+  {
+   "form": "quotta",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "kɔ.ta",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "kɔ.ta"
+   ],
+   "homophones": [
+    "kota",
+    "kotas",
+    "kotât",
+    "quotas",
+    "quotta",
+    "quottas",
+    "quottât"
+   ],
+   "rhyming": 39940,
+   "rhymingHead": [
+    "aéras",
+    "aérât",
+    "aéra",
+    "aèreras",
+    "aèrera",
+    "aérosolisas",
+    "aérosolisât",
+    "aérosolisa",
+    "aérosoliseras",
+    "aérosolisera"
+   ],
+   "ending": 3448
+  },
+  {
+   "form": "rabâcheuses",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "ʁa.ba.ʃøz",
+     "guessed": false
+    },
+    {
+     "ipa": "ʁa.ba.ʃøz",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁa.ba.ʃøz"
+   ],
+   "homophones": [
+    "rabâcheuse",
+    "rabâcheuses"
+   ],
+   "rhyming": 3003,
+   "rhymingHead": [
+    "ébarbeuse",
+    "ébarbeuses",
+    "abatteuse",
+    "abatteuses",
+    "aboyeuse",
+    "aboyeuses",
+    "abrutisseuse",
+    "abrutisseuses",
+    "abuseuse",
+    "abuseuses"
+   ],
+   "ending": 3003
+  },
+  {
+   "form": "rédigeai",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ʁe.di.ʒe",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁe.di.ʒe"
+   ],
+   "homophones": [
+    "rédigé",
+    "rédigeai",
+    "rédigée",
+    "rédigées",
+    "rédiger",
+    "rédigés",
+    "rédigez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 1560
+  },
+  {
+   "form": "régenteront",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ʁe.ʒɑ̃.tə.ʁɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁe.ʒɑ̃.tə.ʁɔ̃"
+   ],
+   "homophones": [
+    "régenterons",
+    "régenteront"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 17961
+  },
+  {
+   "form": "rajustâmes",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ʁa.ʒys.tam",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁa.ʒys.tam"
+   ],
+   "homophones": [
+    "rajustâmes"
+   ],
+   "rhyming": 7526,
+   "rhymingHead": [
+    "aérâmes",
+    "aérosolisâmes",
+    "abéchâmes",
+    "abaissâmes",
+    "abîmâmes",
+    "abandonnâmes",
+    "abéquâmes",
+    "ébarbâmes",
+    "ébauchâmes",
+    "ébavurâmes"
+   ],
+   "ending": 7526
+  },
+  {
+   "form": "rappées",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ʁa.pe",
+     "guessed": false
+    },
+    {
+     "ipa": "ʁa.pe",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁa.pe"
+   ],
+   "homophones": [
+    "râpée",
+    "râpées",
+    "râpés",
+    "rappai",
+    "rappé",
+    "rappée",
+    "rappées",
+    "rapper",
+    "rappés",
+    "rappez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 1082
+  },
+  {
+   "form": "ratonnée",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ʁa.tɔ.ne",
+     "guessed": false
+    },
+    {
+     "ipa": "ʁa.tɔ.ne",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁa.tɔ.ne"
+   ],
+   "homophones": [
+    "ratonnai",
+    "ratonné",
+    "ratonnée",
+    "ratonnées",
+    "ratonner",
+    "ratonnés",
+    "ratonnez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 5692
+  },
+  {
+   "form": "rebordâmes",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ʁə.bɔʁ.dam",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁə.bɔʁ.dam"
+   ],
+   "homophones": [
+    "rebordâmes"
+   ],
+   "rhyming": 7526,
+   "rhymingHead": [
+    "aérâmes",
+    "aérosolisâmes",
+    "abéchâmes",
+    "abaissâmes",
+    "abîmâmes",
+    "abandonnâmes",
+    "abéquâmes",
+    "ébarbâmes",
+    "ébauchâmes",
+    "ébavurâmes"
+   ],
+   "ending": 7526
+  },
+  {
+   "form": "recondamnent",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ʁə.kɔ̃.dan",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁə.kɔ̃.dan"
+   ],
+   "homophones": [
+    "recondamne",
+    "recondamnent",
+    "recondamnes"
+   ],
+   "rhyming": 168,
+   "rhymingHead": [
+    "ahanent",
+    "ahane",
+    "émanent",
+    "émanes",
+    "émane",
+    "épannent",
+    "épannes",
+    "épanne",
+    "aquaplanes",
+    "aquaplane"
+   ],
+   "ending": 168
+  },
+  {
+   "form": "redemanderais",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ʁəd.mɑ̃.də.ʁɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁəd.mɑ̃.də.ʁɛ"
+   ],
+   "homophones": [
+    "redemanderaient",
+    "redemanderais",
+    "redemanderait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 28583
+  },
+  {
+   "form": "regretterez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ʁə.gʁɛ.tə.ʁe",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁə.gʁɛ.tə.ʁe"
+   ],
+   "homophones": [
+    "regretterai",
+    "regretterez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 21124
+  },
+  {
+   "form": "remembrerons",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ʁə.mɑ̃.bʁə.ʁɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁə.mɑ̃.bʁə.ʁɔ̃"
+   ],
+   "homophones": [
+    "remembrerons",
+    "remembreront"
+   ],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 17961
+  },
+  {
+   "form": "renforcera",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ʁɑ̃.fɔʁ.sə.ʁa",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁɑ̃.fɔʁ.sə.ʁa"
+   ],
+   "homophones": [
+    "renforcera",
+    "renforceras"
+   ],
+   "rhyming": 39940,
+   "rhymingHead": [
+    "aéras",
+    "aérât",
+    "aéra",
+    "aèreras",
+    "aèrera",
+    "aérosolisas",
+    "aérosolisât",
+    "aérosolisa",
+    "aérosoliseras",
+    "aérosolisera"
+   ],
+   "ending": 19177
+  },
+  {
+   "form": "replissé",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ʁə.pli.se",
+     "guessed": false
+    },
+    {
+     "ipa": "ʁə.pli.se",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁə.pli.se"
+   ],
+   "homophones": [
+    "replissai",
+    "replissé",
+    "replissée",
+    "replissées",
+    "replisser",
+    "replissés",
+    "replissez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 3575
+  },
+  {
+   "form": "ressurgît",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ʁə.syʁ.ʒi",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁə.syʁ.ʒi"
+   ],
+   "homophones": [
+    "ressurgi",
+    "ressurgis",
+    "ressurgit",
+    "ressurgît",
+    "resurgi",
+    "resurgis",
+    "resurgit",
+    "resurgît"
+   ],
+   "rhyming": 4413,
+   "rhymingHead": [
+    "abêtît",
+    "abêties",
+    "abêtie",
+    "abêtis",
+    "abêtit",
+    "abêti",
+    "ébahît",
+    "ébahies",
+    "ébahie",
+    "ébahis"
+   ],
+   "ending": 133
+  },
+  {
+   "form": "reverrouilliez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ʁə.ve.ʁuj.je",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁə.ve.ʁuj.je"
+   ],
+   "homophones": [
+    "reverrouilliez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 28228
+  },
+  {
+   "form": "romaji",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "ʁo.ma.dʒi",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁo.ma.dʒi"
+   ],
+   "homophones": [
+    "romaji",
+    "romajis"
+   ],
+   "rhyming": 9912,
+   "rhymingHead": [
+    "aï",
+    "aïoli",
+    "aïolis",
+    "aérocolie",
+    "aérogastrie",
+    "aérologie",
+    "aérologies",
+    "aéromancie",
+    "aéropathie",
+    "aérophagie"
+   ],
+   "ending": 1314
+  },
+  {
+   "form": "rustiqueriez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ʁys.ti.kə.ʁje",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁys.ti.kə.ʁje"
+   ],
+   "homophones": [
+    "rustiqueriez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 28228
+  },
+  {
+   "form": "samouraïs",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "sa.mu.ʁaj",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "sa.mu.ʁaj"
+   ],
+   "homophones": [
+    "samouraï",
+    "samouraïs",
+    "samurai"
+   ],
+   "rhyming": 287,
+   "rhymingHead": [
+    "açaï",
+    "açaïs",
+    "écaille",
+    "écailles",
+    "accordailles",
+    "aiguail",
+    "aiguails",
+    "ails",
+    "antiquaille",
+    "antiquailles"
+   ],
+   "ending": 287
+  },
+  {
+   "form": "scandalisées",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "skɑ̃.da.li.ze",
+     "guessed": false
+    },
+    {
+     "ipa": "skɑ̃.da.li.ze",
+     "guessed": false
+    },
+    {
+     "ipa": "skɑ̃.da.li.ze",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "skɑ̃.da.li.ze"
+   ],
+   "homophones": [
+    "scandalisai",
+    "scandalisé",
+    "scandalisée",
+    "scandalisées",
+    "scandaliser",
+    "scandalisés",
+    "scandalisez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 6661
+  },
+  {
+   "form": "serrez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "se.ʁe",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "se.ʁe"
+   ],
+   "homophones": [
+    "serrai",
+    "serré",
+    "serrée",
+    "serrées",
+    "serrer",
+    "serrés",
+    "serrez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 21124
+  },
+  {
+   "form": "snobait",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "snɔ.bɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "snɔ.bɛ"
+   ],
+   "homophones": [
+    "snobaient",
+    "snobais",
+    "snobait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 215
+  },
+  {
+   "form": "soumettes",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "su.mɛt",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "su.mɛt"
+   ],
+   "homophones": [
+    "soumette",
+    "soumettent",
+    "soumettes"
+   ],
+   "rhyming": 901,
+   "rhymingHead": [
+    "êtes",
+    "absinthes",
+    "absinthe",
+    "abstraites",
+    "abstraite",
+    "accrètent",
+    "accrètes",
+    "accrète",
+    "achètent",
+    "achètes"
+   ],
+   "ending": 901
+  },
+  {
+   "form": "starifierez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "sta.ʁi.fi.ʁe",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "sta.ʁi.fi.ʁe"
+   ],
+   "homophones": [
+    "starifierai",
+    "starifierez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 21124
+  },
+  {
+   "form": "succédas",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "syk.se.da",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "syk.se.da"
+   ],
+   "homophones": [
+    "succéda",
+    "succédas",
+    "succédât"
+   ],
+   "rhyming": 39940,
+   "rhymingHead": [
+    "aéras",
+    "aérât",
+    "aéra",
+    "aèreras",
+    "aèrera",
+    "aérosolisas",
+    "aérosolisât",
+    "aérosolisa",
+    "aérosoliseras",
+    "aérosolisera"
+   ],
+   "ending": 932
+  },
+  {
+   "form": "surcoterait",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "syʁ.kɔ.tə.ʁɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "syʁ.kɔ.tə.ʁɛ"
+   ],
+   "homophones": [
+    "surcoteraient",
+    "surcoterais",
+    "surcoterait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 28583
+  },
+  {
+   "form": "sursoufflaient",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "syʁ.su.flɛ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "syʁ.su.flɛ"
+   ],
+   "homophones": [
+    "sursoufflaient",
+    "sursoufflais",
+    "sursoufflait"
+   ],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 2036
+  },
+  {
+   "form": "télédémarchage",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "te.le.de.maʁ.ʃaʒ",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "te.le.de.maʁ.ʃaʒ"
+   ],
+   "homophones": [
+    "télédémarchage",
+    "télédémarchages"
+   ],
+   "rhyming": 4096,
+   "rhymingHead": [
+    "aérage",
+    "aérages",
+    "aérosondage",
+    "aérosondages",
+    "ébarbage",
+    "ébarbages",
+    "abatages",
+    "abattage",
+    "abattages",
+    "ébauchage"
+   ],
+   "ending": 4096
+  },
+  {
+   "form": "tasez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ta.ze",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ta.ze"
+   ],
+   "homophones": [
+    "tasai",
+    "tasé",
+    "tasée",
+    "tasées",
+    "taser",
+    "tasés",
+    "tasez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 6661
+  },
+  {
+   "form": "théologal",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "teɔ.lɔ.gal",
+     "guessed": false
+    },
+    {
+     "ipa": "teɔ.lɔ.gal",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "teɔ.lɔ.gal"
+   ],
+   "homophones": [
+    "théologal",
+    "théologale",
+    "théologales"
+   ],
+   "rhyming": 3118,
+   "rhymingHead": [
+    "aéronaval",
+    "aéronavale",
+    "aéronavales",
+    "aéronavals",
+    "aéropostal",
+    "aéropostale",
+    "aéropostales",
+    "aérospatial",
+    "aérospatiale",
+    "aérospatiales"
+   ],
+   "ending": 3118
+  },
+  {
+   "form": "torons",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "tɔ.ʁɔ̃",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "tɔ.ʁɔ̃"
+   ],
+   "homophones": [
+    "toron",
+    "torons"
+   ],
+   "rhyming": 9082,
+   "rhymingHead": [
+    "aération",
+    "aérations",
+    "aérodistorsion",
+    "aérostation",
+    "aérostations",
+    "abandon",
+    "abandons",
+    "ébauchons",
+    "abdication",
+    "abdications"
+   ],
+   "ending": 348
+  },
+  {
+   "form": "tranchée",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "tʁɑ̃.ʃe",
+     "guessed": false
+    },
+    {
+     "ipa": "tʁɑ̃.ʃe",
+     "guessed": false
+    },
+    {
+     "ipa": "tʁɑ̃.ʃe",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "tʁɑ̃.ʃe"
+   ],
+   "homophones": [
+    "tranchai",
+    "tranché",
+    "tranchée",
+    "tranchées",
+    "trancher",
+    "tranchés",
+    "tranchez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 1575
+  },
+  {
+   "form": "tressaillirai",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "tʁɛ.sa.ji.ʁe",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "tʁɛ.sa.ji.ʁe"
+   ],
+   "homophones": [
+    "tressaillirai",
+    "tressaillirez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 21124
+  },
+  {
+   "form": "tsariste",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "tsaʁist",
+     "guessed": false
+    },
+    {
+     "ipa": "tsaʁist",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "tsaʁist"
+   ],
+   "homophones": [
+    "tsariste"
+   ],
+   "rhyming": 1318,
+   "rhymingHead": [
+    "abolitionniste",
+    "absentéiste",
+    "absentéistes",
+    "absolutiste",
+    "absolutistes",
+    "abstentionniste",
+    "abstentionnistes",
+    "échangiste",
+    "écologiste",
+    "écologistes"
+   ],
+   "ending": 1381
+  },
+  {
+   "form": "vacuolisa",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "va.kɥɔ.li.za",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "va.kɥɔ.li.za"
+   ],
+   "homophones": [
+    "vacuolisa",
+    "vacuolisas",
+    "vacuolisât"
+   ],
+   "rhyming": 39940,
+   "rhymingHead": [
+    "aéras",
+    "aérât",
+    "aéra",
+    "aèreras",
+    "aèrera",
+    "aérosolisas",
+    "aérosolisât",
+    "aérosolisa",
+    "aérosoliseras",
+    "aérosolisera"
+   ],
+   "ending": 2846
+  },
+  {
+   "form": "vengeât",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "vɑ̃.ʒa",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "vɑ̃.ʒa"
+   ],
+   "homophones": [
+    "vengea",
+    "vengeas",
+    "vengeât"
+   ],
+   "rhyming": 39940,
+   "rhymingHead": [
+    "aéras",
+    "aérât",
+    "aéra",
+    "aèreras",
+    "aèrera",
+    "aérosolisas",
+    "aérosolisât",
+    "aérosolisa",
+    "aérosoliseras",
+    "aérosolisera"
+   ],
+   "ending": 684
+  },
+  {
+   "form": "violonerai",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "vjɔ.lɔ.nə.ʁe",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "vjɔ.lɔ.nə.ʁe"
+   ],
+   "homophones": [
+    "violonerai",
+    "violonerez"
+   ],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 21124
+  },
+  {
+   "form": "vulgarité",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "vyl.ga.ʁi.te",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "vyl.ga.ʁi.te"
+   ],
+   "homophones": [
+    "vulgarité",
+    "vulgarités"
+   ],
+   "rhyming": 9383,
+   "rhymingHead": [
+    "aînée",
+    "aînées",
+    "aîné",
+    "aînés",
+    "aéroélasticité",
+    "aérostier",
+    "aérostiers",
+    "abée",
+    "abées",
+    "abatée"
+   ],
+   "ending": 3677
+  },
+  {
+   "form": "criminelle",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "kʁi.mi.nɛl",
+     "guessed": true
+    },
+    {
+     "ipa": "kʁi.mi.nɛl",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "kʁi.mi.nɛl"
+   ],
+   "homophones": [
+    "criminelles",
+    "criminels"
+   ],
+   "rhyming": 1504,
+   "rhymingHead": [
+    "accentuel",
+    "accentuelle",
+    "accentuelles",
+    "accentuels",
+    "accidentel",
+    "accidentelle",
+    "accidentelles",
+    "accidentels",
+    "actuariel",
+    "actuarielle"
+   ],
+   "ending": 1504
+  },
+  {
+   "form": "violée",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "vjɔ.le",
+     "guessed": false
+    },
+    {
+     "ipa": "vjɔ.le",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "vjɔ.le"
+   ],
+   "homophones": [],
+   "rhyming": 29788,
+   "rhymingHead": [
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
+   ],
+   "ending": 2650
+  },
+  {
+   "form": "ébranlés",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "e.bʁɑ̃.le",
+     "guessed": false
+    },
+    {
+     "ipa": "e.bʁɑ̃.le",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "e.bʁɑ̃.le"
+   ],
+   "homophones": [],
+   "rhyming": 29788,
+   "rhymingHead": [
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
+   ],
+   "ending": 2650
+  },
+  {
+   "form": "dilués",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "di.lɥe",
+     "guessed": false
+    },
+    {
+     "ipa": "di.lɥe",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "di.lɥe"
+   ],
+   "homophones": [],
+   "rhyming": 29788,
+   "rhymingHead": [
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
+   ],
+   "ending": 289
+  },
+  {
+   "form": "efféminés",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "e.fe.mi.ne",
+     "guessed": false
+    },
+    {
+     "ipa": "e.fe.mi.ne",
+     "guessed": false
+    },
+    {
+     "ipa": "e.fe.mi.ne",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "e.fe.mi.ne"
+   ],
+   "homophones": [],
+   "rhyming": 9383,
+   "rhymingHead": [
+    "aînée",
+    "aînées",
+    "aîné",
+    "aînés",
+    "aéroélasticité",
+    "aérostier",
+    "aérostiers",
+    "abée",
+    "abées",
+    "abatée"
+   ],
+   "ending": 442
+  },
+  {
+   "form": "acclamés",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "a.kla.me",
+     "guessed": false
+    },
+    {
+     "ipa": "a.kla.me",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "a.kla.me"
+   ],
+   "homophones": [],
+   "rhyming": 29788,
+   "rhymingHead": [
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
+   ],
+   "ending": 965
+  },
+  {
+   "form": "classifiés",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "kla.si.fje",
+     "guessed": false
+    },
+    {
+     "ipa": "kla.si.fje",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "kla.si.fje"
+   ],
+   "homophones": [],
+   "rhyming": 29788,
+   "rhymingHead": [
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
+   ],
+   "ending": 3006
+  },
+  {
+   "form": "cinématiques",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "si.ne.ma.tik",
+     "guessed": true
+    },
+    {
+     "ipa": "si.ne.ma.tik",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "si.ne.ma.tik"
+   ],
+   "homophones": [
+    "cinématique"
+   ],
+   "rhyming": 1648,
+   "rhymingHead": [
+    "aéraulique",
+    "aérobic",
+    "aérobics",
+    "aérodynamique",
+    "aéronautique",
+    "aéronautiques",
+    "aérotechnique",
+    "abandonnique",
+    "abandonniques",
+    "académique"
+   ],
+   "ending": 1648
+  },
+  {
+   "form": "dravidienne",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "dʁa.vi.di.ɛn",
+     "guessed": true
+    },
+    {
+     "ipa": "dʁa.vi.di.ɛn",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "dʁa.vi.di.ɛn"
+   ],
+   "homophones": [],
+   "rhyming": 2059,
+   "rhymingHead": [
+    "ébène",
+    "abdomen",
+    "abdomens",
+    "acétaminophène",
+    "acétaminophènes",
+    "acétylène",
+    "achaine",
+    "achaines",
+    "achène",
+    "achènes"
+   ],
+   "ending": 2059
+  },
+  {
+   "form": "décastère",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "de.ka.stɛʁ",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "de.ka.stɛʁ"
+   ],
+   "homophones": [],
+   "rhyming": 3940,
+   "rhymingHead": [
+    "aérostière",
+    "aérostières",
+    "abécédaire",
+    "abécédaires",
+    "abandonnataire",
+    "abandonnataires",
+    "aber",
+    "abers",
+    "écaillère",
+    "écaillères"
+   ],
+   "ending": 3940
+  },
+  {
+   "form": "sifflés",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "si.fle",
+     "guessed": false
+    },
+    {
+     "ipa": "si.fle",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "si.fle"
+   ],
+   "homophones": [],
+   "rhyming": 29788,
+   "rhymingHead": [
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
+   ],
+   "ending": 2650
+  },
+  {
+   "form": "démarcatif",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "de.ma.ʁka.tif",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "de.ma.ʁka.tif"
+   ],
+   "homophones": [],
+   "rhyming": 1182,
+   "rhymingHead": [
+    "ablatif",
+    "ablatifs",
+    "abolitif",
+    "abolitifs",
+    "abortif",
+    "abortifs",
+    "abrasif",
+    "abrasifs",
+    "abréviatifs",
+    "abrogatif"
+   ],
+   "ending": 1182
+  },
+  {
+   "form": "commotionné",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "kɔ.mɔ.sjɔ.ne",
+     "guessed": false
+    },
+    {
+     "ipa": "kɔ.mɔ.sjɔ.ne",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "kɔ.mɔ.sjɔ.ne"
+   ],
+   "homophones": [],
+   "rhyming": 29788,
+   "rhymingHead": [
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
+   ],
+   "ending": 3302
+  },
+  {
+   "form": "centaurées",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "sɑ̃.to.ʁe",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "sɑ̃.to.ʁe"
+   ],
+   "homophones": [
+    "centaurée"
+   ],
+   "rhyming": 9383,
+   "rhymingHead": [
+    "aînée",
+    "aînées",
+    "aîné",
+    "aînés",
+    "aéroélasticité",
+    "aérostier",
+    "aérostiers",
+    "abée",
+    "abées",
+    "abatée"
+   ],
+   "ending": 530
+  },
+  {
+   "form": "désaliéné",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "de.za.lje.ne",
+     "guessed": false
+    },
+    {
+     "ipa": "de.za.lje.ne",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.za.lje.ne"
+   ],
+   "homophones": [],
+   "rhyming": 29788,
+   "rhymingHead": [
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
+   ],
+   "ending": 3302
+  },
+  {
+   "form": "chorologie",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "ʃɔ.ʁɔ.lɔ.ʒi",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ʃɔ.ʁɔ.lɔ.ʒi"
+   ],
+   "homophones": [],
+   "rhyming": 9912,
+   "rhymingHead": [
+    "aï",
+    "aïoli",
+    "aïolis",
+    "aérocolie",
+    "aérogastrie",
+    "aérologie",
+    "aérologies",
+    "aéromancie",
+    "aéropathie",
+    "aérophagie"
+   ],
+   "ending": 1314
+  },
+  {
+   "form": "ecclésiaste",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "ɛ.kle.zi.ast",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ɛ.kle.zi.ast"
+   ],
+   "homophones": [],
+   "rhyming": 127,
+   "rhymingHead": [
+    "aminoplaste",
+    "aminoplastes",
+    "amyloplaste",
+    "amyloplastes",
+    "épiblaste",
+    "épiblastes",
+    "éraste",
+    "érastes",
+    "ballast",
+    "ballasts"
+   ],
+   "ending": 2738
+  },
+  {
+   "form": "RMIste",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "ʁmist",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ʁmist"
+   ],
+   "homophones": [],
+   "rhyming": 2444,
+   "rhymingHead": [
+    "aéromodéliste",
+    "aéromodélistes",
+    "ébéniste",
+    "ébénistes",
+    "abolitionniste",
+    "absolutiste",
+    "absolutistes",
+    "abstentionniste",
+    "abstentionnistes",
+    "académiste"
+   ],
+   "ending": 2738
+  },
+  {
+   "form": "dégommée",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "de.gɔ.me",
+     "guessed": false
+    },
+    {
+     "ipa": "de.gɔ.me",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.gɔ.me"
+   ],
+   "homophones": [],
+   "rhyming": 29788,
+   "rhymingHead": [
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
+   ],
+   "ending": 965
+  },
+  {
+   "form": "rétinoblastomes",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "ʁe.ti.nɔ.bla.stɔm",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ʁe.ti.nɔ.bla.stɔm"
+   ],
+   "homophones": [],
+   "rhyming": 702,
+   "rhymingHead": [
+    "aérium",
+    "aériums",
+    "économe",
+    "économes",
+    "actinium",
+    "actiniums",
+    "addendum",
+    "addendums",
+    "agronome",
+    "album"
+   ],
+   "ending": 702
+  },
+  {
+   "form": "supratemporale",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "sy.pʁa.tɑ̃.pɔ.ʁal",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "sy.pʁa.tɑ̃.pɔ.ʁal"
+   ],
+   "homophones": [],
+   "rhyming": 3118,
+   "rhymingHead": [
+    "aéronaval",
+    "aéronavale",
+    "aéronavales",
+    "aéronavals",
+    "aéropostal",
+    "aéropostale",
+    "aéropostales",
+    "aérospatial",
+    "aérospatiale",
+    "aérospatiales"
+   ],
+   "ending": 3118
+  },
+  {
+   "form": "scissionnisme",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "ssi.si.ɔ.nism",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ssi.si.ɔ.nism"
+   ],
+   "homophones": [],
+   "rhyming": 2934,
+   "rhymingHead": [
+    "aérodynamisme",
+    "aérodynamismes",
+    "aéromodélisme",
+    "aéromodélismes",
+    "abolitionnisme",
+    "abolitionnismes",
+    "absentéisme",
+    "absentéismes",
+    "absinthisme",
+    "absinthismes"
+   ],
+   "ending": 3008
+  },
+  {
+   "form": "matinier",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "ma.ti.ni.e",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ma.ti.ni.e"
+   ],
+   "homophones": [],
+   "rhyming": 29788,
+   "rhymingHead": [
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
+   ],
+   "ending": 260
+  },
+  {
+   "form": "opsines",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "ɔ.psin",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ɔ.psin"
+   ],
+   "homophones": [
+    "opsine"
+   ],
+   "rhyming": 2072,
+   "rhymingHead": [
+    "aérodyne",
+    "aérodynes",
+    "abiétine",
+    "abricotine",
+    "absinthine",
+    "absinthines",
+    "acétylcholine",
+    "acétylcholines",
+    "échevine",
+    "échevines"
+   ],
+   "ending": 2072
+  },
+  {
+   "form": "italo-turque",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "i.ta.lɔ.tyʁk",
+     "guessed": true
+    },
+    {
+     "ipa": "i.ta.lɔ.tyʁk",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "i.ta.lɔ.tyʁk"
+   ],
+   "homophones": [],
+   "rhyming": 19,
+   "rhymingHead": [
+    "turque",
+    "turcs",
+    "turques",
+    "russo-turque",
+    "italo-turque",
+    "russo-turques",
+    "franco-turc",
+    "franco-turque",
+    "russo-turc",
+    "franco-turques"
+   ],
+   "ending": 151
+  },
+  {
+   "form": "beuglés",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "bø.gle",
+     "guessed": false
+    },
+    {
+     "ipa": "bø.gle",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "bø.gle"
+   ],
+   "homophones": [],
+   "rhyming": 29788,
+   "rhymingHead": [
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
+   ],
+   "ending": 2650
+  },
+  {
+   "form": "fascée",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "fa.se",
+     "guessed": false
+    },
+    {
+     "ipa": "fa.se",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "fa.se"
+   ],
+   "homophones": [],
+   "rhyming": 29788,
+   "rhymingHead": [
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
+   ],
+   "ending": 2040
+  },
+  {
+   "form": "quadragésimaux",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "ka.dʁa.ʒe.zi.mo",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ka.dʁa.ʒe.zi.mo"
+   ],
+   "homophones": [],
+   "rhyming": 1136,
+   "rhymingHead": [
+    "aéropostaux",
+    "aérospatiaux",
+    "abdominaux",
+    "aboraux",
+    "abricot",
+    "absidiaux",
+    "abyssaux",
+    "accro",
+    "accros",
+    "échevinaux"
+   ],
+   "ending": 61
+  },
+  {
+   "form": "calaminée",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "ka.la.mi.ne",
+     "guessed": false
+    },
+    {
+     "ipa": "ka.la.mi.ne",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ka.la.mi.ne"
+   ],
+   "homophones": [],
+   "rhyming": 29788,
+   "rhymingHead": [
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
+   ],
+   "ending": 3302
+  },
+  {
+   "form": "opto-électronique",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "ɔ.ptɔ.e.lɛ.ktʁɔ.nik",
+     "guessed": true
+    },
+    {
+     "ipa": "ɔ.ptɔ.e.lɛ.ktʁɔ.nik",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ɔ.ptɔ.e.lɛ.ktʁɔ.nik"
+   ],
+   "homophones": [],
+   "rhyming": 1648,
+   "rhymingHead": [
+    "aéraulique",
+    "aérobic",
+    "aérobics",
+    "aérodynamique",
+    "aéronautique",
+    "aéronautiques",
+    "aérotechnique",
+    "abandonnique",
+    "abandonniques",
+    "académique"
+   ],
+   "ending": 1648
+  },
+  {
+   "form": "macro-instruction",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "ma.kʁɔ.ɛ̃.stʁy.kti.ɔ̃",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ma.kʁɔ.ɛ̃.stʁy.kti.ɔ̃"
+   ],
+   "homophones": [],
+   "rhyming": 9082,
+   "rhymingHead": [
+    "aération",
+    "aérations",
+    "aérodistorsion",
+    "aérostation",
+    "aérostations",
+    "abandon",
+    "abandons",
+    "ébauchons",
+    "abdication",
+    "abdications"
+   ],
+   "ending": 2861
+  },
+  {
+   "form": "guaïfénésine",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "gy.a.i.fe.ne.zin",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "gy.a.i.fe.ne.zin"
+   ],
+   "homophones": [],
+   "rhyming": 2072,
+   "rhymingHead": [
+    "aérodyne",
+    "aérodynes",
+    "abiétine",
+    "abricotine",
+    "absinthine",
+    "absinthines",
+    "acétylcholine",
+    "acétylcholines",
+    "échevine",
+    "échevines"
+   ],
+   "ending": 2072
+  },
+  {
+   "form": "cellulars",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "sɛ.ly.laʁ",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "sɛ.ly.laʁ"
+   ],
+   "homophones": [],
+   "rhyming": 1823,
+   "rhymingHead": [
+    "aérogare",
+    "aérogares",
+    "ébarboir",
+    "ébarboirs",
+    "abattoir",
+    "abattoirs",
+    "ébauchoir",
+    "ébauchoirs",
+    "ébranchoir",
+    "ébranchoirs"
+   ],
+   "ending": 1823
+  },
+  {
+   "form": "alf₃",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "alf",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "alf"
+   ],
+   "homophones": [],
+   "rhyming": 12,
+   "rhymingHead": [
+    "boxcalf",
+    "box-calf",
+    "alf₂",
+    "AlF₂",
+    "alf₃",
+    "AlF₃",
+    "al₂f₆",
+    "Al₂F₆",
+    "na₃alf₆",
+    "Na₃AlF₆"
+   ],
+   "ending": 52
+  },
+  {
+   "form": "NO₂",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "nɔ",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "nɔ"
+   ],
+   "homophones": [],
+   "rhyming": 2428,
+   "rhymingHead": [
+    "allégretto",
+    "allégrettos",
+    "allegretto",
+    "asticots",
+    "bépo",
+    "cæcaux",
+    "carbonaro",
+    "carbonaros",
+    "carolo",
+    "carolos"
+   ],
+   "ending": 356
+  },
+  {
+   "form": "bissexualités",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "bi.sə.ksy.a.li.te",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "bi.sə.ksy.a.li.te"
+   ],
+   "homophones": [],
+   "rhyming": 9383,
+   "rhymingHead": [
+    "aînée",
+    "aînées",
+    "aîné",
+    "aînés",
+    "aéroélasticité",
+    "aérostier",
+    "aérostiers",
+    "abée",
+    "abées",
+    "abatée"
+   ],
+   "ending": 3677
+  },
+  {
+   "form": "décartonnés",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "de.kaʁ.tɔ.ne",
+     "guessed": false
+    },
+    {
+     "ipa": "de.kaʁ.tɔ.ne",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.kaʁ.tɔ.ne"
+   ],
+   "homophones": [],
+   "rhyming": 29788,
+   "rhymingHead": [
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
+   ],
+   "ending": 3302
+  },
+  {
+   "form": "hachichés",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "a.ʃi.ʃe",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "a.ʃi.ʃe"
+   ],
+   "homophones": [],
+   "rhyming": 29788,
+   "rhymingHead": [
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
+   ],
+   "ending": 870
+  },
+  {
+   "form": "oganessons",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "ɔ.ga.nɛ.sɔ̃",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ɔ.ga.nɛ.sɔ̃"
+   ],
+   "homophones": [],
+   "rhyming": 9082,
+   "rhymingHead": [
+    "aération",
+    "aérations",
+    "aérodistorsion",
+    "aérostation",
+    "aérostations",
+    "abandon",
+    "abandons",
+    "ébauchons",
+    "abdication",
+    "abdications"
+   ],
+   "ending": 195
+  },
+  {
+   "form": "réabordées",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "ʁe.a.bɔʁ.de",
+     "guessed": false
+    },
+    {
+     "ipa": "ʁe.a.bɔʁ.de",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁe.a.bɔʁ.de"
+   ],
+   "homophones": [],
+   "rhyming": 29788,
+   "rhymingHead": [
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
+   ],
+   "ending": 1155
+  },
+  {
+   "form": "yottawattheure",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "i.ɔ.ta.wa.tøʁ",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "i.ɔ.ta.wa.tøʁ"
+   ],
+   "homophones": [],
+   "rhyming": 2281,
+   "rhymingHead": [
+    "caseyeur",
+    "caseyeurs",
+    "lustreur",
+    "pourfendeur",
+    "pourfendeurs",
+    "skippers",
+    "législateur",
+    "hauteurs",
+    "observateur",
+    "conservateur"
+   ],
+   "ending": 2281
+  },
+  {
+   "form": "régénérerai",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ʁe.ʒe.ne.ʁə.ʁɛ",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ʁe.ʒe.ne.ʁə.ʁɛ"
+   ],
+   "homophones": [],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 28583
+  },
+  {
+   "form": "cavacherons",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ka.va.ʃə.ʁɔ̃",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ka.va.ʃə.ʁɔ̃"
+   ],
+   "homophones": [],
+   "rhyming": 50175,
+   "rhymingHead": [
+    "aérassions",
+    "aèrerions",
+    "aèrerons",
+    "aèreront",
+    "aérions",
+    "aérons",
+    "aérosolisassions",
+    "aérosoliserions",
+    "aérosoliserons",
+    "aérosoliseront"
+   ],
+   "ending": 17961
+  },
+  {
+   "form": "déflaqueraient",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "de.fla.kə.ʁɛ",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "de.fla.kə.ʁɛ"
+   ],
+   "homophones": [],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 28583
+  },
+  {
+   "form": "ingérerez",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ɛ̃.ʒe.ʁə.ʁe",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ɛ̃.ʒe.ʁə.ʁe"
+   ],
+   "homophones": [],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 21124
+  },
+  {
+   "form": "salonguai",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "sa.lɔ̃.gy.ɛ",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "sa.lɔ̃.gy.ɛ"
+   ],
+   "homophones": [],
+   "rhyming": 51529,
+   "rhymingHead": [
+    "aéraient",
+    "aérais",
+    "aérait",
+    "aèreraient",
+    "aèrerais",
+    "aèrerait",
+    "aérosolisaient",
+    "aérosolisais",
+    "aérosolisait",
+    "aérosoliseraient"
+   ],
+   "ending": 70
+  }
+ ]
+}

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { MorphologyRepository } from '../ports/morphology.ts';
 import type { PhoneticsRepository } from '../ports/phonetics.ts';
+import type { ScaleRepository } from '../ports/scales.ts';
 import type { VerbRepository } from '../ports/verbs.ts';
 import { CATEGORIES, CategorySchema, type Category } from './categories.ts';
 import type { OutputWord } from './s7/types.ts';
@@ -65,6 +66,8 @@ export const WordMarkSchema = z.object({
   relaid: z.literal(true).optional(),
   /** Présent si le mot a été laissé tel quel : la raison, en clair. */
   reason: z.string().optional(),
+  /** Une précision en clair sur un mot remplacé (« valence 12 → 31 »). */
+  detail: z.string().optional(),
 });
 export type WordMark = z.infer<typeof WordMarkSchema>;
 
@@ -99,6 +102,8 @@ export interface PluginResources {
   morphology: MorphologyRepository;
   verbs?: VerbRepository;
   phonetics?: PhoneticsRepository;
+  /** Les échelles affectives, chargées quand un S+n prend un ordre autre que celui du dictionnaire. */
+  scales?: ScaleRepository;
 }
 
 export interface ConstraintPlugin {
@@ -116,6 +121,8 @@ export interface ConstraintPlugin {
   tracks: readonly Category[];
   /** La contrainte a-t-elle besoin des prononciations ? L'hôte les charge alors à la demande. */
   phonetic?: boolean;
+  /** Ces réglages ont-ils besoin des échelles affectives ? L'hôte les charge alors à la demande. */
+  needsScales?(values: ParameterValues): boolean;
   /** Les pistes visées par une instance qu'on vient d'ajouter. */
   defaultTargets: readonly Category[];
   /** Les paramètres, dans l'ordre d'affichage. */

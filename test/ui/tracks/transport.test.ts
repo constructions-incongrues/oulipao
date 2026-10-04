@@ -5,7 +5,7 @@ import { renderToString } from 'preact-render-to-string';
 import { Transport, type TransportProps } from '../../../src/ui/tracks/components/transport.ts';
 import { App } from '../../../src/ui/tracks/app.ts';
 import { createTracksController } from '../../../src/ui/tracks/controller.ts';
-import { SEED } from '../../support/chain.ts';
+import { SAMPLE_TEXT, SEED } from '../../support/chain.ts';
 import { morphology, tag } from '../../support/morphology.ts';
 import { fakeSpeech } from '../../support/speech.ts';
 import { byClass, find, inputEvent } from '../../support/vnode.ts';
@@ -61,7 +61,8 @@ test('App : le transport paraît une fois le texte en pistes, et la grille marqu
   for (const action of SEED) controller.dispatch(action);
   const app = () => renderToString(html`<${App} state=${controller.state} controller=${controller} version="0.3.0" />`);
   assert.doesNotMatch(app(), /class="transport"/);
-  await controller.example();
+  controller.setInput(SAMPLE_TEXT);
+  await controller.run();
   assert.match(app(), /class="transport"/);
   assert.doesNotMatch(app(), /aria-current/);
   controller.play();

@@ -56,8 +56,8 @@ test('visibleParameters : un paramètre ne paraît qu’avec les choix qui s’e
   assert.deepEqual(keys(lineationPlugin, { ...lineationPlugin.defaults, cut: 'every' }), ['cut', 'n']);
   assert.deepEqual(keys(lineationPlugin, { ...lineationPlugin.defaults, cut: 'number' }), ['cut', 'number']);
   assert.deepEqual(keys(lineationPlugin, { ...lineationPlugin.defaults, cut: 'punctuation' }), ['cut']);
-  assert.deepEqual(keys(s7Plugin, { offset: 7, mode: 'reagree' }), ['offset', 'mode', 'draw']);
-  assert.deepEqual(keys(s7Plugin, { ...s7Plugin.defaults, draw: 'dice' }), ['mode', 'draw', 'seed']);
+  assert.deepEqual(keys(s7Plugin, { offset: 7, mode: 'reagree' }), ['offset', 'order', 'mode', 'draw']);
+  assert.deepEqual(keys(s7Plugin, { ...s7Plugin.defaults, draw: 'dice' }), ['order', 'mode', 'draw', 'seed']);
   assert.deepEqual(keys(base, base.defaults), ['n', 'sens']);
 });
 

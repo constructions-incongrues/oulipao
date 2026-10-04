@@ -41,7 +41,9 @@ export interface VerseWord {
 /**
  * Le nombre de syllabes d'un vers : celles de chaque mot, plus le e muet d'un mot suivi, dans le
  * vers, d'un mot qui commence par une consonne (« rêve » compte deux syllabes devant « dort »,
- * une devant « étrange » ou en fin de vers). Rien si le vers n'a pas de mot prononçable.
+ * une devant « étrange » ou en fin de vers). Le e de « -es » et « -ent » compte aussi devant une
+ * voyelle, la liaison le faisant entendre (« voiles au » : voi-le-z‿au). Rien si le vers n'a pas de
+ * mot prononçable.
  */
 export function lineSyllables(words: readonly VerseWord[], phonetics: PhoneticsRepository): number | undefined {
   const readings = words.map(({ word, category }) => pronounce(word, category, phonetics));
@@ -50,7 +52,8 @@ export function lineSyllables(words: readonly VerseWord[], phonetics: PhoneticsR
     if (!reading) return;
     count += syllableCount(reading);
     const next = readings.slice(k + 1).find(Boolean);
-    if (next && endsWithMuteE(words[k]!.word, phonemesOf(reading)) && !isVowel(phonemesOf(next)[0]!)) count++;
+    const word = words[k]!.word;
+    if (next && endsWithMuteE(word, phonemesOf(reading)) && (/(?:es|ent)$/i.test(word) || !isVowel(phonemesOf(next)[0]!))) count++;
   });
   return readings.some(Boolean) ? count : undefined;
 }
