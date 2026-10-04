@@ -35,18 +35,19 @@ function broken(gap: string): string {
 const GUESSED: PhoneticsRepository = { readings: () => [], homophones: () => [], rhyming: () => [], ending: () => [] };
 
 /**
- * Les positions (parmi les mots comptés) qui ouvrent une ligne quand chaque vers prend au moins
- * `n` syllabes : un mot ne se coupe pas, le vers qui l'atteint s'arrête après lui.
+ * Les positions (parmi les mots comptés) qui ouvrent une ligne quand aucun vers ne dépasse `n`
+ * syllabes : un mot ne se coupe pas, celui qui ferait dépasser ouvre le vers suivant. Un mot plus
+ * long que `n` à lui seul fait un vers.
  */
 function syllableBreaks(groups: readonly TaggedWord[][], n: number, phonetics: PhoneticsRepository): Set<number> {
   const breaks = new Set<number>();
   let line: TaggedWord[] = [];
   groups.forEach((group, k) => {
-    line.push(...group);
-    if (k + 1 < groups.length && (lineSyllables(line, phonetics) ?? 0) >= n) {
-      breaks.add(k + 1);
-      line = [];
-    }
+    const longer = [...line, ...group];
+    if (line.length && (lineSyllables(longer, phonetics) ?? 0) > n) {
+      breaks.add(k);
+      line = [...group];
+    } else line = longer;
   });
   return breaks;
 }
@@ -101,7 +102,7 @@ export const lineationPlugin = definePlugin({
   help(values) {
     const { cut, n, syllables, number } = params(values);
     if (cut === 'every') return `Va à la ligne tous les ${n} mots ; les mots ne changent pas.`;
-    if (cut === 'syllables') return `Va à la ligne dès que le vers compte ${syllables} syllabes, sans couper de mot ; les mots ne changent pas.`;
+    if (cut === 'syllables') return `Va à la ligne avant le mot qui ferait passer le vers au-delà de ${syllables} syllabes ; les mots ne changent pas.`;
     if (cut === 'punctuation') return 'Va à la ligne après chaque ponctuation ; les mots ne changent pas.';
     return `Les chiffres de ${number} donnent le nombre de mots de chaque vers, en boucle, zéros sautés.`;
   },
