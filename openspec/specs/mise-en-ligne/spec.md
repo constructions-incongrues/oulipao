@@ -177,3 +177,37 @@ The test page SHALL ask search engines not to index it.
 - **GIVEN** la page `essai.html` publiée
 - **WHEN** on lit son `<head>`
 - **THEN** il contient `<meta name="robots" content="noindex">`
+
+### Requirement: Contrôles avant fusion et publication
+The system SHALL run, on every pull request and again before every publication, the palette check (contrast of at least 4.5:1 and colour distance between tracks, including colour-blind vision) and a check that regenerating the reference texts from their annotated sources leaves the committed reference files unchanged; a failing check SHALL block the pull request and stop the publication.
+
+#### Scenario: Palette en défaut
+- **GIVEN** une PR qui change la couleur d'une piste en une teinte sous 4,5:1 sur la façade
+- **WHEN** la vérification de la PR s'exécute
+- **THEN** elle échoue sur le contrôle de la palette
+
+#### Scenario: Référence non régénérée
+- **GIVEN** une PR qui modifie `reference/texte-2.annote.txt` sans régénérer `reference/texte-2.json`
+- **WHEN** la vérification de la PR s'exécute
+- **THEN** elle échoue en montrant que le fichier de référence diffère de sa source
+
+#### Scenario: Tout est en ordre
+- **GIVEN** une PR dont la palette est conforme et les références à jour
+- **WHEN** la vérification s'exécute
+- **THEN** ces deux contrôles passent
+
+### Requirement: Révision figée des poids du modèle
+The system SHALL request the tagging model's weights and tokenizer at a fixed revision of the Hugging Face repository, named in the code, rather than at its moving default branch; changing the revision SHALL require a change to the code.
+
+#### Scenario: Requête du modèle
+- **GIVEN** la page à pistes et l'onglet réseau ouvert
+- **WHEN** l'utilisateur charge le modèle
+- **THEN** les fichiers du modèle sont demandés à la révision figée dans le code, pas à la branche `main`
+
+### Requirement: Données publiées vérifiées
+The system SHALL load in full every derived data file served with the site — the lexicon, the dictionary, the verbs and the phonetic textbank — in the tests that gate publication, so that a file with a non-conforming line stops the publication.
+
+#### Scenario: Fichier des verbes abîmé
+- **GIVEN** une régénération du fichier des verbes qui produit une ligne non conforme
+- **WHEN** les tests de la PR de version s'exécutent
+- **THEN** ils échouent en nommant la ligne, et le site publié reste celui d'avant

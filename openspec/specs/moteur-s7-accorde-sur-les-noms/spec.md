@@ -108,7 +108,7 @@ The system SHALL perform the transformation entirely in the browser, with no net
 - **THEN** aucune requête ne contient le texte
 
 ### Requirement: Décalage tiré au dé
-The system SHALL let an S+n instance draw its offset with a die instead of a fixed offset: with « au dé », each targeted word SHALL get an offset from 1 to 6 derived only from an integer seed (1 to 9 999 999) and the word's position, so that the same seed and text always give the same result. A lock on a word SHALL take precedence over the die. The instance title SHALL read « S+dé ».
+The system SHALL let an S+n instance draw its offset with a die instead of a fixed offset: with « au dé », each targeted word SHALL get an offset from 1 to 6 derived only from an integer seed (1 to 9 999 999) and the word's position in the source text, whatever the earlier steps of the chain removed, split or merged, so that the same seed and text always give the same result. A lock on a word SHALL take precedence over the die. The instance title SHALL read « S+dé ».
 
 #### Scenario: Même graine, même tirage
 - **GIVEN** un texte de dix noms, un S+n au dé de graine 2461318
@@ -124,3 +124,16 @@ The system SHALL let an S+n instance draw its offset with a die instead of a fix
 - **GIVEN** un S+n au dé et un verrou S+3 sur un nom
 - **WHEN** le texte est traité
 - **THEN** ce nom prend le décalage 3
+
+#### Scenario: Étape amont qui retire un mot
+- **GIVEN** une chaîne « Tri par piste qui retire les adverbes » puis « S+n au dé », sur un texte où un adverbe précède plusieurs noms
+- **WHEN** l'utilisateur coupe puis rallume le Tri par piste
+- **THEN** chaque nom placé après l'adverbe reçoit le même décalage dans les deux cas
+
+### Requirement: Mots bouchés signalés
+The system SHALL give the reason « pas bouché » to every word the S+n leaves because its step is closed, whatever its track — noun, adjective or verb.
+
+#### Scenario: Adjectif bouché
+- **GIVEN** un S+n en mode réaccord sur les noms et les adjectifs, et le pas d'un adjectif bouché
+- **WHEN** le texte est traité
+- **THEN** l'adjectif reste tel quel et l'inspecteur donne la raison « pas bouché »

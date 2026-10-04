@@ -228,3 +228,29 @@ Whenever the input holds one of the example texts unchanged, a line SHALL name i
 - **GIVEN** une visite précédente arrêtée sur le troisième exemple
 - **WHEN** on rouvre la page et clique « Essayer avec un exemple »
 - **THEN** c'est le texte de Proust qui est mis en pistes
+
+### Requirement: Texte long sans ponctuation
+The system SHALL put on tracks a text of up to 600 words that contains no sentence-ending punctuation, such as a poem without full stops, giving every word one of the five categories, instead of failing the whole tagging.
+
+#### Scenario: Poème sans point
+- **GIVEN** un poème de 600 mots, en vers, sans aucun point, point d'exclamation, point d'interrogation ni points de suspension
+- **WHEN** l'utilisateur le met en pistes
+- **THEN** chaque mot reçoit une des cinq catégories et la grille s'affiche
+
+### Requirement: Découpage des mots composés
+The system SHALL keep as one word a hyphenated compound whose second part looks like a pronoun when it belongs to a fixed list of lexicalised compounds (at least « rendez-vous », « on-dit », « chez-soi », « chez-moi », « m'as-tu-vu »), while still splitting a verb from its clitic pronoun (« dit-il », « donne-le »). It SHALL treat the modifier letter apostrophe (U+02BC) as an apostrophe, like « ' » and « ’ ».
+
+#### Scenario: Nom composé
+- **GIVEN** le texte « Le rendez-vous est pris. »
+- **WHEN** il est mis en pistes
+- **THEN** « rendez-vous » est un seul mot de la piste des noms
+
+#### Scenario: Verbe et pronom
+- **GIVEN** le texte « Viens, dit-il. »
+- **WHEN** il est mis en pistes
+- **THEN** « dit » et « il » sont deux mots
+
+#### Scenario: Apostrophe modificative
+- **GIVEN** le texte « lʼarbre » écrit avec l'apostrophe U+02BC
+- **WHEN** il est mis en pistes
+- **THEN** « l » et « arbre » sont découpés comme avec « l'arbre »
