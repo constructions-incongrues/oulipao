@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.1](https://github.com/constructions-incongrues/oulipao/compare/v0.6.0...v0.6.1) (2026-10-04)
+
+
+### Corrections
+
+* dé sur la position d'origine, raisons justes, composés et insécables gardés ([#76](https://github.com/constructions-incongrues/oulipao/issues/76)) ([9acd658](https://github.com/constructions-incongrues/oulipao/commit/9acd6587b097d372f09b9ac30dd0cd99cc06b7b1))
+
+
+### Performances
+
+* relecture, retraits, rimes et lipogramme en temps linéaire ([#77](https://github.com/constructions-incongrues/oulipao/issues/77)) ([e886ea4](https://github.com/constructions-incongrues/oulipao/commit/e886ea48707944fd5a3e819e3d15801f5acb2213))
+
 ## [0.6.0](https://github.com/constructions-incongrues/oulipao/compare/v0.5.0...v0.6.0) (2026-10-04)
 
 
