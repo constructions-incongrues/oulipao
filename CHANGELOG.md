@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.6.2](https://github.com/constructions-incongrues/oulipao/compare/v0.6.1...v0.6.2) (2026-10-04)
+
+
+### Corrections
+
+* écoute dans l'en-tête de la grille, état dans la chaîne, bande compacte au téléphone ([#91](https://github.com/constructions-incongrues/oulipao/issues/91)) ([825d5b2](https://github.com/constructions-incongrues/oulipao/commit/825d5b2ae249a3e101cebb7e6e0ea7ddaa67a2a2))
+* formules chimiques retirées du lexique ([#85](https://github.com/constructions-incongrues/oulipao/issues/85)) ([b2a5f5a](https://github.com/constructions-incongrues/oulipao/commit/b2a5f5a84d3c7c346b274c89c37644b344b2ba87))
+* inspecteur aligné sur la grille, catalogue replié après ajout, ponctuation insécable ([#84](https://github.com/constructions-incongrues/oulipao/issues/84)) ([bfd62a8](https://github.com/constructions-incongrues/oulipao/commit/bfd62a8ebac83702d0d21a4d78e46acd47d92289))
+* symboles d'unités retirés des noms ([#90](https://github.com/constructions-incongrues/oulipao/issues/90)) ([98bd6cb](https://github.com/constructions-incongrues/oulipao/commit/98bd6cba84d23076b555ed3e30106b1e9839e89a))
+
 ## [0.6.1](https://github.com/constructions-incongrues/oulipao/compare/v0.6.0...v0.6.1) (2026-10-04)
 
 
