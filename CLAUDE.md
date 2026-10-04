@@ -13,7 +13,7 @@ indexée dans `README.md`.
 - Entités définies et validées par des schémas zod ; les types TypeScript en sont déduits ;
   toute donnée entrant par un adaptateur est validée.
 - Symboles en anglais ; commentaires, documentation et PR en français.
-- PR fusionnées en squash par la file de fusion (`gh pr merge <n> --squash` met en file).
+- PR fusionnées en squash par la file de fusion : `gh pr merge <n>`, sans `--squash`, met en file.
   Le titre de PR suit les Conventional Commits, la description en français :
   `feat: filtre de rime riche`, `fix: défilement bloqué`. Seuls `feat`, `fix`, `perf` et
   `revert` entrent au journal des versions et déclenchent une version ; `docs`, `chore`,
