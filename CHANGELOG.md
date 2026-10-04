@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0](https://github.com/constructions-incongrues/oulipao/compare/v0.4.0...v0.5.0) (2026-10-04)
+
+
+### Nouveautés
+
+* champ fixe estompé quand le paramètre est modulé ([#62](https://github.com/constructions-incongrues/oulipao/issues/62)) ([be1112c](https://github.com/constructions-incongrues/oulipao/commit/be1112c53342ae99c45a29428d16a7333548b625))
+* modulateur ([#58](https://github.com/constructions-incongrues/oulipao/issues/58)) ([fc5c7cd](https://github.com/constructions-incongrues/oulipao/commit/fc5c7cd8f404ebf26d1f636470ab07db6f2217ff))
+
 ## [0.4.0](https://github.com/constructions-incongrues/oulipao/compare/v0.3.0...v0.4.0) (2026-10-03)
 
 
