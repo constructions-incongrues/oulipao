@@ -7,6 +7,18 @@ import { MixerStateSchema } from './types.ts';
  * le rouvrir à l'identique — le texte d'origine avec son étiquetage (les verrous et les pas bouchés
  * désignent les mots par leur position) et l'état de la table.
  */
+/**
+ * La filiation d'un texte né d'« Itérer » ou de « Figer » : l'entrée parente (dont le texte est la
+ * source de l'entrée), le texte de la première génération, et le corps des mentions des passes
+ * précédentes, de la plus ancienne à la plus récente.
+ */
+export const LineageSchema = z.object({
+  parent: z.string().min(1),
+  ancestor: z.string().min(1),
+  passes: z.array(z.string()),
+});
+export type Lineage = z.infer<typeof LineageSchema>;
+
 export const NotebookEntrySchema = z.object({
   id: z.string().min(1),
   keptAt: z.iso.datetime(),
@@ -16,6 +28,8 @@ export const NotebookEntrySchema = z.object({
   mixer: MixerStateSchema,
   /** La retouche du fondateur, gardée à côté du résultat produit ; absente : aucune. */
   edited: z.string().optional(),
+  /** Absente : première génération. Illisible, elle est oubliée sans perdre l'entrée. */
+  lineage: LineageSchema.optional().catch(undefined),
 });
 export type NotebookEntry = z.infer<typeof NotebookEntrySchema>;
 
@@ -92,8 +106,9 @@ export function editEntry(entries: readonly NotebookEntry[], id: string, text: s
   });
 }
 
-/** Une entrée copiée d'un bloc, comme dans un mail : l'original, le résultat (retouché), la chaîne. */
-export const entryClipboard = (entry: NotebookEntry) => `${entry.source.text}\n\n${entry.edited ?? entry.result}${entry.mention}`;
+/** Une entrée copiée d'un bloc, comme dans un mail : l'ancêtre s'il y en a un, l'original, le résultat (retouché), la chaîne. */
+export const entryClipboard = (entry: NotebookEntry) =>
+  `${entry.lineage ? `${entry.lineage.ancestor}\n\n` : ''}${entry.source.text}\n\n${entry.edited ?? entry.result}${entry.mention}`;
 
 /** Les jours de calendrier, en heure locale, entre une garde et aujourd'hui : 23 h 50 la veille compte 1. */
 export function daysSince(iso: string, today: Date): number {

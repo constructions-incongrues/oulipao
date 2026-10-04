@@ -31,6 +31,11 @@ export interface ResultProps {
   onCopy: () => void;
   /** Range le texte dans le carnet ; sans lui, pas de bouton « Garder ». */
   onKeep?: () => void;
+  /** Font du texte résultant une nouvelle génération, avec la même chaîne ou sans elle ; sans eux, pas de touches. */
+  onIterate?: () => void;
+  onFreeze?: () => void;
+  /** Une mise en pistes est en cours : on n'itère ni ne fige. */
+  busy?: boolean;
   /** Le nombre de syllabes de chaque ligne, affiché en bout de ligne ; absent sans filtre phonétique. */
   syllables?: readonly (number | undefined)[];
   /** La forme à refrain posée sur le texte, et son choix ; sans `onForm`, pas de choix affiché. */
@@ -49,7 +54,7 @@ function between(text: string, syllables: readonly (number | undefined)[] | unde
 }
 
 /** Le texte résultant, en tête de page et collé en haut de l'écran quand on descend, et sa copie. */
-export function Result({ segments, empty, marks, tracks, selected, onSelect, changed, generation, audibleCount, stale, pinned = false, copyMessage, onCopy, onKeep, syllables, form = 'none', onForm }: ResultProps): VNode {
+export function Result({ segments, empty, marks, tracks, selected, onSelect, changed, generation, audibleCount, stale, pinned = false, copyMessage, onCopy, onKeep, onIterate, onFreeze, busy = false, syllables, form = 'none', onForm }: ResultProps): VNode {
   const line = { at: 0 };
   let refrain: number | undefined;
   /** L'annonce d'un refrain, pour les lecteurs d'écran, au premier morceau de chaque vers recopié. */
@@ -64,6 +69,10 @@ export function Result({ segments, empty, marks, tracks, selected, onSelect, cha
         <h2 class="silk">Texte résultant</h2>
         <button type="button" class="key copy" disabled=${empty || stale} onClick=${onCopy}>Copier</button>
         ${onKeep && html`<button type="button" class="key keep" disabled=${empty || stale} onClick=${onKeep}>Garder</button>`}
+        ${onIterate &&
+        html`<button type="button" class="key iterate" disabled=${empty || stale || busy} title="Garder ce texte, puis lui appliquer de nouveau la même chaîne" onClick=${onIterate}>Itérer</button>`}
+        ${onFreeze &&
+        html`<button type="button" class="key freeze" disabled=${empty || stale || busy} title="Garder ce texte, puis en faire un texte de départ, sans chaîne" onClick=${onFreeze}>Figer</button>`}
         <span class="copy-message" role="status" aria-live="polite">${copyMessage}</span>
         ${onForm &&
         html`<label class="silk form-choice">Forme<select class="form" value=${form} onChange=${(event: Event) => onForm(FormSchema.parse((event.currentTarget as HTMLSelectElement).value))}>
