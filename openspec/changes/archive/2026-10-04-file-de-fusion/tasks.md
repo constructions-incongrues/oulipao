@@ -11,12 +11,12 @@
 
   Vérifier en relisant le guide de bout en bout.
 - [x] 1.3 (docs) Dans `CLAUDE.md`, remplacer « PR fusionnées en squash » par « PR fusionnées en squash par la file de fusion (`gh pr merge <n> --squash` met en file) ». Vérifier que la consigne reste sur une ligne lisible.
-- [ ] 1.4 Ouvrir la PR `ci: file de fusion sur main` et la fusionner avec les règles actuelles, une fois « check » vert. Vérifier qu'elle est sur `main` et que `npm test` passe sur `main`.
+- [x] 1.4 Ouvrir la PR `ci: file de fusion sur main` et la fusionner avec les règles actuelles, une fois « check » vert. Vérifier qu'elle est sur `main` et que `npm test` passe sur `main`.
 
 ## 2. Bascule du ruleset (réglage du dépôt, avec l'accord du fondateur au moment de l'appliquer)
 
-- [ ] 2.1 Sauvegarder l'état actuel : `gh api repos/constructions-incongrues/oulipao/rulesets/24430545 > /tmp/ruleset-avant.json` (dans le dossier de travail de la session). Copier l'essentiel dans la description de la PR d'archive, pour pouvoir revenir en arrière. Vérifier que le fichier contient `bypass_actors` et `required_status_checks`.
-- [ ] 2.2 Faire un `PUT` du ruleset 24430545 : garder `required_status_checks` à l'identique, ajouter la règle `merge_queue` (design, décision 2) et vider `bypass_actors`. Vérifier par un `gh api` relu : deux règles (`required_status_checks`, `merge_queue` en `SQUASH`) et `bypass_actors: []`.
+- [x] 2.1 Sauvegarder l'état actuel : `gh api repos/constructions-incongrues/oulipao/rulesets/24430545 > /tmp/ruleset-avant.json` (dans le dossier de travail de la session). Copier l'essentiel dans la description de la PR d'archive, pour pouvoir revenir en arrière. Vérifier que le fichier contient `bypass_actors` et `required_status_checks`.
+- [x] 2.2 Faire un `PUT` du ruleset 24430545 : garder `required_status_checks` à l'identique, ajouter la règle `merge_queue` (design, décision 2) et vider `bypass_actors`. Vérifier par un `gh api` relu : deux règles (`required_status_checks`, `merge_queue` en `SQUASH`) et `bypass_actors: []`.
 
 ## 3. Vérification par une PR qui traverse la file
 
