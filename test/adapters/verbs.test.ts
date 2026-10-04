@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { deriveVerbs, verbRowsOf } from '../../src/adapters/lexicon/grammalecte-verbs.ts';
 import { InMemoryVerbs, loadVerbs, parseVerbs } from '../../src/adapters/morphology/in-memory-verbs.ts';
+import { fileTextSource } from '../../src/adapters/text-sources/file-text-source.ts';
 
 // Ligne au format du lexique Grammalecte : forme en 3e colonne, lemme en 4e, étiquettes en 5e, notes en 8e.
 const row = (form: string, lemma: string, tags: string, notes = '') =>
@@ -67,4 +68,12 @@ test('Ligne non conforme', () => {
 test('InMemoryVerbs : ordre du dictionnaire, accents ignorés', () => {
   const v = (infinitive: string) => ({ form: infinitive, infinitive, tense: 'infinitive' as const });
   assert.deepEqual(new InMemoryVerbs([v('étendre'), v('finir'), v('aimer'), v('avoir')]).infinitives(), ['aimer', 'étendre', 'finir']);
+});
+
+test('le fichier des verbes publié se charge en entier', async () => {
+  const verbs = await loadVerbs(fileTextSource(new URL('../../data/verbes-oulipao.tsv', import.meta.url)));
+  assert.ok(verbs.readings('aimons').some((form) => form.infinitive === 'aimer' && form.tense === 'indicative-present' && form.person === '1p'));
+  assert.ok(verbs.readings('finissait').some((form) => form.infinitive === 'finir' && form.tense === 'indicative-imperfect' && form.person === '3s'));
+  assert.ok(verbs.readings('pris').some((form) => form.infinitive === 'prendre' && form.tense === 'past-participle'));
+  assert.ok(verbs.infinitives().length > 5000);
 });

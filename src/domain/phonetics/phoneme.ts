@@ -9,6 +9,8 @@ export const PhonemeSchema = z.enum([...VOWELS, ...CONSONANTS]);
 export type Phoneme = z.infer<typeof PhonemeSchema>;
 
 const VOWEL_SET = new Set<string>(VOWELS);
+// Les phonèmes du français, pour valider un symbole sans passer par zod à chaque lettre (un million d'appels au chargement).
+const PHONEME_SET = new Set<string>([...VOWELS, ...CONSONANTS]);
 export const isVowel = (phoneme: string) => VOWEL_SET.has(phoneme);
 
 const TILDE = '̃';
@@ -18,9 +20,8 @@ export function splitPhonemes(ipa: string): Phoneme[] | undefined {
   const phonemes: Phoneme[] = [];
   for (let i = 0; i < ipa.length; i++) {
     const symbol = ipa[i + 1] === TILDE ? ipa[i]! + ipa[++i]! : ipa[i]!;
-    const phoneme = PhonemeSchema.safeParse(symbol);
-    if (!phoneme.success) return undefined;
-    phonemes.push(phoneme.data);
+    if (!PHONEME_SET.has(symbol)) return undefined;
+    phonemes.push(symbol as Phoneme);
   }
   return phonemes;
 }
