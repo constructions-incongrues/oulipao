@@ -109,7 +109,8 @@ export const s7Plugin = definePlugin({
     const skip = new Set(scope.skip);
     // Un verrou se complète des réglages de l'instance et passe par la même validation.
     const locked = new Map(scope.overrides.map(({ index, values: own }) => [index, params({ ...values, ...own }).offset]));
-    const offsetAt = (index: number) => locked.get(index) ?? (settings.draw === 'dice' ? dieRoll(settings.seed, index) : settings.offset);
+    // Le dé se tire sur la position d'origine du mot : couper ou rallumer une étape en amont ne le relance pas.
+    const offsetAt = (index: number) => locked.get(index) ?? (settings.draw === 'dice' ? dieRoll(settings.seed, scope.origin?.[index] ?? index) : settings.offset);
     let words;
     let tail;
     const marks: WordMark[] = [];

@@ -6,8 +6,8 @@
 
 ## 2. Dé sur la position d'origine (PR `fix:`)
 
-- [ ] 2.1 (domain) Ajouter `origin: number[]` à `WordScope` et à son schéma zod dans `plugin.ts`, rempli par `runChain` depuis `current.origin` ; test dans `test/domain/plugin-chain.test.ts` : un plugin espion reçoit les positions d'origine après une étape qui retire un mot
-- [ ] 2.2 (domain) `s7/plugin.ts` tire `dieRoll(seed, scope.origin[index] ?? index)` ; tests : S+dé seul inchangé, S+dé après un Tri par piste qui retire un adverbe garde les mêmes faces quand on coupe ou rallume l'étape amont
+- [x] 2.1 (domain) Ajouter `origin: number[]` à `WordScope` et à son schéma zod dans `plugin.ts`, rempli par `runChain` depuis `current.origin` ; test dans `test/domain/plugin-chain.test.ts` : un plugin espion reçoit les positions d'origine après une étape qui retire un mot
+- [x] 2.2 (domain) `s7/plugin.ts` tire `dieRoll(seed, scope.origin[index] ?? index)` ; tests : S+dé seul inchangé, S+dé après un Tri par piste qui retire un adverbe garde les mêmes faces quand on coupe ou rallume l'étape amont
 
 ## 3. Raisons, découpage, insécables (PR `fix:`)
 
