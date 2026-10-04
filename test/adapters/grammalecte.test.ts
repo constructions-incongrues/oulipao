@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { deriveLexicon, isChemicalFormula, readingsOf } from '../../src/adapters/lexicon/grammalecte.ts';
+import { deriveLexicon, isChemicalFormula, isUnitSymbol, readingsOf } from '../../src/adapters/lexicon/grammalecte.ts';
 
 // Lignes au format du lexique Grammalecte : 20 colonnes, forme en 3e, lemme en 4e, étiquettes en 5e.
 const row = (form: string, lemma: string, tags: string) =>
@@ -46,4 +46,12 @@ test('deriveLexicon : sans formule chimique', () => {
     ['0', '1', form, form, 'nom mas inv', 'x', 'x', 'cc', domains, ...Array<string>(11).fill('x')].join('\t');
   const { entries } = deriveLexicon([chem('BeSO₃', 'chim'), chem('NaCl', 'chim'), chem('RMN', 'phys chim')]);
   assert.deepEqual(entries, ['RMN\tn']);
+});
+
+test('deriveLexicon : sans symbole d’unité', () => {
+  const unit = (form: string, notes: string) =>
+    ['0', '1', form, form, 'nom mas inv', 'x', 'x', notes, '', ...Array<string>(11).fill('x')].join('\t');
+  assert.equal(isUnitSymbol('symb'), true);
+  assert.equal(isUnitSymbol('pel'), false);
+  assert.deepEqual(deriveLexicon([unit('ET', 'symb'), unit('ONU', '')]).entries, ['ONU\tn']);
 });
