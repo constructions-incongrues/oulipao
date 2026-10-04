@@ -1,8 +1,9 @@
 import { CATEGORIES, type Category } from '../../domain/categories.ts';
 import { audibleCategories, mixSegments, type MixedSegment } from '../../domain/mixing.ts';
 import type { ConstraintPlugin, ParameterValues } from '../../domain/plugin.ts';
+import type { WordModulation } from '../../domain/modulation/apply.ts';
 import { runChain, type ChainStep, type StageWord, type StepReport } from '../../domain/plugin-chain.ts';
-import { describeReading, lineSyllables, pronounce, type VerseWord } from '../../domain/phonetics/lookup.ts';
+import { describeReading, lineSyllables, PHONETICS_LOADING, pronounce, type VerseWord } from '../../domain/phonetics/lookup.ts';
 import { FORM_LABELS, layoutForm } from '../../domain/forms/form.ts';
 import { rhymeSchemePlugin, schemeOf } from '../../domain/rhyme/rhyme-scheme.ts';
 import { schemeLetters } from '../../domain/rhyme/scheme.ts';
@@ -12,6 +13,7 @@ import type { MorphologyRepository } from '../../ports/morphology.ts';
 import type { PhoneticsRepository } from '../../ports/phonetics.ts';
 import type { VerbRepository } from '../../ports/verbs.ts';
 import { pluginById } from './mixer-state.ts';
+import { gateStatement, modulatedLabel, modulatorStatement } from './modulation-statement.ts';
 import { TRACK_NAMES, TRACK_UNITS, type Instance, type MixerState } from './types.ts';
 
 /** Un texte collé et étiqueté : on ne l'étiquette qu'une fois, puis chaque geste rejoue la suite. */
@@ -37,6 +39,8 @@ export interface Stage {
   label: string;
   /** Un élément par mot d'origine : chaîne vide pour un mot retiré, et s'il a été mis à la ligne. */
   words: StageWord[];
+  /** Ce que les modulateurs et la porte de l'instance ont fait, par mot d'origine ; absent : rien. */
+  modulation?: ReadonlyMap<number, WordModulation>;
 }
 
 export interface TracksView {
@@ -63,6 +67,8 @@ export interface TracksView {
   syllables?: (number | undefined)[];
   /** Sous une forme à refrain : les vers de l'auteur qui manquent pour la remplir. */
   missing?: number;
+  /** Les paramètres modulés dont une valeur a été repliée, par instance : la mention dit « modulo ». */
+  folded: Readonly<Record<string, readonly string[]>>;
 }
 
 /**
@@ -101,8 +107,24 @@ export function activeSteps(mixer: MixerState, lookup: PluginLookup = pluginById
       targets: new Set(instance.targets),
       closed,
       locks: locksOf(instance),
+      ...(modulated(instance) && { modulators: instance.modulators }),
+      ...(instance.gate && { gate: instance.gate }),
     }))
-    .filter(({ plugin, values }) => plugin.acts(values));
+    // Un S+0 modulé agit : ses mots reçoivent leur propre décalage.
+    .filter(({ plugin, values, modulators }) => plugin.acts(values) || modulators !== undefined);
+}
+
+/** L'instance lit-elle des syllabes, par un modulateur ou par sa porte ? Il lui faut alors les prononciations. */
+export const readsSyllables = (instance: Instance) =>
+  Object.values(instance.modulators ?? {}).some((modulator) => modulator.source.kind === 'syllables') || instance.gate?.source.kind === 'syllables';
+
+/** L'instance a-t-elle au moins un paramètre modulé ? */
+const modulated = (instance: Instance) => Object.keys(instance.modulators ?? {}).length > 0;
+
+/** Ce qui précise la règle d'une instance dans la chaîne : une instance avant elle, et ses paramètres repliés. */
+export interface DescribeContext {
+  earlier?: boolean;
+  folded?: readonly string[];
 }
 
 /** Les verrous d'une instance, par mot d'origine : les valeurs propres de ce mot. */
@@ -121,12 +143,22 @@ export interface GridStep {
   state: 'punched' | 'outline' | 'closed';
   /** Les verrous posés sur ce mot, instance par instance, dans l'ordre de la chaîne. */
   locks: { id: string; key: string; value: number }[];
+  /** Ce que les modulateurs ont donné à ce mot, étape par étape : « +4 », « porte fermée » ; absent : rien. */
+  modulated?: string[];
 }
 
-/** Les pas de la grille, un par mot d'origine. */
-export function gridSteps(mixer: MixerState, tracks: readonly Category[], words: readonly string[], lookup: PluginLookup = pluginById): GridStep[] {
+/** Les pas de la grille, un par mot d'origine ; `stages` (ceux de la vue) donne les valeurs modulées. */
+export function gridSteps(mixer: MixerState, tracks: readonly Category[], words: readonly string[], lookup: PluginLookup = pluginById, stages: readonly Stage[] = []): GridStep[] {
   const closed = new Set(mixer.closed ?? []);
   const acting = activeSteps(mixer, lookup);
+  const modulatedAt = (index: number) => {
+    const modulated = stages.flatMap((stage) => {
+      const instance = mixer.instances.find((candidate) => candidate.id === stage.id);
+      const text = modulationText(stage.modulation?.get(index), instance && lookup(instance.type));
+      return text ? [text] : [];
+    });
+    return modulated.length ? { modulated } : {};
+  };
   return tracks.map((track, index) => ({
     index,
     word: words[index]!,
@@ -135,6 +167,7 @@ export function gridSteps(mixer: MixerState, tracks: readonly Category[], words:
     locks: mixer.instances.flatMap((instance) =>
       (instance.locks ?? []).filter((lock) => lock.index === index).map(({ key, value }) => ({ id: instance.id, key, value })),
     ),
+    ...modulatedAt(index),
   }));
 }
 
@@ -152,13 +185,21 @@ function tracksPhrase(targets: readonly Category[]): string {
 
 /**
  * Le nom d'une instance dans le résumé et la mention : son réglage, et ses pistes visées sauf
- * quand elle vise toutes celles que son type sait traiter (« S+7 sur les noms », « lipogramme en e »).
+ * quand elle vise toutes celles que son type sait traiter (« S+7 sur les noms », « lipogramme en e ») ;
+ * puis la règle de ses modulateurs et de sa porte, entre parenthèses, une phrase chacun.
  */
-export function describeInstance(instance: Instance, lookup: PluginLookup = pluginById): string {
+export function describeInstance(instance: Instance, lookup: PluginLookup = pluginById, context: DescribeContext = {}): string {
   const plugin = lookup(instance.type);
-  const label = plugin.label(instance.params);
-  if (plugin.tracks.every((track) => instance.targets.includes(track))) return label;
-  return `${label}${label.includes(',') ? ',' : ''} sur ${tracksPhrase(instance.targets)}`;
+  const label = modulatedLabel(plugin, instance.params, instance.modulators);
+  const named = plugin.tracks.every((track) => instance.targets.includes(track)) ? label : `${label}${label.includes(',') ? ',' : ''} sur ${tracksPhrase(instance.targets)}`;
+  const statement = { earlier: context.earlier ?? false, folded: false };
+  const rules = [
+    ...Object.entries(instance.modulators ?? {}).map(([key, modulator]) =>
+      modulatorStatement(plugin, key, modulator, instance.targets, { ...statement, folded: context.folded?.includes(key) ?? false }),
+    ),
+    ...(instance.gate ? [gateStatement(instance.gate, instance.targets, statement)] : []),
+  ];
+  return rules.length ? `${named} (${rules.join(' ; ')})` : named;
 }
 
 /** Rejoue la chaîne de contraintes, puis le mixage, sans réétiqueter. */
@@ -202,8 +243,14 @@ export function buildView(
   return {
     stages: [
       { id: 'origin', label: 'Origine', words: tagged.map((word) => ({ output: word.word, newline: false })) },
-      ...active.map((instance, k) => ({ id: instance.id, label: describeInstance(instance, lookup), words: chain.stages[k]! })),
+      ...active.map((instance, k) => ({
+        id: instance.id,
+        label: describeInstance(instance, lookup, { earlier: k > 0, folded: chain.modulation[k]!.folded }),
+        words: chain.stages[k]!,
+        ...(chain.modulation[k]!.words.size > 0 && { modulation: chain.modulation[k]!.words }),
+      })),
     ],
+    folded: Object.fromEntries(active.flatMap((instance, k) => (chain.modulation[k]!.folded.length ? [[instance.id, chain.modulation[k]!.folded]] : []))),
     tracks: tagged.map((word) => word.category),
     result: segments.map((segment) => segment.text).join(''),
     segments,
@@ -236,8 +283,9 @@ const plural = (count: number, one: string, many: string) => `${count} ${count >
  */
 function stepSentence(instance: Instance, view: TracksView, lookup: PluginLookup): string {
   const plugin = lookup(instance.type);
-  if (!plugin.acts(instance.params)) return plugin.help(instance.params);
-  const name = describeInstance(instance, lookup);
+  if (!plugin.acts(instance.params) && !modulated(instance)) return plugin.help(instance.params);
+  // Les bandes de la vue suivent la chaîne active : la première est l'origine.
+  const name = describeInstance(instance, lookup, { earlier: view.stages.findIndex((stage) => stage.id === instance.id) > 1, folded: view.folded[instance.id] ?? [] });
   const { replaced, removed, relaid, kept } = view.steps.find((step) => step.id === instance.id)!;
   // « 12 noms remplacés sur 13 » ne vaut que pour une contrainte qui a remplacé des mots.
   const substitution = plugin.targetable !== false && relaid === 0 && replaced > 0;
@@ -281,14 +329,39 @@ export function summarize(mixer: MixerState, view: TracksView, lookup: PluginLoo
  * La mention ajoutée au texte copié : ce qui a changé le texte, et d'où il vient. Rien quand le
  * texte copié est le texte d'origine (aucune instance n'agit, toutes les pistes entendues).
  */
-export function ruleMention(mixer: MixerState, audible: ReadonlySet<Category>, lookup: PluginLookup = pluginById): string {
+export function ruleMention(
+  mixer: MixerState,
+  audible: ReadonlySet<Category>,
+  lookup: PluginLookup = pluginById,
+  folded: Readonly<Record<string, readonly string[]>> = {},
+): string {
   const { form } = mixer;
   const active = new Set(activeSteps(mixer, lookup).map((step) => step.id));
-  const parts = mixer.instances.filter((instance) => active.has(instance.id)).map((instance) => describeInstance(instance, lookup));
+  const parts = mixer.instances
+    .filter((instance) => active.has(instance.id))
+    .map((instance, k) => describeInstance(instance, lookup, { earlier: k > 0, folded: folded[instance.id] ?? [] }));
   const cut = cutTracks(audible);
   if (cut.length) parts.push(`pistes coupées : ${cut.join(', ')}`);
   if (form && form !== 'none') parts.push(FORM_LABELS[form]);
   return parts.length ? `\n\n— ${parts.join(' · ')} (Oulipao)` : '';
+}
+
+/** Le corps d'une mention, sans son tiret ni « (Oulipao) » : « S+7 sur les noms · pistes coupées : adjectifs » ; vide sans règle. */
+export const ruleBody = (mention: string) => mention.replace(/^\n\n— /, '').replace(/ \(Oulipao\)$/, '');
+
+/**
+ * La mention de toutes les passes depuis l'ancêtre, la chaîne en cours en dernier : des passes de
+ * même libellé qui se suivent se fondent en « ×n », des chaînes différentes se lient par « · puis ».
+ */
+export function composeMention(passes: readonly string[], current: string): string {
+  const runs: { body: string; count: number }[] = [];
+  for (const body of [...passes, current].filter(Boolean)) {
+    const last = runs.at(-1);
+    if (last?.body === body) last.count++;
+    else runs.push({ body, count: 1 });
+  }
+  const text = runs.map(({ body, count }) => (count > 1 ? `${body} ×${count}` : body)).join(' · puis ');
+  return text ? `\n\n— ${text} (Oulipao)` : '';
 }
 
 /**
@@ -317,6 +390,23 @@ export interface InspectorColumn {
 export interface InspectorCell {
   text: string;
   newline: boolean;
+  /** Ce que le modulateur a donné à ce mot à cette étape : « +4 », « porte fermée », « pas de voisin ». */
+  modulation?: string;
+}
+
+const NOTES: Record<NonNullable<WordModulation['note']>, string> = { 'no-neighbour': 'pas de voisin', loading: PHONETICS_LOADING };
+
+/** « +4 » pour un paramètre signé, « 4 » sinon ; puis la porte fermée et ce qui manquait. */
+export function modulationText(word: WordModulation | undefined, plugin: ConstraintPlugin | undefined): string | undefined {
+  if (!word) return undefined;
+  const parts = Object.entries(word.values).map(([key, value]) => {
+    const parameter = plugin?.parameters.find((candidate) => candidate.key === key);
+    const signed = parameter?.kind === 'integer' && parameter.min < 0;
+    return signed ? `${value < 0 ? '−' : '+'}${Math.abs(value)}` : String(value);
+  });
+  if (word.gate === 'closed') parts.push('porte fermée');
+  if (word.note) parts.push(NOTES[word.note]);
+  return parts.length ? parts.join(' · ') : undefined;
 }
 
 /** Ce que montre l'inspecteur : les colonnes autour du mot choisi, et chaque bande sur ces colonnes. */
@@ -326,16 +416,19 @@ export interface InspectorWindow {
 }
 
 /** La fenêtre de l'inspecteur : le mot choisi et `radius` voisins de chaque côté, bornés au texte ; « · » pour un mot retiré. */
-export function inspectorWindow(view: TracksView, index: number, radius: number): InspectorWindow {
+export function inspectorWindow(view: TracksView, index: number, radius: number, plugins: (id: string) => ConstraintPlugin | undefined = () => undefined): InspectorWindow {
   const from = Math.max(0, index - radius);
   const to = Math.min(view.tracks.length - 1, index + radius);
   const columns = Array.from({ length: to - from + 1 }, (_, k) => ({ index: from + k, distance: Math.abs(from + k - index) }));
   return {
     columns,
-    bands: view.stages.map(({ id, label, words }) => ({
+    bands: view.stages.map(({ id, label, words, modulation }) => ({
       id,
       label,
-      cells: columns.map((column) => ({ text: words[column.index]!.output || '·', newline: words[column.index]!.newline })),
+      cells: columns.map((column) => {
+        const text = modulationText(modulation?.get(column.index), plugins(id));
+        return { text: words[column.index]!.output || '·', newline: words[column.index]!.newline, ...(text && { modulation: text }) };
+      }),
     })),
   };
 }

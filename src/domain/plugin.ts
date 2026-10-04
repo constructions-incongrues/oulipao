@@ -9,6 +9,9 @@ import type { TaggedWord } from './tagged-word.ts';
 // Le contrat entre l'hôte (la page à pistes) et une contrainte. Contrat interne : il n'est ni
 // versionné ni publié ; la stratégie attend trois contraintes avant d'ouvrir un format.
 
+/** Le paramètre ne sert que si le paramètre à choix `key` vaut l'une de ces valeurs : ailleurs, l'hôte le cache. */
+export const ParameterWhenSchema = z.object({ key: z.string().min(1), values: z.array(z.string().min(1)).min(1) });
+
 /** Un paramètre entier, borné : l'hôte en fait un champ numérique. */
 export const IntegerParameterSchema = z.object({
   kind: z.literal('integer'),
@@ -18,6 +21,7 @@ export const IntegerParameterSchema = z.object({
   max: z.number().int(),
   /** Un mot peut recevoir sa propre valeur (un verrou) : seulement si `apply` lit `scope.overrides` pour ce paramètre. */
   lockable: z.literal(true).optional(),
+  when: ParameterWhenSchema.optional(),
 });
 
 /** Un paramètre à choix : l'hôte en fait une liste. */
@@ -26,6 +30,7 @@ export const ChoiceParameterSchema = z.object({
   key: z.string().min(1),
   label: z.string().min(1),
   options: z.array(z.object({ value: z.string().min(1), label: z.string().min(1) })).min(1),
+  when: ParameterWhenSchema.optional(),
 });
 
 /** Un paramètre texte, court : l'hôte en fait un champ de saisie ; le plugin interprète la chaîne dans `parse`. */
@@ -35,6 +40,7 @@ export const TextParameterSchema = z.object({
   label: z.string().min(1),
   maxLength: z.number().int().min(1),
   placeholder: z.string().optional(),
+  when: ParameterWhenSchema.optional(),
 });
 
 export const ParameterSchema = z.discriminatedUnion('kind', [IntegerParameterSchema, ChoiceParameterSchema, TextParameterSchema]);
@@ -151,12 +157,23 @@ const DeclarationSchema = z.object({
 });
 
 /** Déclare une contrainte : vérifie sa déclaration et que ses valeurs d'ouverture lui conviennent. */
+/** Les paramètres qui servent avec ces valeurs : ceux qu'un choix rend inutiles sont laissés de côté. */
+export function visibleParameters(plugin: ConstraintPlugin, values: ParameterValues): Parameter[] {
+  // Les valeurs passent par `parse` : une instance ancienne, sans le choix, prend sa valeur par défaut.
+  const parsed = plugin.parse(values);
+  return plugin.parameters.filter(({ when }) => !when || when.values.includes(String(parsed[when.key])));
+}
+
 export function definePlugin(plugin: ConstraintPlugin): ConstraintPlugin {
   DeclarationSchema.parse(plugin);
   const keys = plugin.parameters.map((parameter) => parameter.key);
   if (new Set(keys).size !== keys.length) throw new Error(`${plugin.id} : deux paramètres portent la même clé`);
   for (const parameter of plugin.parameters) {
     if (parameter.kind === 'integer' && parameter.min > parameter.max) throw new Error(`${plugin.id} : bornes inversées pour ${parameter.key}`);
+    const { when } = parameter;
+    const choice = when && plugin.parameters.find((candidate) => candidate.key === when.key);
+    if (when && (choice?.kind !== 'choice' || when.values.some((value) => !choice.options.some((option) => option.value === value))))
+      throw new Error(`${plugin.id} : ${parameter.key} dépend d'un choix inconnu`);
   }
   if (plugin.defaultTargets.some((track) => !plugin.tracks.includes(track))) throw new Error(`${plugin.id} : une piste par défaut n'est pas traitée`);
   if (plugin.targetable === false && (plugin.tracks.length !== CATEGORIES.length || plugin.defaultTargets.length !== CATEGORIES.length))

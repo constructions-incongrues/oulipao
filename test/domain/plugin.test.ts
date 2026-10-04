@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { definePlugin, type ConstraintPlugin } from '../../src/domain/plugin.ts';
+import { definePlugin, visibleParameters, type ConstraintPlugin } from '../../src/domain/plugin.ts';
+import { lineationPlugin } from '../../src/domain/lineation/plugin.ts';
+import { s7Plugin } from '../../src/domain/s7/plugin.ts';
 import { plainWords } from '../../src/domain/mixing.ts';
 
 const base: ConstraintPlugin = {
@@ -47,4 +49,22 @@ test('definePlugin : refuse une déclaration incohérente', () => {
   const all = ['noun', 'verb', 'adjective', 'adverb', 'other'] as const;
   assert.throws(() => definePlugin({ ...base, targetable: false, tracks: [...all], defaultTargets: ['noun'] }), /non ciblable/);
   assert.equal(definePlugin({ ...base, targetable: false, tracks: [...all], defaultTargets: [...all] }).targetable, false);
+});
+
+test('visibleParameters : un paramètre ne paraît qu’avec les choix qui s’en servent ; une instance ancienne prend le choix par défaut', () => {
+  const keys = (plugin: ConstraintPlugin, values: Record<string, number | string>) => visibleParameters(plugin, values).map((parameter) => parameter.key);
+  assert.deepEqual(keys(lineationPlugin, { ...lineationPlugin.defaults, cut: 'every' }), ['cut', 'n']);
+  assert.deepEqual(keys(lineationPlugin, { ...lineationPlugin.defaults, cut: 'number' }), ['cut', 'number']);
+  assert.deepEqual(keys(lineationPlugin, { ...lineationPlugin.defaults, cut: 'punctuation' }), ['cut']);
+  assert.deepEqual(keys(s7Plugin, { offset: 7, mode: 'reagree' }), ['offset', 'mode', 'draw']);
+  assert.deepEqual(keys(s7Plugin, { ...s7Plugin.defaults, draw: 'dice' }), ['mode', 'draw', 'seed']);
+  assert.deepEqual(keys(base, base.defaults), ['n', 'sens']);
+});
+
+test('definePlugin : un paramètre ne dépend que d’un choix déclaré et de ses valeurs', () => {
+  const [n, sens] = base.parameters;
+  assert.ok(definePlugin({ ...base, parameters: [{ ...n!, when: { key: 'sens', values: ['haut'] } }, sens!] }));
+  assert.throws(() => definePlugin({ ...base, parameters: [{ ...n!, when: { key: 'absent', values: ['haut'] } }, sens!] }), /dépend d'un choix inconnu/);
+  assert.throws(() => definePlugin({ ...base, parameters: [n!, { ...sens!, when: { key: 'n', values: ['1'] } }] }), /dépend d'un choix inconnu/);
+  assert.throws(() => definePlugin({ ...base, parameters: [{ ...n!, when: { key: 'sens', values: ['bas'] } }, sens!] }), /dépend d'un choix inconnu/);
 });

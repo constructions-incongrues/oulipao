@@ -39,10 +39,13 @@ export interface NotebookHost {
   restore(entry: NotebookEntry): Promise<void>;
   /** Place un texte dans le presse-papiers. */
   copy(text: string): Promise<void>;
+  /** Un texte vient d'être gardé : « Itérer » et « Figer » le reprennent comme parent. */
+  onKept(id: string): void;
 }
 
 export interface NotebookController {
-  keep(): void;
+  /** Garde le texte résultant ; rend l'identifiant gardé, rien en cas d'échec. */
+  keep(): string | undefined;
   reopen(id: string): Promise<void>;
   remove(id: string): void;
   exportNotebook(): void;
@@ -70,7 +73,7 @@ export function createNotebookController(host: NotebookHost, notebook: NotebookD
       const { state } = host;
       const view = state.view;
       const session = host.session();
-      if (!view || !session || state.stale || view.empty) return;
+      if (!view || !session || state.stale || view.empty) return undefined;
       const entry: NotebookEntry = {
         id: notebook.newId(),
         keptAt: notebook.now().toISOString(),
@@ -78,13 +81,17 @@ export function createNotebookController(host: NotebookHost, notebook: NotebookD
         mention: host.mention(view),
         source: session,
         mixer: state.mixer,
+        ...(state.lineage && { lineage: state.lineage }),
       };
       const entries = addEntry(state.notebook, entry);
       try {
         notebook.storage.write(serializeNotebook(entries));
         host.update({ notebook: entries, copyMessage: 'Gardé.', unsaved: false });
+        host.onKept(entry.id);
+        return entry.id;
       } catch (error) {
         host.update({ copyMessage: `Impossible de garder : ${messageOf(error)}` });
+        return undefined;
       }
     },
     async reopen(id) {

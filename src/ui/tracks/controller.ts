@@ -14,10 +14,10 @@ import type { Tagger } from '../../ports/tagger.ts';
 import type { VerbRepository } from '../../ports/verbs.ts';
 import { createListeningController, initialListening } from './listening-controller.ts';
 import { initialState, pluginById, reduce } from './mixer-state.ts';
-import type { NotebookEntry } from './notebook.ts';
+import type { Lineage, NotebookEntry } from './notebook.ts';
 import { createNotebookController, initialNotebook, memoryNotebook, messageOf, type NotebookDependencies } from './notebook-controller.ts';
 import { MixerStateSchema, type MixerAction, type MixerState } from './types.ts';
-import { buildView, changedWords, pageOf, ruleMention, stepsPerPage, withListening, type Session, type TracksView } from './view-model.ts';
+import { buildView, changedWords, composeMention, pageOf, readsSyllables, ruleBody, ruleMention, stepsPerPage, withListening, type Session, type TracksView } from './view-model.ts';
 
 /** Ce dont la page a besoin de l'extérieur. */
 export interface TracksDependencies {
@@ -84,6 +84,8 @@ export interface TracksState {
   notebookMessage: string;
   /** Un texte en pistes a changé, par un geste, depuis la dernière garde ou réouverture. */
   unsaved: boolean;
+  /** La filiation du texte en cours, né d'« Itérer » ou de « Figer » ; absente : première génération. */
+  lineage?: Lineage;
   /** Le chargement des verbes : `idle` tant qu'aucune instance ne les vise. */
   verbs: Loading;
   /** Le chargement des prononciations : `idle` tant qu'aucun filtre phonétique n'est en marche. */
@@ -137,8 +139,12 @@ export interface TracksController {
   shortcut(key: string, inField: boolean): boolean;
   closeInspector(): void;
   copy(): Promise<void>;
-  /** Range le texte résultant dans le carnet, avec sa chaîne et de quoi le rouvrir. */
-  keep(): void;
+  /** Range le texte résultant dans le carnet, avec sa chaîne et de quoi le rouvrir ; rend l'identifiant gardé, rien en cas d'échec. */
+  keep(): string | undefined;
+  /** Garde le texte en cours s'il ne l'est pas, puis met en pistes son résultat avec la même table. */
+  iterate(): Promise<void>;
+  /** Garde le texte en cours s'il ne l'est pas, puis met en pistes son résultat, chaîne et forme vidées. */
+  freeze(): Promise<void>;
   /** Rouvre un texte gardé : son texte d'origine, son étiquetage et sa table, sans réétiqueter. */
   reopen(id: string): Promise<void>;
   /** Supprime un texte gardé, après confirmation. */
@@ -205,6 +211,8 @@ export function createTracksController(dependencies: TracksDependencies, onChang
   let phonetics: PhoneticsRepository | undefined;
   let loading: Promise<void> | undefined;
   let runs = 0;
+  // L'entrée gardée ou rouverte en dernier : « Itérer » et « Figer » la reprennent comme parent si rien n'a changé depuis.
+  let lastKept: string | undefined;
 
   const update = (patch: Partial<TracksState>) => {
     state = { ...state, ...patch };
@@ -229,11 +237,57 @@ export function createTracksController(dependencies: TracksDependencies, onChang
   const wantResources = (mixer: MixerState) => {
     const enabled = mixer.instances.filter((instance) => instance.enabled);
     if (state.verbs.status === 'idle' && enabled.some((instance) => instance.targets.includes('verb'))) void controller.loadVerbs();
-    if (state.phonetics.status === 'idle' && enabled.some((instance) => pluginById(instance.type).phonetic)) void controller.loadPhonetics();
+    if (state.phonetics.status === 'idle' && enabled.some((instance) => pluginById(instance.type).phonetic || readsSyllables(instance))) void controller.loadPhonetics();
   };
 
   /** La mention de la chaîne, avec « réglé en écoutant » si l'écoute a tourné. */
-  const mention = (view: TracksView) => withListening(ruleMention(state.mixer, view.audible), state.listened);
+  const mention = (view: TracksView) =>
+    withListening(composeMention(state.lineage?.passes ?? [], ruleBody(ruleMention(state.mixer, view.audible, undefined, view.folded))), state.listened);
+
+  /**
+   * Met en pistes `text` : par la saisie, la filiation tombe ; par « Itérer » ou « Figer », elle
+   * suit, et la table de départ est celle que le geste fournit.
+   */
+  const tagInto = async (text: string, mixer: MixerState, lineage?: Lineage) => {
+    if (!text.trim()) return update({ inputMessage: 'Collez d’abord un texte.' });
+    const run = ++runs;
+    controller.stop();
+    update({ tagging: true, inputMessage: '', copyMessage: '' });
+    await controller.preload();
+    if (run !== runs) return; // un essai plus récent a pris le relais
+    if (state.model.status !== 'ready') return update({ tagging: false });
+    try {
+      const tagged = await tagText(dependencies.tagger, text);
+      if (run !== runs) return;
+      session = { text, tagged };
+      if (!lineage) lastKept = undefined;
+      // Nouvel étiquetage, nouvelles positions : les pas se rouvrent, les verrous tombent, l'inspecteur se ferme.
+      const next = reduce(mixer, { type: 'reset-steps' });
+      const view = buildView(session, next, morphology!, undefined, verbs, phonetics);
+      update({ tagging: false, editing: false, stale: state.input !== text, mixer: next, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, unsaved: true, listened: false, lineage });
+      wantResources(next);
+    } catch (error) {
+      if (run === runs) update({ tagging: false, inputMessage: `Échec de l’étiquetage : ${messageOf(error)}. Vous pouvez relancer.` });
+    }
+  };
+
+  /** « Itérer » (la même table) ou « Figer » (chaîne et forme vidées, toutes les pistes audibles). */
+  const nextGeneration = async (keepChain: boolean) => {
+    const view = state.view;
+    if (!view || !session || state.stale || view.empty || state.tagging) return;
+    const reuse = !state.unsaved && lastKept !== undefined && state.notebook.some((entry) => entry.id === lastKept);
+    const parent = reuse ? lastKept : controller.keep();
+    if (!parent) return; // la garde a échoué : son message est affiché, rien ne bouge
+    const pass = ruleBody(ruleMention(state.mixer, view.audible, undefined, view.folded));
+    const lineage: Lineage = {
+      parent,
+      ancestor: state.lineage?.ancestor ?? session.text,
+      passes: [...(state.lineage?.passes ?? []), ...(pass ? [pass] : [])],
+    };
+    const mixer = keepChain ? state.mixer : initialState;
+    update({ input: view.result });
+    await tagInto(view.result, mixer, lineage);
+  };
 
   const host = {
     get state() {
@@ -251,6 +305,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       session: () => session,
       mention,
       restore: (entry) => restore(entry),
+      onKept: (id) => void (lastKept = id),
       copy: (text) => dependencies.copy(text),
     },
     notebook,
@@ -266,7 +321,8 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     session = entry.source;
     const mixer = MixerStateSchema.parse(entry.mixer);
     const view = buildView(session, mixer, morphology, undefined, verbs, phonetics);
-    update({ input: session.text, tagging: false, editing: false, stale: false, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, copyMessage: '', unsaved: false });
+    lastKept = entry.id;
+    update({ input: session.text, tagging: false, editing: false, stale: false, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, copyMessage: '', unsaved: false, lineage: entry.lineage });
     wantResources(mixer);
   };
 
@@ -298,27 +354,8 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     edit() {
       update({ editing: true });
     },
-    async run() {
-      const text = state.input;
-      if (!text.trim()) return update({ inputMessage: 'Collez d’abord un texte.' });
-      const run = ++runs;
-      controller.stop();
-      update({ tagging: true, inputMessage: '', copyMessage: '' });
-      await controller.preload();
-      if (run !== runs) return; // un essai plus récent a pris le relais
-      if (state.model.status !== 'ready') return update({ tagging: false });
-      try {
-        const tagged = await tagText(dependencies.tagger, text);
-        if (run !== runs) return;
-        session = { text, tagged };
-        // Nouvel étiquetage, nouvelles positions : les pas se rouvrent, les verrous tombent, l'inspecteur se ferme.
-        const mixer = reduce(state.mixer, { type: 'reset-steps' });
-        const view = buildView(session, mixer, morphology!, undefined, verbs, phonetics);
-        update({ tagging: false, editing: false, stale: state.input !== text, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, unsaved: true, listened: false });
-        wantResources(mixer);
-      } catch (error) {
-        if (run === runs) update({ tagging: false, inputMessage: `Échec de l’étiquetage : ${messageOf(error)}. Vous pouvez relancer.` });
-      }
+    run() {
+      return tagInto(state.input, state.mixer);
     },
     example() {
       controller.setInput(EXAMPLE_TEXT);
@@ -392,6 +429,8 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     setTempo: listening.setTempo,
     setVoice: listening.setVoice,
     keep: notebookController.keep,
+    iterate: () => nextGeneration(true),
+    freeze: () => nextGeneration(false),
     reopen: notebookController.reopen,
     remove: notebookController.remove,
     exportNotebook: notebookController.exportNotebook,
