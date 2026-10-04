@@ -3,6 +3,7 @@ import { CategorySchema, type Category } from '../../domain/categories.ts';
 import { TracksSchema } from '../../domain/mixing.ts';
 import { ParameterValuesSchema } from '../../domain/plugin.ts';
 import { FormSchema } from '../../domain/forms/form.ts';
+import { GateSchema, ModulatorSchema } from '../../domain/modulation/schema.ts';
 
 /** Nom des pistes, tel qu'affiché. */
 export const TRACK_NAMES: Record<Category, string> = {
@@ -38,6 +39,13 @@ export const InstanceSchema = PluginStateSchema.extend({
   targets: z.array(CategorySchema).min(1),
   /** Absent : aucun verrou. */
   locks: z.array(LockSchema).optional(),
+  /**
+   * Les paramètres modulés, par clé ; absent : aucun. Un modulateur illisible (carnet ancien ou
+   * abîmé) est oublié sans perdre l'instance, qui garde ses valeurs fixes.
+   */
+  modulators: z.record(z.string(), ModulatorSchema).optional().catch(undefined),
+  /** La porte : les mots que l'instance laisse passer ; absente : tous. Illisible, elle est oubliée. */
+  gate: GateSchema.optional().catch(undefined),
 });
 export type Instance = z.infer<typeof InstanceSchema>;
 
@@ -76,6 +84,12 @@ export const MixerActionSchema = z.discriminatedUnion('type', [
   /** Verrouille un paramètre entier d'une instance pour un mot d'origine. */
   z.object({ type: z.literal('set-lock'), id: z.string().min(1), index: z.number().int().nonnegative(), key: z.string().min(1), value: z.number().int() }),
   z.object({ type: z.literal('clear-lock'), id: z.string().min(1), index: z.number().int().nonnegative(), key: z.string().min(1) }),
+  /** Module un paramètre verrouillable d'une instance. */
+  z.object({ type: z.literal('set-modulator'), id: z.string().min(1), key: z.string().min(1), modulator: ModulatorSchema }),
+  /** Rend au paramètre sa valeur fixe. */
+  z.object({ type: z.literal('clear-modulator'), id: z.string().min(1), key: z.string().min(1) }),
+  z.object({ type: z.literal('set-gate'), id: z.string().min(1), gate: GateSchema }),
+  z.object({ type: z.literal('clear-gate'), id: z.string().min(1) }),
   /** Rouvre tous les pas et retire tous les verrous : à chaque nouvel étiquetage. */
   z.object({ type: z.literal('reset-steps') }),
   /** Choisit la forme à refrain du texte résultant. */

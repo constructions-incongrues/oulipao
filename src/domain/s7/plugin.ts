@@ -60,7 +60,7 @@ export const s7Plugin = definePlugin({
   tracks: ['noun', 'adjective', 'verb'],
   defaultTargets: ['noun'],
   parameters: [
-    { kind: 'integer', key: 'offset', label: 'Décalage', min: MIN_OFFSET, max: MAX_OFFSET, lockable: true },
+    { kind: 'integer', key: 'offset', label: 'Décalage', min: MIN_OFFSET, max: MAX_OFFSET, lockable: true, when: { key: 'draw', values: ['fixed'] } },
     {
       kind: 'choice',
       key: 'mode',
@@ -79,7 +79,7 @@ export const s7Plugin = definePlugin({
         { value: 'dice', label: 'au dé' },
       ],
     },
-    { kind: 'integer', key: 'seed', label: 'Graine', min: 1, max: MAX_SEED },
+    { kind: 'integer', key: 'seed', label: 'Graine', min: 1, max: MAX_SEED, when: { key: 'draw', values: ['dice'] } },
   ],
   defaults: ParamsSchema.parse({}),
   parse: params,

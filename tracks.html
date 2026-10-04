@@ -111,6 +111,8 @@
   .name { font-stretch: var(--silk-stretch); font-weight: 700; text-transform: uppercase; font-size: var(--size-label); }
   .param, .targets, .slot-keys { display: inline-flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
   .param label { display: inline-flex; gap: var(--space-1); align-items: center; }
+  /* Paramètre modulé : son champ fixe passe en tirets et à l'encre secondaire, comme une ligne coupée. */
+  .param label.fixed-modulated input { color: var(--muted); border-style: dashed; }
   .chip { display: inline-flex; gap: 4px; align-items: center; color: var(--track); border-color: currentColor; font-size: var(--size-value); }
   .chip .shape { width: 11px; height: 11px; }
   .chip[aria-pressed="true"] { background: transparent; color: var(--track); }
@@ -192,6 +194,13 @@
   .lock-field { display: inline-flex; gap: var(--space-1); align-items: center; margin-left: var(--space-2); }
   .lock-field input { width: 3.5rem; }
   .lock-note { margin-left: var(--space-2); color: var(--ink); }
+  /* Une valeur modulée : sous le mot, en Martian Mono, à l'encre secondaire (le verrou est à l'encre). */
+  .inspector td .mod { display: block; font: var(--size-small) var(--font-mono); color: var(--muted); }
+  .modulator, .mod-settings, .gate { display: inline-flex; flex-wrap: wrap; gap: var(--space-1); align-items: center; }
+  .mod-settings, .gate { font-size: var(--size-small); }
+  .mod-settings summary, .gate summary { cursor: pointer; }
+  .mod-settings input[type="number"], .gate input[type="number"] { width: 3.5rem; }
+  input[type="text"].param-text.mod-letter { width: 2.5rem; }
   .inspector td { padding: var(--space-1) var(--space-2); border-bottom: var(--rule) solid var(--line); text-align: center; white-space: nowrap; }
   .inspector td.chosen { background: var(--paper); font-weight: 600; }
   .inspector-help { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; color: var(--muted); font-size: var(--size-small); }
@@ -214,6 +223,9 @@
   .kept-at { font-family: var(--font-ui); }
   .kept-text { white-space: pre-wrap; font: var(--size-read)/1.6 var(--font-read); max-width: var(--measure); margin: var(--space-1) 0; overflow-wrap: anywhere; }
   .kept-mention { font-style: italic; margin: 0 0 var(--space-2); }
+  /* L'ancêtre et le parent d'un texte de deuxième génération : en retrait, à l'encre secondaire. */
+  .kept-origin { white-space: pre-wrap; font: var(--size-small)/1.5 var(--font-read); color: var(--muted); max-width: var(--measure); margin: var(--space-1) 0; overflow-wrap: anywhere; }
+  .kept-origin .silk { margin-right: var(--space-2); }
   .kept-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
   /* Retoucher : une touche qui déplie le texte en champ, sur papier comme le texte gardé */
   .retouch { margin-top: var(--space-2); }

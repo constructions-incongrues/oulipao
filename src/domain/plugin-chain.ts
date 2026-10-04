@@ -1,5 +1,9 @@
 import type { Category } from './categories.ts';
 import { plainWords } from './mixing.ts';
+import { modulate, type WordModulation } from './modulation/apply.ts';
+import type { Gate, Modulator } from './modulation/schema.ts';
+import type { SyllableCounter } from './modulation/sources.ts';
+import { pronounce, syllableCount } from './phonetics/lookup.ts';
 import type { ConstraintPlugin, ParameterValues, PluginResources, WordMark, WordScope } from './plugin.ts';
 import type { OutputWord } from './s7/types.ts';
 import type { TaggedWord } from './tagged-word.ts';
@@ -16,6 +20,17 @@ export interface ChainStep {
   closed?: ReadonlySet<number>;
   /** Les valeurs propres à certains mots d'origine pour cette instance (verrous). */
   locks?: ReadonlyMap<number, ParameterValues>;
+  /** Les paramètres modulés de l'instance, par clé : une valeur par mot, sous les verrous. */
+  modulators?: Readonly<Record<string, Modulator>>;
+  /** La porte de l'instance : les mots qu'elle laisse passer. */
+  gate?: Gate;
+}
+
+/** Ce que les modulateurs et la porte d'une étape ont fait, par mot d'origine. */
+export interface StageModulation {
+  words: Map<number, WordModulation>;
+  /** Les paramètres dont une valeur a été repliée dans ses bornes. */
+  folded: string[];
 }
 
 /** Un mot d'origine à la sortie d'une étape. */
@@ -46,6 +61,8 @@ export interface ChainResult {
    * l'étape a mis ce mot à la ligne.
    */
   stages: StageWord[][];
+  /** Ce que les modulateurs ont fait à chaque étape ; vide pour une étape sans modulateur ni porte. */
+  modulation: StageModulation[];
 }
 
 /** Une sortie relue comme un texte neuf ; `origin[k]` est le mot d'origine d'où vient le k-ième mot relu. */
@@ -53,6 +70,8 @@ interface Reread {
   text: string;
   tagged: TaggedWord[];
   origin: number[];
+  /** Le texte qui précède chaque mot relu, depuis la fin du précédent. */
+  gaps: string[];
 }
 
 /**
@@ -79,22 +98,39 @@ function reread(words: readonly OutputWord[], tail: string, tagged: readonly Tag
     }
     return owner;
   });
-  return { text, tagged: tokens.map((token, k) => ({ word: token.word, category: tagged[origin[k]!]!.category })), origin };
+  const gaps = tokens.map((token, k) => text.slice(k ? tokens[k - 1]!.end : 0, token.start));
+  return { text, tagged: tokens.map((token, k) => ({ word: token.word, category: tagged[origin[k]!]!.category })), origin, gaps };
 }
 
 /**
  * Traduit la portée par mot d'origine en positions du texte relu : un mot d'origine relu en deux
- * mots (« du » → « de la ») les fait tous deux sauter ou verrouiller.
+ * mots (« du » → « de la ») les fait tous deux sauter ou verrouiller. Les valeurs modulées et les
+ * sauts de la porte sont déjà en positions relues ; un verrou l'emporte sur une valeur modulée.
  */
-function scopeOf(origin: readonly number[], closed: ReadonlySet<number>, locks: ReadonlyMap<number, ParameterValues>): WordScope {
+function scopeOf(
+  origin: readonly number[],
+  closed: ReadonlySet<number>,
+  locks: ReadonlyMap<number, ParameterValues>,
+  modulated: ReadonlyMap<number, ParameterValues> = new Map(),
+  gated: ReadonlySet<number> = new Set(),
+): WordScope {
   const scope: WordScope = { skip: [], overrides: [] };
   origin.forEach((index, k) => {
-    if (closed.has(index)) scope.skip.push(k);
-    const values = locks.get(index);
-    if (values) scope.overrides.push({ index: k, values });
+    if (closed.has(index) || gated.has(k)) scope.skip.push(k);
+    const values = { ...modulated.get(k), ...locks.get(index) };
+    if (Object.keys(values).length) scope.overrides.push({ index: k, values });
   });
   return scope;
 }
+
+/** Le compte des syllabes d'un mot, lu dans les prononciations ; aucun tant qu'elles ne sont pas là. */
+const syllablesFrom = (resources: PluginResources): SyllableCounter => (word, category) => {
+  const reading = resources.phonetics && pronounce(word, category, resources.phonetics);
+  return reading && syllableCount(reading);
+};
+
+/** La raison d'un mot que la porte de l'instance a laissé. */
+export const GATE_CLOSED = 'porte fermée';
 
 /** Ramène la sortie d'un plugin, mot relu par mot relu, aux mots d'origine. */
 function fold(output: readonly OutputWord[], origin: readonly number[], count: number): OutputWord[] {
@@ -124,12 +160,31 @@ export function runChain(text: string, tagged: readonly TaggedWord[], steps: rea
   const reports: StepReport[] = [];
   const stages: StageWord[][] = [];
   const earlier = new Map<string, ParameterValues[]>();
-  for (const { id, plugin, values, targets, closed = new Set<number>(), locks = new Map<number, ParameterValues>() } of steps) {
+  const modulation: StageModulation[] = [];
+  for (const { id, plugin, values, targets, closed = new Set<number>(), locks = new Map<number, ParameterValues>(), modulators, gate } of steps) {
     const current = reread(words, tail, tagged);
     const sameType = earlier.get(plugin.id) ?? [];
     const own = plugin.inherit ? plugin.inherit(values, sameType) : values;
     earlier.set(plugin.id, [...sameType, values]);
-    const result = plugin.apply(current.text, current.tagged, own, resources, targets, scopeOf(current.origin, closed, locks));
+    const modulated = modulators || gate
+      ? modulate(
+          { words: current.tagged.map((word) => word.word), categories: current.tagged.map((word) => word.category), gaps: current.gaps },
+          {
+            targets,
+            closed: new Set(current.origin.flatMap((index, k) => (closed.has(index) ? [k] : []))),
+            modulators,
+            gate,
+            parameters: plugin.parameters,
+            syllables: syllablesFrom(resources),
+          },
+        )
+      : undefined;
+    const gated = new Set(modulated?.skip);
+    // Un mot d'origine relu en plusieurs mots montre ce que le premier a reçu.
+    const byOrigin = new Map<number, WordModulation>();
+    for (const [k, word] of modulated?.words ?? []) if (!byOrigin.has(current.origin[k]!)) byOrigin.set(current.origin[k]!, word);
+    modulation.push({ words: byOrigin, folded: [...(modulated?.folded ?? [])] });
+    const result = plugin.apply(current.text, current.tagged, own, resources, targets, scopeOf(current.origin, closed, locks, modulated?.overrides, gated));
     if (result.words.length !== current.origin.length) throw new Error(`${plugin.id} : la sortie ne suit pas les mots du texte`);
     const before = words;
     words = fold(result.words, current.origin, tagged.length);
@@ -152,7 +207,7 @@ export function runChain(text: string, tagged: readonly TaggedWord[], steps: rea
         report.relaid++;
       } else {
         // Laissé tel quel : on garde ce qu'un plugin précédent en a fait, s'il l'a touché.
-        if (!marks.has(index)) marks.set(index, { index, original, reason: mark.reason });
+        if (!marks.has(index)) marks.set(index, { index, original, reason: gated.has(mark.index) ? GATE_CLOSED : mark.reason });
         report.kept++;
       }
     }
@@ -160,5 +215,5 @@ export function runChain(text: string, tagged: readonly TaggedWord[], steps: rea
   }
   // Un mot remplacé porte au bout du compte ce que la chaîne entière en a fait.
   for (const mark of marks.values()) if (mark.replacement !== undefined) mark.replacement = words[mark.index]!.output;
-  return { words, tail, marks, steps: reports, stages };
+  return { words, tail, marks, steps: reports, stages, modulation };
 }
