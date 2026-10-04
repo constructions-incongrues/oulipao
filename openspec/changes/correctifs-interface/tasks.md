@@ -37,10 +37,10 @@
 
 ## 5. Système de design
 
-- [ ] 5.1 Ajouter `--size-value`, `--size-grid-word`, `--size-read-narrow` et `--size-mark-narrow` à `styles/tokens.css` ; remplacer toutes les tailles de police en pixels de `tracks.html` par des jetons (le verrou passe à 11 px) ; vérifier par recherche qu'aucune taille de police en px ne reste hors des jetons
-- [ ] 5.2 Regrouper les quatre styles de touche de `tracks.html` en un sélecteur commun avec `padding: var(--space-1) var(--space-2)` ; contrôle visuel à 375, 768 et 1440 px
-- [ ] 5.3 Sous 768 px, `min-height: 44px` pour les touches et les pas, `min-width: 44px` pour les pas ; contrôle à 375 px : aucun défilement horizontal
-- [ ] 5.4 Mettre à jour DESIGN.md : front matter `typography` (valeurs 11 px, mots de la grille 14 px, tailles étroites), « Échelle » avec le seuil de 768 px, ligne au journal des décisions ; `npm run check:palette` vert
+- [x] 5.1 Ajouter `--size-value`, `--size-grid-word`, `--size-read-narrow` et `--size-mark-narrow` à `styles/tokens.css` ; remplacer toutes les tailles de police en pixels de `tracks.html` par des jetons (le verrou passe à 11 px) ; vérifier par recherche qu'aucune taille de police en px ne reste hors des jetons
+- [x] 5.2 Regrouper les quatre styles de touche de `tracks.html` en un sélecteur commun avec `padding: var(--space-1) var(--space-2)` ; contrôle visuel à 375, 768 et 1440 px
+- [x] 5.3 Sous 768 px, `min-height: 44px` pour les touches et les pas, `min-width: 44px` pour les pas ; contrôle à 375 px : aucun défilement horizontal
+- [x] 5.4 Mettre à jour DESIGN.md : front matter `typography` (valeurs 11 px, mots de la grille 14 px, tailles étroites), « Échelle » avec le seuil de 768 px, ligne au journal des décisions ; `npm run check:palette` vert
 
 ## 6. Finitions
 

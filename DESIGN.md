@@ -49,6 +49,22 @@ typography:
     fontFamily: Martian Mono
     fontSize: 13px
     fontFeature: tnum
+  value:
+    fontFamily: Martian Mono
+    fontSize: 11px
+    fontFeature: tnum
+  grid-word:
+    fontFamily: Spectral
+    fontSize: 14px
+  body-narrow:
+    fontFamily: Spectral
+    fontSize: 19px
+    lineHeight: 1.6
+  display-narrow:
+    fontFamily: Big Shoulders Stencil Display
+    fontWeight: 800
+    fontSize: 34px
+    letterSpacing: 0.01em
 rounded:
   sm: 2px
   full: 9999px
@@ -145,7 +161,7 @@ Les quatre polices sont sous licence SIL OFL 1.1 et servies par le projet via `@
 - Martian Mono, large, garde lisibles les valeurs qu'on tourne en direct.
 - Le pochoir est une lettre trouée : il redit la perforation, mais seulement dans la marque.
 
-**Échelle :** marque 44 px ; lecture 22 px (19 px sous 640 px), mesure 62ch ; interface 15 px ; sérigraphie 12 à 13 px ; valeurs 11 à 14 px.
+**Échelle :** marque 44 px (34 px sous 768 px) ; lecture 22 px (19 px sous 768 px), mesure 62ch ; interface 15 px ; sérigraphie 12 à 13 px ; valeurs 11 à 14 px (numéros de pas, compteurs et verrous à 11 px, mots de la grille à 14 px). Chaque taille a son jeton dans `styles/tokens.css` (`--size-value`, `--size-grid-word`, `--size-read-narrow`, `--size-mark-narrow`…).
 
 ## Layout
 
@@ -157,7 +173,8 @@ Les quatre polices sont sous licence SIL OFL 1.1 et servies par le projet via `@
 - **La chaîne au-dessus des pistes.** Une ligne par filtre, toutes de même largeur, en colonnes fixes : poignée, numéro, nom, réglages (25rem), pistes visées, marche, touches. Sous 1024 px, chaque ligne passe sur plusieurs rangs.
 - **Largeur maximale de la page :** 1240 px.
 - **Petit écran :** la page ne défile jamais horizontalement (vérifié à 375, 768 et 1440 px).
-- **Densité :** multiples de 4 px. Lignes de piste de 48 px.
+- **Densité :** multiples de 4 px. Lignes de piste de 48 px. Une touche a un rembourrage de 4 px sur 8.
+- **Au doigt :** sous 768 px, toute touche fait au moins 44 px de haut ; les pas, 48 px de haut et au moins 44 px de large.
 
 ## Elevation & Depth
 
@@ -216,3 +233,4 @@ Un pas où le filtre agit montre le poinçon plein. Un pas de la piste où le fi
 | 2026-10-03 | Pas actif = trou ; un poinçon par piste ; Martian Mono | Idées reprises de la proposition indépendante du sous-agent Claude (« carton d'orgue de Barbarie ») ; le kraft, la manivelle et la tête de lecture fixe ont été écartés. Codex était indisponible. |
 | 2026-10-03 | Palette des pistes ajustée par `npm run check:palette` | L'Okabe-Ito adaptée échouait (12 paires sous ΔE 20, dont adjectifs et autres à 3,2 en deutéranopie). On a cherché les teintes conformes les plus proches de celles d'origine. En clair : noms `#005f9b`, adjectifs `#004220`, adverbes `#883866`, autres `#24242d`. En sombre : noms `#33a7e9`, adjectifs `#5fe5b2`, adverbes `#eaa8d5`, autres `#96928d`. Les verbes ne changent pas. |
 | 2026-10-03 | Système porté dans le code | Changement OpenSpec `instrument-perfore` : `styles/tokens.css`, `fonts/`, grille de pas, verrous, chaîne réordonnable, bande collée. Pretext, utilisé dans la page de référence, n'est pas repris : la hauteur de la bande se fait en CSS. |
+| 2026-10-04 | Tailles toutes en jetons, seuil étroit à 768 px, cibles de 44 px | Revue de design du plan de correction (DD8 à DD10, DD12) : les tailles en dur de `tracks.html` deviennent les jetons `--size-value` (11 px), `--size-grid-word` (14 px), `--size-read-narrow` (19 px) et `--size-mark-narrow` (34 px) ; le verrou passe de 9 à 11 px. Le seuil de 768 px, vérifié en usage, remplace les 640 px écrits ici. Rembourrage des touches sur la grille de 4 px ; touches de 44 px au doigt (elles étaient à 32). |
