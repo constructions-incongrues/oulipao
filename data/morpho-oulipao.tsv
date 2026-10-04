@@ -15,7 +15,6 @@ N	plus	plus	m	i	0
 R	comme	comme	e	i	0
 N	pas	pas	m	i	0
 R	même	même	e	i	0
-N	d	d	m	i	0
 N	fait	fait	m	s	0
 N	autres	autre	e	p	0
 A	autres	autre	e	p	0
@@ -24,7 +23,6 @@ N	autre	autre	e	s	0
 A	autre	autre	e	s	0
 N	y	y	m	i	0
 R	encore	encore	e	i	0
-N	A	A	m	i	0
 R	très	très	e	i	0
 N	p	p	m	i	0
 N	temps	temps	m	i	0
@@ -62,7 +60,6 @@ N	ans	an	m	p	0
 N	politique	politique	e	s	0
 A	politique	politique	e	s	0
 N	après	après	m	i	0
-N	t	t	m	i	0
 R	sans	sans	e	i	0
 N	premier	premier	m	s	0
 A	premier	premier	m	s	0
@@ -87,7 +84,6 @@ N	ordre	ordre	m	s	0
 R	trop	trop	e	i	0
 N	nom	nom	m	s	0
 N	forme	forme	f	s	0
-N	L	L	m	i	0
 N	question	question	f	s	0
 N	guerre	guerre	f	s	0
 R	assez	assez	e	i	0
@@ -132,7 +128,6 @@ N	système	système	m	s	0
 N	roi	roi	m	s	0
 N	reste	reste	m	s	0
 N	suite	suite	f	s	0
-N	in	in	m	i	0
 N	cause	cause	f	s	0
 N	côté	côté	m	s	0
 N	vue	vu	f	s	0
@@ -176,12 +171,10 @@ N	intérêt	intérêt	m	s	0
 A	donné	donner	m	s	0
 N	choses	chose	f	p	0
 R	fort	fort	e	i	0
-N	C	C	m	i	0
 R	enfin	enfin	e	i	0
 N	seule	seul	f	s	0
 A	seule	seul	f	s	0
 N	situation	situation	f	s	0
-N	S	S	m	i	0
 N	an	an	m	s	0
 R	depuis	depuis	e	i	0
 N	mouvement	mouvement	m	s	0
@@ -205,11 +198,9 @@ N	bon	bon	m	s	0
 A	bon	bon	m	s	0
 N	générale	général	f	s	0
 A	générale	général	f	s	0
-N	J	J	m	i	0
 N	service	service	m	s	0
 N	française	français	f	s	0
 A	française	français	f	s	0
-N	P	P	f	i	0
 R	loin	loin	e	i	0
 N	milieu	milieu	m	s	0
 N	caractère	caractère	m	s	0
@@ -271,7 +262,6 @@ R	ensuite	ensuite	e	i	0
 N	nouvelles	nouveau	f	p	0
 A	nouvelles	nouveau	f	p	0
 N	projet	projet	m	s	0
-N	F	F	m	i	0
 N	s	s	m	i	0
 N	livre	livre	e	s	0
 N	origine	origine	f	s	0
@@ -282,7 +272,6 @@ N	particulier	particulier	m	s	0
 A	particulier	particulier	m	s	0
 N	gens	gens	e	p	0
 N	air	air	m	s	0
-N	B	B	m	i	0
 N	cœur	cœur	m	s	0
 N	résultats	résultat	m	p	0
 N	décembre	décembre	m	s	0
@@ -319,7 +308,6 @@ N	enfant	enfant	e	s	0
 N	éléments	élément	m	p	0
 N	millions	million	m	p	0
 N	période	période	e	s	0
-N	R	R	m	i	0
 N	idées	idée	f	p	0
 N	premiers	premier	m	p	0
 A	premiers	premier	m	p	0
@@ -353,8 +341,6 @@ N	c	c	m	i	0
 N	ligne	ligne	f	s	0
 N	septembre	septembre	m	s	0
 A	différentes	différent	f	p	0
-N	G	G	m	i	0
-N	H	H	m	i	1
 N	groupe	groupe	m	s	0
 N	mer	mer	f	s	0
 N	Allemagne	Allemagne	f	s	0
@@ -451,7 +437,6 @@ R	autour	autour	e	i	0
 N	droite	droit	f	s	0
 A	droite	droit	f	s	0
 N	uns	un	m	p	0
-N	N	N	m	i	0
 N	succès	succès	m	i	0
 N	bien	bien	m	s	0
 N	biens	bien	m	p	0
@@ -467,7 +452,6 @@ N	prince	prince	m	s	0
 N	mains	main	f	p	0
 N	économie	économie	f	s	0
 R	particulièrement	particulièrement	e	i	0
-N	ET	T	m	i	0
 N	sang	sang	m	s	0
 N	passage	passage	m	s	0
 N	âme	âme	f	s	0
@@ -509,7 +493,6 @@ N	villes	ville	f	p	0
 N	résultat	résultat	m	s	0
 N	tableau	tableau	m	s	0
 N	nécessité	nécessité	f	s	0
-N	pp	pp	e	i	0
 N	surface	surface	f	s	0
 N	choix	choix	m	i	0
 N	disposition	disposition	f	s	0
@@ -642,7 +625,6 @@ N	groupes	groupe	m	p	0
 N	eaux	eau	f	p	0
 N	contrôle	contrôle	m	s	0
 N	marche	marche	f	s	0
-N	T	T	m	i	0
 N	degré	degré	m	s	0
 N	examen	examen	m	s	0
 N	maladie	maladie	f	s	0
@@ -679,12 +661,10 @@ N	preuve	preuve	f	s	0
 N	lignes	ligne	f	p	0
 N	un	un	m	s	0
 N	une	un	f	s	0
-N	b	b	m	i	0
 N	opérations	opération	f	p	0
 N	chapitre	chapitre	m	s	0
 N	masse	masse	f	s	0
 N	langage	langage	m	s	0
-N	o	o	m	i	0
 N	nord	nord	m	s	0
 A	mis	mettre	m	i	0
 N	anglais	anglais	m	i	0
@@ -865,7 +845,6 @@ N	militaires	militaire	e	p	0
 A	militaires	militaire	e	p	0
 N	sud	sud	m	s	0
 N	voyage	voyage	m	s	0
-N	h	h	m	i	1
 N	ciel	ciel	m	s	0
 N	division	division	f	s	0
 N	pression	pression	f	s	0
@@ -1371,7 +1350,6 @@ A	clair	clair	m	s	0
 N	instrument	instrument	m	s	0
 A	nécessaires	nécessaire	e	p	0
 N	nécessaires	nécessaire	m	p	0
-N	W	W	m	i	0
 N	côtés	côté	m	p	0
 N	précédent	précédent	m	s	0
 A	précédent	précédent	m	s	0
@@ -1517,7 +1495,6 @@ A	ouvrier	ouvrier	m	s	0
 R	spécialement	spécialement	e	i	0
 N	considération	considération	f	s	0
 N	couche	couche	f	s	0
-N	St	St	m	i	0
 N	degrés	degré	m	p	0
 N	prise	prise	f	s	0
 N	égalité	égalité	f	s	0
@@ -1612,7 +1589,6 @@ N	attaque	attaque	f	s	0
 N	informations	information	f	p	0
 N	inférieur	inférieur	m	s	0
 A	inférieur	inférieur	m	s	0
-N	K	K	m	i	0
 R	clairement	clairement	e	i	0
 N	événement	événement	m	s	0
 N	journaux	journal	m	p	0
@@ -1872,7 +1848,6 @@ N	concept	concept	m	s	0
 N	don	don	m	s	0
 N	seules	seul	f	p	0
 A	seules	seul	f	p	0
-N	u	u	m	i	0
 N	séparation	séparation	f	s	0
 N	malheureux	malheureux	m	i	0
 A	malheureux	malheureux	m	i	0
@@ -1894,7 +1869,6 @@ N	organisations	organisation	f	p	0
 N	Prusse	Prusse	f	i	0
 A	dû	devoir	m	s	0
 N	précision	précision	f	s	0
-N	EN	N	m	i	0
 N	correspondance	correspondance	f	s	0
 N	prêtres	prêtre	m	p	0
 N	dimension	dimension	f	s	0
@@ -1961,7 +1935,6 @@ N	gouvernements	gouvernement	m	p	0
 A	administrative	administratif	f	s	0
 A	choisi	choisir	m	s	0
 N	essai	essai	m	s	0
-N	cm	m	m	i	0
 A	universel	universel	m	s	0
 N	colonel	colonel	m	s	0
 N	unités	unité	f	p	0
@@ -2220,7 +2193,6 @@ A	dangereux	dangereux	m	i	0
 N	pareille	pareil	f	s	0
 A	pareille	pareil	f	s	0
 N	chasse	chasse	f	s	0
-N	mm	m	m	i	0
 N	indemnité	indemnité	f	s	0
 N	financière	financier	f	s	0
 A	financière	financier	f	s	0
@@ -2269,7 +2241,6 @@ N	intégration	intégration	f	s	0
 N	harmonie	harmonie	f	s	0
 N	esclaves	esclave	e	p	0
 N	Maroc	Maroc	m	i	0
-N	El	l	m	i	0
 N	moteur	moteur	m	s	0
 A	moteur	moteur	m	s	0
 R	sensiblement	sensiblement	e	i	0
@@ -2308,7 +2279,6 @@ N	limite	limite	f	s	0
 A	limite	limite	e	i	0
 N	tentative	tentative	f	s	0
 N	as	as	m	i	0
-N	as	s	f	i	0
 N	col	col	m	s	0
 N	cinéma	cinéma	m	s	0
 N	marchands	marchand	m	p	0
@@ -2775,7 +2745,6 @@ N	pluie	pluie	f	s	0
 N	relief	relief	m	s	0
 N	vive	vive	f	s	0
 N	envie	envie	f	s	0
-N	km	m	m	i	0
 R	librement	librement	e	i	0
 N	divin	divin	m	s	0
 A	divin	divin	m	s	0
@@ -2821,7 +2790,6 @@ N	sensation	sensation	f	s	0
 N	copie	copie	f	s	0
 N	admiration	admiration	f	s	0
 N	monument	monument	m	s	0
-N	kg	g	m	i	0
 N	exportations	exportation	f	p	0
 N	accueil	accueil	m	s	0
 N	sommeil	sommeil	m	s	0
@@ -2995,7 +2963,6 @@ A	régulière	régulier	f	s	0
 N	puits	puits	m	i	0
 A	donnée	donner	f	s	0
 A	données	donner	f	p	0
-N	das	s	f	i	0
 N	cellule	cellule	f	s	0
 A	répondu	répondre	m	s	0
 N	lumières	lumière	f	p	0
@@ -3439,7 +3406,6 @@ N	clause	clause	f	s	0
 N	matériels	matériel	m	p	0
 A	matériels	matériel	m	p	0
 N	lord	lord	m	s	0
-N	ch	ch	m	i	0
 N	chimie	chimie	f	s	0
 N	sacrifices	sacrifice	m	p	0
 A	disposé	disposer	m	s	0
@@ -3482,7 +3448,6 @@ N	souffle	souffle	m	s	0
 A	personnelles	personnel	f	p	0
 A	prouvé	prouver	m	s	0
 A	traduit	traduire	m	s	0
-N	Ah	Ah	m	i	0
 N	cap	cap	m	s	0
 A	multiples	multiple	e	p	0
 N	multiples	multiple	m	p	0
@@ -3711,7 +3676,6 @@ N	dons	don	m	p	0
 A	dirigé	diriger	m	s	0
 R	assurément	assurément	e	i	0
 A	maritimes	maritime	e	p	0
-N	cl	l	m	i	0
 A	posée	poser	f	s	0
 N	assurances	assurance	f	p	0
 A	consulté	consulter	m	s	0
@@ -3824,7 +3788,6 @@ N	sels	sel	m	p	0
 A	trouvée	trouver	f	s	0
 A	énormes	énorme	e	p	0
 N	compensation	compensation	f	s	0
-N	pl	l	m	i	0
 N	rentes	rente	f	p	0
 N	marge	marge	f	s	0
 N	tige	tige	f	s	0
@@ -4324,7 +4287,6 @@ N	interventions	intervention	f	p	0
 A	réuni	réunir	m	s	0
 N	retrait	retrait	m	s	0
 N	remarques	remarque	f	p	0
-N	gr	gr	m	i	0
 A	ouverts	ouvrir	m	p	0
 N	capitaliste	capitaliste	e	s	0
 A	capitaliste	capitaliste	e	s	0
@@ -4935,7 +4897,6 @@ N	projection	projection	f	s	0
 A	métaphysique	métaphysique	e	s	0
 N	métaphysique	métaphysique	f	s	0
 A	objective	objectif	f	s	0
-N	ha	ha	m	i	0
 N	radical	radical	m	s	0
 A	radical	radical	m	s	0
 N	clôture	clôture	f	s	0
@@ -7032,7 +6993,6 @@ A	strict	strict	m	s	0
 N	attentat	attentat	m	s	0
 N	défiance	défiance	f	s	0
 A	quelconques	quelconque	e	p	0
-N	am	m	m	i	0
 N	barbe	barbe	e	s	0
 N	wagons	wagon	m	p	0
 A	menacée	menacer	f	s	0
@@ -7532,7 +7492,6 @@ A	dorsale	dorsal	f	s	0
 N	popularité	popularité	f	s	0
 N	rentabilité	rentabilité	f	s	0
 A	opératoire	opératoire	e	s	0
-N	min	min	f	i	0
 N	mouton	mouton	m	s	0
 N	spécialisation	spécialisation	f	s	0
 N	controverse	controverse	f	s	0
@@ -7608,7 +7567,6 @@ A	précisé	préciser	m	s	0
 N	famine	famine	f	s	0
 A	figuré	figurer	m	s	0
 N	Rochelle	Rochelle	f	i	0
-N	mg	g	m	i	0
 N	ajustement	ajustement	m	s	0
 R	sincèrement	sincèrement	e	i	0
 N	foin	foin	m	s	0
@@ -8025,7 +7983,6 @@ N	astres	astre	m	p	0
 N	neuve	neuf	f	s	0
 A	neuve	neuf	f	s	0
 A	causés	causer	m	p	0
-N	Es	s	f	i	0
 N	suggestion	suggestion	f	s	0
 N	massacre	massacre	m	s	0
 N	objectivité	objectivité	f	s	0
@@ -8176,7 +8133,6 @@ N	médicament	médicament	m	s	0
 N	suffisants	suffisant	m	p	0
 A	suffisants	suffisant	m	p	0
 N	immunité	immunité	f	s	0
-N	st	st	m	i	0
 N	médiocres	médiocre	e	p	0
 A	médiocres	médiocre	e	p	0
 A	cylindrique	cylindrique	e	s	0
@@ -9307,7 +9263,6 @@ A	primes	prime	e	p	0
 N	primes	prime	f	p	0
 N	métamorphose	métamorphose	f	s	0
 A	IVe	IVe	e	s	1
-N	ml	l	m	i	0
 N	chrétienté	chrétienté	f	s	0
 N	instauration	instauration	f	s	0
 N	féodale	féodal	f	s	0
@@ -9442,7 +9397,6 @@ A	militant	militant	m	s	0
 N	danses	danse	f	p	0
 A	délivrés	délivrer	m	p	0
 N	fréquences	fréquence	f	p	0
-N	Ci	Ci	m	i	0
 N	Hainaut	Hainaut	m	i	0
 A	assassiné	assassiner	m	s	0
 N	dépourvus	dépourvu	m	p	0
@@ -9549,7 +9503,6 @@ A	ontologique	ontologique	e	s	0
 N	kilogramme	gramme	m	s	0
 N	magnétisme	magnétisme	m	s	0
 N	affiches	affiche	f	p	0
-N	ms	s	f	i	0
 A	traduite	traduire	f	s	0
 N	immobilité	immobilité	f	s	0
 N	notoriété	notoriété	f	s	0
@@ -9892,7 +9845,6 @@ A	bruts	brut	m	p	0
 A	artificiels	artificiel	m	p	0
 A	soulevée	soulever	f	s	0
 N	digue	digue	f	s	0
-N	al	l	m	i	0
 N	ratio	ratio	m	s	0
 N	humanitaire	humanitaire	e	s	0
 A	humanitaire	humanitaire	e	s	0
@@ -10346,7 +10298,6 @@ N	affrontement	affrontement	m	s	0
 N	mousse	mousse	e	s	0
 A	poussés	pousser	m	p	0
 N	rigueurs	rigueur	f	p	0
-N	dal	l	m	i	0
 A	enlevés	enlever	m	p	0
 N	offerte	offerte	f	s	0
 A	souterraines	souterrain	f	p	0
@@ -10510,7 +10461,6 @@ N	réglage	réglage	m	s	0
 N	vendeurs	vendeur	m	p	0
 A	vendeurs	vendeur	m	p	0
 N	gelée	gelée	f	s	0
-N	To	To	m	i	0
 N	marocain	marocain	m	s	0
 A	marocain	marocain	m	s	0
 N	agité	agité	m	s	0
@@ -10530,7 +10480,6 @@ A	disciplinaire	disciplinaire	e	s	0
 N	parallélisme	parallélisme	m	s	0
 N	minières	minier	f	p	0
 A	minières	minier	f	p	0
-N	bu	bu	m	i	0
 A	accentuée	accentuer	f	s	0
 A	calculées	calculer	f	p	0
 A	linguistiques	linguistique	e	p	0
@@ -10954,7 +10903,6 @@ N	diarrhée	diarrhée	f	s	0
 R	hardiment	hardiment	e	i	1
 N	prodiges	prodige	m	p	0
 N	obstination	obstination	f	s	0
-N	var	var	m	i	0
 N	intolérance	intolérance	f	s	0
 N	sportive	sportif	f	s	0
 A	sportive	sportif	f	s	0
@@ -10970,7 +10918,6 @@ A	enregistrée	enregistrer	f	s	0
 N	autrichiens	autrichien	m	p	0
 A	autrichiens	autrichien	m	p	0
 A	lymphatiques	lymphatique	e	p	0
-N	Mm	m	m	i	0
 N	alluvions	alluvion	f	p	0
 N	barques	barque	f	p	0
 N	abstention	abstention	f	s	0
@@ -11018,7 +10965,6 @@ A	départementales	départemental	f	p	0
 N	départementales	départementale	f	p	0
 N	prématurée	prématuré	f	s	0
 A	prématurée	prématuré	f	s	0
-N	bar	bar	m	i	0
 A	banal	banal	m	s	0
 N	thorax	thorax	m	i	0
 N	roc	roc	m	s	0
@@ -11138,7 +11084,6 @@ N	démenti	démenti	m	s	0
 A	efforcé	efforcer	m	s	0
 A	sacrées	sacrer	f	p	0
 N	péripéties	péripétie	f	p	0
-N	fl	l	m	i	0
 A	décidés	décider	m	p	0
 N	renfort	renfort	m	s	0
 N	subalternes	subalterne	e	p	0
@@ -11170,8 +11115,6 @@ N	nappes	nappe	f	p	0
 N	soc	soc	m	s	0
 A	chassés	chasser	m	p	0
 N	rectification	rectification	f	s	0
-N	Pl	Pl	m	i	0
-N	Pl	l	m	i	0
 A	exprès	exprès	m	i	0
 R	exprès	exprès	e	i	0
 N	créole	créole	e	s	0
@@ -11838,7 +11781,6 @@ A	élastique	élastique	e	s	0
 N	élastique	élastique	m	s	0
 N	rattachement	rattachement	m	s	0
 N	excuses	excuse	f	p	0
-N	tr	tr	m	i	0
 A	unis	unir	m	p	0
 A	hérité	hériter	m	s	0
 N	forge	forge	f	s	0
@@ -11876,7 +11818,6 @@ A	inséparables	inséparable	e	p	0
 N	pâturage	pâturage	m	s	0
 N	excursions	excursion	f	p	0
 N	volcan	volcan	m	s	0
-N	At	At	m	i	0
 A	productifs	productif	m	p	0
 N	obsession	obsession	f	s	0
 A	formels	formel	m	p	0
@@ -12508,7 +12449,6 @@ N	automobiles	automobile	f	p	0
 N	effacement	effacement	m	s	0
 N	passants	passant	m	p	0
 A	passants	passant	m	p	0
-N	po	po	m	i	0
 A	spéculative	spéculatif	f	s	0
 A	épiscopale	épiscopal	f	s	0
 A	effrayante	effrayant	f	s	0
@@ -12737,7 +12677,6 @@ A	envisagés	envisager	m	p	0
 N	lambeau	lambeau	m	s	0
 N	étincelles	étincelle	f	p	0
 R	irrégulièrement	irrégulièrement	e	i	0
-N	Da	Da	m	i	0
 N	altérité	altérité	f	s	0
 A	lisse	lisse	e	s	0
 N	lisse	lisse	f	s	0
@@ -13155,7 +13094,6 @@ N	fentes	fente	f	p	0
 N	rire	rire	m	s	0
 N	rires	rire	m	p	0
 A	accomplis	accomplir	m	p	0
-N	rem	rem	m	s	0
 N	régies	régie	f	p	0
 A	provoqués	provoquer	m	p	0
 A	grisâtre	grisâtre	e	s	0
@@ -13714,7 +13652,6 @@ N	estampes	estampe	f	p	0
 A	basés	baser	m	p	0
 N	inclusion	inclusion	f	s	0
 A	substantiel	substantiel	m	s	0
-N	sr	sr	m	i	0
 N	restaurants	restaurant	m	p	0
 N	avr	avr	m	i	0
 A	ivre	ivre	e	s	0
@@ -13789,7 +13726,6 @@ N	ébranlement	ébranlement	m	s	0
 N	réquisitoire	réquisitoire	m	s	0
 N	aumônes	aumône	f	p	0
 N	mouchoir	mouchoir	m	s	0
-N	pH	H	m	i	1
 N	pH	pH	m	i	0
 N	magnésium	magnésium	m	s	0
 N	cannes	canne	f	p	0
@@ -13824,7 +13760,6 @@ N	lis	lis	m	i	0
 N	cauchemar	cauchemar	m	s	0
 A	avéré	avérer	m	s	0
 N	Vaucluse	Vaucluse	m	i	0
-N	Ms	s	f	i	0
 A	conjugal	conjugal	m	s	0
 A	appuyés	appuyer	m	p	0
 N	verdict	verdict	m	s	0
@@ -13979,7 +13914,6 @@ N	lions	lion	m	p	0
 N	subside	subside	m	s	0
 R	mécaniquement	mécaniquement	e	i	0
 A	superposées	superposer	f	p	0
-N	ns	s	f	i	0
 N	Nicaragua	Nicaragua	m	i	0
 N	théoricien	théoricien	m	s	0
 N	notations	notation	f	p	0
@@ -14366,7 +14300,6 @@ N	syndicalistes	syndicaliste	e	p	0
 A	syndicalistes	syndicaliste	e	p	0
 N	houiller	houiller	m	s	1
 A	houiller	houiller	m	s	1
-N	s	s	f	i	0
 A	thématique	thématique	e	s	0
 N	thématique	thématique	f	s	0
 A	imprégné	imprégner	m	s	0
@@ -14581,7 +14514,6 @@ A	serein	serein	m	s	0
 A	achetée	acheter	f	s	0
 R	précipitamment	précipitamment	e	i	0
 N	exonération	exonération	f	s	0
-N	ds	s	f	i	0
 N	pigeons	pigeon	m	p	0
 N	tronçons	tronçon	m	p	0
 A	obéi	obéir	m	s	0
@@ -14685,7 +14617,6 @@ A	cité	citer	m	s	0
 A	cités	citer	m	p	0
 N	home	home	m	s	1
 A	bilatérale	bilatéral	f	s	0
-N	ft	ft	m	i	0
 N	intendance	intendance	f	s	0
 N	mécanisation	mécanisation	f	s	0
 N	interpellation	interpellation	f	s	0
@@ -15001,7 +14932,6 @@ N	incompréhension	incompréhension	f	s	0
 A	souterrain	souterrain	m	s	0
 N	souterrain	souterrain	m	s	0
 N	désagrégation	désagrégation	f	s	0
-N	Trad	rad	m	i	0
 N	expiation	expiation	f	s	0
 N	villas	villa	f	p	0
 N	cueillette	cueillette	f	s	0
@@ -15088,7 +15018,6 @@ A	adéquat	adéquat	m	s	0
 N	griffes	griffe	f	p	0
 A	mol	mou	m	s	0
 R	fièrement	fièrement	e	i	0
-N	MA	A	m	i	0
 A	domiciliés	domicilier	m	p	0
 N	palestinien	palestinien	m	s	0
 A	palestinien	palestinien	m	s	0
@@ -15136,7 +15065,6 @@ N	aqueduc	aqueduc	m	s	0
 N	sanglots	sanglot	m	p	0
 A	exportés	exporter	m	p	0
 N	manoir	manoir	m	s	0
-N	PL	L	m	i	0
 N	discrédit	discrédit	m	s	0
 N	malentendus	malentendu	m	p	0
 N	visuels	visuel	m	p	0
@@ -15234,7 +15162,6 @@ N	embauche	embauche	f	s	0
 R	inclusivement	inclusivement	e	i	0
 N	pavés	pavé	m	p	0
 A	superposés	superposer	m	p	0
-N	Mt	Mt	f	i	0
 A	lugubre	lugubre	e	s	0
 A	cutané	cutané	m	s	0
 A	réussie	réussir	f	s	0
@@ -15590,7 +15517,6 @@ N	intempéries	intempérie	f	p	0
 A	excessifs	excessif	m	p	0
 A	minutieuses	minutieux	f	p	0
 R	magnifiquement	magnifiquement	e	i	0
-N	ES	S	m	i	0
 N	galvanomètre	galvanomètre	m	s	0
 N	subtilités	subtilité	f	p	0
 N	convoquée	convoqué	f	s	0
@@ -15896,7 +15822,6 @@ A	évangéliques	évangélique	e	p	0
 N	matelot	matelot	m	s	0
 N	bromure	bromure	m	s	0
 N	pamphlets	pamphlet	m	p	0
-N	lm	lm	m	i	0
 N	opus	opus	m	i	0
 N	suffisance	suffisance	f	s	0
 N	coalitions	coalition	f	p	0
@@ -16253,7 +16178,6 @@ A	carburant	carburant	m	s	0
 N	modérées	modéré	f	p	0
 N	banni	banni	m	s	0
 N	PS	PS	m	i	0
-N	PS	S	m	i	0
 R	brillamment	brillamment	e	i	0
 N	fibrine	fibrine	f	s	0
 N	diagonale	diagonal	f	s	0
@@ -16481,7 +16405,6 @@ N	finalités	finalité	f	p	0
 A	expiré	expirer	m	s	0
 A	fructueux	fructueux	m	i	0
 A	allégorique	allégorique	e	s	0
-N	Mo	Mo	m	i	0
 A	assignés	assigner	m	p	0
 A	scandaleuse	scandaleux	f	s	0
 A	localisé	localiser	m	s	0
@@ -16654,7 +16577,6 @@ A	approchée	approcher	f	s	0
 N	cachette	cachette	f	s	0
 N	amplification	amplification	f	s	0
 N	fluctuation	fluctuation	f	s	0
-N	EL	L	m	i	0
 A	remonté	remonter	m	s	0
 N	ovaires	ovaire	m	p	0
 N	météorologie	météorologie	f	s	0
@@ -16788,7 +16710,6 @@ N	diables	diable	m	p	0
 A	daigné	daigner	m	s	0
 N	contractuel	contractuel	m	s	0
 A	contractuel	contractuel	m	s	0
-N	cal	cal	f	i	0
 N	corridor	corridor	m	s	0
 N	ingrate	ingrat	f	s	0
 A	ingrate	ingrat	f	s	0
@@ -16835,7 +16756,6 @@ N	ménagère	ménager	f	s	0
 A	ménagère	ménager	f	s	0
 N	harangue	harangue	f	s	1
 N	miniatures	miniature	f	p	0
-N	Po	Po	m	i	0
 N	fourrure	fourrure	f	s	0
 N	hémisphères	hémisphère	m	p	0
 A	irrémédiable	irrémédiable	e	s	0
@@ -16949,7 +16869,6 @@ N	gypse	gypse	m	s	0
 N	expédient	expédient	m	s	0
 N	Capitole	Capitole	m	i	0
 A	pertinents	pertinent	m	p	0
-N	hl	l	m	i	0
 A	vidé	vider	m	s	0
 N	bouge	bouge	m	s	0
 A	projetés	projeter	m	p	0
@@ -17163,7 +17082,6 @@ N	factures	facture	f	p	0
 A	affectives	affectif	f	p	0
 N	tiroirs	tiroir	m	p	0
 A	fatales	fatal	f	p	0
-N	Ps	s	f	i	0
 N	gâteau	gâteau	m	s	0
 A	montante	montant	f	s	0
 A	financé	financer	m	s	0
@@ -17214,7 +17132,6 @@ A	fluvial	fluvial	m	s	0
 A	vénéré	vénérer	m	s	0
 N	forfaits	forfait	m	p	0
 N	chapelain	chapelain	m	s	0
-N	PC	C	m	i	0
 N	PC	PC	e	i	0
 N	mousses	mousse	e	p	0
 N	brûlée	brûlé	f	s	0
@@ -17284,7 +17201,6 @@ A	agrandi	agrandir	m	s	0
 N	indécision	indécision	f	s	0
 A	récolté	récolter	m	s	0
 N	vocations	vocation	f	p	0
-N	th	th	f	i	0
 N	adage	adage	m	s	0
 N	requérante	requérant	f	s	0
 A	requérante	requérant	f	s	0
@@ -17387,7 +17303,6 @@ N	synagogue	synagogue	f	s	0
 A	éteints	éteindre	m	p	0
 N	Brie	Brie	f	i	0
 N	dissuasion	dissuasion	f	s	0
-N	Pa	Pa	m	i	0
 N	incrédules	incrédule	e	p	0
 A	incrédules	incrédule	e	p	0
 A	fédérés	fédérer	m	p	0
@@ -17424,7 +17339,6 @@ A	éclatants	éclatant	m	p	0
 N	hospitalières	hospitalier	f	p	0
 A	hospitalières	hospitalier	f	p	0
 A	dénommée	dénommer	f	s	0
-N	MF	F	m	i	0
 N	décompte	décompte	m	s	0
 A	crème	crème	e	i	0
 N	crème	crème	e	s	0
@@ -17632,7 +17546,6 @@ A	expliqués	expliquer	m	p	0
 N	olives	olive	f	p	0
 N	intensif	intensif	m	s	0
 A	intensif	intensif	m	s	0
-N	Em	m	m	i	0
 A	consenties	consentir	f	p	0
 A	crié	crier	m	s	0
 A	métrique	métrique	e	s	0
@@ -17656,7 +17569,6 @@ A	datées	dater	f	p	0
 N	bourgade	bourgade	f	s	0
 N	unisson	unisson	m	s	0
 N	déboires	déboire	m	p	0
-N	ba	ba	f	i	0
 A	bouillant	bouillant	m	s	0
 A	pressenti	pressentir	m	s	0
 N	quiétude	quiétude	f	s	0
@@ -18165,9 +18077,7 @@ A	virile	viril	f	s	0
 A	grossi	grossir	m	s	0
 A	apposé	apposer	m	s	0
 A	formulés	formuler	m	p	0
-N	MS	S	m	i	0
 N	sternum	sternum	m	s	0
-N	VA	VA	m	i	0
 A	culturales	cultural	f	p	0
 N	armatures	armature	f	p	0
 A	désordonnée	désordonner	f	s	0
@@ -18277,7 +18187,6 @@ A	emprisonnés	emprisonner	m	p	0
 A	étymologique	étymologique	e	s	0
 N	ru	ru	m	s	0
 N	mas	mas	m	i	0
-N	mas	mas	f	i	0
 N	insomnie	insomnie	f	s	0
 N	basket-ball	basket-ball	m	s	0
 N	pustules	pustule	f	p	0
@@ -19529,7 +19438,6 @@ N	mules	mule	f	p	0
 N	ardoise	ardoise	f	s	0
 A	restaurée	restaurer	f	s	0
 N	nantissement	nantissement	m	s	0
-N	ua	ua	f	i	0
 N	friction	friction	f	s	0
 N	protoplasme	protoplasme	m	s	0
 A	usitées	usité	f	p	0
@@ -19894,7 +19802,6 @@ N	défavorisés	défavorisé	m	p	0
 N	parlementarisme	parlementarisme	m	s	0
 A	honorifiques	honorifique	e	p	0
 N	moulures	moulure	f	p	0
-N	kW	W	m	i	0
 A	documentaires	documentaire	e	p	0
 N	documentaires	documentaire	m	p	0
 N	ensemencement	ensemencement	m	s	0
@@ -20105,7 +20012,6 @@ N	prolétaire	prolétaire	e	s	0
 A	prolétaire	prolétaire	e	s	0
 A	doctrinales	doctrinal	f	p	0
 A	évolués	évolué	m	p	0
-N	TA	A	m	i	0
 N	machinisme	machinisme	m	s	0
 A	gastriques	gastrique	e	p	0
 N	transplantation	transplantation	f	s	0
@@ -20270,9 +20176,7 @@ N	OS	OS	e	i	0
 N	Rhénanie	Rhénanie	f	i	0
 A	irremplaçable	irremplaçable	e	s	0
 R	hâtivement	hâtivement	e	i	1
-N	Ml	l	m	i	0
 N	apostrophe	apostrophe	f	s	0
-N	Tl	l	m	i	0
 A	errante	errant	f	s	0
 A	punissable	punissable	e	s	0
 N	aspirants	aspirant	m	p	0
@@ -20560,7 +20464,6 @@ A	ravie	ravir	f	s	0
 N	tourteaux	tourteau	m	p	0
 N	vaccins	vaccin	m	p	0
 N	arrachement	arrachement	m	s	0
-N	PA	A	m	i	0
 N	relecture	relecture	f	s	0
 N	correctif	correctif	m	s	0
 N	orangers	oranger	m	p	0
@@ -20628,7 +20531,6 @@ A	impersonnel	impersonnel	m	s	0
 N	bosquets	bosquet	m	p	0
 N	omnipotence	omnipotence	f	s	0
 R	follement	follement	e	i	0
-N	nm	m	m	i	0
 N	OMS	OMS	f	i	0
 N	sente	sente	f	s	0
 N	donneurs	donneur	m	p	0
@@ -20770,7 +20672,6 @@ N	poignards	poignard	m	p	0
 A	infante	infant	f	s	0
 A	lâché	lâcher	m	s	0
 N	constellations	constellation	f	p	0
-N	Hz	Hz	m	i	1
 N	trio	trio	m	s	0
 N	intermittent	intermittent	m	s	0
 A	intermittent	intermittent	m	s	0
@@ -21287,7 +21188,6 @@ N	téléphones	téléphone	m	p	0
 N	nervure	nervure	f	s	0
 A	salariales	salarial	f	p	0
 N	dam	dam	m	s	0
-N	dam	m	m	i	0
 A	anguleux	anguleux	m	i	0
 N	initiateurs	initiateur	m	p	0
 A	initiateurs	initiateur	m	p	0
@@ -22662,7 +22562,6 @@ N	mycélium	mycélium	m	s	0
 N	crédule	crédule	e	s	0
 A	crédule	crédule	e	s	0
 A	primordiaux	primordial	m	p	0
-N	Mg	g	m	i	0
 N	justicier	justicier	m	s	0
 A	justicier	justicier	m	s	0
 N	berbères	berbère	e	p	0
@@ -22677,7 +22576,6 @@ A	assimilables	assimilable	e	p	0
 A	belliqueuse	belliqueux	f	s	0
 N	percepteurs	percepteur	m	p	0
 A	percepteurs	percepteur	m	p	0
-N	nl	l	m	i	0
 N	conquérante	conquérant	f	s	0
 A	conquérante	conquérant	f	s	0
 N	cartels	cartel	m	p	0
@@ -22745,7 +22643,6 @@ N	seinen	seinen	m	s	0
 N	étrusque	étrusque	e	s	0
 A	étrusque	étrusque	e	s	0
 N	matchs	match	m	p	0
-N	lb	lb	f	i	0
 N	dévastations	dévastation	f	p	0
 N	encaissement	encaissement	m	s	0
 N	colonisé	colonisé	m	s	0
@@ -22931,7 +22828,6 @@ A	ancestrale	ancestral	f	s	0
 N	déprédations	déprédation	f	p	0
 N	figuratif	figuratif	m	s	0
 A	figuratif	figuratif	m	s	0
-N	Go	Go	m	i	0
 N	caustiques	caustique	e	p	0
 A	caustiques	caustique	e	p	0
 N	tenure	tenure	f	s	0
@@ -23258,7 +23154,6 @@ A	inexplicables	inexplicable	e	p	0
 N	billard	billard	m	s	0
 N	junior	junior	e	s	0
 A	junior	junior	e	s	0
-N	ko	ko	m	i	0
 N	dégénérés	dégénéré	m	p	0
 A	diurnes	diurne	e	p	0
 N	quanta	quantum	m	p	0
@@ -23547,7 +23442,6 @@ N	normalité	normalité	f	s	0
 A	parasitaires	parasitaire	e	p	0
 A	adouci	adoucir	m	s	0
 N	décoloration	décoloration	f	s	0
-N	MW	W	m	i	0
 N	Mékong	Mékong	m	i	0
 R	chronologiquement	chronologiquement	e	i	0
 A	humoristique	humoristique	e	s	0
@@ -23575,7 +23469,6 @@ N	carrosses	carrosse	m	p	0
 A	acidulée	aciduler	f	s	0
 N	carabine	carabine	f	s	0
 A	ferrugineuses	ferrugineux	f	p	0
-N	kWh	Wh	m	i	0
 N	ficelles	ficelle	f	p	0
 A	illégaux	illégal	m	p	0
 N	puce	puce	f	s	0
@@ -23677,7 +23570,6 @@ N	ventouses	ventouse	f	p	0
 N	trapèze	trapèze	m	s	0
 N	ost	ost	m	s	0
 N	leu	leu	m	s	0
-N	ks	s	f	i	0
 A	suggestif	suggestif	m	s	0
 A	lactée	lacté	f	s	0
 N	suie	suie	f	s	0
@@ -23949,7 +23841,6 @@ N	oraisons	oraison	f	p	0
 N	PDG	PDG	e	i	0
 N	Campine	Campine	f	i	0
 A	oxygénée	oxygéner	f	s	0
-N	ppp	ppp	m	i	0
 A	patrimonial	patrimonial	m	s	0
 N	ébène	ébène	f	s	0
 N	prépositions	préposition	f	p	0
@@ -24752,7 +24643,6 @@ A	imbu	imbu	m	s	0
 N	imam	imam	m	s	0
 A	investies	investir	f	p	0
 N	marginalité	marginalité	f	s	0
-N	dm	m	m	i	0
 A	multicolores	multicolore	e	p	0
 A	prosaïque	prosaïque	e	s	0
 N	conductrice	conducteur	f	s	0
@@ -24849,7 +24739,6 @@ A	quantique	quantique	e	s	0
 N	quantique	quantique	f	s	0
 N	récapitulation	récapitulation	f	s	0
 A	affermi	affermir	m	s	0
-N	ppm	ppm	f	i	0
 A	thermale	thermal	f	s	0
 N	prurit	prurit	m	s	0
 N	averse	averse	f	s	0
@@ -24882,7 +24771,6 @@ N	fiacre	fiacre	m	s	0
 A	prodigieuses	prodigieux	f	p	0
 N	interpénétration	interpénétration	f	s	0
 N	prosélytes	prosélyte	e	p	0
-N	pg	g	m	i	0
 A	abrogés	abroger	m	p	0
 N	réfrigération	réfrigération	f	s	0
 N	mimétisme	mimétisme	m	s	0
@@ -25266,7 +25154,6 @@ N	arrachage	arrachage	m	s	0
 A	insidieuse	insidieux	f	s	0
 A	audiovisuelle	audiovisuel	f	s	0
 N	impertinence	impertinence	f	s	0
-N	pt	pt	f	i	0
 N	spahis	spahi	m	p	0
 A	princière	princier	f	s	0
 N	grenadier	grenadier	m	s	0
@@ -25419,7 +25306,6 @@ A	abrités	abriter	m	p	0
 N	habilitation	habilitation	f	s	0
 A	infantiles	infantile	e	p	0
 A	rugueuse	rugueux	f	s	0
-N	EC	C	m	i	0
 N	archipels	archipel	m	p	0
 A	structuraux	structural	m	p	0
 N	mesurage	mesurage	m	s	0
@@ -25521,7 +25407,6 @@ N	sample	sample	m	s	0
 N	miséricordieux	miséricordieux	m	i	0
 A	miséricordieux	miséricordieux	m	i	0
 N	dissolvant	dissolvant	m	s	0
-N	mgr	mgr	m	i	0
 N	israéliennes	israélien	f	p	0
 A	israéliennes	israélien	f	p	0
 N	lambris	lambris	m	i	0
@@ -25684,7 +25569,6 @@ A	répétiteur	répétiteur	m	s	0
 A	prêtées	prêter	f	p	0
 A	vitae	vitae	m	i	0
 A	éclairante	éclairant	f	s	0
-N	kV	V	m	i	0
 N	maghrébins	maghrébin	m	p	0
 A	maghrébins	maghrébin	m	p	0
 A	empreint	empreindre	m	s	0
@@ -25749,7 +25633,6 @@ A	convalescents	convalescent	m	p	0
 N	retrouvailles	retrouvaille	f	p	0
 N	faïences	faïence	f	p	0
 A	voilées	voiler	f	p	0
-N	MN	N	m	i	0
 N	contrariétés	contrariété	f	p	0
 N	fourbe	fourbe	e	s	0
 A	fourbe	fourbe	e	s	0
@@ -25833,7 +25716,6 @@ A	chantés	chanter	m	p	0
 N	maquettes	maquette	f	p	0
 A	optimales	optimal	f	p	0
 A	probe	probe	e	s	0
-N	MC	C	m	i	0
 A	hypnotique	hypnotique	e	s	0
 A	facultatives	facultatif	f	p	0
 A	platonique	platonique	e	s	0
@@ -25910,7 +25792,6 @@ A	sablonneuse	sablonneux	f	s	0
 A	exécutif	exécutif	m	s	0
 A	explosif	explosif	m	s	0
 N	explosif	explosif	m	s	0
-N	MHz	Hz	m	i	1
 N	novatrice	novateur	f	s	0
 A	novatrice	novateur	f	s	0
 A	graduel	graduel	m	s	0
@@ -25942,7 +25823,6 @@ A	étranglé	étrangler	m	s	0
 N	lins	lin	m	p	0
 N	chauvinisme	chauvinisme	m	s	0
 N	sires	sire	m	p	0
-N	cd	cd	f	i	0
 N	lingerie	lingerie	f	s	0
 N	chyle	chyle	m	s	0
 N	routines	routine	f	p	0
@@ -25956,7 +25836,6 @@ N	pale	pale	f	s	0
 N	lobule	lobule	m	s	0
 N	personnalisation	personnalisation	f	s	0
 N	décrépitude	décrépitude	f	s	0
-N	ph	ph	m	i	0
 A	réussies	réussir	f	p	0
 A	pensable	pensable	e	s	0
 N	tendresses	tendresse	f	p	0
@@ -26532,7 +26411,6 @@ N	antes	ante	f	p	0
 A	atténués	atténuer	m	p	0
 N	décubitus	décubitus	m	i	0
 N	surnoms	surnom	m	p	0
-N	fs	s	f	i	0
 N	gosse	gosse	e	s	0
 N	retardataires	retardataire	e	p	0
 A	retardataires	retardataire	e	p	0
@@ -26934,11 +26812,9 @@ N	simulacres	simulacre	m	p	0
 N	omniprésence	omniprésence	f	s	0
 N	pavot	pavot	m	s	0
 N	Penthièvre	Penthièvre	m	i	0
-N	dl	l	m	i	0
 N	parrains	parrain	m	p	0
 N	charlatan	charlatan	m	s	0
 N	Cotentin	Cotentin	m	i	0
-N	ps	s	f	i	0
 N	potager	potager	m	s	0
 N	plantules	plantule	f	p	0
 A	vernaculaire	vernaculaire	e	s	0
@@ -27279,7 +27155,6 @@ N	Alabama	Alabama	m	i	0
 N	intermittences	intermittence	f	p	0
 N	fortuné	fortuné	m	s	0
 A	fortuné	fortuné	m	s	0
-N	MH	H	m	i	1
 N	métonymie	métonymie	f	s	0
 N	follicule	follicule	m	s	0
 A	vieillissant	vieillissant	m	s	0
@@ -27500,7 +27375,6 @@ A	métamorphiques	métamorphique	e	p	0
 N	missile	missile	m	s	0
 N	tirade	tirade	f	s	0
 N	bielles	bielle	f	p	0
-N	Ko	Ko	m	i	0
 N	linteau	linteau	m	s	0
 A	subversif	subversif	m	s	0
 N	candidate	candidat	f	s	0
@@ -27771,7 +27645,6 @@ N	encerclement	encerclement	m	s	0
 N	utopistes	utopiste	e	p	0
 N	honorabilité	honorabilité	f	s	0
 A	orageuses	orageux	f	p	0
-N	EF	F	m	i	0
 N	débitants	débitant	m	p	0
 A	préférentielle	préférentiel	f	s	0
 N	cubisme	cubisme	m	s	0
@@ -28181,7 +28054,6 @@ A	terminologique	terminologique	e	s	0
 N	bourgmestres	bourgmestre	e	p	0
 N	quintes	quint	f	p	0
 A	quintes	quint	f	p	0
-N	ng	g	m	i	0
 A	environnés	environner	m	p	0
 N	Helvétie	Helvétie	f	i	0
 A	typologique	typologique	e	s	0
@@ -28401,7 +28273,6 @@ A	conformistes	conformiste	e	p	0
 N	poirier	poirier	m	s	0
 N	bocage	bocage	m	s	0
 A	svelte	svelte	e	s	0
-N	dB	dB	m	i	0
 N	crêpe	crêpe	e	s	0
 N	interviewés	interviewé	m	p	0
 N	relativiste	relativiste	e	s	0
@@ -28494,7 +28365,6 @@ R	héroïquement	héroïquement	e	i	0
 N	vautours	vautour	m	p	0
 N	affres	affres	f	p	0
 N	surélévation	surélévation	f	s	0
-N	TC	C	m	i	0
 N	appelant	appelant	m	s	0
 A	appelant	appelant	m	s	0
 A	ostensible	ostensible	e	s	0
@@ -28563,7 +28433,6 @@ A	extenseur	extenseur	m	s	0
 A	immunitaire	immunitaire	e	s	0
 N	tordu	tordu	m	s	0
 A	stratigraphiques	stratigraphique	e	p	0
-N	TH	H	m	i	1
 N	automobilistes	automobiliste	e	p	0
 A	désertiques	désertique	e	p	0
 A	calqué	calquer	m	s	0
@@ -28578,7 +28447,6 @@ A	ruineuses	ruineux	f	p	0
 A	arrangés	arranger	m	p	0
 A	carbonatée	carbonater	f	s	0
 N	input	input	m	s	0
-N	TS	S	m	i	0
 N	humiliés	humilié	m	p	0
 A	conflictuelles	conflictuel	f	p	0
 A	indéfectible	indéfectible	e	s	0
@@ -28728,7 +28596,6 @@ N	albuminoïdes	albuminoïde	m	p	0
 N	ménagerie	ménagerie	f	s	0
 N	organigramme	organigramme	m	s	0
 N	darwinisme	darwinisme	m	s	0
-N	TT	T	m	i	0
 R	secundo	secundo	e	i	0
 N	apocalypse	apocalypse	f	s	0
 N	tickets	ticket	m	p	0
@@ -28862,7 +28729,6 @@ N	pelleteries	pelleterie	f	p	0
 N	raz	raz	m	i	0
 N	écureuil	écureuil	m	s	0
 A	guéries	guérir	f	p	0
-N	PH	H	m	i	1
 A	racontées	raconter	f	p	0
 A	flétrie	flétrir	f	s	0
 A	épithètes	épithète	e	p	0
@@ -28987,7 +28853,6 @@ N	pavement	pavement	m	s	0
 N	dessication	dessication	f	s	0
 A	stalinien	stalinien	m	s	0
 N	escouade	escouade	f	s	0
-N	ag	g	m	i	0
 A	vaseux	vaseux	m	i	0
 N	pinte	pinte	f	s	0
 N	attroupements	attroupement	m	p	0
@@ -29352,7 +29217,6 @@ A	ogival	ogival	m	s	0
 N	ENA	ENA	f	i	0
 N	cadrage	cadrage	m	s	0
 A	rajeuni	rajeunir	m	s	0
-N	MT	T	m	i	0
 N	ecchymoses	ecchymose	f	p	0
 A	meublée	meubler	f	s	0
 A	incarcérés	incarcérer	m	p	0
@@ -29719,7 +29583,6 @@ N	repeuplement	repeuplement	m	s	0
 A	absorbant	absorbant	m	s	0
 A	incendiés	incendier	m	p	0
 N	récipiendaire	récipiendaire	e	s	0
-N	Pio	Pio	m	i	0
 N	charbonnage	charbonnage	m	s	0
 A	élancé	élancer	m	s	0
 A	submergée	submerger	f	s	0
@@ -30024,7 +29887,6 @@ N	flasques	flasque	e	p	0
 A	flasques	flasque	e	p	0
 N	daim	daim	m	s	0
 N	pistil	pistil	m	s	0
-N	MeV	eV	m	i	0
 A	validé	valider	m	s	0
 A	impressionnable	impressionnable	e	s	0
 A	alléguée	alléguer	f	s	0
@@ -30153,7 +30015,6 @@ A	éolienne	éolien	f	s	0
 A	bombée	bomber	f	s	0
 N	brouhaha	brouhaha	m	s	0
 A	irritants	irritant	m	p	0
-N	GG	G	m	i	0
 A	humiliantes	humiliant	f	p	0
 N	embuscades	embuscade	f	p	0
 N	transfuges	transfuge	e	p	0
@@ -30278,7 +30139,6 @@ N	irréversibilité	irréversibilité	f	s	0
 N	fissuration	fissuration	f	s	0
 N	bleds	bled	m	p	0
 A	restituées	restituer	f	p	0
-N	cs	s	f	i	0
 A	ouvrés	ouvrer	m	p	0
 N	embrayage	embrayage	m	s	0
 A	réticulaire	réticulaire	e	s	0
@@ -30348,7 +30208,6 @@ R	structurellement	structurellement	e	i	0
 N	prédispositions	prédisposition	f	p	0
 N	coordinateur	coordinateur	m	s	0
 A	coordinateur	coordinateur	m	s	0
-N	Gl	l	m	i	0
 A	patentés	patenter	m	p	0
 N	litanie	litanie	f	s	0
 A	conflictuel	conflictuel	m	s	0
@@ -30643,7 +30502,6 @@ N	calendes	calendes	f	p	0
 A	perpétré	perpétrer	m	s	0
 N	convive	convive	e	s	0
 N	truie	truie	f	s	0
-N	eV	eV	m	i	0
 N	improvisations	improvisation	f	p	0
 N	prêtresse	prêtre	f	s	0
 A	florales	floral	f	p	0
@@ -31167,7 +31025,6 @@ A	assaillant	assaillant	m	s	0
 A	encaissés	encaisser	m	p	0
 A	resserrées	resserrer	f	p	0
 A	isotopique	isotopique	e	s	0
-N	Yo	Yo	m	i	0
 N	Iowa	Iowa	m	i	0
 A	entachés	entacher	m	p	0
 A	concentré	concentrer	m	s	0
@@ -31355,7 +31212,6 @@ A	intégrantes	intégrant	f	p	0
 A	relationnels	relationnel	m	p	0
 N	diatribes	diatribe	f	p	0
 N	décodage	décodage	m	s	0
-N	ML	L	m	i	0
 N	exilée	exilé	f	s	0
 N	ajouts	ajout	m	p	0
 N	tubérosité	tubérosité	f	s	0
@@ -31500,7 +31356,6 @@ A	foudroyant	foudroyant	m	s	0
 A	élitiste	élitiste	e	s	0
 A	hachée	hacher	f	s	1
 N	abaque	abaque	m	s	0
-N	pc	pc	m	i	0
 A	siliceuse	siliceux	f	s	0
 A	imbibée	imbiber	f	s	0
 N	prouesse	prouesse	f	s	0
@@ -31817,7 +31672,6 @@ N	déguisements	déguisement	m	p	0
 N	lyse	lyse	f	s	0
 N	tchadien	tchadien	m	s	0
 A	tchadien	tchadien	m	s	0
-N	GA	A	m	i	0
 N	missel	missel	m	s	0
 A	évolutifs	évolutif	m	p	0
 A	répréhensibles	répréhensible	e	p	0
@@ -32051,7 +31905,6 @@ A	rétrospectives	rétrospectif	f	p	0
 A	préservées	préserver	f	p	0
 A	amorties	amortir	f	p	0
 R	inviolablement	inviolablement	e	i	0
-N	PT	T	m	i	0
 N	drogman	drogman	m	s	0
 N	SOS	SOS	m	i	0
 N	réceptrice	récepteur	f	s	0
@@ -32318,7 +32171,6 @@ N	argumentaire	argumentaire	m	s	0
 N	RATP	RATP	f	i	0
 A	censitaires	censitaire	e	p	0
 A	démunis	démunir	m	p	0
-N	EA	A	m	i	0
 N	angolais	angolais	m	i	0
 A	angolais	angolais	m	i	0
 R	amoureusement	amoureusement	e	i	0
@@ -32628,7 +32480,6 @@ A	2d	2d	m	s	0
 N	saluts	salut	m	p	0
 N	métrite	métrite	f	s	0
 N	mile	mile	m	s	0
-N	PJ	J	m	i	0
 N	automobiliste	automobiliste	e	s	0
 N	évidement	évidement	m	s	0
 A	sulfhydrique	sulfhydrique	e	s	0
@@ -32717,7 +32568,6 @@ N	défectuosité	défectuosité	f	s	0
 N	Occitanie	Occitanie	f	i	0
 N	anabaptistes	anabaptiste	e	p	0
 A	anabaptistes	anabaptiste	e	p	0
-N	Mio	Mio	m	i	0
 N	incarnations	incarnation	f	p	0
 A	trompées	tromper	f	p	0
 N	accepteur	accepteur	m	s	0
@@ -33021,7 +32871,6 @@ N	boulettes	boulet	f	p	0
 A	exigu	exigu	m	s	0
 R	visuellement	visuellement	e	i	0
 N	fuchsine	fuchsine	f	s	0
-N	TF	F	m	i	0
 N	extravagants	extravagant	m	p	0
 A	extravagants	extravagant	m	p	0
 N	lettrée	lettré	f	s	0
@@ -33310,7 +33159,6 @@ A	pélagiques	pélagique	e	p	0
 N	indigénat	indigénat	m	s	0
 A	inextinguible	inextinguible	e	s	0
 N	bit	bit	m	s	0
-N	bit	bit	m	i	0
 A	préfectoraux	préfectoral	m	p	0
 N	bubon	bubon	m	s	0
 A	greffées	greffer	f	p	0
@@ -33414,7 +33262,6 @@ N	bêta	bêta	m	i	0
 A	corporatiste	corporatiste	e	s	0
 A	roulées	rouler	f	p	0
 A	rectificative	rectificatif	f	s	0
-N	PG	G	m	i	0
 N	laudanum	laudanum	m	s	0
 N	pagus	pagus	m	i	0
 N	fortunée	fortuné	f	s	0
@@ -33510,7 +33357,6 @@ N	débarquements	débarquement	m	p	0
 N	angoissée	angoissé	f	s	0
 N	chevron	chevron	m	s	0
 N	fiat	fiat	m	i	0
-N	GC	C	m	i	0
 R	ultimo	ultimo	e	i	0
 A	narquois	narquois	m	i	0
 N	SARL	SARL	f	i	0
@@ -33874,7 +33720,6 @@ A	linguale	lingual	f	s	0
 N	hémoptysie	hémoptysie	f	s	0
 A	retentissantes	retentissant	f	p	0
 N	télex	télex	m	i	0
-N	kl	l	m	i	0
 N	diffuseurs	diffuseur	m	p	0
 A	poreuses	poreux	f	p	0
 A	tenable	tenable	e	s	0
@@ -34100,7 +33945,6 @@ N	whig	whig	e	s	0
 A	whig	whig	e	s	0
 A	recouvrée	recouvrer	f	s	0
 N	étuis	étui	m	p	0
-N	Gal	Gal	m	i	0
 N	compresse	compresse	f	s	0
 A	pensive	pensif	f	s	0
 N	geôle	geôle	f	s	0
@@ -34814,7 +34658,6 @@ A	confessionnels	confessionnel	m	p	0
 A	aligné	aligner	m	s	0
 A	galopante	galopant	f	s	0
 N	pédales	pédale	f	p	0
-N	MJ	J	m	i	0
 N	rancœurs	rancœur	f	p	0
 A	probatoire	probatoire	e	s	0
 N	tuyauteries	tuyauterie	f	p	0
@@ -35145,7 +34988,6 @@ A	subdivisées	subdiviser	f	p	0
 A	jouées	jouer	f	p	0
 N	jouées	jouée	f	p	0
 N	inhalations	inhalation	f	p	0
-N	kt	kt	f	i	0
 R	outrageusement	outrageusement	e	i	0
 A	policé	policer	m	s	0
 A	décimé	décimer	m	s	0
@@ -35190,7 +35032,6 @@ N	blasons	blason	m	p	0
 N	chaînette	chaînette	f	s	0
 A	délayée	délayer	f	s	0
 A	œsophagienne	œsophagien	f	s	0
-N	PF	F	m	i	0
 A	saisissables	saisissable	e	p	0
 N	coordinations	coordination	f	p	0
 A	rehaussée	rehausser	f	s	0
@@ -35632,7 +35473,6 @@ A	qualifié	qualifier	m	s	0
 A	qualifiée	qualifier	f	s	0
 A	qualifiées	qualifier	f	p	0
 A	qualifiés	qualifier	m	p	0
-N	kHz	Hz	m	i	1
 N	hit	hit	m	s	1
 A	allègre	allègre	e	s	0
 N	suppliciés	supplicié	m	p	0
@@ -35762,7 +35602,6 @@ N	Huron	Huron	m	i	0
 N	lainages	lainage	m	p	0
 N	invisibilité	invisibilité	f	s	0
 N	ravisseurs	ravisseur	m	p	0
-N	EH	H	m	i	1
 N	cochère	cocher	f	s	0
 A	cochère	cocher	f	s	0
 A	infestés	infester	m	p	0
@@ -35980,7 +35819,6 @@ N	vaseline	vaseline	f	s	0
 N	buanderie	buanderie	f	s	0
 N	pitance	pitance	f	s	0
 A	agrémenté	agrémenter	m	s	0
-N	Msr	sr	m	i	0
 N	remémoration	remémoration	f	s	0
 A	équestres	équestre	e	p	0
 N	atrophique	atrophique	e	s	0
@@ -36095,7 +35933,6 @@ A	preste	preste	e	s	0
 A	raisonnées	raisonner	f	p	0
 N	transsubstantiation	transsubstantiation	f	s	0
 A	informatif	informatif	m	s	0
-N	GH	H	m	i	1
 N	champenois	champenois	m	i	0
 A	champenois	champenois	m	i	0
 N	slip	slip	m	s	0
@@ -36184,7 +36021,6 @@ N	pygmées	pygmée	e	p	0
 A	pygmées	pygmée	e	p	0
 N	radis	radis	m	i	0
 N	CDD	CDD	m	i	0
-N	atm	atm	f	i	0
 A	souffrants	souffrant	m	p	0
 N	dindons	dindon	m	p	0
 N	coagulum	coagulum	m	s	0
@@ -36535,7 +36371,6 @@ N	mousselines	mousseline	f	p	0
 A	cimenté	cimenter	m	s	0
 A	hébergé	héberger	m	s	0
 A	révisées	réviser	f	p	0
-N	mL	L	m	i	0
 A	astral	astral	m	s	0
 N	Surrey	Surrey	m	i	0
 N	coauteurs	coauteur	m	p	0
@@ -36600,7 +36435,6 @@ N	dédommagements	dédommagement	m	p	0
 N	congres	congre	m	p	0
 N	rational	rational	m	s	0
 A	ourdie	ourdir	f	s	0
-N	lx	lx	m	i	0
 N	majestés	majesté	f	p	0
 A	conciliaires	conciliaire	e	p	0
 N	mortaise	mortaise	f	s	0
@@ -36645,7 +36479,6 @@ A	ambulante	ambulant	f	s	0
 A	teintés	teinter	m	p	0
 N	acétylcholine	acétylcholine	f	s	0
 N	érables	érable	m	p	0
-N	Oe	Oe	m	i	0
 N	ultraviolet	ultraviolet	m	s	0
 N	éjaculation	éjaculation	f	s	0
 N	fourmillement	fourmillement	m	s	0
@@ -36877,7 +36710,6 @@ A	rogatoires	rogatoire	e	p	0
 A	participatif	participatif	m	s	0
 N	préludes	prélude	m	p	0
 A	redressés	redresser	m	p	0
-N	GF	F	m	i	0
 A	fulgurant	fulgurant	m	s	0
 A	remerciés	remercier	m	p	0
 A	plaintifs	plaintif	m	p	0
@@ -37885,7 +37717,6 @@ A	divinisé	diviniser	m	s	0
 N	placer	placer	m	s	0
 N	placers	placer	m	p	0
 A	poplité	poplité	m	s	0
-N	pm	m	m	i	0
 N	épiglotte	épiglotte	f	s	0
 N	fossoyeurs	fossoyeur	m	p	0
 A	rarissimes	rarissime	e	p	0
@@ -37975,7 +37806,6 @@ A	aminci	amincir	m	s	0
 A	clôturé	clôturer	m	s	0
 A	incrustées	incruster	f	p	0
 A	acérée	acérer	f	s	0
-N	mA	A	m	i	0
 N	panthéistes	panthéiste	e	p	0
 A	panthéistes	panthéiste	e	p	0
 A	drastiques	drastique	e	p	0
@@ -38158,7 +37988,6 @@ N	asperge	asperge	f	s	0
 N	détresses	détresse	f	p	0
 A	monochromatique	monochromatique	e	s	0
 N	piémont	piémont	m	s	0
-N	MG	G	m	i	0
 N	coriaces	coriace	e	p	0
 A	coriaces	coriace	e	p	0
 A	officinale	officinal	f	s	0
@@ -38356,7 +38185,6 @@ A	réaffirmée	réaffirmer	f	s	0
 N	chanvres	chanvre	m	p	0
 N	iritis	iritis	f	i	0
 N	anachronismes	anachronisme	m	p	0
-N	PN	N	m	i	0
 A	faussées	fausser	f	p	0
 A	hippique	hippique	e	s	0
 A	raillé	railler	m	s	0
@@ -38377,7 +38205,6 @@ A	aplanies	aplanir	f	p	0
 N	carpelles	carpelle	m	p	0
 N	écritoire	écritoire	f	s	0
 A	enveloppante	enveloppant	f	s	0
-N	GL	L	m	i	0
 N	ravines	ravin	f	p	0
 A	usuraire	usuraire	e	s	0
 A	aventuré	aventurer	m	s	0
@@ -38568,8 +38395,6 @@ N	locomoteur	locomoteur	m	s	0
 A	locomoteur	locomoteur	m	s	0
 A	vomitifs	vomitif	m	p	0
 N	tisanes	tisane	f	p	0
-N	fm	fm	f	i	0
-N	fm	m	m	i	0
 N	proses	prose	f	p	0
 N	affiliations	affiliation	f	p	0
 A	exhalé	exhaler	m	s	0
@@ -38662,7 +38487,6 @@ A	angevin	angevin	m	s	0
 N	bolcheviste	bolcheviste	e	s	0
 A	alternée	alterner	f	s	0
 N	shilling	shilling	m	s	0
-N	GS	S	m	i	0
 A	entreprenante	entreprenant	f	s	0
 N	bastide	bastide	f	s	0
 N	initiatrice	initiateur	f	s	0
@@ -38769,7 +38593,6 @@ A	branchiaux	branchial	m	p	0
 N	môles	môle	e	p	0
 N	zoospores	zoospore	f	p	0
 N	barbaries	barbarie	f	p	0
-N	EG	G	m	i	0
 N	désespoirs	désespoir	m	p	0
 N	illogisme	illogisme	m	s	0
 A	buté	buter	m	s	0
@@ -38824,7 +38647,6 @@ A	insolentes	insolent	f	p	0
 A	angéliques	angélique	e	p	0
 N	ivoiriennes	ivoirien	f	p	0
 A	ivoiriennes	ivoirien	f	p	0
-N	px	px	m	i	0
 A	contextuel	contextuel	m	s	0
 N	pruniers	prunier	m	p	0
 A	apocalyptiques	apocalyptique	e	p	0
@@ -38851,7 +38673,6 @@ N	acropole	acropole	f	s	0
 N	sinécure	sinécure	f	s	0
 N	rotatifs	rotatif	m	p	0
 A	rotatifs	rotatif	m	p	0
-N	TG	G	m	i	0
 N	jurisprudences	jurisprudence	f	p	0
 N	politologues	politologue	e	p	0
 N	incroyant	incroyant	m	s	0
@@ -39100,7 +38921,6 @@ A	thermidorienne	thermidorien	f	s	0
 A	décroché	décrocher	m	s	0
 N	cambium	cambium	m	s	0
 A	exhorté	exhorter	m	s	0
-N	kcal	cal	f	i	0
 N	cortisone	cortisone	f	s	0
 N	genevoises	genevois	f	p	0
 A	genevoises	genevois	f	p	0
@@ -39156,7 +38976,6 @@ A	déversés	déverser	m	p	0
 N	trépassés	trépassé	m	p	0
 A	trépassés	trépassé	m	p	0
 N	élancements	élancement	m	p	0
-N	GN	N	m	i	0
 N	perspicaces	perspicace	e	p	0
 A	perspicaces	perspicace	e	p	0
 A	normalisées	normaliser	f	p	0
@@ -39865,7 +39684,6 @@ A	pharmacologiques	pharmacologique	e	p	0
 N	Maldives	Maldives	f	p	0
 N	vesces	vesce	f	p	0
 A	dormantes	dormant	f	p	0
-N	MPa	Pa	m	i	0
 N	anthrax	anthrax	m	i	0
 N	soignante	soignant	f	s	0
 A	soignante	soignant	f	s	0
@@ -39931,7 +39749,6 @@ N	multiplications	multiplication	f	p	0
 N	réintroduction	réintroduction	f	s	0
 N	agnostique	agnostique	e	s	0
 A	étriquée	étriquer	f	s	0
-N	mV	V	m	i	0
 N	zircon	zircon	m	s	0
 A	ovalaires	ovalaire	e	p	0
 A	rongées	ronger	f	p	0
@@ -40145,7 +39962,6 @@ A	égocentrique	égocentrique	e	s	0
 A	géomorphologique	géomorphologique	e	s	0
 N	nourricières	nourricier	f	p	0
 A	nourricières	nourricier	f	p	0
-N	keV	eV	m	i	0
 N	palanquin	palanquin	m	s	0
 N	kaléidoscope	kaléidoscope	m	s	0
 N	recruteur	recruteur	m	s	0
@@ -40172,7 +39988,6 @@ A	isomorphes	isomorphe	e	p	0
 A	trachéale	trachéal	f	s	0
 R	stratégiquement	stratégiquement	e	i	0
 A	estimative	estimatif	f	s	0
-N	Gy	Gy	m	i	0
 N	criquets	criquet	m	p	0
 N	lithotritie	lithotritie	f	s	0
 A	bruni	brunir	m	s	0
@@ -40726,7 +40541,6 @@ A	succinctes	succinct	f	p	0
 A	voyous	voyou	e	p	0
 N	voyous	voyou	m	p	0
 N	manga	manga	m	s	0
-N	Grad	rad	m	i	0
 R	canoniquement	canoniquement	e	i	0
 N	clochard	clochard	m	s	0
 A	rétribuées	rétribuer	f	p	0
@@ -40798,7 +40612,6 @@ A	décelés	déceler	m	p	0
 A	risquées	risquer	f	p	0
 A	rétrécissant	rétrécissant	m	s	0
 N	oolithe	oolithe	f	s	0
-N	GHz	Hz	m	i	1
 N	spirochètes	spirochète	m	p	0
 N	péripatéticienne	péripatéticien	f	s	0
 A	péripatéticienne	péripatéticien	f	s	0
@@ -40871,7 +40684,6 @@ A	feutrée	feutrer	f	s	0
 N	drama	drama	m	s	0
 A	urbanisée	urbaniser	f	s	0
 N	guidance	guidance	f	s	0
-N	TJ	J	m	i	0
 N	assistances	assistance	f	p	0
 A	amalgamé	amalgamer	m	s	0
 N	pirouette	pirouette	f	s	0
@@ -41772,7 +41584,6 @@ A	censurée	censurer	f	s	0
 N	percuteur	percuteur	m	s	0
 N	cokes	coke	e	p	0
 A	soyeuses	soyeux	f	p	0
-N	rad	rad	m	i	0
 N	belvédère	belvédère	m	s	0
 R	effroyablement	effroyablement	e	i	0
 N	dyspeptiques	dyspeptique	e	p	0
@@ -41826,7 +41637,6 @@ N	chuchotements	chuchotement	m	p	0
 N	râtelier	râtelier	m	s	0
 R	criminellement	criminellement	e	i	0
 A	écroulés	écrouler	m	p	0
-N	GT	T	m	i	0
 N	hémorroïdes	hémorroïde	f	p	0
 N	voltairien	voltairien	m	s	0
 A	voltairien	voltairien	m	s	0
@@ -42020,7 +41830,6 @@ A	contemplatifs	contemplatif	m	p	0
 A	disloqués	disloquer	m	p	0
 A	interétatique	interétatique	e	s	0
 N	narrataire	narrataire	e	s	0
-N	PK	K	m	i	0
 N	apostille	apostille	f	s	0
 N	hyperactivité	hyperactivité	f	s	0
 N	agglutinines	agglutinine	f	p	0
@@ -42373,7 +42182,6 @@ A	manométrique	manométrique	e	s	0
 N	épaulette	épaulette	f	s	0
 A	envieuse	envieux	f	s	0
 A	lancinant	lancinant	m	s	0
-N	EJ	J	m	i	0
 N	ciboire	ciboire	m	s	0
 A	valgus	valgus	e	i	0
 A	polluées	polluer	f	p	0
@@ -42448,7 +42256,6 @@ A	ralliée	rallier	f	s	0
 N	ralliée	rallié	f	s	0
 A	ralliée	rallié	f	s	0
 A	coincée	coincer	f	s	0
-N	TL	L	m	i	0
 N	hydrographe	hydrographe	e	s	0
 A	contrebalancée	contrebalancer	f	s	0
 A	calmés	calmer	m	p	0
@@ -42617,7 +42424,6 @@ N	dissipations	dissipation	f	p	0
 N	vénerie	vénerie	f	s	0
 A	photographiée	photographier	f	s	0
 N	prothorax	prothorax	m	i	0
-N	MV	V	m	i	0
 N	redémarrage	redémarrage	m	s	0
 N	vacanciers	vacancier	m	p	0
 A	vacanciers	vacancier	m	p	0
@@ -42873,7 +42679,6 @@ A	railleurs	railleur	m	p	0
 N	enthalpie	enthalpie	f	s	0
 R	synthétiquement	synthétiquement	e	i	0
 N	vidame	vidame	m	s	0
-N	Gio	Gio	m	i	0
 R	intensivement	intensivement	e	i	0
 N	requérantes	requérant	f	p	0
 A	requérantes	requérant	f	p	0
@@ -43756,7 +43561,6 @@ A	criée	crier	f	s	0
 N	criée	criée	f	s	0
 N	prêle	prêle	f	s	0
 N	microflore	microflore	f	s	0
-N	Tm	m	m	i	0
 N	carburation	carburation	f	s	0
 N	manses	manse	e	p	0
 N	onyx	onyx	m	i	0
@@ -43883,7 +43687,6 @@ N	babouches	babouche	f	p	0
 N	quadrilatères	quadrilatère	m	p	0
 A	innovante	innovant	f	s	0
 N	gueuse	gueux	f	s	0
-N	Gt	Gt	f	i	0
 A	brusquée	brusquer	f	s	0
 N	libérien	libérien	m	s	0
 A	libérien	libérien	m	s	0
@@ -44248,7 +44051,6 @@ A	sectionnée	sectionner	f	s	0
 N	économat	économat	m	s	0
 N	propylène	propylène	m	s	0
 A	bestiaux	bestial	m	p	0
-N	dag	g	m	i	0
 N	zircone	zircone	f	s	0
 N	escape	escape	f	s	0
 A	intronisé	introniser	m	s	0
@@ -45228,7 +45030,6 @@ A	psychopathologiques	psychopathologique	e	p	0
 N	granule	granule	m	s	0
 N	illustrateurs	illustrateur	m	p	0
 N	signalements	signalement	m	p	0
-N	kVA	VA	m	i	0
 N	pilots	pilot	m	p	0
 N	tournoiement	tournoiement	m	s	0
 A	prénommé	prénommer	m	s	0
@@ -45634,7 +45435,6 @@ A	boutonnières	boutonnier	f	p	0
 N	francophile	francophile	e	s	0
 A	francophile	francophile	e	s	0
 N	semblance	semblance	f	s	0
-N	hs	s	f	i	0
 N	lotion	lotion	f	s	0
 A	élucidés	élucider	m	p	0
 A	blasphématoire	blasphématoire	e	s	0
@@ -45868,7 +45668,6 @@ N	aérostation	aérostation	f	s	0
 A	tonales	tonal	f	p	0
 A	lamellaire	lamellaire	e	s	0
 N	lamellaire	lamellaire	f	s	0
-N	Eo	Eo	m	i	0
 A	pavimenteux	pavimenteux	m	i	0
 A	complaisantes	complaisant	f	p	0
 N	pilosité	pilosité	f	s	0
@@ -46040,7 +45839,6 @@ A	sécularisée	séculariser	f	s	0
 N	mélancolies	mélancolie	f	p	0
 A	chatouilleux	chatouilleux	m	i	0
 N	féeries	féerie	f	p	0
-N	Ts	s	f	i	0
 N	diagonal	diagonal	m	s	0
 A	diagonal	diagonal	m	s	0
 N	littérarité	littérarité	f	s	0
@@ -46358,7 +46156,6 @@ A	cotisé	cotiser	m	s	0
 N	manouvrier	manouvrier	m	s	0
 A	hormonales	hormonal	f	p	0
 A	commandité	commanditer	m	s	0
-N	GW	W	m	i	0
 N	fileuse	fileur	f	s	0
 N	bossages	bossage	m	p	0
 N	Kalahari	Kalahari	m	i	0
@@ -46668,7 +46465,6 @@ A	inguinaux	inguinal	m	p	0
 N	incartade	incartade	f	s	0
 N	pavements	pavement	m	p	0
 N	escortes	escorte	f	p	0
-N	cg	g	m	i	0
 R	écologiquement	écologiquement	e	i	0
 A	rougis	rougir	m	p	0
 N	bractée	bractée	f	s	0
@@ -47325,7 +47121,6 @@ A	amérindiens	amérindien	m	p	0
 A	écailleuses	écailleux	f	p	0
 N	estafettes	estafette	f	p	0
 A	pluriannuel	pluriannuel	m	s	0
-N	fg	g	m	i	0
 A	parotidienne	parotidien	f	s	0
 N	synovie	synovie	f	s	0
 N	cornettes	cornette	e	p	0
@@ -48216,7 +48011,6 @@ N	pandémie	pandémie	f	s	0
 A	référentielles	référentiel	f	p	0
 A	événementiel	événementiel	m	s	0
 N	événementiel	événementiel	m	s	0
-N	Gm	m	m	i	0
 A	rouillés	rouiller	m	p	0
 A	disséqués	disséquer	m	p	0
 A	monoculaire	monoculaire	e	s	0
@@ -48526,7 +48320,6 @@ N	laotien	laotien	m	s	0
 A	laotien	laotien	m	s	0
 N	otites	otite	f	p	0
 A	compassé	compasser	m	s	0
-N	MK	K	m	i	0
 N	embourgeoisement	embourgeoisement	m	s	0
 N	intervenantes	intervenant	f	p	0
 A	intervenantes	intervenant	f	p	0
@@ -48598,7 +48391,6 @@ N	réinvention	réinvention	f	s	0
 N	étourdissements	étourdissement	m	p	0
 N	tibétains	tibétain	m	p	0
 A	tibétains	tibétain	m	p	0
-N	Zo	Zo	m	i	0
 A	fouettée	fouetter	f	s	0
 N	multilatéralisme	multilatéralisme	m	s	0
 A	itératives	itératif	f	p	0
@@ -48797,7 +48589,6 @@ A	horrifié	horrifier	m	s	0
 N	écouteur	écouteur	m	s	0
 A	écouteur	écouteur	m	s	0
 A	stridents	strident	m	p	0
-N	mmHg	mmHg	m	i	0
 N	blasphémateur	blasphémateur	m	s	0
 A	blasphémateur	blasphémateur	m	s	0
 A	bouté	bouter	m	s	0
@@ -49194,7 +48985,6 @@ N	soufflures	soufflure	f	p	0
 R	impeccablement	impeccablement	e	i	0
 N	diseurs	diseur	m	p	0
 N	écorchés	écorché	m	p	0
-N	dV	V	m	i	0
 N	gallinacés	gallinacé	m	p	0
 A	gallinacés	gallinacé	m	p	0
 N	jurat	jurat	m	s	0
@@ -49249,7 +49039,6 @@ N	kabbale	kabbale	f	s	0
 N	sécateur	sécateur	m	s	0
 N	mélanésienne	mélanésien	f	s	0
 A	mélanésienne	mélanésien	f	s	0
-N	TN	N	m	i	0
 N	jaspes	jaspe	m	p	0
 N	noblesses	noblesse	f	p	0
 N	aménités	aménité	f	p	0
@@ -49822,7 +49611,6 @@ N	indolentes	indolent	f	p	0
 A	indolentes	indolent	f	p	0
 A	chlorurée	chlorurer	f	s	0
 A	invariantes	invariant	f	p	0
-N	Pm	m	m	i	0
 N	ganterie	ganterie	f	s	0
 A	synergique	synergique	e	s	0
 N	athérosclérose	athérosclérose	f	s	0
@@ -49984,7 +49772,6 @@ N	wurtembergeois	wurtembergeois	m	i	0
 A	wurtembergeois	wurtembergeois	m	i	0
 R	harmoniquement	harmoniquement	e	i	0
 N	manducation	manducation	f	s	0
-N	rems	rem	m	p	0
 A	interbancaire	interbancaire	e	s	0
 N	hémophilie	hémophilie	f	s	0
 R	véhémentement	véhémentement	e	i	0
@@ -50090,7 +49877,6 @@ A	radiante	radiant	f	s	0
 N	subrogée	subrogé	f	s	0
 A	abîmées	abîmer	f	p	0
 A	savouré	savourer	m	s	0
-N	GJ	J	m	i	0
 R	tendanciellement	tendanciellement	e	i	0
 N	prostatectomie	prostatectomie	f	s	0
 N	sarrasins	sarrasin	m	p	0
@@ -50168,7 +49954,6 @@ N	andésites	andésite	f	p	0
 A	lexicographiques	lexicographique	e	p	0
 A	magmatiques	magmatique	e	p	0
 N	scolie	scolie	e	s	0
-N	cT	T	m	i	0
 A	iconiques	iconique	e	p	0
 A	chitineux	chitineux	m	i	0
 A	friande	friand	f	s	0
@@ -50193,7 +49978,6 @@ R	géologiquement	géologiquement	e	i	0
 N	embrassades	embrassade	f	p	0
 A	foisonnant	foisonnant	m	s	0
 A	anisotrope	anisotrope	e	s	0
-N	YA	A	m	i	0
 A	adulé	aduler	m	s	0
 N	colin	colin	m	s	0
 A	criées	crier	f	p	0
@@ -50404,7 +50188,6 @@ A	tricalcique	tricalcique	e	s	0
 N	homozygotes	homozygote	e	p	0
 A	homozygotes	homozygote	e	p	0
 N	pupes	pupe	f	p	0
-N	dg	g	m	i	0
 N	peseta	peseta	f	s	0
 N	positionnements	positionnement	m	p	0
 A	profuses	profus	f	p	0
@@ -50426,7 +50209,6 @@ A	entortillée	entortiller	f	s	0
 A	parachevée	parachever	f	s	0
 A	discrédités	discréditer	m	p	0
 N	groom	groom	e	s	0
-N	Eg	g	m	i	0
 A	carnée	carné	f	s	0
 N	conquêts	conquêt	m	p	0
 N	liais	liais	m	i	0
@@ -50891,7 +50673,6 @@ A	ouïes	ouïr	f	p	0
 N	traînage	traînage	m	s	0
 A	rutilantes	rutilant	f	p	0
 A	embaumés	embaumer	m	p	0
-N	Sv	Sv	m	i	0
 N	hammam	hammam	m	s	1
 N	frigidité	frigidité	f	s	0
 N	nervis	nervi	m	p	0
@@ -51100,8 +50881,6 @@ A	puantes	puant	f	p	0
 N	jérémiades	jérémiade	f	p	0
 A	chancelantes	chancelant	f	p	0
 N	titulature	titulature	f	s	0
-N	EV	V	m	i	0
-N	GeV	eV	m	i	0
 N	ornementations	ornementation	f	p	0
 N	tripartisme	tripartisme	m	s	0
 N	incurabilité	incurabilité	f	s	0
@@ -52483,7 +52262,6 @@ A	palléal	palléal	m	s	0
 N	triplets	triplet	m	p	0
 N	ringard	ringard	m	s	0
 A	ringard	ringard	m	s	0
-N	EK	K	m	i	0
 N	radiotélégraphie	radiotélégraphie	f	s	0
 N	angiomes	angiome	m	p	0
 A	périglaciaire	périglaciaire	e	s	0
@@ -52679,7 +52457,6 @@ A	envahissants	envahissant	m	p	0
 A	hilare	hilare	e	s	0
 N	ballonnet	ballonnet	m	s	0
 A	antiaérienne	antiaérien	f	s	0
-N	Kio	Kio	m	i	0
 A	harcelée	harceler	f	s	1
 A	chics	chic	e	p	0
 N	abouts	about	m	p	0
@@ -52702,7 +52479,6 @@ A	brochées	brocher	f	p	0
 A	clientéliste	clientéliste	e	s	0
 A	enclose	enclore	f	s	0
 N	pluriactivité	pluriactivité	f	s	0
-N	oz	oz	f	i	0
 R	absurdement	absurdement	e	i	0
 A	rébarbative	rébarbatif	f	s	0
 N	physiothérapie	physiothérapie	f	s	0
@@ -53015,10 +52791,8 @@ N	zibeline	zibeline	f	s	0
 N	gavage	gavage	m	s	0
 A	péristaltique	péristaltique	e	s	0
 A	traçantes	traçant	f	p	0
-N	Np	Np	m	i	0
 A	déboutée	débouter	f	s	0
 A	inaltérée	inaltéré	f	s	0
-N	ys	s	f	i	0
 A	sécularisés	séculariser	m	p	0
 N	cloud	cloud	m	s	0
 A	interurbain	interurbain	m	s	0
@@ -53128,7 +52902,6 @@ A	expirant	expirant	m	s	0
 N	mâtures	mâture	f	p	0
 N	escarpe	escarpe	e	s	0
 N	scalaires	scalaire	e	p	0
-N	hg	g	m	i	0
 A	antédiluviens	antédiluvien	m	p	0
 A	communicatifs	communicatif	m	p	0
 A	échevelées	écheveler	f	p	0
@@ -53318,7 +53091,6 @@ N	sumac	sumac	m	s	0
 N	cyclope	cyclope	m	s	0
 A	ombré	ombrer	m	s	0
 A	articulatoires	articulatoire	e	p	0
-N	Gg	g	m	i	0
 N	zeste	zeste	m	s	0
 N	indompté	indompté	m	s	0
 A	indompté	indompté	m	s	0
@@ -53350,7 +53122,6 @@ A	orchestral	orchestral	m	s	0
 A	vivable	vivable	e	s	0
 N	darwinien	darwinien	m	s	0
 A	darwinien	darwinien	m	s	0
-N	dS	S	m	i	0
 A	englué	engluer	m	s	0
 N	rhododendrons	rhododendron	m	p	0
 A	déjouées	déjouer	f	p	0
@@ -53414,7 +53185,6 @@ N	déclassée	déclassé	f	s	0
 N	myosine	myosine	f	s	0
 N	salière	salière	f	s	0
 N	carrossier	carrossier	m	s	0
-N	GV	V	m	i	0
 N	oscilloscope	oscilloscope	m	s	0
 A	interreligieux	interreligieux	m	i	0
 N	germanophiles	germanophile	e	p	0
@@ -54211,7 +53981,6 @@ N	prosternée	prosterné	f	s	0
 A	consensuelles	consensuel	f	p	0
 N	coupantes	coupant	f	p	0
 A	coupantes	coupant	f	p	0
-N	gal	gal	m	i	0
 A	oppressifs	oppressif	m	p	0
 A	électrophorétique	électrophorétique	e	s	0
 N	diabolisation	diabolisation	f	s	0
@@ -54277,7 +54046,6 @@ A	assainies	assainir	f	p	0
 N	surinfection	surinfection	f	s	0
 N	cyclotron	cyclotron	m	s	0
 N	erg	erg	m	s	0
-N	erg	erg	m	i	0
 N	kilométrage	kilométrage	m	s	0
 N	saturations	saturation	f	p	0
 N	défuntes	défunt	f	p	0
@@ -54353,7 +54121,6 @@ N	microsomes	microsome	m	p	0
 N	reparties	repartie	f	p	0
 A	reparties	repartir	f	p	0
 N	spéciation	spéciation	f	s	0
-N	yl	l	m	i	0
 N	décolletage	décolletage	m	s	0
 N	juiverie	juiverie	f	s	0
 A	benthique	benthique	e	s	0
@@ -54687,7 +54454,6 @@ A	excisé	exciser	m	s	0
 A	trinitaires	trinitaire	e	p	0
 N	aiguillages	aiguillage	m	p	0
 A	pilotés	piloter	m	p	0
-N	kN	N	m	i	0
 A	réséqué	réséquer	m	s	0
 N	Rhétie	Rhétie	f	i	0
 R	inexplicablement	inexplicablement	e	i	0
@@ -55047,7 +54813,6 @@ N	amibiase	amibiase	f	s	0
 N	Cannet	Cannet	m	s	0
 N	rameuses	rameur	f	p	0
 N	rivure	rivure	f	s	0
-N	tep	tep	f	i	0
 A	galonnés	galonner	m	p	0
 A	commutatif	commutatif	m	s	0
 A	glucosé	glucosé	m	s	0
@@ -55264,7 +55029,6 @@ A	musclées	muscler	f	p	0
 A	navrantes	navrant	f	p	0
 N	stolon	stolon	m	s	0
 A	supranationaux	supranational	m	p	0
-N	TK	K	m	i	0
 A	foraminifères	foraminifère	e	p	0
 N	foraminifères	foraminifère	m	p	0
 N	gamète	gamète	m	s	0
@@ -55312,9 +55076,6 @@ A	espacé	espacer	m	s	0
 N	nivernaise	nivernais	f	s	0
 A	nivernaise	nivernais	f	s	0
 N	rab	rab	m	s	0
-N	PV	V	m	i	0
-N	TV	V	m	i	0
-N	V	V	m	i	0
 N	actuaire	actuaire	e	s	0
 R	précautionneusement	précautionneusement	e	i	0
 A	générationnel	générationnel	m	s	0
@@ -55581,7 +55342,6 @@ A	témoignés	témoigner	m	p	0
 N	macule	macule	f	s	0
 A	bourdonnante	bourdonnant	f	s	0
 N	urobiline	urobiline	f	s	0
-N	pJ	J	m	i	0
 A	empêtrés	empêtrer	m	p	0
 A	galénique	galénique	e	s	0
 N	aboutissements	aboutissement	m	p	0
@@ -55601,7 +55361,6 @@ N	tomographie	tomographie	f	s	0
 A	ahurissant	ahurissant	m	s	0
 A	compressive	compressif	f	s	0
 N	sablon	sablon	m	s	0
-N	PW	W	m	i	0
 N	délinquantes	délinquant	f	p	0
 A	délinquantes	délinquant	f	p	0
 N	après-midi	après-midi	e	i	0
@@ -55675,7 +55434,6 @@ N	torque	torque	e	s	0
 N	albuginée	albuginé	f	s	0
 A	albuginée	albuginé	f	s	0
 A	truffée	truffer	f	s	0
-N	ZA	A	m	i	0
 N	officialités	officialité	f	p	0
 A	besogneuse	besogneux	f	s	0
 N	créolité	créolité	f	s	0
@@ -56222,7 +55980,6 @@ N	tires	tire	f	p	0
 A	dépeuplés	dépeupler	m	p	0
 A	acrobatiques	acrobatique	e	p	0
 N	trappeur	trappeur	m	s	0
-N	aS	S	m	i	0
 N	glaire	glaire	f	s	0
 N	liseur	liseur	m	s	0
 A	argumentatifs	argumentatif	m	p	0
@@ -56321,7 +56078,6 @@ N	horst	horst	m	s	1
 N	attablé	attablé	m	s	0
 A	rués	ruer	m	p	0
 R	mystiquement	mystiquement	e	i	0
-N	pF	F	m	i	0
 A	témoignées	témoigner	f	p	0
 N	modeleur	modeleur	m	s	0
 A	pétries	pétrir	f	p	0
@@ -56377,7 +56133,6 @@ N	translucidité	translucidité	f	s	0
 N	judas	judas	m	i	0
 A	physionomique	physionomique	e	s	0
 A	intransitifs	intransitif	m	p	0
-N	Mtep	Mtep	f	i	0
 A	désarmante	désarmant	f	s	0
 N	brindille	brindille	f	s	0
 N	fredaines	fredaine	f	p	0
@@ -56505,7 +56260,6 @@ A	adjoints	adjoindre	m	p	0
 N	machisme	machisme	m	s	0
 N	apoptose	apoptose	f	s	0
 N	éthérification	éthérification	f	s	0
-N	dT	T	m	i	0
 A	canoniale	canonial	f	s	0
 N	ferrites	ferrite	e	p	0
 N	jacqueries	jacquerie	f	p	0
@@ -56741,7 +56495,6 @@ N	vanniers	vannier	m	p	0
 A	débandés	débander	m	p	0
 A	mainmortables	mainmortable	e	p	0
 N	polarimètre	polarimètre	m	s	0
-N	sb	sb	m	i	0
 A	extasié	extasier	m	s	0
 A	conspué	conspuer	m	s	0
 N	syringomyélie	syringomyélie	f	s	0
@@ -56759,7 +56512,6 @@ A	nivelées	niveler	f	p	0
 N	goguette	goguette	f	s	0
 A	pansée	panser	f	s	0
 A	éthologique	éthologique	e	s	0
-N	TWh	Wh	m	i	0
 N	CE2	CE2	m	i	0
 N	paterfamilias	paterfamilias	m	i	0
 A	nasillarde	nasillard	f	s	0
@@ -56910,7 +56662,6 @@ N	muphti	muphti	m	s	0
 A	surfaite	surfaire	f	s	0
 A	tabétique	tabétique	e	s	0
 A	raboteuses	raboteux	f	p	0
-N	kPa	Pa	m	i	0
 N	lutherie	lutherie	f	s	0
 N	quinconces	quinconce	m	p	0
 N	spartiate	spartiate	e	s	0
@@ -57043,7 +56794,6 @@ N	éthane	éthane	m	s	0
 A	congédiée	congédier	f	s	0
 A	graveleuse	graveleux	f	s	0
 N	pâque	pâque	f	s	0
-N	Torr	Torr	m	i	0
 N	néons	néon	m	p	0
 A	calmantes	calmant	f	p	0
 A	défendables	défendable	e	p	0
@@ -57228,7 +56978,6 @@ N	ozène	ozène	m	s	0
 N	théorisations	théorisation	f	p	0
 A	démentielle	démentiel	f	s	0
 A	huméral	huméral	m	s	0
-N	Mx	Mx	m	i	0
 N	amble	amble	m	s	0
 A	gratifiante	gratifiant	f	s	0
 N	diktats	diktat	m	p	0
@@ -57987,7 +57736,6 @@ A	antipersonnel	antipersonnel	e	i	0
 N	estampillage	estampillage	m	s	0
 N	solipsiste	solipsiste	e	s	0
 A	solipsiste	solipsiste	e	s	0
-N	GWh	Wh	m	i	0
 A	hypostyle	hypostyle	e	s	0
 A	débloqués	débloquer	m	p	0
 A	ossifié	ossifier	m	s	0
@@ -58088,7 +57836,6 @@ N	incomprises	incompris	f	p	0
 A	incomprises	incompris	f	p	0
 N	obturatrice	obturateur	f	s	0
 A	obturatrice	obturateur	f	s	0
-N	aL	L	m	i	0
 A	atterrée	atterrer	f	s	0
 R	florès	florès	e	i	0
 A	raccommodé	raccommoder	m	s	0
@@ -58444,7 +58191,6 @@ N	africanisme	africanisme	m	s	0
 A	gneissiques	gneissique	e	p	0
 A	annihilés	annihiler	m	p	0
 A	irisés	iriser	m	p	0
-N	tec	tec	f	i	0
 N	catin	catin	f	s	0
 N	onctuosité	onctuosité	f	s	0
 N	ruissellements	ruissellement	m	p	0
@@ -58564,7 +58310,6 @@ A	plombées	plomber	f	p	0
 N	guimpe	guimpe	f	s	0
 A	éployées	éployer	f	p	0
 N	destructivité	destructivité	f	s	0
-N	Tg	g	m	i	0
 N	gêneur	gêneur	m	s	0
 N	illyrienne	illyrien	f	s	0
 A	illyrienne	illyrien	f	s	0
@@ -58824,7 +58569,6 @@ A	ronflants	ronflant	m	p	0
 A	ameublie	ameublir	f	s	0
 N	doctorant	doctorant	m	s	0
 N	incrément	incrément	m	s	0
-N	kn	kn	m	i	0
 N	collantes	collant	f	p	0
 A	collantes	collant	f	p	0
 R	indéfectiblement	indéfectiblement	e	i	0
@@ -58857,7 +58601,6 @@ N	taquinerie	taquinerie	f	s	0
 N	trucage	trucage	m	s	0
 A	atomisée	atomiser	f	s	0
 N	fractionnements	fractionnement	m	p	0
-N	EVA	VA	m	i	0
 N	encriers	encrier	m	p	0
 A	préfacée	préfacer	f	s	0
 A	instrumentalisée	instrumentaliser	f	s	0
@@ -59042,7 +58785,6 @@ N	épinettes	épinette	f	p	0
 N	antonyme	antonyme	m	s	0
 A	génésiques	génésique	e	p	0
 N	tétrade	tétrade	f	s	0
-N	kJ	J	m	i	0
 A	astronautique	astronautique	e	s	0
 N	astronautique	astronautique	f	s	0
 A	binomiale	binomial	f	s	0
@@ -59119,7 +58861,6 @@ N	prémunition	prémunition	f	s	0
 A	hippocratiques	hippocratique	e	p	0
 A	carénée	caréner	f	s	0
 N	trisaïeul	trisaïeul	m	s	0
-N	tex	tex	m	i	0
 N	inspiratrices	inspirateur	f	p	0
 A	inspiratrices	inspirateur	f	p	0
 A	aventurées	aventurer	f	p	0
@@ -59272,7 +59013,6 @@ N	mercantis	mercanti	e	p	0
 N	falbalas	falbala	m	p	0
 A	volatilisée	volatiliser	f	s	0
 A	paraphées	parapher	f	p	0
-N	TVA	VA	m	i	0
 A	intrapsychique	intrapsychique	e	s	0
 N	techniciennes	technicien	f	p	0
 A	techniciennes	technicien	f	p	0
@@ -59432,7 +59172,6 @@ N	carnivore	carnivore	e	s	0
 A	carnivore	carnivore	e	s	0
 N	géothermie	géothermie	f	s	0
 N	nourrisseur	nourrisseur	m	s	0
-N	cV	V	m	i	0
 N	prosecteur	prosecteur	m	s	0
 N	pastorat	pastorat	m	s	0
 N	ladres	ladre	e	p	0
@@ -59925,7 +59664,6 @@ N	chicorées	chicorée	f	p	0
 N	entrait	entrait	m	s	0
 N	entraits	entrait	m	p	0
 N	phtanites	phtanite	f	p	0
-N	mmol	mol	f	i	0
 N	hydroxylamine	hydroxylamine	f	s	0
 N	octet	octet	m	s	0
 N	hématocrite	hématocrite	m	s	0
@@ -60167,7 +59905,6 @@ N	granulites	granulite	f	p	0
 N	tamarins	tamarin	m	p	0
 N	tzars	tzar	m	p	0
 A	inexploités	inexploité	m	p	0
-N	psr	sr	m	i	0
 A	zonal	zonal	m	s	0
 A	intemporelles	intemporel	f	p	0
 N	cholécystite	cholécystite	f	s	0
@@ -60599,7 +60336,6 @@ A	endolorie	endolorir	f	s	0
 N	mythomanie	mythomanie	f	s	0
 A	nonchalants	nonchalant	m	p	0
 A	destituées	destituer	f	p	0
-N	MVA	VA	m	i	0
 N	amygdaline	amygdaline	f	s	0
 N	assaisonnements	assaisonnement	m	p	0
 N	officiant	officiant	m	s	0
@@ -61904,7 +61640,6 @@ N	déchaînements	déchaînement	m	p	0
 A	porcines	porcin	f	p	0
 A	immortalisés	immortaliser	m	p	0
 A	xérophiles	xérophile	e	p	0
-N	aV	V	m	i	0
 A	contresignées	contresigner	f	p	0
 N	cardans	cardan	m	p	0
 N	quad	quad	m	s	0
@@ -61991,7 +61726,6 @@ N	khanat	khanat	m	s	0
 A	infinitésimaux	infinitésimal	m	p	0
 A	tracassé	tracasser	m	s	0
 N	hydres	hydre	f	p	0
-N	EW	W	m	i	0
 N	fusionnement	fusionnement	m	s	0
 N	troglodyte	troglodyte	e	s	0
 A	troglodyte	troglodyte	e	s	0
@@ -62055,7 +61789,6 @@ N	armoricaines	armoricain	f	p	0
 A	armoricaines	armoricain	f	p	0
 N	peseur	peseur	m	s	0
 A	prénuptiales	prénuptial	f	p	0
-N	hm	m	m	i	0
 A	inaccoutumés	inaccoutumé	m	p	0
 A	congestionnées	congestionner	f	p	0
 N	mycéliums	mycélium	m	p	0
@@ -62372,7 +62105,6 @@ A	inexprimé	inexprimé	m	s	0
 N	inévitabilité	inévitabilité	f	s	0
 N	lettrines	lettrine	f	p	0
 N	tricoteuses	tricoteur	f	p	0
-N	GK	K	m	i	0
 A	adjuvantes	adjuvant	f	p	0
 A	tentantes	tentant	f	p	0
 A	ergonomiques	ergonomique	e	p	0
@@ -62592,7 +62324,6 @@ A	stannifères	stannifère	e	p	0
 N	supernova	supernova	f	s	0
 N	curricula	curriculum	m	p	0
 N	toron	toron	m	s	0
-N	dA	A	m	i	0
 N	ascidies	ascidie	f	p	0
 N	ribambelle	ribambelle	f	s	0
 N	uniate	uniate	e	s	0
@@ -62626,7 +62357,6 @@ A	inexploité	inexploité	m	s	0
 N	paillardise	paillardise	f	s	0
 N	plumeau	plumeau	m	s	0
 N	organite	organite	m	s	0
-N	pL	L	m	i	0
 N	cordeaux	cordeau	m	p	0
 N	crase	crase	f	s	0
 N	enchérissement	enchérissement	m	s	0
@@ -62866,7 +62596,6 @@ N	polygynie	polygynie	f	s	0
 N	prosternations	prosternation	f	p	0
 N	iconicité	iconicité	f	s	0
 A	poussif	poussif	m	s	0
-N	mW	W	m	i	0
 A	contrebalancés	contrebalancer	m	p	0
 A	prédestinées	prédestiner	f	p	0
 N	bacillose	bacillose	f	s	0
@@ -62902,7 +62631,6 @@ A	délégués	déléguer	m	p	0
 A	désincarnés	désincarner	m	p	0
 N	ives	ive	f	p	0
 A	traçant	traçant	m	s	0
-N	Tio	Tio	m	i	0
 N	autoradiographie	autoradiographie	f	s	0
 N	ergothérapie	ergothérapie	f	s	0
 N	visionnement	visionnement	m	s	0
@@ -63633,7 +63361,6 @@ N	puzzles	puzzle	m	p	0
 N	teutonne	teuton	f	s	0
 A	teutonne	teuton	f	s	0
 A	pantelante	pantelant	f	s	0
-N	daN	N	m	i	0
 N	deys	dey	m	p	0
 N	rôtisseurs	rôtisseur	m	p	0
 N	escourgeon	escourgeon	m	s	0
@@ -63881,7 +63608,6 @@ N	thermie	thermie	f	s	0
 A	phonatoire	phonatoire	e	s	0
 N	odalisques	odalisque	f	p	0
 A	transbordées	transborder	f	p	0
-N	zl	l	m	i	0
 N	emport	emport	m	s	0
 N	ASCII	ASCII	m	i	0
 A	bottés	botter	m	p	0
@@ -63986,7 +63712,6 @@ N	escudo	escudo	m	s	0
 N	hydroxyles	hydroxyle	m	p	0
 N	corymbe	corymbe	m	s	0
 A	mitré	mitré	m	s	0
-N	dH	H	m	i	1
 N	molleton	molleton	m	s	0
 A	révisables	révisable	e	p	0
 N	silésienne	silésien	f	s	0
@@ -64205,7 +63930,6 @@ N	cochlée	cochlée	f	s	0
 A	discourtois	discourtois	m	i	0
 N	miquelets	miquelet	m	p	0
 N	sauna	sauna	m	s	0
-N	mJ	J	m	i	0
 N	périurbanisation	périurbanisation	f	s	0
 A	ornithologiques	ornithologique	e	p	0
 N	panage	panage	m	s	0
@@ -64467,7 +64191,6 @@ A	cyclopéen	cyclopéen	m	s	0
 N	chaufferette	chaufferette	f	s	0
 A	lassante	lassant	f	s	0
 N	latinisation	latinisation	f	s	0
-N	aA	A	m	i	0
 N	actinote	actinote	f	s	0
 A	tyrannisé	tyranniser	m	s	0
 N	encarts	encart	m	p	0
@@ -65745,7 +65468,6 @@ A	gyroscopique	gyroscopique	e	s	0
 A	laxe	laxe	e	s	0
 A	rabiques	rabique	e	p	0
 A	retransmise	retransmettre	f	s	0
-N	ZH	H	m	i	1
 A	hollywoodiens	hollywoodien	m	p	1
 A	béatifié	béatifier	m	s	0
 A	moussus	moussu	m	p	0
@@ -66096,7 +65818,6 @@ N	réfractomètre	réfractomètre	m	s	0
 A	unidirectionnel	unidirectionnel	m	s	0
 N	dégustateur	dégustateur	m	s	0
 A	dégustateur	dégustateur	m	s	0
-N	Pg	g	m	i	0
 A	jouable	jouable	e	s	0
 N	éviscération	éviscération	f	s	0
 A	mimée	mimer	f	s	0
@@ -66387,7 +66108,6 @@ N	gélule	gélule	f	s	0
 N	photothérapie	photothérapie	f	s	0
 A	verbalisé	verbaliser	m	s	0
 N	tripe	tripe	f	s	0
-N	dyn	dyn	f	i	0
 N	pergélisol	pergélisol	m	s	0
 N	pervenches	pervenche	f	p	0
 A	hercyniennes	hercynien	f	p	0
@@ -66578,7 +66298,6 @@ N	frileuses	frileux	f	p	0
 A	frileuses	frileux	f	p	0
 N	instrumentalité	instrumentalité	f	s	0
 A	squameux	squameux	m	i	0
-N	nA	A	m	i	0
 A	grippée	gripper	f	s	0
 N	incisures	incisure	f	p	0
 N	ontariens	ontarien	m	p	0
@@ -66636,7 +66355,6 @@ N	rejeu	rejeu	m	s	0
 A	surestimés	surestimer	m	p	0
 N	carêmes	carême	m	p	0
 A	lésionnelle	lésionnel	f	s	0
-N	ym	m	m	i	0
 N	ricains	ricain	m	p	0
 A	acétonique	acétonique	e	s	0
 N	félibrige	félibrige	m	s	0
@@ -66720,7 +66438,6 @@ N	bâtonniers	bâtonnier	m	p	0
 N	ravitailleurs	ravitailleur	m	p	0
 N	lémuriens	lémurien	m	p	0
 N	spasticité	spasticité	f	s	0
-N	vg	vg	f	i	0
 A	annihilées	annihiler	f	p	0
 A	déblayés	déblayer	m	p	0
 N	stadia	stadia	m	s	0
@@ -66771,7 +66488,6 @@ N	cafetières	cafetier	f	p	0
 A	asphaltiques	asphaltique	e	p	0
 N	makis	maki	m	p	0
 A	manganique	manganique	e	s	0
-N	Elm	lm	m	i	0
 N	ubiquiste	ubiquiste	e	s	0
 A	ubiquiste	ubiquiste	e	s	0
 A	graissées	graisser	f	p	0
@@ -66908,7 +66624,6 @@ N	retraitées	retraité	f	p	0
 A	retraitées	retraité	f	p	0
 A	conchoïdale	conchoïdal	f	s	0
 N	pharmacodynamie	pharmacodynamie	f	s	0
-N	kDa	Da	m	i	0
 N	percepts	percept	m	p	0
 N	éreintement	éreintement	m	s	0
 N	coccinelles	coccinelle	f	p	0
@@ -67025,7 +66740,6 @@ N	jubés	jubé	m	p	0
 N	Nasa	Nasa	f	i	0
 N	hépatomégalie	hépatomégalie	f	s	0
 A	parasympathiques	parasympathique	e	p	0
-N	pK	K	m	i	0
 N	inconsidération	inconsidération	f	s	0
 N	paillons	paillon	m	p	0
 N	Sorghum	Sorghum	m	i	0
@@ -67158,7 +66872,6 @@ N	tommes	tomme	f	p	0
 A	matricielles	matriciel	f	p	0
 N	fellation	fellation	f	s	0
 N	perchoirs	perchoir	m	p	0
-N	mcd	cd	f	i	0
 N	surgelé	surgelé	m	s	0
 A	archivé	archiver	m	s	0
 A	dysphorique	dysphorique	e	s	0
@@ -67177,7 +66890,6 @@ N	chartisme	chartisme	m	s	0
 A	perceptuel	perceptuel	m	s	0
 N	rythmicité	rythmicité	f	s	0
 N	myome	myome	m	s	0
-N	Wh	Wh	m	i	0
 N	colombage	colombage	m	s	0
 N	taquine	taquin	f	s	0
 A	taquine	taquin	f	s	0
@@ -67484,7 +67196,6 @@ A	diaprés	diaprer	m	p	0
 N	drisse	drisse	f	s	0
 N	photocathode	photocathode	f	s	0
 N	rajout	rajout	m	s	0
-N	Ys	s	f	i	0
 N	orpaillage	orpaillage	m	s	0
 A	hétérologue	hétérologue	e	s	0
 N	juliennes	julien	f	p	0
@@ -67759,7 +67470,6 @@ A	bulleuse	bulleux	f	s	0
 N	orthopédiste	orthopédiste	e	s	0
 A	ultrabasiques	ultrabasique	e	p	0
 N	idéologisation	idéologisation	f	s	0
-N	nV	V	m	i	0
 N	esplanades	esplanade	f	p	0
 A	homilétique	homilétique	e	s	0
 N	tableautins	tableautin	m	p	0
@@ -68322,7 +68032,6 @@ N	russien	russien	m	s	0
 A	russien	russien	m	s	0
 N	midinettes	midinette	f	p	0
 A	minimisés	minimiser	m	p	0
-N	deV	eV	m	i	0
 N	bovarysme	bovarysme	m	s	0
 N	ariégeois	ariégeois	m	i	0
 A	ariégeois	ariégeois	m	i	0
@@ -68402,7 +68111,6 @@ N	psychomécanique	psychomécanique	f	s	0
 N	entreposeur	entreposeur	m	s	0
 A	prépositionnelle	prépositionnel	f	s	0
 N	empoignade	empoignade	f	s	0
-N	cC	C	m	i	0
 N	conforts	confort	m	p	0
 A	mutuelliste	mutuelliste	e	s	0
 N	subversions	subversion	f	p	0
@@ -68785,7 +68493,6 @@ A	rexiste	rexiste	e	s	0
 N	catins	catin	f	p	0
 A	circadien	circadien	m	s	0
 A	paléochrétienne	paléochrétien	f	s	0
-N	Gs	s	f	i	0
 N	pancréatites	pancréatite	f	p	0
 A	andésitiques	andésitique	e	p	0
 A	biopolitique	biopolitique	e	s	0
@@ -69027,7 +68734,6 @@ A	opalescente	opalescent	f	s	0
 R	ambitieusement	ambitieusement	e	i	0
 N	cochinchinoise	cochinchinois	f	s	0
 A	cochinchinoise	cochinchinois	f	s	0
-N	pA	A	m	i	0
 N	filetages	filetage	m	p	0
 A	aveuglantes	aveuglant	f	p	0
 N	castrisme	castrisme	m	s	0
@@ -69084,7 +68790,6 @@ N	demi-heure	demi-heure	f	s	0
 N	croquemitaine	croquemitaine	m	s	0
 A	solidarisés	solidariser	m	p	0
 A	verrés	verré	m	p	0
-N	aT	T	m	i	0
 N	Saint-Jean-Baptiste	Saint-Jean-Baptiste	f	s	0
 A	parallélépipédique	parallélépipédique	e	s	0
 A	pyogènes	pyogène	e	p	0
@@ -69134,7 +68839,6 @@ A	phosphatique	phosphatique	e	s	0
 A	vermiculaires	vermiculaire	e	p	0
 A	diffracté	diffracter	m	s	0
 N	fion	fion	m	s	0
-N	TW	W	m	i	0
 N	sang-froid	sang-froid	m	i	0
 A	guindés	guinder	m	p	0
 A	dégingandé	dégingander	m	s	0
@@ -70085,7 +69789,6 @@ N	seizièmes	seizième	e	p	0
 A	seizièmes	seizième	e	p	0
 A	transfinis	transfini	m	p	0
 N	canzoni	canzone	f	p	0
-N	m²	m²	m	i	0
 A	recyclées	recycler	f	p	0
 N	blizzard	blizzard	m	s	0
 A	diapré	diaprer	m	s	0
@@ -70407,7 +70110,6 @@ A	huiliers	huilier	m	p	0
 A	extrapolées	extrapoler	f	p	0
 N	autostrades	autostrade	f	p	0
 A	contrefaites	contrefaire	f	p	0
-N	YH	H	m	i	1
 N	cagneux	cagneux	m	i	0
 A	cagneux	cagneux	m	i	0
 N	décarboxylation	décarboxylation	f	s	0
@@ -70650,7 +70352,6 @@ N	insubordonnés	insubordonné	m	p	0
 A	insubordonnés	insubordonné	m	p	0
 A	vomis	vomir	m	p	0
 A	criminogènes	criminogène	e	p	0
-N	cL	L	m	i	0
 A	décontenancée	décontenancer	f	s	0
 N	glapissements	glapissement	m	p	0
 N	zambienne	zambien	f	s	0
@@ -70817,7 +70518,6 @@ N	homologations	homologation	f	p	0
 N	mégalomanes	mégalomane	e	p	0
 A	mégalomanes	mégalomane	e	p	0
 N	Mésoamérique	Mésoamérique	f	i	0
-N	cgr	cgr	m	i	0
 A	aéroporté	aéroporté	m	s	0
 N	exterminatrice	exterminateur	f	s	0
 A	exterminatrice	exterminateur	f	s	0
@@ -71188,7 +70888,6 @@ N	surprofits	surprofit	m	p	0
 A	incassable	incassable	e	s	0
 N	récoltant	récoltant	m	s	0
 A	récoltant	récoltant	m	s	0
-N	ppb	ppb	f	i	0
 N	babies	baby	m	p	0
 A	lénifiant	lénifiant	m	s	0
 A	foisonnantes	foisonnant	f	p	0
@@ -71473,7 +71172,6 @@ A	souabes	souabe	e	p	0
 N	taxateur	taxateur	m	s	0
 A	taxateur	taxateur	m	s	0
 A	asphyxiante	asphyxiant	f	s	0
-N	Yl	l	m	i	0
 N	endive	endive	f	s	0
 A	authentifiés	authentifier	m	p	0
 A	basculés	basculer	m	p	0
@@ -71903,7 +71601,6 @@ N	rizerie	rizerie	f	s	0
 N	variateur	variateur	m	s	0
 N	abécédaires	abécédaire	m	p	0
 N	soties	sotie	f	p	0
-N	Mbit	Mbit	m	i	0
 N	puretés	pureté	f	p	0
 N	blastèmes	blastème	m	p	0
 A	paginée	paginer	f	s	0
@@ -72240,7 +71937,6 @@ A	griffé	griffer	m	s	0
 A	assermentée	assermenter	f	s	0
 N	titillation	titillation	f	s	0
 N	anglophiles	anglophile	e	p	0
-N	dC	C	m	i	0
 A	affublées	affubler	f	p	0
 N	duplicateur	duplicateur	m	s	0
 N	coumarine	coumarine	f	s	0
@@ -72419,7 +72115,6 @@ A	universalisable	universalisable	e	s	0
 N	munificences	munificence	f	p	0
 A	centrifugée	centrifuger	f	s	0
 N	minettes	minet	f	p	0
-N	nlm	lm	m	i	0
 N	spirituals	spiritual	m	p	0
 A	monomoléculaire	monomoléculaire	e	s	0
 N	baht	baht	m	s	0
@@ -72476,7 +72171,6 @@ N	néolithisation	néolithisation	f	s	0
 N	balayages	balayage	m	p	0
 A	tonitruantes	tonitruant	f	p	0
 A	îliens	îlien	m	p	0
-N	nT	T	m	i	0
 A	pilotées	piloter	f	p	0
 A	pondéraux	pondéral	m	p	0
 A	suraiguës	suraigu	f	p	0
@@ -72803,7 +72497,6 @@ A	anthologique	anthologique	e	s	0
 A	matelassé	matelasser	m	s	0
 N	vulnéraires	vulnéraire	e	p	0
 A	vulnéraires	vulnéraire	e	p	0
-N	fT	T	m	i	0
 N	détorsion	détorsion	f	s	0
 N	phonolites	phonolite	e	p	0
 N	bayou	bayou	m	s	0
@@ -73341,7 +73034,6 @@ N	déréglage	déréglage	m	s	0
 A	ichoreuse	ichoreux	f	s	0
 N	ignorantins	ignorantin	m	p	0
 A	néoformées	néoformé	f	p	0
-N	YS	S	m	i	0
 N	embauchée	embauché	f	s	0
 N	futaines	futaine	f	p	0
 N	escalades	escalade	f	p	0
@@ -73487,7 +73179,6 @@ A	relevante	relevant	f	s	0
 N	réengagement	réengagement	m	s	0
 N	dravidiennes	dravidien	f	p	0
 A	dravidiennes	dravidien	f	p	0
-N	Zs	s	f	i	0
 A	contrastif	contrastif	m	s	0
 N	canonisations	canonisation	f	p	0
 A	prégénitale	prégénital	f	s	0
@@ -73610,7 +73301,6 @@ N	paumé	paumé	m	s	0
 A	plutonique	plutonique	e	s	0
 A	réévaluées	réévaluer	f	p	0
 A	valérique	valérique	e	s	0
-N	dL	L	m	i	0
 N	schnaps	schnaps	m	i	0
 A	suintante	suintant	f	s	0
 N	hallucinées	halluciné	f	p	0
@@ -73632,7 +73322,6 @@ A	transfusionnelle	transfusionnel	f	s	0
 N	vanadate	vanadate	m	s	0
 A	vésicants	vésicant	m	p	0
 N	sovkhoze	sovkhoze	m	s	0
-N	nS	S	m	i	0
 N	bourrages	bourrage	m	p	0
 N	gardeur	gardeur	m	s	0
 A	inégalables	inégalable	e	p	0
@@ -73766,7 +73455,6 @@ N	reculades	reculade	f	p	0
 N	ornithologue	ornithologue	e	s	0
 N	Saint-Nicolas	Saint-Nicolas	f	i	0
 A	consternées	consterner	f	p	0
-N	fS	S	m	i	0
 N	vallonnement	vallonnement	m	s	0
 N	salvadorien	salvadorien	m	s	0
 A	salvadorien	salvadorien	m	s	0
@@ -73801,7 +73489,6 @@ N	réductionnistes	réductionniste	e	p	0
 A	réductionnistes	réductionniste	e	p	0
 A	antimonieux	antimonieux	m	i	0
 A	controlatérale	controlatéral	f	s	0
-N	Zl	l	m	i	0
 A	bacillifères	bacillifère	e	p	0
 N	chaouch	chaouch	m	s	0
 A	syntactiques	syntactique	e	p	0
@@ -73826,7 +73513,6 @@ N	recordman	recordman	m	s	0
 N	photomètres	photomètre	m	p	0
 A	éducables	éducable	e	p	0
 A	homodiégétique	homodiégétique	e	s	0
-N	kat	kat	m	i	0
 A	tarsiennes	tarsien	f	p	0
 A	dicrote	dicrote	e	s	0
 A	enguirlandé	enguirlander	m	s	0
@@ -73999,7 +73685,6 @@ R	irréprochablement	irréprochablement	e	i	0
 N	morula	morula	f	s	0
 N	citoyennetés	citoyenneté	f	p	0
 N	tournoiements	tournoiement	m	p	0
-N	kT	T	m	i	0
 A	retaillés	retailler	m	p	0
 N	vastitude	vastitude	f	s	0
 A	immunisant	immunisant	m	s	0
@@ -74158,7 +73843,6 @@ N	inconséquentes	inconséquent	f	p	0
 A	inconséquentes	inconséquent	f	p	0
 A	intrathoracique	intrathoracique	e	s	0
 A	strabique	strabique	e	s	0
-N	aH	H	m	i	1
 A	dialogués	dialoguer	m	p	0
 N	monomaniaques	monomaniaque	e	p	0
 A	monomaniaques	monomaniaque	e	p	0
@@ -74651,7 +74335,6 @@ N	dyne	dyne	f	s	0
 N	fabulations	fabulation	f	p	0
 A	décurrentes	décurrent	f	p	0
 A	latinisés	latiniser	m	p	0
-N	mbar	mbar	m	i	0
 A	myélinisées	myélinisé	f	p	0
 N	parangons	parangon	m	p	0
 N	revendeuse	revendeur	f	s	0
@@ -74839,7 +74522,6 @@ A	dirimant	dirimant	m	s	0
 N	entre-deux-guerres	entre-deux-guerres	m	s	0
 N	holistes	holiste	e	p	1
 A	holistes	holiste	e	p	1
-N	cA	A	m	i	0
 A	linolénique	linolénique	e	s	0
 N	martiens	martien	m	p	0
 A	martiens	martien	m	p	0
@@ -75022,12 +74704,10 @@ A	binoculaires	binoculaire	e	p	0
 A	incivil	incivil	m	s	0
 A	solutionné	solutionner	m	s	0
 N	spiration	spiration	f	s	0
-N	Bq	Bq	m	i	0
 A	néonatal	néonatal	m	s	0
 N	carriérisme	carriérisme	m	s	0
 A	colligées	colliger	f	p	0
 A	grouillants	grouillant	m	p	0
-N	mSv	Sv	m	i	0
 A	dispensable	dispensable	e	s	0
 N	carriéristes	carriériste	e	p	0
 A	carriéristes	carriériste	e	p	0
@@ -75261,7 +74941,6 @@ N	cardiologues	cardiologue	e	p	0
 A	constellées	consteller	f	p	0
 N	kémalisme	kémalisme	m	s	0
 A	marrie	marri	f	s	0
-N	YV	V	m	i	0
 A	anarchisant	anarchisant	m	s	0
 N	chleuh	chleuh	m	s	0
 A	chleuh	chleuh	m	s	0
@@ -75560,7 +75239,6 @@ N	empennages	empennage	m	p	0
 N	nonchaloir	nonchaloir	m	s	0
 A	casernées	caserner	f	p	0
 N	taupins	taupin	m	p	0
-N	dW	W	m	i	0
 N	adobes	adobe	m	p	0
 N	alênes	alêne	f	p	0
 A	cartographiées	cartographier	f	p	0
@@ -75628,7 +75306,6 @@ N	réitérations	réitération	f	p	0
 N	gamay	gamay	m	s	0
 R	phylogénétiquement	phylogénétiquement	e	i	0
 N	édulcorants	édulcorant	m	p	0
-N	hPa	Pa	m	i	0
 A	convulsée	convulser	f	s	0
 N	comarque	comarque	e	s	0
 A	compactée	compacter	f	s	0
@@ -76054,7 +75731,6 @@ N	grenaillage	grenaillage	m	s	0
 N	parlotes	parlote	f	p	0
 N	rhabillage	rhabillage	m	s	0
 N	ruchée	ruchée	f	s	0
-N	aC	C	m	i	0
 A	anticycloniques	anticyclonique	e	p	0
 N	fureteurs	fureteur	m	p	0
 A	fureteurs	fureteur	m	p	0
@@ -77067,7 +76743,6 @@ N	laryngologiste	laryngologiste	e	s	0
 A	sapientiaux	sapiential	m	p	0
 A	copulatrices	copulateur	f	p	0
 A	optimisés	optimiser	m	p	0
-N	pz	pz	f	i	0
 A	endiablés	endiabler	m	p	0
 A	jardinées	jardiner	f	p	0
 A	psychoactives	psychoactif	f	p	0
@@ -77109,7 +76784,6 @@ N	muséums	muséum	m	p	0
 N	anosmie	anosmie	f	s	0
 A	rechargées	recharger	f	p	0
 A	neurobiologique	neurobiologique	e	s	0
-N	kA	A	m	i	0
 A	lignés	ligner	m	p	0
 N	traumatisées	traumatisé	f	p	0
 A	embastillé	embastiller	m	s	0
@@ -77377,7 +77051,6 @@ N	thalidomide	thalidomide	f	s	0
 N	cartonnier	cartonnier	m	s	0
 A	cartonnier	cartonnier	m	s	0
 A	casematées	casemater	f	p	0
-N	Mcd	cd	f	i	0
 N	contremarques	contremarque	f	p	0
 N	mioche	mioche	e	s	0
 A	suraigus	suraigu	m	p	0
@@ -77876,7 +77549,6 @@ N	hippocratisme	hippocratisme	m	s	0
 N	panaméenne	panaméen	f	s	0
 A	panaméenne	panaméen	f	s	0
 A	galliques	gallique	e	p	0
-N	fN	N	m	i	0
 N	floc	floc	m	s	0
 A	aromatisées	aromatiser	f	p	0
 N	docétisme	docétisme	m	s	0
@@ -78122,7 +77794,6 @@ N	congratulation	congratulation	f	s	0
 N	enjolivement	enjolivement	m	s	0
 N	grisonne	grison	f	s	0
 A	grisonne	grison	f	s	0
-N	dpi	dpi	m	i	0
 R	rhétoriquement	rhétoriquement	e	i	0
 A	hurlants	hurlant	m	p	1
 A	recentrée	recentrer	f	s	0
@@ -78452,7 +78123,6 @@ N	enfumage	enfumage	m	s	0
 N	hémothorax	hémothorax	m	i	0
 N	mastabas	mastaba	m	p	0
 N	ségrégationnistes	ségrégationniste	e	p	0
-N	Zio	Zio	m	i	0
 N	cairns	cairn	m	p	0
 N	carbets	carbet	m	p	0
 A	relancées	relancer	f	p	0
@@ -78884,7 +78554,6 @@ A	dubitatives	dubitatif	f	p	0
 N	urobilinurie	urobilinurie	f	s	0
 R	langoureusement	langoureusement	e	i	0
 N	phénologie	phénologie	f	s	0
-N	zs	s	f	i	0
 N	Baloutchistan	Baloutchistan	m	i	0
 N	patronats	patronat	m	p	0
 A	améliorateur	améliorateur	m	s	0
@@ -79127,7 +78796,6 @@ N	ponchos	poncho	m	p	0
 N	gardons	gardon	m	p	0
 A	pompés	pomper	m	p	0
 N	EPL	EPL	f	i	0
-N	dN	N	m	i	0
 N	barcasses	barcasse	f	p	0
 N	colistiers	colistier	m	p	0
 N	fagnes	fagne	f	p	0
@@ -79233,7 +78901,6 @@ N	éleveuses	éleveur	f	p	0
 A	caritatifs	caritatif	m	p	0
 A	scénographiques	scénographique	e	p	0
 A	soustractif	soustractif	m	s	0
-N	plm	lm	m	i	0
 A	orthoptères	orthoptère	e	p	0
 N	orthoptères	orthoptère	m	p	0
 A	délitée	déliter	f	s	0
@@ -79526,7 +79193,6 @@ A	salaces	salace	e	p	0
 N	thaumaturgie	thaumaturgie	f	s	0
 N	iconographes	iconographe	e	p	0
 A	sapées	saper	f	p	0
-N	mS	S	m	i	0
 N	menterie	menterie	f	s	0
 A	phénologique	phénologique	e	s	0
 N	casseaux	casseau	m	p	0
@@ -79536,7 +79202,6 @@ N	dénicheur	dénicheur	m	s	0
 A	monopolaire	monopolaire	e	s	0
 A	lyophilisés	lyophiliser	m	p	0
 A	monocylindrique	monocylindrique	e	s	0
-N	fV	V	m	i	0
 A	commissurale	commissural	f	s	0
 N	piperie	piperie	f	s	0
 N	accordailles	accordailles	f	p	0
@@ -79566,7 +79231,6 @@ N	sérotine	sérotine	f	s	0
 N	hexagrammes	hexagramme	m	p	0
 A	polymérisés	polymériser	m	p	0
 A	pennée	penné	f	s	0
-N	aG	G	m	i	0
 A	polarographique	polarographique	e	s	0
 A	prénatals	prénatal	m	p	0
 N	suavités	suavité	f	p	0
@@ -79923,7 +79587,6 @@ N	rotavirus	rotavirus	m	i	0
 N	délogement	délogement	m	s	0
 N	poitrails	poitrail	m	p	0
 A	saprophytique	saprophytique	e	s	0
-N	GPa	Pa	m	i	0
 A	coxales	coxal	f	p	0
 N	fusariose	fusariose	f	s	0
 A	hyaluronique	hyaluronique	e	s	0
@@ -80295,7 +79958,6 @@ N	sauvageonne	sauvageon	f	s	0
 A	sauvageonne	sauvageon	f	s	0
 A	miré	mirer	m	s	0
 A	réaménagées	réaménager	f	p	0
-N	meV	eV	m	i	0
 A	troposphérique	troposphérique	e	s	0
 N	ballottages	ballottage	m	p	0
 N	centralités	centralité	f	p	0
@@ -80305,7 +79967,6 @@ N	réadaptations	réadaptation	f	p	0
 N	éthologistes	éthologiste	e	p	0
 N	démasclage	démasclage	m	s	0
 A	théodosienne	théodosien	f	s	0
-N	fA	A	m	i	0
 N	sylvains	sylvain	m	p	0
 N	éclairagiste	éclairagiste	e	s	0
 N	cuvaison	cuvaison	f	s	0
@@ -80764,7 +80425,6 @@ A	vicariante	vicariant	f	s	0
 N	éclusage	éclusage	m	s	0
 A	unguéales	unguéal	f	p	0
 N	évincement	évincement	m	s	0
-N	MWh	Wh	m	i	0
 A	coécrit	coécrit	m	s	0
 N	demandeuses	demandeur	f	p	0
 N	sicaire	sicaire	m	s	0
@@ -80953,7 +80613,6 @@ A	moghole	moghol	f	s	0
 A	unciforme	unciforme	e	s	0
 A	dextrogyres	dextrogyre	e	p	0
 N	truffière	truffier	f	s	0
-N	aN	N	m	i	0
 N	Éts	Éts	m	p	0
 A	effritées	effriter	f	p	0
 N	homochromie	homochromie	f	s	0
@@ -80970,7 +80629,6 @@ A	pâmé	pâmer	m	s	0
 A	traitante	traitant	f	s	0
 N	napperon	napperon	m	s	0
 A	épithélioïde	épithélioïde	e	s	0
-N	ZS	S	m	i	0
 N	laideron	laideron	m	s	0
 A	subordonnants	subordonnant	m	p	0
 N	pentathlon	pentathlon	m	s	0
@@ -81060,7 +80718,6 @@ A	déphasée	déphaser	f	s	0
 N	sium	sium	m	s	0
 N	sérialisation	sérialisation	f	s	0
 N	zoïsite	zoïsite	f	s	0
-N	fJ	J	m	i	0
 N	azéri	azéri	m	s	0
 A	azéri	azéri	m	s	0
 N	louisianaise	louisianais	f	s	0
@@ -81243,7 +80900,6 @@ R	hygiéniquement	hygiéniquement	e	i	0
 N	leucome	leucome	m	s	0
 A	catéchisés	catéchiser	m	p	0
 A	endothéliaux	endothélial	m	p	0
-N	aJ	J	m	i	0
 N	délestages	délestage	m	p	0
 N	priante	priant	f	s	0
 A	priante	priant	f	s	0
@@ -81834,7 +81490,6 @@ N	antéfixes	antéfixe	f	p	0
 N	choppers	chopper	m	p	0
 A	conchylicoles	conchylicole	e	p	0
 A	féminisées	féminiser	f	p	0
-N	cP	cP	f	i	0
 A	dimensionnée	dimensionner	f	s	0
 N	hyperespace	hyperespace	m	s	0
 N	battes	batte	f	p	0
@@ -81888,7 +81543,6 @@ N	fuchsias	fuchsia	m	p	0
 N	chatière	chatière	f	s	0
 N	mycotoxines	mycotoxine	f	p	0
 A	plurinationale	plurinational	f	s	0
-N	Wc	Wc	m	i	0
 N	vachère	vacher	f	s	0
 N	contrordre	contrordre	m	s	0
 N	gemmeurs	gemmeur	m	p	0
@@ -82001,7 +81655,6 @@ A	casanières	casanier	f	p	0
 A	dimensionnées	dimensionner	f	p	0
 N	flagorneur	flagorneur	m	s	0
 A	flagorneur	flagorneur	m	s	0
-N	zm	m	m	i	0
 N	antistrophe	antistrophe	f	s	0
 R	artisanalement	artisanalement	e	i	0
 N	glycémies	glycémie	f	p	0
@@ -82229,7 +81882,6 @@ N	amyloïdes	amyloïde	f	p	0
 A	enrégimentée	enrégimenter	f	s	0
 N	portevoix	portevoix	m	i	0
 A	ressaisis	ressaisir	m	p	0
-N	cF	F	m	i	0
 N	criblures	criblure	f	p	0
 N	mémés	mémé	f	p	0
 N	sonie	sonie	f	s	0
@@ -82245,7 +81897,6 @@ N	ectasies	ectasie	f	p	0
 N	noctuelles	noctuelle	f	p	0
 N	rénovatrices	rénovateur	f	p	0
 A	rénovatrices	rénovateur	f	p	0
-N	dF	F	m	i	0
 N	amygdalectomie	amygdalectomie	f	s	0
 N	bilame	bilame	e	s	0
 N	boulingrins	boulingrin	m	p	0
@@ -83024,7 +82675,6 @@ N	kart	kart	m	s	0
 A	occlus	occlure	m	i	0
 N	colocataire	colocataire	e	s	0
 N	germanismes	germanisme	m	p	0
-N	mT	T	m	i	0
 A	soporifiques	soporifique	e	p	0
 N	soporifiques	soporifique	m	p	0
 N	erbium	erbium	m	s	0
@@ -83317,12 +82967,10 @@ A	Deluxe	Deluxe	e	i	0
 N	daltonien	daltonien	m	s	0
 A	daltonien	daltonien	m	s	0
 N	urbanisations	urbanisation	f	p	0
-N	mCi	Ci	m	i	0
 N	brunissure	brunissure	f	s	0
 N	libidineuse	libidineux	f	s	0
 A	libidineuse	libidineux	f	s	0
 A	sublimatoire	sublimatoire	e	s	0
-N	mC	C	m	i	0
 A	déwatté	déwatté	m	s	0
 A	apostillée	apostiller	f	s	0
 N	débrouillage	débrouillage	m	s	0
@@ -83465,7 +83113,6 @@ N	naisseur	naisseur	m	s	0
 A	stœchiométrique	stœchiométrique	e	s	0
 N	nudistes	nudiste	e	p	0
 A	nudistes	nudiste	e	p	0
-N	hlm	lm	m	i	0
 A	phosphocalcique	phosphocalcique	e	s	0
 N	silènes	silène	m	p	0
 N	tailleuse	tailleur	f	s	0
@@ -83727,7 +83374,6 @@ N	accrocheurs	accrocheur	m	p	0
 A	accrocheurs	accrocheur	m	p	0
 N	atterrisseur	atterrisseur	m	s	0
 N	héliographe	héliographe	m	s	0
-N	ZF	F	m	i	0
 N	apprêteur	apprêteur	m	s	0
 N	raiders	raider	e	p	0
 N	morphologistes	morphologiste	e	p	0
@@ -83800,7 +83446,6 @@ N	espadons	espadon	m	p	0
 N	vieillesses	vieillesse	f	p	0
 N	exulcérations	exulcération	f	p	0
 A	subdivisionnaires	subdivisionnaire	e	p	0
-N	pT	T	m	i	0
 N	basilics	basilic	m	p	0
 A	dégainé	dégainer	m	s	0
 N	fuselages	fuselage	m	p	0
@@ -84194,7 +83839,6 @@ N	teilles	teille	f	p	0
 N	pichenette	pichenette	f	s	0
 N	récitant	récitant	m	s	0
 A	récitant	récitant	m	s	0
-N	dJ	J	m	i	0
 N	mazdéen	mazdéen	m	s	0
 A	mazdéen	mazdéen	m	s	0
 N	broussard	broussard	m	s	0
@@ -84283,7 +83927,6 @@ N	neptunium	neptunium	m	s	0
 N	neuromédiateurs	neuromédiateur	m	p	0
 N	hyperémotivité	hyperémotivité	f	s	0
 A	irréformables	irréformable	e	p	0
-N	nJ	J	m	i	0
 A	confraternels	confraternel	m	p	0
 A	factitif	factitif	m	s	0
 N	gardian	gardian	m	s	0
@@ -84550,7 +84193,6 @@ A	cananéennes	cananéen	f	p	0
 A	endogamiques	endogamique	e	p	0
 N	faneuse	faneur	f	s	0
 A	actinométriques	actinométrique	e	p	0
-N	YJ	J	m	i	0
 N	hacker	hacker	e	s	1
 N	sertissure	sertissure	f	s	0
 N	succursaliste	succursaliste	e	s	0
@@ -84812,7 +84454,6 @@ A	outragés	outrager	m	p	0
 N	piocheurs	piocheur	m	p	0
 N	immobiliste	immobiliste	e	s	0
 A	immobiliste	immobiliste	e	s	0
-N	Ym	m	m	i	0
 N	alcoomètres	alcoomètre	m	p	0
 N	fécondateurs	fécondateur	m	p	0
 A	fécondateurs	fécondateur	m	p	0
@@ -84857,7 +84498,6 @@ N	covolume	covolume	m	s	0
 N	paumée	paumé	f	s	0
 A	trouée	trouer	f	s	0
 A	trouées	trouer	f	p	0
-N	yS	S	m	i	0
 A	agropastorales	agropastoral	f	p	0
 N	postcolonialisme	postcolonialisme	m	s	0
 N	anosognosie	anosognosie	f	s	0
@@ -85086,7 +84726,6 @@ N	perchlorates	perchlorate	m	p	0
 N	cotrets	cotret	m	p	0
 N	raclées	raclée	f	p	0
 N	décoratrice	décorateur	f	s	0
-N	cS	S	m	i	0
 N	déboîtement	déboîtement	m	s	0
 A	détersive	détersif	f	s	0
 A	embourgeoisée	embourgeoiser	f	s	0
@@ -85162,7 +84801,6 @@ A	antidatée	antidater	f	s	0
 N	entéralgie	entéralgie	f	s	0
 A	intermétalliques	intermétallique	e	p	0
 N	parados	parados	m	i	0
-N	kF	F	m	i	0
 A	dimorphes	dimorphe	e	p	0
 A	engrossée	engrosser	f	s	0
 N	lipémie	lipémie	f	s	0
@@ -85174,7 +84812,6 @@ A	laudateur	laudateur	m	s	0
 N	nominateurs	nominateur	m	p	0
 N	thiase	thiase	m	s	0
 A	ultrasonique	ultrasonique	e	s	0
-N	mK	K	m	i	0
 N	balancelle	balancelle	f	s	0
 N	marégraphes	marégraphe	m	p	0
 N	serpettes	serpette	f	p	0
@@ -85244,7 +84881,6 @@ N	jumping	jumping	m	s	0
 A	partitifs	partitif	m	p	0
 N	suceuses	suceur	f	p	0
 A	suceuses	suceur	f	p	0
-N	vad	vad	m	i	0
 A	communisant	communisant	m	s	0
 N	frittes	fritte	f	p	0
 N	inuktitut	inuktitut	m	s	0
@@ -85450,7 +85086,6 @@ A	palissés	palisser	m	p	0
 N	stramoine	stramoine	f	s	0
 N	rétrocessionnaires	rétrocessionnaire	e	p	0
 A	rétrocessionnaires	rétrocessionnaire	e	p	0
-N	nC	C	m	i	0
 N	compossibilité	compossibilité	f	s	0
 A	foisonnants	foisonnant	m	p	0
 N	gastropodes	gastropode	m	p	0
@@ -85662,7 +85297,6 @@ A	gigogne	gigogne	e	s	0
 N	gigogne	gigogne	f	s	0
 A	propédeutiques	propédeutique	e	p	0
 N	toucheurs	toucheur	m	p	0
-N	pS	S	m	i	0
 N	acétonémie	acétonémie	f	s	0
 A	pythagorique	pythagorique	e	s	0
 A	aléthique	aléthique	e	s	0
@@ -85704,7 +85338,6 @@ A	capé	capé	m	s	0
 N	italophones	italophone	e	p	0
 A	italophones	italophone	e	p	0
 N	spirométrie	spirométrie	f	s	0
-N	avar	var	m	i	0
 A	XXXVe	XXXVe	e	s	0
 A	arriéré	arriérer	m	s	0
 A	arriérés	arriérer	m	p	0
@@ -86377,7 +86010,6 @@ A	irrationalistes	irrationaliste	e	p	0
 N	capoeira	capoeira	f	s	0
 N	réactivations	réactivation	f	p	0
 N	cabiai	cabiai	m	s	0
-N	hpz	hpz	f	i	0
 A	ressuyé	ressuyer	m	s	0
 A	uniflores	uniflore	e	p	0
 N	kanake	kanak	f	s	0
@@ -86640,7 +86272,6 @@ N	cascadeur	cascadeur	m	s	0
 A	cascadeur	cascadeur	m	s	0
 N	oing	oing	m	s	0
 N	gramens	gramen	m	p	0
-N	kbit	kbit	m	i	0
 A	embouteillées	embouteiller	f	p	0
 N	verbiages	verbiage	m	p	0
 A	échauffants	échauffant	m	p	0
@@ -87133,7 +86764,6 @@ N	aficionado	aficionado	m	s	0
 A	lampante	lampant	f	s	0
 N	occision	occision	f	s	0
 N	phéochromocytome	phéochromocytome	m	s	0
-N	Mrad	rad	m	i	0
 A	broussailleuses	broussailleux	f	p	0
 N	câblages	câblage	m	p	0
 A	redessinée	redessiner	f	s	0
@@ -87394,7 +87024,6 @@ N	cédraie	cédraie	f	s	0
 A	marquetée	marqueter	f	s	0
 A	photogrammétriques	photogrammétrique	e	p	0
 N	retailles	retaille	f	p	0
-N	YC	C	m	i	0
 A	boutisses	boutisse	e	p	0
 N	boutisses	boutisse	f	p	0
 N	crassiers	crassier	m	p	0
@@ -87636,7 +87265,6 @@ N	duplicata	duplicata	m	s	0
 N	duplicatas	duplicata	m	p	0
 N	expurgation	expurgation	f	s	0
 N	ophicléide	ophicléide	m	s	0
-N	yd	yd	m	i	0
 N	assyriologue	assyriologue	e	s	0
 A	claironné	claironner	m	s	0
 A	croupissant	croupissant	m	s	0
@@ -88192,7 +87820,6 @@ N	plafonnage	plafonnage	m	s	0
 N	bottillons	bottillon	m	p	0
 A	graphitiques	graphitique	e	p	0
 A	troglodytiques	troglodytique	e	p	0
-N	klm	lm	m	i	0
 N	mahonnes	mahonne	f	p	0
 N	ostréiculteur	ostréiculteur	m	s	0
 A	récrite	récrire	f	s	0
@@ -88280,7 +87907,6 @@ N	paierie	paierie	f	s	0
 N	quiche	quiche	f	s	0
 N	sprays	spray	m	p	0
 N	écrivailleurs	écrivailleur	m	p	0
-N	fC	C	m	i	0
 N	douillettes	douillet	f	p	0
 A	douillettes	douillet	f	p	0
 N	palettisation	palettisation	f	s	0
@@ -88362,7 +87988,6 @@ A	conséquentialiste	conséquentialiste	e	s	0
 N	flexum	flexum	m	s	0
 N	pesages	pesage	m	p	0
 A	précomptées	précompter	f	p	0
-N	ZT	T	m	i	0
 A	deltoïdes	deltoïde	e	p	0
 N	deltoïdes	deltoïde	m	p	0
 N	découvrement	découvrement	m	s	0
@@ -88458,7 +88083,6 @@ N	amorçages	amorçage	m	p	0
 A	apode	apode	e	s	0
 N	apode	apode	m	s	0
 N	phlox	phlox	m	i	0
-N	asr	sr	m	i	0
 N	hypercentre	hypercentre	m	s	0
 N	quarteronne	quarteron	f	s	0
 N	rapidités	rapidité	f	p	0
@@ -88614,7 +88238,6 @@ N	mohawk	mohawk	e	s	0
 A	mohawk	mohawk	e	s	0
 N	oligosaccharides	oligosaccharide	m	p	0
 A	baptistaires	baptistaire	e	p	0
-N	Wb	Wb	m	i	0
 N	allogreffe	allogreffe	f	s	0
 N	boëtte	boëtte	f	s	0
 N	clayettes	clayette	f	p	0
@@ -88637,7 +88260,6 @@ N	valuations	valuation	f	p	0
 A	agroforestiers	agroforestier	m	p	0
 A	gonflants	gonflant	m	p	0
 N	ouistitis	ouistiti	m	p	1
-N	ZK	K	m	i	0
 N	distomes	distome	m	p	0
 N	gerbage	gerbage	m	s	0
 A	déconseillées	déconseiller	f	p	0
@@ -88892,7 +88514,6 @@ A	révérencielle	révérenciel	f	s	0
 N	solutréens	solutréen	m	p	0
 A	solutréens	solutréen	m	p	0
 N	trébuchement	trébuchement	m	s	0
-N	YL	L	m	i	0
 N	corniste	corniste	e	s	0
 A	foxé	foxé	m	s	0
 N	scottish	scottish	f	s	0
@@ -89046,7 +88667,6 @@ N	salse	salse	f	s	0
 N	spart	spart	m	s	0
 N	couvoirs	couvoir	m	p	0
 N	bouvillon	bouvillon	m	s	0
-N	alm	lm	m	i	0
 N	madeleines	madeleine	f	p	0
 N	stœchiométrie	stœchiométrie	f	s	0
 A	empathiques	empathique	e	p	0
@@ -89156,7 +88776,6 @@ A	hibernant	hibernant	m	s	0
 A	nervurées	nervurer	f	p	0
 A	surfin	surfin	m	s	0
 N	télésiège	télésiège	m	s	0
-N	fL	L	m	i	0
 N	dieppoise	dieppois	f	s	0
 A	dieppoise	dieppois	f	s	0
 A	orthotropes	orthotrope	e	p	0
@@ -89625,7 +89244,6 @@ A	matés	mater	m	p	0
 N	matés	maté	m	p	0
 N	sigisbée	sigisbée	m	s	0
 N	æ	æ	m	i	0
-N	YF	F	m	i	0
 N	débitages	débitage	m	p	0
 A	flambée	flamber	f	s	0
 A	flambées	flamber	f	p	0
@@ -89743,7 +89361,6 @@ N	cinquantaines	cinquantaine	f	p	0
 N	lingues	lingue	f	p	0
 A	polychroïque	polychroïque	e	s	0
 N	récence	récence	f	s	0
-N	cJ	J	m	i	0
 N	lemmings	lemming	m	p	0
 A	revivifiées	revivifier	f	p	0
 N	savarts	savart	m	p	0
@@ -89766,7 +89383,6 @@ A	tenaillée	tenailler	f	s	0
 N	cladode	cladode	m	s	0
 A	infusés	infuser	m	p	0
 N	orthophosphates	orthophosphate	m	p	0
-N	fF	F	m	i	0
 N	coassurance	coassurance	f	s	0
 N	hajj	hajj	m	i	1
 R	perversement	perversement	e	i	0
@@ -89817,7 +89433,6 @@ A	contaminés	contaminer	m	p	0
 N	hypergamie	hypergamie	f	s	0
 N	méprobamate	méprobamate	m	s	0
 A	tronçonnées	tronçonner	f	p	0
-N	PVA	VA	m	i	0
 R	inexprimablement	inexprimablement	e	i	0
 N	mellahs	mellah	m	p	0
 N	orthogenèse	orthogenèse	f	s	0
@@ -90044,7 +89659,6 @@ A	cryptées	crypter	f	p	0
 A	embossé	embosser	m	s	0
 N	monosaccharides	monosaccharide	m	p	0
 N	mourre	mourre	f	s	0
-N	hvad	vad	m	i	0
 N	ébéniers	ébénier	m	p	0
 N	dyslexies	dyslexie	f	p	0
 A	manutentionnés	manutentionner	m	p	0
@@ -90537,7 +90151,6 @@ N	emmerdes	emmerde	f	p	0
 A	polyvinylique	polyvinylique	e	s	0
 N	sermonneur	sermonneur	m	s	0
 A	sermonneur	sermonneur	m	s	0
-N	pC	C	m	i	0
 N	dégout	dégout	m	s	0
 A	exposantes	exposant	f	p	0
 N	fresquistes	fresquiste	e	p	0
@@ -90637,7 +90250,6 @@ N	renouement	renouement	m	s	0
 A	tragicomique	tragicomique	e	s	0
 A	minéralurgiques	minéralurgique	e	p	0
 N	rupteurs	rupteur	m	p	0
-N	YT	T	m	i	0
 A	antiéconomiques	antiéconomique	e	p	0
 N	bentonites	bentonite	f	p	0
 N	créolistes	créoliste	e	p	0
@@ -90793,7 +90405,6 @@ N	masers	maser	m	p	0
 A	nasalisée	nasaliser	f	s	0
 N	tisseranderie	tisseranderie	f	s	0
 N	zestes	zeste	m	p	0
-N	pV	V	m	i	0
 N	appoggiatures	appoggiature	f	p	0
 N	blochets	blochet	m	p	0
 N	bodhisattva	bodhisattva	m	s	0
@@ -90936,7 +90547,6 @@ N	microsatellites	microsatellite	m	p	0
 N	décamètre	mètre	m	s	0
 N	rhumatisante	rhumatisant	f	s	0
 A	rhumatisante	rhumatisant	f	s	0
-N	cH	H	m	i	1
 A	grincheuse	grincheux	f	s	0
 A	gélifs	gélif	m	p	0
 N	magnétismes	magnétisme	m	p	0
@@ -91060,7 +90670,6 @@ A	nickelée	nickeler	f	s	0
 N	portlandiens	portlandien	m	p	0
 A	jugulés	juguler	m	p	0
 N	kawa	kawa	m	s	0
-N	ppt	ppt	f	i	0
 R	problématiquement	problématiquement	e	i	0
 N	gâcheurs	gâcheur	m	p	0
 A	gâcheurs	gâcheur	m	p	0
@@ -91259,7 +90868,6 @@ A	déstructurant	déstructurant	m	s	0
 N	papion	papion	m	s	0
 N	pudibonds	pudibond	m	p	0
 A	pudibonds	pudibond	m	p	0
-N	aK	K	m	i	0
 A	dévotionnelle	dévotionnel	f	s	0
 N	monodies	monodie	f	p	0
 N	piqueuse	piqueux	f	s	0
@@ -92076,7 +91684,6 @@ A	jointoyées	jointoyer	f	p	0
 A	maximisé	maximiser	m	s	0
 N	pharmacologue	pharmacologue	e	s	0
 A	réétudié	réétudier	m	s	0
-N	fH	H	m	i	1
 N	audiomètre	audiomètre	m	s	0
 N	bidule	bidule	m	s	0
 N	duettistes	duettiste	e	p	0
@@ -92307,7 +91914,6 @@ N	carignan	carignan	m	s	0
 A	catéchétiques	catéchétique	e	p	0
 N	catéchétiques	catéchétique	f	p	0
 N	terpine	terpine	f	s	0
-N	yA	A	m	i	0
 N	domptage	domptage	m	s	0
 N	refondateurs	refondateur	m	p	0
 A	refondateurs	refondateur	m	p	0
@@ -92480,7 +92086,6 @@ N	arithmétisation	arithmétisation	f	s	0
 N	fibromyalgie	fibromyalgie	f	s	0
 N	hiéronymites	hiéronymite	e	p	1
 N	jambettes	jambette	f	p	0
-N	Zm	m	m	i	0
 N	pyrophosphates	pyrophosphate	m	p	0
 N	ribaud	ribaud	m	s	0
 A	ribaud	ribaud	m	s	0
@@ -92549,7 +92154,6 @@ N	bodegas	bodega	f	p	0
 R	contemporainement	contemporainement	e	i	0
 A	parasiticide	parasiticide	e	s	0
 N	parasiticide	parasiticide	m	s	0
-N	YN	N	m	i	0
 N	antialcoolisme	antialcoolisme	m	s	0
 A	buttées	butter	f	p	0
 N	décidabilité	décidabilité	f	s	0
@@ -92797,7 +92401,6 @@ A	éraillées	érailler	f	p	0
 N	avalement	avalement	m	s	0
 A	bajociens	bajocien	m	p	0
 N	fluxmètre	fluxmètre	m	s	0
-N	ZG	G	m	i	0
 A	parasitique	parasitique	e	s	0
 A	plâtreux	plâtreux	m	i	0
 N	ultramarines	ultramarin	f	p	0
@@ -93160,7 +92763,6 @@ N	balbuzard	balbuzard	m	s	0
 N	documentaristes	documentariste	e	p	0
 N	mésothérapie	mésothérapie	f	s	0
 N	tragédiennes	tragédien	f	p	0
-N	nH	H	m	i	1
 A	diatopique	diatopique	e	s	0
 R	inconfortablement	inconfortablement	e	i	0
 A	pléochroïque	pléochroïque	e	s	0
@@ -93205,7 +92807,6 @@ N	phénylcétonurie	phénylcétonurie	f	s	0
 N	radioconducteur	radioconducteur	m	s	0
 A	tubicoles	tubicole	e	p	0
 A	anastomosée	anastomoser	f	s	0
-N	yg	g	m	i	0
 N	mérous	mérou	m	p	0
 R	occultement	occultement	e	i	0
 A	photique	photique	e	s	0
@@ -93436,7 +93037,6 @@ R	bibliquement	bibliquement	e	i	0
 A	inquisitive	inquisitif	f	s	0
 A	palpée	palper	f	s	0
 A	rétrogradés	rétrograder	m	p	0
-N	ZL	L	m	i	0
 N	antrustion	antrustion	m	s	0
 N	badineries	badinerie	f	p	0
 A	compassionnelle	compassionnel	f	s	0
@@ -93461,7 +93061,6 @@ N	massaliotes	massaliote	e	p	0
 A	massaliotes	massaliote	e	p	0
 N	buprénorphine	buprénorphine	f	s	0
 A	exténuants	exténuant	m	p	0
-N	Tlx	lx	m	i	0
 N	mesurabilité	mesurabilité	f	s	0
 N	peroxidase	peroxidase	f	s	0
 A	plurinationaux	plurinational	m	p	0
@@ -93720,7 +93319,6 @@ N	tamponnade	tamponnade	f	s	0
 A	herculéennes	herculéen	f	p	0
 A	subdésertiques	subdésertique	e	p	0
 A	succédanée	succédané	f	s	0
-N	Mpc	Mpc	m	i	0
 R	fastidieusement	fastidieusement	e	i	0
 N	feta	feta	f	s	0
 N	glaneur	glaneur	m	s	0
@@ -93940,7 +93538,6 @@ A	dirimantes	dirimant	f	p	0
 A	intellectualisées	intellectualiser	f	p	0
 A	interreligieuses	interreligieux	f	p	0
 N	ombles	omble	m	p	0
-N	aW	W	m	i	0
 A	acoquiné	acoquiner	m	s	0
 N	agiotages	agiotage	m	p	0
 N	allumeuse	allumeur	f	s	0
@@ -94128,7 +93725,6 @@ N	mamours	mamours	m	p	0
 A	tectrices	tectrice	e	p	0
 N	tectrices	tectrice	f	p	0
 N	échaudoir	échaudoir	m	s	0
-N	dG	G	m	i	0
 N	criaillerie	criaillerie	f	s	0
 N	ferrochrome	ferrochrome	m	s	0
 A	illuminant	illuminant	m	s	0
@@ -94202,7 +93798,6 @@ N	piaillement	piaillement	m	s	0
 N	testeurs	testeur	m	p	0
 A	dérivationnels	dérivationnel	m	p	0
 A	harnachées	harnacher	f	p	1
-N	m³	m³	m	i	0
 N	vivandier	vivandier	m	s	0
 A	cacochymes	cacochyme	e	p	0
 N	cacochymes	cacochyme	m	p	0
@@ -94850,7 +94445,6 @@ N	μ	μ	m	i	0
 N	comorbidités	comorbidité	f	p	0
 A	oncotique	oncotique	e	s	0
 A	sténographiés	sténographier	m	p	0
-N	ZC	C	m	i	0
 N	déponent	déponent	m	s	0
 A	déponent	déponent	m	s	0
 A	ressuyée	ressuyer	f	s	0
@@ -95123,7 +94717,6 @@ N	absolutif	absolutif	m	s	0
 A	changeable	changeable	e	s	0
 A	planante	planant	f	s	0
 A	précompté	précompter	m	s	0
-N	dK	K	m	i	0
 A	antidogmatique	antidogmatique	e	s	0
 A	hyperkinétique	hyperkinétique	e	s	0
 N	entoilage	entoilage	m	s	0
@@ -95546,7 +95139,6 @@ N	aiguades	aiguade	f	p	0
 N	cervoises	cervoise	f	p	0
 A	dévotionnel	dévotionnel	m	s	0
 N	salutiste	salutiste	e	s	0
-N	Gtep	Gtep	f	i	0
 N	arsin	arsin	m	s	0
 A	arsin	arsin	m	s	0
 N	atellanes	atellane	f	p	0
@@ -95691,7 +95283,6 @@ N	hémangiome	hémangiome	m	s	0
 A	papilleuses	papilleux	f	p	0
 N	tocophérols	tocophérol	m	p	0
 N	torah	torah	f	s	0
-N	nL	L	m	i	0
 N	alunage	alunage	m	s	0
 A	antisémitiques	antisémitique	e	p	0
 A	ionisables	ionisable	e	p	0
@@ -96403,7 +95994,6 @@ N	déstructurations	déstructuration	f	p	0
 N	escobarderie	escobarderie	f	s	0
 N	figulines	figuline	f	p	0
 N	heiduques	heiduque	m	p	1
-N	mth	mth	f	i	0
 N	parsec	parsec	m	s	0
 N	rechapage	rechapage	m	s	0
 A	saxifrages	saxifrage	e	p	0
@@ -96715,7 +96305,6 @@ A	unicursale	unicursal	f	s	0
 N	amitoses	amitose	f	p	0
 A	datifs	datif	m	p	0
 N	datifs	datif	m	p	0
-N	pW	W	m	i	0
 A	lobulées	lobulé	f	p	0
 N	sablonnière	sablonnière	f	s	0
 R	tapageusement	tapageusement	e	i	0
@@ -96848,7 +96437,6 @@ A	inactuels	inactuel	m	p	0
 N	microampèremètre	microampèremètre	m	s	0
 R	protocolairement	protocolairement	e	i	0
 N	soyer	soyer	m	s	0
-N	aF	F	m	i	0
 N	chènevotte	chènevotte	f	s	0
 A	cognatiques	cognatique	e	p	0
 A	lavallière	lavallière	e	s	0
@@ -96888,7 +96476,6 @@ N	frangipaniers	frangipanier	m	p	0
 N	lumbagos	lumbago	m	p	0
 N	spadices	spadice	m	p	0
 N	égrènement	égrènement	m	s	0
-N	THz	Hz	m	i	1
 N	antiguerre	antiguerre	e	s	0
 A	antiguerre	antiguerre	e	s	0
 N	fertilisations	fertilisation	f	p	0
@@ -97328,7 +96915,6 @@ N	histrionisme	histrionisme	m	s	0
 N	hourd	hourd	m	s	1
 A	rétinoïque	rétinoïque	e	s	0
 N	abroutissement	abroutissement	m	s	0
-N	zg	g	m	i	0
 N	marteleur	marteleur	m	s	0
 N	monocamérisme	monocamérisme	m	s	0
 N	cristallite	cristallite	f	s	0
@@ -97360,7 +96946,6 @@ A	sclérifié	sclérifier	m	s	0
 A	associable	associable	e	s	0
 N	musiquette	musiquette	f	s	0
 N	oisellerie	oisellerie	f	s	0
-N	mN	N	m	i	0
 N	bucranes	bucrane	m	p	0
 N	hocco	hocco	m	s	1
 A	hydratante	hydratant	f	s	0
@@ -97370,7 +96955,6 @@ N	bogomilisme	bogomilisme	m	s	0
 N	dupeur	dupeur	m	s	0
 N	désaminase	désaminase	f	s	0
 A	volitionnelle	volitionnel	f	s	0
-N	ZN	N	m	i	0
 N	larvicide	larvicide	m	s	0
 N	macérateur	macérateur	m	s	0
 N	maories	maori	f	p	0
@@ -97693,7 +97277,6 @@ A	BCBG	BCBG	e	i	0
 N	granoclassement	granoclassement	m	s	0
 A	lithosphérique	lithosphérique	e	s	0
 N	IMAP	IMAP	m	i	0
-N	ZV	V	m	i	0
 N	aprioristes	aprioriste	e	p	0
 A	aprioristes	aprioriste	e	p	0
 A	balkanisée	balkaniser	f	s	0
@@ -97787,7 +97370,6 @@ N	ligase	ligase	f	s	0
 A	permutée	permuter	f	s	0
 A	thermosensibles	thermosensible	e	p	0
 A	épannelés	épanneler	m	p	0
-N	YK	K	m	i	0
 A	abrogatoire	abrogatoire	e	s	0
 N	altérite	altérite	f	s	0
 N	cytométrie	cytométrie	f	s	0
@@ -98141,7 +97723,6 @@ A	néoténique	néoténique	e	s	0
 N	parères	parère	m	p	0
 N	pneumologue	pneumologue	e	s	0
 N	Chaudière-Appalaches	Chaudière-Appalaches	f	i	0
-N	nK	K	m	i	0
 N	atélectasies	atélectasie	f	p	0
 A	augural	augural	m	s	0
 N	cantillation	cantillation	f	s	0
@@ -98234,7 +97815,6 @@ A	fidjiens	fidjien	m	p	0
 A	phosphorylé	phosphoryler	m	s	0
 N	replacements	replacement	m	p	0
 N	suffète	suffète	m	s	0
-N	nF	F	m	i	0
 A	cardiologiques	cardiologique	e	p	0
 N	colback	colback	m	s	0
 N	délitage	délitage	m	s	0
@@ -98326,7 +97906,6 @@ A	cézannien	cézannien	m	s	0
 N	fenêtrage	fenêtrage	m	s	0
 N	penthotal	penthotal	m	s	0
 A	purifiantes	purifiant	f	p	0
-N	ZJ	J	m	i	0
 N	asocialité	asocialité	f	s	0
 N	greffière	greffier	f	s	0
 A	laviques	lavique	e	p	0
@@ -98348,7 +97927,6 @@ N	galerne	galerne	f	s	0
 A	néocoloniales	néocolonial	f	p	0
 A	pressurisés	pressuriser	m	p	0
 N	prototypage	prototypage	m	s	0
-N	cK	K	m	i	0
 N	brous	brou	m	p	0
 N	hamadryas	hamadryas	m	i	0
 A	hyperglycémique	hyperglycémique	e	s	0
@@ -98413,7 +97991,6 @@ N	épistyle	épistyle	m	s	0
 A	karmiques	karmique	e	p	0
 A	médicosociales	médicosocial	f	p	0
 A	subordonnant	subordonnant	m	s	0
-N	YG	G	m	i	0
 A	astiquées	astiquer	f	p	0
 N	cardiomégalie	cardiomégalie	f	s	0
 N	chadouf	chadouf	m	s	0
@@ -98800,7 +98377,6 @@ N	guidisme	guidisme	m	s	0
 N	qualificateur	qualificateur	m	s	0
 A	soutirées	soutirer	f	p	0
 A	tréfilé	tréfiler	m	s	0
-N	mH	H	m	i	1
 N	métazoaire	métazoaire	m	s	0
 N	séronégatifs	séronégatif	m	p	0
 A	séronégatifs	séronégatif	m	p	0
@@ -99132,7 +98708,6 @@ N	prospectiviste	prospectiviste	e	s	0
 A	prospectiviste	prospectiviste	e	s	0
 N	pétrographe	pétrographe	e	s	0
 N	œillard	œillard	m	s	0
-N	kS	S	m	i	0
 A	disqualifiante	disqualifiant	f	s	0
 N	fedayin	fedayin	m	s	0
 N	fedayins	fedayin	m	p	0
@@ -99221,7 +98796,6 @@ N	arithmomètre	arithmomètre	m	s	0
 N	baumiers	baumier	m	p	0
 N	calicule	calicule	m	s	0
 A	inspirant	inspirant	m	s	0
-N	mR	mR	m	i	0
 R	morbidement	morbidement	e	i	0
 N	polyphonistes	polyphoniste	e	p	0
 A	réapparus	réapparaître	m	p	0
@@ -99248,7 +98822,6 @@ N	primesautiers	primesautier	m	p	0
 A	primesautiers	primesautier	m	p	0
 N	tonsures	tonsure	f	p	0
 N	vérolé	vérolé	m	s	0
-N	cSt	cSt	m	i	0
 A	contracturée	contracturer	f	s	0
 N	hymnologie	hymnologie	f	s	0
 R	romanesquement	romanesquement	e	i	0
@@ -99715,7 +99288,6 @@ A	débusquée	débusquer	f	s	0
 N	harassement	harassement	m	s	1
 N	microplis	micropli	m	p	0
 N	remembrances	remembrance	f	p	0
-N	fW	W	m	i	0
 A	déambulé	déambuler	m	s	0
 N	micmacs	micmac	m	p	0
 N	mutationnisme	mutationnisme	m	s	0
@@ -99746,7 +99318,6 @@ N	sumacs	sumac	m	p	0
 A	ébouleuses	ébouleux	f	p	0
 A	claudéliennes	claudélien	f	p	0
 N	goguenardise	goguenardise	f	s	0
-N	kpc	kpc	m	i	0
 N	margeurs	margeur	m	p	0
 N	moutonnements	moutonnement	m	p	0
 N	silve	silve	f	s	0
@@ -100024,7 +99595,6 @@ N	bouliers	boulier	m	p	0
 A	dégantée	déganter	f	s	0
 N	pédigrée	pédigrée	m	s	0
 N	tharis	thari	m	p	0
-N	Å	Å	m	i	0
 A	anthraciteuse	anthraciteux	f	s	0
 N	cotonneries	cotonnerie	f	p	0
 A	hilarantes	hilarant	f	p	0
@@ -100994,7 +100564,6 @@ A	modérable	modérable	e	s	0
 A	méliorative	mélioratif	f	s	0
 A	sénescents	sénescent	m	p	0
 N	épicanthus	épicanthus	m	i	0
-N	acd	cd	f	i	0
 N	dispersement	dispersement	m	s	0
 A	nématiques	nématique	e	p	0
 A	pétrifiantes	pétrifiant	f	p	0
@@ -101407,7 +100976,6 @@ N	phylloxeras	phylloxera	m	p	0
 A	rubéoliques	rubéolique	e	p	0
 A	sensibilisant	sensibilisant	m	s	0
 N	ω	ω	m	i	0
-N	pCi	Ci	m	i	0
 N	Wallis-et-Futuna	Wallis-et-Futuna	f	p	0
 N	ohmmètre	ohmmètre	m	s	0
 N	pagayeur	pagayeur	m	s	0
@@ -101710,7 +101278,6 @@ A	amaigrissants	amaigrissant	m	p	0
 N	génétiste	génétiste	e	s	0
 A	génétiste	génétiste	e	s	0
 N	lingers	linger	m	p	0
-N	pN	N	m	i	0
 N	anisocorie	anisocorie	f	s	0
 N	canche	canche	f	s	0
 A	inabouties	inabouti	f	p	0
@@ -101843,7 +101410,6 @@ R	larghetto	larghetto	e	i	0
 N	microonde	microonde	e	s	0
 N	salanganes	salangane	f	p	0
 N	téléprésence	téléprésence	f	s	0
-N	GVA	VA	m	i	0
 N	condottières	condottière	m	p	0
 A	flaccide	flaccide	e	s	0
 N	matos	matos	m	i	0
@@ -102309,7 +101875,6 @@ N	réformette	réformette	f	s	0
 A	aillée	ailler	f	s	0
 A	podzolisés	podzoliser	m	p	0
 A	énucléée	énucléer	f	s	0
-N	Eio	Eio	m	i	0
 N	autodidactisme	autodidactisme	m	s	0
 N	catalogueurs	catalogueur	m	p	0
 A	euryhalines	euryhalin	f	p	0
@@ -102317,7 +101882,6 @@ A	hypotensives	hypotensif	f	p	0
 N	ignorantin	ignorantin	m	s	0
 N	lanier	lanier	m	s	0
 A	reportable	reportable	e	s	0
-N	kGy	Gy	m	i	0
 N	armureries	armurerie	f	p	0
 N	avant-guerre	avant-guerre	e	s	0
 N	pelletiérine	pelletiérine	f	s	0
@@ -102429,7 +101993,6 @@ N	empailleur	empailleur	m	s	0
 A	pierrée	pierrer	f	s	0
 N	vessigon	vessigon	m	s	0
 N	épilobes	épilobe	m	p	0
-N	mF	F	m	i	0
 N	gambit	gambit	m	s	0
 N	immunohistochimie	immunohistochimie	f	s	0
 A	budgétivore	budgétivore	e	s	0
@@ -102723,7 +102286,6 @@ N	pontil	pontil	m	s	0
 N	sulpiciennes	sulpicien	f	p	0
 A	sulpiciennes	sulpicien	f	p	0
 A	vélique	vélique	e	s	0
-N	mG	G	m	i	0
 N	graux	grau	m	p	0
 N	grippages	grippage	m	p	0
 N	malinoise	malinois	f	s	0
@@ -103038,7 +102600,6 @@ A	périorbitaires	périorbitaire	e	p	0
 N	tokamak	tokamak	m	s	0
 N	tripolitaines	tripolitain	f	p	0
 A	tripolitaines	tripolitain	f	p	0
-N	ZW	W	m	i	0
 N	ensorcellements	ensorcellement	m	p	0
 N	justificateurs	justificateur	m	p	0
 A	justificateurs	justificateur	m	p	0
@@ -103076,7 +102637,6 @@ A	applicatives	applicatif	f	p	0
 N	capitanat	capitanat	m	s	0
 N	cotangentes	cotangente	f	p	0
 A	effusif	effusif	m	s	0
-N	mrad	rad	m	i	0
 N	accroches	accroche	f	p	0
 N	aisseau	aisseau	m	s	0
 N	barrissement	barrissement	m	s	0
@@ -103314,7 +102874,6 @@ A	cristallisante	cristallisant	f	s	0
 N	hypersécrétions	hypersécrétion	f	p	0
 N	iconophile	iconophile	e	s	0
 A	iconophile	iconophile	e	s	0
-N	zS	S	m	i	0
 N	connes	con	f	p	0
 A	connes	con	f	p	0
 A	digitalisée	digitaliser	f	s	0
@@ -104000,7 +103559,6 @@ A	handicapant	handicapant	m	s	1
 N	hyperglycémies	hyperglycémie	f	p	0
 N	percheronnes	percheron	f	p	0
 A	percheronnes	percheron	f	p	0
-N	nG	G	m	i	0
 N	aléoute	aléoute	e	s	0
 A	aléoute	aléoute	e	s	0
 N	antipsychiatres	antipsychiatre	e	p	0
@@ -104260,7 +103818,6 @@ N	paraphyse	paraphyse	f	s	0
 N	teigneuse	teigneux	f	s	0
 A	teigneuse	teigneux	f	s	0
 N	tonoplaste	tonoplaste	m	s	0
-N	nN	N	m	i	0
 N	Nord-du-Québec	Nord-du-Québec	m	i	0
 N	agrafeuse	agrafeur	f	s	0
 A	agrafeuse	agrafeur	f	s	0
@@ -104471,7 +104028,6 @@ N	charolaises	charolais	f	p	0
 A	charolaises	charolais	f	p	0
 A	déséquilibrants	déséquilibrant	m	p	0
 N	dévolteur	dévolteur	m	s	0
-N	nmol	mol	f	i	0
 N	pontiers	pontier	m	p	0
 N	suints	suint	m	p	0
 N	vielleux	vielleux	m	i	0
@@ -104818,7 +104374,6 @@ N	nématocyste	nématocyste	m	s	0
 N	quincaillers	quincailler	m	p	0
 A	surplombées	surplomber	f	p	0
 A	évocatoires	évocatoire	e	p	0
-N	hL	L	m	i	0
 N	agrobiologie	agrobiologie	f	s	0
 N	antiphrases	antiphrase	f	p	0
 A	audités	auditer	m	p	0
@@ -104948,7 +104503,6 @@ A	médicopédagogique	médicopédagogique	e	s	0
 N	panathénées	panathénées	f	p	0
 N	retriever	retriever	m	s	0
 A	surfines	surfin	f	p	0
-N	cW	W	m	i	0
 N	calville	calville	f	s	0
 N	grumier	grumier	m	s	0
 N	phagosomes	phagosome	m	p	0
@@ -105901,7 +105455,6 @@ N	néandertalien	néandertalien	m	s	0
 N	poïkilocytose	poïkilocytose	f	s	0
 N	vièles	vièle	f	p	0
 A	émotionnante	émotionnant	f	s	0
-N	kG	G	m	i	0
 N	bardots	bardot	m	p	0
 N	convertissage	convertissage	m	s	0
 N	gothas	gotha	m	p	0
@@ -105996,7 +105549,6 @@ A	carieux	carieux	m	i	0
 A	conscientisé	conscientiser	m	s	0
 A	impubliables	impubliable	e	p	0
 N	lolos	lolo	m	p	0
-N	cN	N	m	i	0
 A	caribe	caribe	e	s	0
 N	caribe	caribe	m	s	0
 A	emmaillotées	emmailloter	f	p	0
@@ -106083,7 +105635,6 @@ A	compulsionnel	compulsionnel	m	s	0
 N	dallettes	dallette	f	p	0
 N	débroussaillements	débroussaillement	m	p	0
 N	ennoiement	ennoiement	m	s	0
-N	hA	A	m	i	0
 N	cholécystotomie	cholécystotomie	f	s	0
 N	ciguës	ciguë	f	p	0
 N	dissimulatrice	dissimulateur	f	s	0
@@ -106757,7 +106308,6 @@ N	perlon	perlon	m	s	0
 A	prépositionnées	prépositionner	f	p	0
 N	sertisseur	sertisseur	m	s	0
 N	électrocardiographe	électrocardiographe	m	s	0
-N	fK	K	m	i	0
 N	draglines	dragline	f	p	0
 N	laccolithes	laccolithe	f	p	0
 A	paranéoplasiques	paranéoplasique	e	p	0
@@ -107397,7 +106947,6 @@ N	pérestroïka	pérestroïka	f	s	0
 N	ragondins	ragondin	m	p	0
 A	statif	statif	m	s	0
 A	statifs	statif	m	p	0
-N	nW	W	m	i	0
 A	extravasculaire	extravasculaire	e	s	0
 A	fenêtrées	fenêtrer	f	p	0
 A	lanigères	lanigère	e	p	0
@@ -107497,7 +107046,6 @@ N	chikungunya	chikungunya	m	s	0
 A	complétifs	complétif	m	p	0
 N	grolle	grolle	f	s	0
 A	hydragogue	hydragogue	e	s	0
-N	alx	lx	m	i	0
 N	planimétrage	planimétrage	m	s	0
 N	playboy	playboy	m	s	0
 N	pyorrhées	pyorrhée	f	p	0
@@ -107718,7 +107266,6 @@ N	maringouin	maringouin	m	s	0
 N	raboutage	raboutage	m	s	0
 A	subordonnante	subordonnant	f	s	0
 A	écimés	écimer	m	p	0
-N	kL	L	m	i	0
 A	chamoisées	chamoiser	f	p	0
 A	claustrée	claustrer	f	s	0
 N	cnidocystes	cnidocyste	m	p	0
@@ -108131,7 +107678,6 @@ A	préséniles	présénile	e	p	0
 A	suantes	suant	f	p	0
 A	surarmés	surarmer	m	p	0
 N	surcotes	surcote	f	p	0
-N	hS	S	m	i	0
 N	bourreurs	bourreur	m	p	0
 N	margay	margay	m	s	0
 N	rhumerie	rhumerie	f	s	0
@@ -108228,7 +107774,6 @@ A	monocordes	monocorde	e	p	0
 N	monocordes	monocorde	m	p	0
 N	polyméthacrylate	polyméthacrylate	m	s	0
 N	soufflard	soufflard	m	s	0
-N	yG	G	m	i	0
 A	avachis	avachir	m	p	0
 N	chorizo	chorizo	m	s	0
 N	désemparement	désemparement	m	s	0
@@ -108360,7 +107905,6 @@ N	kénotrons	kénotron	m	p	0
 N	pagodon	pagodon	m	s	0
 N	phytol	phytol	m	s	0
 A	ployante	ployant	f	s	0
-N	Ω	Ω	m	i	0
 N	fermion	fermion	m	s	0
 A	intergalactiques	intergalactique	e	p	0
 A	multivalente	multivalent	f	s	0
@@ -108426,7 +107970,6 @@ A	poétisées	poétiser	f	p	0
 N	psychopédagogue	psychopédagogue	e	s	0
 A	répliquée	répliquer	f	s	0
 A	surinfectées	surinfecter	f	p	0
-N	hT	T	m	i	0
 N	ailantes	ailante	m	p	0
 N	auscultations	auscultation	f	p	0
 N	carbonatite	carbonatite	f	s	0
@@ -108583,7 +108126,6 @@ A	plagiés	plagier	m	p	0
 A	spirométriques	spirométrique	e	p	0
 N	adoucisseur	adoucisseur	m	s	0
 A	biobibliographique	biobibliographique	e	s	0
-N	Gcal	cal	f	i	0
 N	hélions	hélion	m	p	0
 A	palpées	palper	f	p	0
 A	pavloviens	pavlovien	m	p	0
@@ -108592,7 +108134,6 @@ A	précontractuels	précontractuel	m	p	0
 A	préenregistrées	préenregistré	f	p	0
 N	remblayeurs	remblayeur	m	p	0
 N	épipodites	épipodite	m	p	0
-N	hV	V	m	i	0
 N	apitoiements	apitoiement	m	p	0
 N	dermatomyosite	dermatomyosite	f	s	0
 A	dépavé	dépaver	m	s	0
@@ -109140,7 +108681,6 @@ A	brigués	briguer	m	p	0
 N	contreréaction	contreréaction	f	s	0
 A	désaccoutumés	désaccoutumer	m	p	0
 N	hétérocycle	hétérocycle	m	s	0
-N	clm	lm	m	i	0
 A	médiatisante	médiatisant	f	s	0
 N	nectarine	nectarine	f	s	0
 N	réimportations	réimportation	f	p	0
@@ -109283,7 +108823,6 @@ A	escarrotiques	escarrotique	e	p	0
 N	gonocyte	gonocyte	m	s	0
 N	guerroyeurs	guerroyeur	m	p	0
 A	guerroyeurs	guerroyeur	m	p	0
-N	µm	m	m	i	0
 N	manganites	manganite	e	p	0
 N	muséographes	muséographe	e	p	0
 N	spasmophiles	spasmophile	e	p	0
@@ -109772,7 +109311,6 @@ A	expiateur	expiateur	m	s	0
 A	pléonastiques	pléonastique	e	p	0
 A	radicantes	radicant	f	p	0
 A	télescopées	télescoper	f	p	0
-N	dcd	cd	f	i	0
 N	chalcédoniens	chalcédonien	m	p	0
 A	cyberpunk	cyberpunk	e	i	0
 A	déconstructionnistes	déconstructionniste	e	p	0
@@ -110010,7 +109548,6 @@ N	afghanis	afghani	m	p	0
 A	bimestrielles	bimestriel	f	p	0
 A	crantée	cranter	f	s	0
 N	décomptage	décomptage	m	s	0
-N	TeV	eV	m	i	0
 N	inacceptation	inacceptation	f	s	0
 N	junkies	junkie	e	p	0
 N	métaplasies	métaplasie	f	p	0
@@ -110066,7 +109603,6 @@ N	barboteuse	barboteur	f	s	0
 N	bientraitance	bientraitance	f	s	0
 N	duathlon	duathlon	m	s	0
 N	hercheurs	hercheur	m	p	1
-N	clx	lx	m	i	0
 N	méchouis	méchoui	m	p	0
 N	peltes	pelte	f	p	0
 A	rebroussées	rebrousser	f	p	0
@@ -110136,7 +109672,6 @@ A	mailloche	mailloche	e	s	0
 N	mailloche	mailloche	f	s	0
 N	orthocentre	orthocentre	m	s	0
 A	soviétisés	soviétiser	m	p	0
-N	yT	T	m	i	0
 N	albites	albite	f	p	0
 N	braderies	braderie	f	p	0
 N	colombite	colombite	f	s	0
@@ -110246,7 +109781,6 @@ A	peinards	peinard	m	p	0
 N	putt	putt	m	s	0
 A	redynamisé	redynamiser	m	s	0
 A	retapés	retaper	m	p	0
-N	Esr	sr	m	i	0
 A	unipare	unipare	e	s	0
 A	zooïdes	zooïde	e	p	0
 N	zooïdes	zooïde	m	p	0
@@ -110695,7 +110229,6 @@ N	bécarres	bécarre	m	p	0
 N	déchaumages	déchaumage	m	p	0
 N	e-mail	e-mail	m	s	0
 N	épurge	épurge	f	s	0
-N	zA	A	m	i	0
 A	déprise	déprendre	f	s	0
 N	plaqueminier	plaqueminier	m	s	0
 A	stuquées	stuquer	f	p	0
@@ -111318,7 +110851,6 @@ A	xiphoïdien	xiphoïdien	m	s	0
 A	évocable	évocable	e	s	0
 A	blasphémée	blasphémer	f	s	0
 N	bradypsychie	bradypsychie	f	s	0
-N	ccd	cd	f	i	0
 N	cyclomotoristes	cyclomotoriste	e	p	0
 N	désossement	désossement	m	s	0
 N	radiolarite	radiolarite	f	s	0
@@ -111601,7 +111133,6 @@ N	décrypteurs	décrypteur	m	p	0
 A	recoquillées	recoquiller	f	p	0
 N	rondiers	rondier	m	p	0
 N	sponsorisation	sponsorisation	f	s	0
-N	dsr	sr	m	i	0
 A	zymotique	zymotique	e	s	0
 N	barragistes	barragiste	e	p	0
 N	cistron	cistron	m	s	0
@@ -111635,7 +111166,6 @@ N	biwa	biwa	m	s	0
 N	hérédosyphilitiques	hérédosyphilitique	e	p	0
 A	hérédosyphilitiques	hérédosyphilitique	e	p	0
 A	subrogative	subrogatif	f	s	0
-N	Gbit	Gbit	m	i	0
 N	chevrière	chevrier	f	s	0
 A	cosmopolitiques	cosmopolitique	e	p	0
 N	enjôleuses	enjôleur	f	p	0
@@ -111651,7 +111181,6 @@ A	baloutche	baloutche	e	s	0
 N	biocœnoses	biocœnose	f	p	0
 N	riveur	riveur	m	s	0
 N	émous	émou	m	p	0
-N	YW	W	m	i	0
 N	chènevottes	chènevotte	f	p	0
 N	coacervats	coacervat	m	p	0
 N	cyclopentane	cyclopentane	m	s	0
@@ -111663,7 +111192,6 @@ N	préparatrices	préparateur	f	p	0
 A	préparatrices	préparateur	f	p	0
 A	revigorées	revigorer	f	p	0
 N	strombes	strombe	m	p	0
-N	PCi	Ci	m	i	0
 A	affouillés	affouiller	m	p	0
 A	barattée	baratter	f	s	0
 A	chimiothérapeutique	chimiothérapeutique	e	s	0
@@ -111931,7 +111459,6 @@ N	cartothèques	cartothèque	f	p	0
 N	cystéines	cystéine	f	p	0
 A	embrochées	embrocher	f	p	0
 A	factitifs	factitif	m	p	0
-N	Zg	g	m	i	0
 N	gériatres	gériatre	e	p	0
 N	jamboree	jamboree	m	s	0
 A	phosphatidique	phosphatidique	e	s	0
@@ -112291,7 +111818,6 @@ A	démoulé	démouler	m	s	0
 N	effluence	effluence	f	s	0
 N	inciseur	inciseur	m	s	0
 A	instillés	instiller	m	p	0
-N	flm	lm	m	i	0
 N	pédipalpes	pédipalpe	m	p	0
 A	quintuplés	quintupler	m	p	0
 N	quintuplés	quintuplés	m	p	0
@@ -112449,7 +111975,6 @@ N	préemballages	préemballage	m	p	0
 A	rancies	rancir	f	p	0
 N	rempaillage	rempaillage	m	s	0
 A	récriminatoire	récriminatoire	e	s	0
-N	ℓ	ℓ	m	i	0
 N	clavardage	clavardage	m	s	0
 A	conchoïdes	conchoïde	e	p	0
 N	conchoïdes	conchoïde	f	p	0
@@ -112635,7 +112160,6 @@ N	saint-père	saint-père	m	s	0
 N	sittelle	sittelle	f	s	0
 N	circumnavigations	circumnavigation	f	p	0
 A	ergotée	ergoté	f	s	0
-N	mlm	lm	m	i	0
 N	motricités	motricité	f	p	0
 A	mucronés	mucroné	m	p	0
 A	peinées	peiner	f	p	0
@@ -112834,7 +112358,6 @@ N	déterrement	déterrement	m	s	0
 N	indouisme	indouisme	m	s	0
 N	octa	octa	m	s	0
 N	pifomètre	pifomètre	m	s	0
-N	Prad	rad	m	i	0
 A	rejugé	rejuger	m	s	0
 N	retordeurs	retordeur	m	p	0
 N	serdab	serdab	m	s	0
@@ -112995,7 +112518,6 @@ N	mâtereau	mâtereau	m	s	0
 N	ratel	ratel	m	s	0
 N	récup	récup	f	s	0
 N	tétranyques	tétranyque	m	p	0
-N	davar	var	m	i	0
 N	allotypes	allotype	m	p	0
 N	coupeau	coupeau	m	s	0
 A	désherbée	désherber	f	s	0
@@ -113385,7 +112907,6 @@ N	désutilités	désutilité	f	p	0
 A	flagorné	flagorner	m	s	0
 N	garbas	garba	m	p	0
 N	légine	légine	f	s	0
-N	msr	sr	m	i	0
 A	vexantes	vexant	f	p	0
 A	écrêté	écrêter	m	s	0
 N	belfortain	belfortain	m	s	0
@@ -113402,7 +112923,6 @@ A	sectorisés	sectoriser	m	p	0
 N	sikhes	sikh	f	p	0
 A	sikhes	sikh	f	p	0
 A	socioreligieuses	socioreligieux	f	p	0
-N	csr	sr	m	i	0
 A	toisée	toiser	f	s	0
 N	uranoscope	uranoscope	m	s	0
 A	velouté	velouter	m	s	0
@@ -113832,7 +113352,6 @@ N	préménopause	préménopause	f	s	0
 N	racinage	racinage	m	s	0
 A	transneptunien	transneptunien	m	s	0
 A	vociférantes	vociférant	f	p	0
-N	yV	V	m	i	0
 N	année-lumière	année-lumière	f	s	0
 N	débattements	débattement	m	p	0
 N	ensileuses	ensileur	f	p	0
@@ -114216,7 +113735,6 @@ A	neurotoniques	neurotonique	e	p	0
 N	préservations	préservation	f	p	0
 N	amiantose	amiantose	f	s	0
 A	antiphilosophiques	antiphilosophique	e	p	0
-N	Mcal	cal	f	i	0
 N	caviardage	caviardage	m	s	0
 A	divagantes	divagant	f	p	0
 A	fignolés	fignoler	m	p	0
@@ -115938,7 +115456,6 @@ A	étalonniers	étalonnier	m	p	0
 N	ampélographe	ampélographe	e	s	0
 A	désorbités	désorbiter	m	p	0
 A	fleurissantes	fleurissant	f	p	0
-N	µg	g	m	i	0
 A	muraillées	murailler	f	p	0
 N	rigoise	rigois	f	s	0
 A	rigoise	rigois	f	s	0
@@ -116266,7 +115783,6 @@ A	publicisé	publiciser	m	s	0
 A	rediffusées	rediffuser	f	p	0
 N	trottins	trottin	m	p	0
 N	zigoto	zigoto	m	s	0
-N	nCi	Ci	m	i	0
 N	anone	anone	f	s	0
 A	bottelé	botteler	m	s	0
 N	cataphractes	cataphracte	e	p	0
@@ -116470,7 +115986,6 @@ N	potomanie	potomanie	f	s	0
 N	préexistences	préexistence	f	p	0
 A	pulsatif	pulsatif	m	s	0
 N	pyridines	pyridine	f	p	0
-N	krad	rad	m	i	0
 N	angiologie	angiologie	f	s	0
 N	bétonneurs	bétonneur	m	p	0
 A	cérumineux	cérumineux	m	i	0
@@ -116705,7 +116220,6 @@ N	rital	rital	m	s	0
 A	rital	rital	m	s	0
 N	traînarde	traînard	f	s	0
 A	vermillonné	vermillonner	m	s	0
-N	pG	G	m	i	0
 N	directivisme	directivisme	m	s	0
 A	désorbitée	désorbiter	f	s	0
 A	interpellative	interpellatif	f	s	0
@@ -116866,7 +116380,6 @@ A	maigriot	maigriot	m	s	0
 N	perfectibilités	perfectibilité	f	p	0
 N	restockage	restockage	m	s	0
 A	squattés	squatter	m	p	0
-N	nsr	sr	m	i	0
 A	brassicoles	brassicole	e	p	0
 N	cahuttes	cahutte	f	p	0
 N	caporale	caporal	f	s	0
@@ -116951,7 +116464,6 @@ N	ridoirs	ridoir	m	p	0
 N	suroffres	suroffre	f	p	0
 A	vaselinée	vaseliner	f	s	0
 A	éméchée	émécher	f	s	0
-N	kK	K	m	i	0
 A	acétonémiques	acétonémique	e	p	0
 N	authenticités	authenticité	f	p	0
 N	cabaretières	cabaretier	f	p	0
@@ -117134,7 +116646,6 @@ N	tréphones	tréphone	f	p	0
 N	baptiseurs	baptiseur	m	p	0
 A	bocardés	bocarder	m	p	0
 N	clephtes	clephte	e	p	0
-N	flx	lx	m	i	0
 A	monophylétiques	monophylétique	e	p	0
 A	morbilleuses	morbilleux	f	p	0
 A	palladiens	palladien	m	p	0
@@ -117662,7 +117173,6 @@ N	statolithes	statolithe	m	p	0
 N	tenderies	tenderie	f	p	0
 N	vociférateur	vociférateur	m	s	0
 N	étripé	étripé	m	s	0
-N	daC	C	m	i	0
 A	allopatrique	allopatrique	e	s	0
 A	bicarré	bicarré	m	s	0
 N	dyschromie	dyschromie	f	s	0
@@ -118176,7 +117686,6 @@ A	rhizomateuse	rhizomateux	f	s	0
 N	rétiaires	rétiaire	m	p	0
 A	suscrit	suscrire	m	s	0
 N	trolle	trolle	f	s	0
-N	kH	H	m	i	1
 N	camelotes	camelote	f	p	0
 A	causants	causant	m	p	0
 N	défourneuse	défourneur	f	s	0
@@ -118497,7 +118006,6 @@ N	criocère	criocère	m	s	0
 N	frichti	frichti	m	s	0
 R	infinitésimalement	infinitésimalement	e	i	0
 N	libertarianisme	libertarianisme	m	s	0
-N	dlx	lx	m	i	0
 N	mâches	mâche	f	p	0
 N	piratages	piratage	m	p	0
 A	péronières	péronier	f	p	0
@@ -118643,7 +118151,6 @@ N	immunopathologie	immunopathologie	f	s	0
 N	jukebox	jukebox	m	i	0
 N	lasagne	lasagne	f	s	0
 N	meuleuse	meuleur	f	s	0
-N	pmol	mol	f	i	0
 A	occluses	occlure	f	p	0
 N	oiseliers	oiselier	m	p	0
 N	péroreurs	péroreur	m	p	0
@@ -118950,7 +118457,6 @@ A	réprimandées	réprimander	f	p	0
 N	turricules	turricule	m	p	0
 N	éclaircissages	éclaircissage	m	p	0
 N	électronarcose	électronarcose	f	s	0
-N	yL	L	m	i	0
 N	autocorrections	autocorrection	f	p	0
 N	bougainvillier	bougainvillier	m	s	0
 N	chihuahua	chihuahua	m	s	0
@@ -119117,7 +118623,6 @@ N	médailler	médailler	m	s	0
 N	médaillers	médailler	m	p	0
 N	reploiements	reploiement	m	p	0
 A	étampée	étamper	f	s	0
-N	mGy	Gy	m	i	0
 A	anorexigènes	anorexigène	e	p	0
 N	anorexigènes	anorexigène	m	p	0
 A	contreventé	contreventer	m	s	0
@@ -119142,7 +118647,6 @@ N	cirrostratus	cirrostratus	m	i	0
 A	compostés	composter	m	p	0
 A	contremarquées	contremarquer	f	p	0
 A	hypergamique	hypergamique	e	s	0
-N	mol	mol	f	i	0
 N	nanomatériaux	nanomatériau	m	p	0
 A	suppressifs	suppressif	m	p	0
 N	thermodynamiciens	thermodynamicien	m	p	0
@@ -119645,7 +119149,6 @@ N	microbus	microbus	m	i	0
 N	mélangeuses	mélangeur	f	p	0
 N	pracrit	pracrit	m	s	0
 N	ptéridophytes	ptéridophyte	m	p	0
-N	zV	V	m	i	0
 A	alitées	aliter	f	p	0
 N	alitées	alité	f	p	0
 N	bande-son	bande-son	f	s	0
@@ -119849,7 +119352,6 @@ N	grenadilles	grenadille	f	p	0
 N	hydrozoaires	hydrozoaire	m	p	0
 A	klezmer	klezmer	e	s	0
 N	klezmer	klezmer	m	s	0
-N	kth	kth	f	i	0
 N	québécisme	québécisme	m	s	0
 A	radoucies	radoucir	f	p	0
 A	rouverain	rouverain	m	s	0
@@ -120059,7 +119561,6 @@ A	rebellées	rebeller	f	p	0
 N	résignataires	résignataire	e	p	0
 N	soudainetés	soudaineté	f	p	0
 N	tuners	tuner	m	p	0
-N	daS	S	m	i	0
 A	arréragés	arrérager	m	p	0
 N	chiropractie	chiropractie	f	s	0
 A	cholédoques	cholédoque	e	p	0
@@ -120070,7 +119571,6 @@ N	endurcissements	endurcissement	m	p	0
 N	farlouse	farlouse	f	s	0
 A	fistulisés	fistuliser	m	p	0
 N	hématidrose	hématidrose	f	s	0
-N	Plm	lm	m	i	0
 N	piafs	piaf	m	p	0
 A	préfinancés	préfinancer	m	p	0
 A	puddlées	puddler	f	p	0
@@ -120328,7 +119828,6 @@ A	variolé	variolé	m	s	0
 N	éditos	édito	m	p	0
 N	amochée	amoché	f	s	0
 N	biopiraterie	biopiraterie	f	s	0
-N	fcd	cd	f	i	0
 A	devanagari	devanagari	e	s	0
 N	devanagari	devanagari	f	s	0
 A	déclassifié	déclassifier	m	s	0
@@ -120898,7 +120397,6 @@ N	national-socialisme	national-socialisme	m	s	0
 A	neuroplégique	neuroplégique	e	s	0
 A	persiflée	persifler	f	s	0
 N	radicalités	radicalité	f	p	0
-N	kC	C	m	i	0
 N	clergeon	clergeon	m	s	0
 N	connectivités	connectivité	f	p	0
 A	cuité	cuiter	m	s	0
@@ -121792,7 +121290,6 @@ A	ramonée	ramoner	f	s	0
 N	réescompteurs	réescompteur	m	p	0
 N	sadhu	sadhu	m	s	0
 N	éplucheuse	éplucheur	f	s	0
-N	hJ	J	m	i	0
 N	affronteurs	affronteur	m	p	0
 A	biculturels	biculturel	m	p	0
 N	carrossière	carrossier	f	s	0
@@ -122523,7 +122020,6 @@ A	emberlificotée	emberlificoter	f	s	0
 A	incapacitantes	incapacitant	f	p	0
 N	lichette	lichette	f	s	0
 N	militances	militance	f	p	0
-N	amol	mol	f	i	0
 A	monofonctionnel	monofonctionnel	m	s	0
 N	passerage	passerage	f	s	0
 A	routée	router	f	s	0
@@ -122669,7 +122165,6 @@ N	assouplissant	assouplissant	m	s	0
 N	autocastration	autocastration	f	s	0
 N	bisphénol	bisphénol	m	s	0
 N	calcarone	calcarone	m	s	0
-N	pcd	cd	f	i	0
 A	embu	embu	m	s	0
 N	embu	embu	m	s	0
 A	flapies	flapi	f	p	0
@@ -122814,7 +122309,6 @@ N	polysomnographie	polysomnographie	f	s	0
 A	rallongés	rallonger	m	p	0
 A	saucissonné	saucissonner	m	s	0
 N	sérologistes	sérologiste	e	p	0
-N	fG	G	m	i	0
 N	antivols	antivol	m	p	0
 A	antéropostérieures	antéropostérieur	f	p	0
 N	aplatisseurs	aplatisseur	m	p	0
@@ -123035,7 +122529,6 @@ A	regonflés	regonfler	m	p	0
 N	savagnin	savagnin	m	s	0
 A	tarifié	tarifier	m	s	0
 A	unipotent	unipotent	m	s	0
-N	MBq	Bq	m	i	0
 A	agatisé	agatisé	m	s	0
 N	blutages	blutage	m	p	0
 N	brize	brize	f	s	0
@@ -123253,7 +122746,6 @@ N	hiérogamies	hiérogamie	f	p	1
 A	inenvisageables	inenvisageable	e	p	0
 A	inscrivante	inscrivant	f	s	0
 N	lombosciatiques	lombosciatique	f	p	0
-N	mAh	mAh	m	i	0
 A	orientalisée	orientaliser	f	s	0
 N	permanenciers	permanencier	m	p	0
 N	plombes	plombe	f	p	0
@@ -123330,7 +122822,6 @@ N	bourreur	bourreur	m	s	0
 A	courbatus	courbatu	m	p	0
 N	durion	durion	m	s	0
 N	déverbatif	déverbatif	m	s	0
-N	Yg	g	m	i	0
 N	gigolettes	gigolette	f	p	0
 N	moleskines	moleskine	f	p	0
 A	omnicolores	omnicolore	e	p	0
@@ -123373,7 +122864,6 @@ N	ophiure	ophiure	f	s	0
 N	orémus	orémus	m	i	0
 A	ovovivipare	ovovivipare	e	s	0
 N	ovovivipare	ovovivipare	m	s	0
-N	prad	rad	m	i	0
 N	rémoras	rémora	m	p	0
 N	schofar	schofar	m	s	0
 N	tenaillement	tenaillement	m	s	0
@@ -123941,7 +123431,6 @@ N	veveysan	veveysan	m	s	0
 A	veveysan	veveysan	m	s	0
 N	vicelard	vicelard	m	s	0
 A	vicelard	vicelard	m	s	0
-N	hK	K	m	i	0
 A	asexuels	asexuel	m	p	0
 A	conirostres	conirostre	e	p	0
 N	contraventionnalisation	contraventionnalisation	f	s	0
@@ -123973,7 +123462,6 @@ N	mendole	mendole	f	s	0
 N	rogneuse	rogneur	f	s	0
 N	téléspectatrice	téléspectateur	f	s	0
 N	épiphénoméniste	épiphénoméniste	e	s	0
-N	hH	H	m	i	1
 N	algonkin	algonkin	m	s	0
 A	algonkin	algonkin	m	s	0
 N	avocature	avocature	f	s	0
@@ -124403,7 +123891,6 @@ N	titubations	titubation	f	p	0
 A	treillissés	treillisser	m	p	0
 N	tuilière	tuilier	f	s	0
 N	émouchets	émouchet	m	p	0
-N	daW	W	m	i	0
 N	cartonnières	cartonnier	f	p	0
 A	cartonnières	cartonnier	f	p	0
 N	chalcopyrites	chalcopyrite	f	p	0
@@ -125217,7 +124704,6 @@ A	taxative	taxatif	f	s	0
 N	torgnole	torgnole	f	s	0
 A	tripale	tripale	e	s	0
 N	tripale	tripale	f	s	0
-N	yK	K	m	i	0
 N	contraceptions	contraception	f	p	0
 N	décochement	décochement	m	s	0
 R	exécrablement	exécrablement	e	i	0
@@ -125425,7 +124911,6 @@ A	remilitarisée	remilitariser	f	s	0
 N	sgraffite	sgraffite	e	s	0
 A	virilisant	virilisant	m	s	0
 A	égocentrés	égocentré	m	p	0
-N	yC	C	m	i	0
 N	bouillasse	bouillasse	f	s	0
 A	coudoyées	coudoyer	f	p	0
 A	cubées	cuber	f	p	0
@@ -125762,7 +125247,6 @@ A	trivalve	trivalve	e	s	0
 N	vingt-sixième	vingt-sixième	e	s	0
 A	vingt-sixième	vingt-sixième	e	s	0
 A	aréneux	aréneux	m	i	0
-N	Ecd	cd	f	i	0
 N	clappements	clappement	m	p	0
 A	craniofaciale	craniofacial	f	s	0
 N	favoritismes	favoritisme	m	p	0
@@ -125904,7 +125388,6 @@ A	rattachiste	rattachiste	e	s	0
 N	tourbages	tourbage	m	p	0
 A	transcutanées	transcutané	f	p	0
 N	valentine	valentin	f	s	0
-N	cG	G	m	i	0
 N	affabulateurs	affabulateur	m	p	0
 N	amandons	amandon	m	p	0
 A	antébrachiale	antébrachial	f	s	0
@@ -125994,7 +125477,6 @@ A	arénicole	arénicole	e	s	0
 N	arénicole	arénicole	f	s	0
 N	bouffette	bouffette	f	s	0
 A	cambiaux	cambial	m	p	0
-N	dast	dast	m	i	0
 A	dorsolombaires	dorsolombaire	e	p	0
 N	doula	doula	f	s	0
 N	décompactage	décompactage	m	s	0
@@ -126494,7 +125976,6 @@ A	romanisant	romanisant	m	s	0
 A	susurrés	susurrer	m	p	0
 A	tricaméral	tricaméral	m	s	0
 N	zyklon	zyklon	m	s	0
-N	TBq	Bq	m	i	0
 A	arthroscopiques	arthroscopique	e	p	0
 N	calorisation	calorisation	f	s	0
 N	corbillons	corbillon	m	p	0
@@ -127236,7 +126717,6 @@ A	interruptible	interruptible	e	s	0
 A	jectisses	jectisse	f	p	0
 A	juxtalinéaires	juxtalinéaire	e	p	0
 N	laborante	laborant	f	s	0
-N	dlm	lm	m	i	0
 N	mobilophonie	mobilophonie	f	s	0
 A	myotatiques	myotatique	e	p	0
 N	ronchonneur	ronchonneur	m	s	0
@@ -127357,7 +126837,6 @@ A	plutonigène	plutonigène	e	s	0
 A	réapprovisionnées	réapprovisionner	f	p	0
 A	scotopiques	scotopique	e	p	0
 A	slavisé	slaviser	m	s	0
-N	Psr	sr	m	i	0
 A	sérigraphiées	sérigraphier	f	p	0
 A	turpide	turpide	e	s	0
 N	véneries	vénerie	f	p	0
@@ -127382,7 +126861,6 @@ N	telluromètre	telluromètre	m	s	0
 A	thermogénique	thermogénique	e	s	0
 N	ébourgeonnements	ébourgeonnement	m	p	0
 N	époxydation	époxydation	f	s	0
-N	yN	N	m	i	0
 N	actinobacillose	actinobacillose	f	s	0
 A	bandante	bandant	f	s	0
 A	chapitrales	chapitral	f	p	0
@@ -127613,7 +127091,6 @@ N	rachianesthésies	rachianesthésie	f	p	0
 A	relocalisées	relocaliser	f	p	0
 N	réfléchissements	réfléchissement	m	p	0
 N	sanicle	sanicle	f	s	0
-N	dCi	Ci	m	i	0
 A	affadissante	affadissant	f	s	0
 N	aspartam	aspartam	m	s	0
 N	bidouillage	bidouillage	m	s	0
@@ -127749,7 +127226,6 @@ A	squattée	squatter	f	s	0
 N	tachetures	tacheture	f	p	0
 A	verglacés	verglacé	m	p	0
 N	éthéromane	éthéromane	e	s	0
-N	cGy	Gy	m	i	0
 A	circalittorale	circalittoral	f	s	0
 N	contrecourbe	contrecourbe	f	s	0
 A	désaffilié	désaffilier	m	s	0
@@ -127921,7 +127397,6 @@ A	révolutés	révoluté	m	p	0
 A	soviétisées	soviétiser	f	p	0
 A	théocentriques	théocentrique	e	p	0
 A	transmutatoire	transmutatoire	e	s	0
-N	yH	H	m	i	1
 A	accédée	accédé	f	s	0
 A	circumsolaires	circumsolaire	e	p	0
 A	coulissée	coulisser	f	s	0
@@ -127943,7 +127418,6 @@ N	réfringences	réfringence	f	p	0
 A	réordonnés	réordonner	m	p	0
 A	transpirants	transpirant	m	p	0
 N	viabilités	viabilité	f	p	0
-N	Yio	Yio	m	i	0
 N	bisquines	bisquine	f	p	0
 N	boscos	bosco	m	p	0
 N	caoua	caoua	m	s	0
@@ -128455,7 +127929,6 @@ N	cédrières	cédrière	f	p	0
 N	grailles	graille	f	p	0
 A	isomérisé	isomériser	m	s	0
 N	planétariums	planétarium	m	p	0
-N	arad	rad	m	i	0
 A	réarrangée	réarranger	f	s	0
 N	sahels	sahel	m	p	0
 N	sciène	sciène	f	s	0
@@ -128652,7 +128125,6 @@ A	relocalisée	relocaliser	f	s	0
 N	sistership	sistership	m	s	0
 N	superstrats	superstrat	m	p	0
 N	téphra	téphra	m	s	0
-N	yJ	J	m	i	0
 A	XLVIIIe	XLVIIIe	e	s	0
 N	alaternes	alaterne	m	p	0
 N	camarine	camarine	f	s	0
@@ -128670,7 +128142,6 @@ A	renumérotés	renuméroter	m	p	0
 N	rocaillage	rocaillage	m	s	0
 N	scabieux	scabieux	m	i	0
 A	scabieux	scabieux	m	i	0
-N	kvar	var	m	i	0
 A	appréhensives	appréhensif	f	p	0
 A	asiniens	asinien	m	p	0
 N	aéroscope	aéroscope	m	s	0
@@ -128820,7 +128291,6 @@ N	superfécondation	superfécondation	f	s	0
 A	tellurhydrique	tellurhydrique	e	s	0
 N	tourmentin	tourmentin	m	s	0
 N	vape	vape	f	s	0
-N	YVA	VA	m	i	0
 A	aborné	aborné	m	s	0
 A	affichable	affichable	e	s	0
 N	baisements	baisement	m	p	0
@@ -129252,7 +128722,6 @@ N	asphaltène	asphaltène	m	s	0
 N	autoécologie	autoécologie	f	s	0
 N	banon	banon	m	s	0
 N	bondelles	bondelle	f	p	0
-N	Tcal	cal	f	i	0
 N	chattemites	chattemite	f	p	0
 N	dysendocrinies	dysendocrinie	f	p	0
 N	décagones	décagone	m	p	0
@@ -130441,7 +129910,6 @@ N	septemvirs	septemvir	m	p	0
 N	surliure	surliure	f	s	0
 N	tacticiennes	tacticien	f	p	0
 A	éclissées	éclisser	f	p	0
-N	GBq	Bq	m	i	0
 N	caillebottes	caillebotte	f	p	0
 N	cavages	cavage	m	p	0
 N	cracoviennes	cracovien	f	p	0
@@ -130877,7 +130345,6 @@ A	privateur	privateur	m	s	0
 N	scorbuts	scorbut	m	p	0
 A	staturopondéral	staturopondéral	m	s	0
 N	tagme	tagme	m	s	0
-N	hvar	var	m	i	0
 N	verbalismes	verbalisme	m	p	0
 N	xanthopsie	xanthopsie	f	s	0
 A	écumées	écumer	f	p	0
@@ -131665,7 +131132,6 @@ A	grasseyée	grasseyer	f	s	0
 A	inengendrés	inengendré	m	p	0
 N	kung-fu	kung-fu	m	i	0
 A	lampassée	lampassé	f	s	0
-N	Tlm	lm	m	i	0
 A	louvoyantes	louvoyant	f	p	0
 A	peroxydique	peroxydique	e	s	0
 A	pharmacodépendants	pharmacodépendant	m	p	0
@@ -132420,7 +131886,6 @@ N	rossards	rossard	m	p	0
 A	rossards	rossard	m	p	0
 A	signalisées	signaliser	f	p	0
 N	spationef	spationef	m	s	0
-N	fsr	sr	m	i	0
 N	sternutation	sternutation	f	s	0
 A	thymoanaleptiques	thymoanaleptique	e	p	0
 N	thymoanaleptiques	thymoanaleptique	m	p	0
@@ -132914,7 +132379,6 @@ A	tartinées	tartiner	f	p	0
 A	trimbalés	trimbaler	m	p	0
 A	écaché	écacher	m	s	0
 N	épisyénites	épisyénite	f	p	0
-N	hC	C	m	i	0
 N	antichrists	antichrist	m	p	0
 N	babouchkas	babouchka	f	p	0
 N	camelles	camelle	f	p	0
@@ -133287,7 +132751,6 @@ N	périnées	périnée	m	p	0
 A	renvidée	renvider	f	s	0
 A	socioaffectifs	socioaffectif	m	p	0
 A	urgentissime	urgentissime	e	s	0
-N	kBq	Bq	m	i	0
 N	bâbordais	bâbordais	m	i	0
 N	canneur	canneur	m	s	0
 N	capiston	capiston	m	s	0
@@ -133432,7 +132895,6 @@ N	sergettes	sergette	f	p	0
 N	traductologue	traductologue	e	s	0
 N	tricard	tricard	m	s	0
 A	tricard	tricard	m	s	0
-N	Yvar	var	m	i	0
 A	épiphénoménales	épiphénoménal	f	p	0
 N	absurdiste	absurdiste	e	s	0
 A	absurdiste	absurdiste	e	s	0
@@ -133809,7 +133271,6 @@ A	pétinistes	pétiniste	e	p	0
 N	remorqueuse	remorqueur	f	s	0
 A	remorqueuse	remorqueur	f	s	0
 N	triduums	triduum	m	p	0
-N	mHz	Hz	m	i	1
 N	aiguillot	aiguillot	m	s	0
 N	alezanes	alezan	f	p	0
 A	alezanes	alezan	f	p	0
@@ -134003,7 +133464,6 @@ A	pronucléaire	pronucléaire	e	s	0
 A	péléennes	péléen	f	p	0
 N	radiogalaxie	radiogalaxie	f	s	0
 A	remplumé	remplumer	m	s	0
-N	µs	s	f	i	0
 A	terrifiques	terrifique	e	p	0
 N	upérisation	upérisation	f	s	0
 N	vanneuse	vanneur	f	s	0
@@ -135465,7 +134925,6 @@ N	wushu	wushu	m	s	0
 A	écotées	écoté	f	p	0
 N	étalonneurs	étalonneur	m	p	0
 A	étoupé	étouper	m	s	0
-N	zH	H	m	i	1
 N	bijoutières	bijoutier	f	p	0
 N	chalenge	chalenge	m	s	0
 N	coudou	coudou	m	s	0
@@ -135640,7 +135099,6 @@ N	linguatule	linguatule	f	s	0
 A	lockoutés	lockouter	m	p	0
 N	mareyeuses	mareyeur	f	p	0
 A	marrées	marrer	f	p	0
-N	kmol	mol	f	i	0
 A	notificative	notificatif	f	s	0
 N	panorpes	panorpe	f	p	0
 N	protensions	protension	f	p	0
@@ -135651,8 +135109,6 @@ N	souillard	souillard	m	s	0
 N	thermoplongeurs	thermoplongeur	m	p	0
 N	tocades	tocade	f	p	0
 A	tripotés	tripoter	m	p	0
-N	yF	F	m	i	0
-N	daG	G	m	i	0
 N	amérindianismes	amérindianisme	m	p	0
 A	apyres	apyre	e	p	0
 N	brouts	brout	m	p	0
@@ -136291,7 +135747,6 @@ A	morutières	morutier	f	p	0
 A	rebranché	rebrancher	m	s	0
 N	whippet	whippet	m	s	0
 A	écopaysagère	écopaysager	f	s	0
-N	mPa	Pa	m	i	0
 A	bienvoulu	bienvoulu	m	s	0
 A	bousillées	bousiller	f	p	0
 N	chibre	chibre	m	s	0
@@ -136511,7 +135966,6 @@ N	ixia	ixia	f	s	0
 N	krishnaïte	krishnaïte	e	s	0
 A	krishnaïte	krishnaïte	e	s	0
 N	luxembourgisme	luxembourgisme	m	s	0
-N	Elx	lx	m	i	0
 N	macadamia	macadamia	m	s	0
 A	macrocyclique	macrocyclique	e	s	0
 N	maximisations	maximisation	f	p	0
@@ -136583,7 +136037,6 @@ A	tuteurée	tuteurer	f	s	0
 N	vicelards	vicelard	m	p	0
 A	vicelards	vicelard	m	p	0
 N	virtualisme	virtualisme	m	s	0
-N	zL	L	m	i	0
 A	antitussive	antitussif	f	s	0
 A	attrapetout	attrapetout	e	s	0
 A	bouletée	bouleté	f	s	0
@@ -137203,7 +136656,6 @@ A	unciné	unciné	m	s	0
 N	viscaches	viscache	f	p	0
 N	térawatts	watt	m	p	0
 N	épellations	épellation	f	p	0
-N	zT	T	m	i	0
 N	aiguilliers	aiguillier	m	p	0
 N	allotypie	allotypie	f	s	0
 A	anticipables	anticipable	e	p	0
@@ -137814,7 +137266,6 @@ N	rabroueur	rabroueur	m	s	0
 N	radiosensibilités	radiosensibilité	f	p	0
 A	regreffé	regreffer	m	s	0
 A	restauratif	restauratif	m	s	0
-N	MCi	Ci	m	i	0
 A	abaissant	abaissant	m	s	0
 A	affuté	affuter	m	s	0
 A	antimoustique	antimoustique	e	s	0
@@ -138206,7 +137657,6 @@ A	cloitré	cloitrer	m	s	0
 A	crispants	crispant	m	p	0
 A	croassantes	croassant	f	p	0
 N	dengues	dengue	f	p	0
-N	dgr	dgr	m	i	0
 N	débaucheurs	débaucheur	m	p	0
 N	désaxements	désaxement	m	p	0
 A	embobinés	embobiner	m	p	0
@@ -138258,7 +137708,6 @@ N	picholines	picholine	f	p	0
 A	plaçables	plaçable	e	p	0
 N	suèdes	suède	m	p	0
 A	tillés	tiller	m	p	0
-N	hN	N	m	i	0
 N	anthropozoonose	anthropozoonose	f	s	0
 N	cheffesses	cheffesse	f	p	0
 N	demi-quart	demi-quart	m	s	0
@@ -138775,7 +138224,6 @@ A	étuvée	étuver	f	s	0
 A	étuvées	étuver	f	p	0
 N	ONEMA	ONEMA	m	i	0
 N	PPRE	PPRE	m	i	0
-N	yW	W	m	i	0
 N	acétylcoenzyme	acétylcoenzyme	f	s	0
 N	apographes	apographe	m	p	0
 N	appointage	appointage	m	s	0
@@ -138855,7 +138303,6 @@ A	bifonctionnelle	bifonctionnel	f	s	0
 N	brimbelles	brimbelle	f	p	0
 N	brouilly	brouilly	m	s	0
 A	capotée	capoter	f	s	0
-N	Pcd	cd	f	i	0
 N	celluloïds	celluloïd	m	p	0
 A	clean	clean	e	s	0
 A	cleans	clean	e	p	0
@@ -139285,7 +138732,6 @@ A	missionnées	missionner	f	p	0
 N	mélaminés	mélaminé	m	p	0
 N	paléotempérature	paléotempérature	f	s	0
 N	pyrazines	pyrazine	f	p	0
-N	hrad	rad	m	i	0
 A	ramagées	ramager	f	p	0
 A	reconcentré	reconcentrer	m	s	0
 N	rigoleurs	rigoleur	m	p	0
@@ -139298,7 +138744,6 @@ N	visiophones	visiophone	m	p	0
 N	émeus	émeu	m	p	0
 N	épieur	épieur	m	s	0
 A	épieur	épieur	m	s	0
-N	hW	W	m	i	0
 N	canities	canitie	f	p	0
 N	chinetoque	chinetoque	e	s	0
 A	chinetoque	chinetoque	e	s	0
@@ -139658,7 +139103,6 @@ N	sous-commission	sous-commission	f	s	0
 N	squamule	squamule	f	s	0
 N	tie-break	tie-break	m	s	0
 N	trombidion	trombidion	m	s	0
-N	zK	K	m	i	0
 A	accommodatrices	accommodateur	f	p	0
 A	ammodyte	ammodyte	e	s	0
 N	ammodyte	ammodyte	m	s	0
@@ -139774,7 +139218,6 @@ N	ternissures	ternissure	f	p	0
 A	trisannuels	trisannuel	m	p	0
 N	triterpène	triterpène	m	s	0
 A	tropicalisées	tropicaliser	f	p	0
-N	Evar	var	m	i	0
 N	ajourages	ajourage	m	p	0
 A	alcalescente	alcalescent	f	s	0
 A	aluminées	aluminer	f	p	0
@@ -140081,7 +139524,6 @@ N	solipsismes	solipsisme	m	p	0
 N	suage	suage	m	s	0
 N	voiturières	voiturier	f	p	0
 A	voiturières	voiturier	f	p	0
-N	zN	N	m	i	0
 N	anaplasties	anaplastie	f	p	0
 A	antipaludéennes	antipaludéen	f	p	0
 N	antiélectron	antiélectron	m	s	0
@@ -141131,7 +140573,6 @@ N	coercibilité	coercibilité	f	s	0
 A	criqué	criquer	m	s	0
 N	cuon	cuon	m	s	0
 N	dextrinisation	dextrinisation	f	s	0
-N	ceV	eV	m	i	0
 A	encaustiquée	encaustiquer	f	s	0
 A	expropriable	expropriable	e	s	0
 A	gabariées	gabarier	f	p	0
@@ -141959,7 +141400,6 @@ A	adonisé	adoniser	m	s	0
 N	bidouilleurs	bidouilleur	m	p	0
 A	biopsiées	biopsier	f	p	0
 N	bâfreurs	bâfreur	m	p	0
-N	Ecal	cal	f	i	0
 N	cellophanes	cellophane	f	p	0
 A	confédératifs	confédératif	m	p	0
 N	contre-performance	contre-performance	f	s	0
@@ -142066,7 +141506,6 @@ N	tænia	tænia	m	s	0
 A	zoonotiques	zoonotique	e	p	0
 N	émotteurs	émotteur	m	p	0
 A	éthérifiées	éthérifier	f	p	0
-N	daJ	J	m	i	0
 N	achromatisation	achromatisation	f	s	0
 A	anodisés	anodiser	m	p	0
 A	bruie	bruir	f	s	0
@@ -142177,7 +141616,6 @@ N	renonciataires	renonciataire	e	p	0
 N	revérification	revérification	f	s	0
 N	salignons	salignon	m	p	0
 N	scripturalisme	scripturalisme	m	s	0
-N	ksr	sr	m	i	0
 N	tripodies	tripodie	f	p	0
 N	vidéophonie	vidéophonie	f	s	0
 A	égalables	égalable	e	p	0
@@ -142976,7 +142414,6 @@ N	pie-grièche	pie-grièche	f	s	0
 N	progénitrice	progéniteur	f	s	0
 N	pureaux	pureau	m	p	0
 N	pétaudières	pétaudière	f	p	0
-N	frad	rad	m	i	0
 N	radicaux-socialistes	radicaux-socialistes	m	p	0
 N	reconnexions	reconnexion	f	p	0
 N	refendeurs	refendeur	m	p	0
@@ -142994,7 +142431,6 @@ N	coadministrateur	coadministrateur	m	s	0
 N	concentreur	concentreur	m	s	0
 N	diots	diot	m	p	0
 N	dodelinements	dodelinement	m	p	0
-N	feV	eV	m	i	0
 N	fouineuses	fouineur	f	p	0
 N	fouteuse	fouteur	f	s	0
 N	grappillages	grappillage	m	p	0
@@ -143184,7 +142620,6 @@ A	impatriés	impatrié	m	p	0
 A	interfacée	interfacer	f	s	0
 N	kots	kot	m	p	0
 N	larmoyeurs	larmoyeur	m	p	0
-N	Mlm	lm	m	i	0
 N	longaniers	longanier	m	p	0
 N	maigriots	maigriot	m	p	0
 A	maigriots	maigriot	m	p	0
@@ -143206,7 +142641,6 @@ A	subrogatives	subrogatif	f	p	0
 A	surjoué	surjouer	m	s	0
 N	tortilles	tortille	f	p	0
 N	téléconduite	téléconduite	f	s	0
-N	zJ	J	m	i	0
 N	accastillages	accastillage	m	p	0
 N	achènes	achène	m	p	0
 A	autocassable	autocassable	e	s	0
@@ -143533,7 +142967,6 @@ N	statisticiennes	statisticien	f	p	0
 N	thyrotrophine	thyrotrophine	f	s	0
 N	troles	trole	f	p	0
 N	tôlières	tôlier	f	p	0
-N	avad	vad	m	i	0
 N	vogoule	vogoul	f	s	0
 A	vogoule	vogoul	f	s	0
 N	vogoule	vogoule	e	s	0
@@ -143581,7 +143014,6 @@ N	titillements	titillement	m	p	0
 N	turluttes	turlutte	f	p	0
 N	varappeur	varappeur	m	s	0
 N	épinçage	épinçage	m	s	0
-N	zF	F	m	i	0
 A	agitants	agitant	m	p	0
 A	altérative	altératif	f	s	0
 A	anglo-français	anglo-français	m	i	0
@@ -143971,7 +143403,6 @@ A	désarçonnant	désarçonnant	m	s	0
 N	empotages	empotage	m	p	0
 N	ferrocérium	ferrocérium	m	s	0
 A	finalitaire	finalitaire	e	s	0
-N	Glm	lm	m	i	0
 A	monoptères	monoptère	e	p	0
 N	monoptères	monoptère	m	p	0
 N	métapsychologies	métapsychologie	f	p	0
@@ -144038,7 +143469,6 @@ A	apivores	apivore	e	p	0
 N	aromatases	aromatase	f	p	0
 A	bileuse	bileux	f	s	0
 N	bordeuse	bordeuse	f	s	0
-N	dcal	cal	f	i	0
 A	canularesques	canularesque	e	p	0
 N	cha-cha-cha	cha-cha-cha	m	i	0
 N	coassociées	coassocié	f	p	0
@@ -144152,7 +143582,6 @@ A	surexcitantes	surexcitant	f	p	0
 N	tapeuse	tapeur	f	s	0
 N	taxa	taxum	m	p	0
 N	tortores	tortore	f	p	0
-N	Tvar	var	m	i	0
 N	vocératrices	vocératrice	f	p	0
 N	wasabi	wasabi	m	s	0
 N	ximenia	ximenia	m	s	0
@@ -144278,7 +143707,6 @@ N	iconologies	iconologie	f	p	0
 A	imprésentables	imprésentable	e	p	0
 A	isotypiques	isotypique	e	p	0
 N	jacobinismes	jacobinisme	m	p	0
-N	kWc	kWc	m	i	0
 N	myélographies	myélographie	f	p	0
 N	mégalithismes	mégalithisme	m	p	0
 N	orang-outang	orang-outang	m	s	0
@@ -144344,7 +143772,6 @@ A	tracassant	tracassant	m	s	0
 N	trichromies	trichromie	f	p	0
 N	xénocristaux	xénocristal	m	p	0
 A	évaginés	évaginé	m	p	0
-N	zG	G	m	i	0
 A	anti-aériennes	anti-aérien	f	p	0
 A	aouté	aouter	m	s	0
 N	applis	appli	f	p	0
@@ -144572,7 +143999,6 @@ N	vioc	vioc	e	s	0
 N	vétillard	vétillard	m	s	0
 A	vétillard	vétillard	m	s	0
 A	émotté	émotter	m	s	0
-N	hG	G	m	i	0
 N	amochées	amoché	f	p	0
 A	anticonjoncturelle	anticonjoncturel	f	s	0
 A	antimycosiques	antimycosique	e	p	0
@@ -144832,7 +144258,6 @@ N	articliers	articlier	m	p	0
 N	barbouzerie	barbouzerie	f	s	0
 N	bucheronnage	bucheronnage	m	s	0
 A	captatifs	captatif	m	p	0
-N	Tcd	cd	f	i	0
 N	chavirages	chavirage	m	p	0
 A	congelables	congelable	e	p	0
 N	contrecultures	contreculture	f	p	0
@@ -144877,7 +144302,6 @@ N	téquila	téquila	f	s	0
 N	va-vite	va-vite	f	s	0
 A	étripé	étriper	m	s	0
 A	étripés	étriper	m	p	0
-N	EPa	Pa	m	i	0
 A	arrangeantes	arrangeant	f	p	0
 A	autocensurée	autocensurer	f	s	0
 A	autoguidées	autoguider	f	p	0
@@ -145353,7 +144777,6 @@ N	énolates	énolate	m	p	0
 A	boxée	boxer	f	s	0
 N	caleuse	caleur	f	s	0
 N	carragheen	carragheen	m	s	0
-N	ncd	cd	f	i	0
 A	chrysostome	chrysostome	e	s	0
 N	ciboriums	ciborium	m	p	0
 N	coparrainage	coparrainage	m	s	0
@@ -145513,7 +144936,6 @@ N	cortisones	cortisone	f	p	0
 A	coupellés	coupeller	m	p	0
 A	dénanti	dénantir	m	s	0
 N	déserteuses	déserteur	f	p	0
-N	neV	eV	m	i	0
 A	embouqué	embouquer	m	s	0
 N	galopes	galope	f	p	0
 N	gastro-entérite	gastro-entérite	f	s	0
@@ -145694,7 +145116,6 @@ N	synancée	synancée	f	s	0
 N	tarzan	tarzan	m	s	0
 A	ultracourt	ultracourt	m	s	0
 N	égorgeuse	égorgeur	f	s	0
-N	aCi	Ci	m	i	0
 N	anomères	anomère	m	p	0
 A	antimonieuse	antimonieux	f	s	0
 A	aoutés	aouter	m	p	0
@@ -145893,7 +145314,6 @@ A	ébrouée	ébrouer	f	s	0
 N	éjectas	éjecta	m	p	0
 N	évangélismes	évangélisme	m	p	0
 A	IIIes	IIIes	e	p	1
-N	daPa	Pa	m	i	0
 N	avant-cour	avant-cour	f	s	0
 A	bitubes	bitube	e	p	0
 N	bitubes	bitube	m	p	0
@@ -146113,7 +145533,6 @@ N	vogouls	vogoul	m	p	0
 A	vogouls	vogoul	m	p	0
 N	xylophène	xylophène	m	s	0
 N	éborgnement	éborgnement	m	s	0
-N	hF	F	m	i	0
 N	adultisme	adultisme	m	s	0
 N	agripaume	agripaume	f	s	0
 N	anencéphalies	anencéphalie	f	p	0
@@ -146508,7 +145927,6 @@ A	électroportatif	électroportatif	m	s	0
 A	élucubrées	élucubrer	f	p	0
 N	épinier	épinier	m	s	0
 A	équidimensionnels	équidimensionnel	m	p	0
-N	kWb	Wb	m	i	0
 N	absentéismes	absentéisme	m	p	0
 A	antiadhésif	antiadhésif	m	s	0
 R	ardument	ardument	e	i	0
@@ -146550,7 +145968,6 @@ A	orwelliennes	orwellien	f	p	0
 N	panzooties	panzootie	f	p	0
 N	pénicillinases	pénicillinase	f	p	0
 N	qwerty	qwerty	m	i	0
-N	crad	rad	m	i	0
 A	récréationnelle	récréationnel	f	s	0
 A	singulatifs	singulatif	m	p	0
 N	singulatifs	singulatif	m	p	0
@@ -146938,7 +146355,6 @@ N	bhoutanaises	bhoutanais	f	p	0
 A	bhoutanaises	bhoutanais	f	p	0
 N	billonnages	billonnage	m	p	0
 N	bricolo	bricolo	e	s	0
-N	mcal	cal	f	i	0
 A	catastrophées	catastropher	f	p	0
 N	cordites	cordite	f	p	0
 N	crapoussin	crapoussin	m	s	0
@@ -148137,7 +147553,6 @@ N	haut-fond	haut-fond	m	s	1
 N	hyposialies	hyposialie	f	p	0
 A	jambés	jambé	m	p	0
 A	jouxtés	jouxter	m	p	0
-N	akat	kat	m	i	0
 N	khédiviat	khédiviat	m	s	0
 N	maudisseurs	maudisseur	m	p	0
 A	maudisseurs	maudisseur	m	p	0
@@ -148298,7 +147713,6 @@ A	sudatoires	sudatoire	e	p	0
 N	thérien	thérien	m	s	0
 N	ultragauches	ultragauche	f	p	0
 N	zorilles	zorille	f	p	0
-N	TCi	Ci	m	i	0
 N	agaricinées	agaricinée	f	p	0
 N	apatams	apatam	m	p	0
 A	apologiques	apologique	e	p	0
@@ -148464,7 +147878,6 @@ N	idéotypes	idéotype	m	p	0
 N	impactions	impaction	f	p	0
 A	improbatifs	improbatif	m	p	0
 A	lionnées	lionné	f	p	0
-N	mlx	lx	m	i	0
 N	marégrammes	marégramme	m	p	0
 A	melliflues	melliflu	f	p	0
 A	melliflues	melliflue	e	p	0
@@ -148772,7 +148185,6 @@ A	bifonctionnelles	bifonctionnel	f	p	0
 N	boogiewoogie	boogiewoogie	m	s	0
 N	bruiteuse	bruiteur	f	s	0
 N	bégueuleries	bégueulerie	f	p	0
-N	acal	cal	f	i	0
 N	camérières	camérier	f	p	0
 A	compilable	compilable	e	s	0
 N	coresponsabilités	coresponsabilité	f	p	0
@@ -148805,7 +148217,6 @@ N	matheuse	matheux	f	s	0
 N	mergules	mergule	m	p	0
 N	microfuite	microfuite	f	s	0
 N	ministériats	ministériat	m	p	0
-N	fmol	mol	f	i	0
 N	munsters	munster	m	p	0
 A	muscinaux	muscinal	m	p	0
 A	mégissée	mégisser	f	s	0
@@ -149029,7 +148440,6 @@ A	tabassées	tabasser	f	p	0
 A	tennistiques	tennistique	e	p	0
 A	vulcanisable	vulcanisable	e	s	0
 N	émouchettes	émouchette	f	p	0
-N	MDa	Da	m	i	0
 N	acœlomates	acœlomate	m	p	0
 N	alkylats	alkylat	m	p	0
 N	anarcho-syndicalistes	anarcho-syndicaliste	e	p	0
@@ -149632,11 +149042,9 @@ N	tchervonets	tchervonets	m	s	0
 N	tchervonets	tchervonets	m	i	0
 A	thoracoabdominaux	thoracoabdominal	m	p	0
 N	thrombines	thrombine	f	p	0
-N	Mvar	var	m	i	0
 N	zostérien	zostérien	m	s	0
 A	zostérien	zostérien	m	s	0
 A	électrophotographiques	électrophotographique	e	p	0
-N	daK	K	m	i	0
 A	abréviatrice	abréviateur	f	s	0
 N	affûtoirs	affûtoir	m	p	0
 N	agacin	agacin	m	s	0
@@ -149676,7 +149084,6 @@ A	homocycliques	homocyclique	e	p	0
 N	lagotriche	lagotriche	m	s	0
 N	livardes	livarde	f	p	0
 N	louvoyages	louvoyage	m	p	0
-N	Glx	lx	m	i	0
 N	maistrances	maistrance	f	p	0
 N	micronutriment	micronutriment	m	s	0
 N	micropolluant	micropolluant	m	s	0
@@ -149773,7 +149180,6 @@ N	turbellarié	turbellarié	m	s	0
 N	tétrose	tétrose	m	s	0
 N	wassingues	wassingue	f	p	0
 N	élitismes	élitisme	m	p	0
-N	TPa	Pa	m	i	0
 A	abeiller	abeiller	m	s	0
 N	adulaires	adulaire	f	p	0
 N	affouragements	affouragement	m	p	0
@@ -149999,7 +149405,6 @@ A	vitupérées	vitupérer	f	p	0
 N	échiffes	échiffe	m	p	0
 N	élodées	élodée	f	p	0
 A	éléphantins	éléphantin	m	p	0
-N	PPa	Pa	m	i	0
 N	autopunitions	autopunition	f	p	0
 N	basse-ville	basse-ville	f	s	0
 N	blatèrements	blatèrement	m	p	0
@@ -150210,7 +149615,6 @@ N	appesantissements	appesantissement	m	p	0
 N	avant-premières	avant-première	f	p	0
 N	bouchonneuse	bouchonneuse	f	s	0
 A	bronchioloalvéolaire	bronchioloalvéolaire	e	s	0
-N	fcal	cal	f	i	0
 N	carboxylations	carboxylation	f	p	0
 N	chalumiste	chalumiste	e	s	0
 N	chordé	chordé	m	s	0
@@ -150431,7 +149835,6 @@ A	terreauté	terreauter	m	s	0
 A	velouteux	velouteux	m	i	0
 N	volubilités	volubilité	f	p	0
 N	écrabouillage	écrabouillage	m	s	0
-N	daL	L	m	i	0
 N	acétylations	acétylation	f	p	0
 A	affouagé	affouager	m	s	0
 A	antigravitationnel	antigravitationnel	m	s	0
@@ -150934,7 +150337,6 @@ N	roupillons	roupillon	m	p	0
 A	réinitialisés	réinitialiser	m	p	0
 A	socio-culturels	socio-culturel	m	p	0
 N	sprues	sprue	f	p	0
-N	hsr	sr	m	i	0
 N	surcroits	surcroit	m	p	0
 N	tiercefeuilles	tiercefeuille	f	p	0
 N	tiqueuse	tiqueur	f	s	0
@@ -151126,7 +150528,6 @@ A	épaufrées	épaufrer	f	p	0
 N	épaulé-jeté	épaulé-jeté	m	s	0
 N	épiglottites	épiglottite	f	p	0
 N	épulpeurs	épulpeur	m	p	0
-N	daA	A	m	i	0
 A	ablatée	ablater	f	s	0
 N	affermissements	affermissement	m	p	0
 N	amaryllidacées	amaryllidacée	f	p	0
@@ -151471,7 +150872,6 @@ A	ultra-orthodoxes	ultra-orthodoxe	e	p	0
 A	ultraconfidentiel	ultraconfidentiel	m	s	0
 N	vectorisations	vectorisation	f	p	0
 N	zwieback	zwieback	m	s	0
-N	zC	C	m	i	0
 A	alkylée	alkyler	f	s	0
 A	anglo-indien	anglo-indien	m	s	0
 N	antibrouillage	antibrouillage	m	s	0
@@ -152002,7 +151402,6 @@ N	déflagrateurs	déflagrateur	m	p	0
 A	défroissée	défroisser	f	s	0
 A	démanchées	démancher	f	p	0
 A	dénitrifiés	dénitrifier	m	p	0
-N	peV	eV	m	i	0
 N	fouinards	fouinard	m	p	0
 N	fraicheurs	fraicheur	f	p	0
 A	fulgurés	fulgurer	m	p	0
@@ -152016,7 +151415,6 @@ N	magadhi	magadhi	m	s	0
 A	massacrants	massacrant	m	p	0
 A	matriculées	matriculer	f	p	0
 N	micromanagement	micromanagement	m	s	0
-N	cmol	mol	f	i	0
 N	monitorats	monitorat	m	p	0
 N	mort-nés	mort-né	m	p	0
 A	mort-nés	mort-né	m	p	0
@@ -152033,7 +151431,6 @@ N	ravivements	ravivement	m	p	0
 N	regimbements	regimbement	m	p	0
 N	réincorporations	réincorporation	f	p	0
 A	shogounales	shogounal	f	p	0
-N	Tsr	sr	m	i	0
 N	stœchiométries	stœchiométrie	f	p	0
 N	symétrisations	symétrisation	f	p	0
 N	tabagistes	tabagiste	e	p	0
@@ -152262,7 +151659,6 @@ A	impardonnée	impardonné	f	s	0
 A	inapprivoisée	inapprivoisé	f	s	0
 A	interfaçable	interfaçable	e	s	0
 A	invisibilisés	invisibiliser	m	p	0
-N	Pkat	kat	m	i	0
 N	kéfirs	kéfir	m	p	0
 N	lithodome	lithodome	m	s	0
 A	lupercal	lupercal	m	s	0
@@ -152626,7 +152022,6 @@ A	titularisés	titulariser	m	p	0
 N	vanillines	vanilline	f	p	0
 N	zymotechnie	zymotechnie	f	s	0
 A	écharnés	écharner	m	p	0
-N	ECi	Ci	m	i	0
 A	agro-alimentaires	agro-alimentaire	e	p	0
 N	agro-alimentaires	agro-alimentaire	m	p	0
 N	ballastages	ballastage	m	p	0
@@ -152878,7 +152273,6 @@ A	démédicalisée	démédicaliser	f	s	0
 A	désengrenées	désengrener	f	p	0
 N	désinhibitions	désinhibition	f	p	0
 N	détersions	détersion	f	p	0
-N	PeV	eV	m	i	0
 N	encroutements	encroutement	m	p	0
 N	ensileur	ensileur	m	s	0
 A	estourbie	estourbir	f	s	0
@@ -153404,12 +152798,10 @@ N	scribouillages	scribouillage	m	p	0
 N	sensitivités	sensitivité	f	p	0
 N	smille	smille	f	s	0
 N	snowboardeuse	snowboardeur	f	s	0
-N	zsr	sr	m	i	0
 N	substantialismes	substantialisme	m	p	0
 A	surfilé	surfiler	m	s	0
 N	survalorisations	survalorisation	f	p	0
 A	sénégalisé	sénégaliser	m	s	0
-N	dvar	var	m	i	0
 N	vertigos	vertigo	m	p	0
 N	agro-industrie	agro-industrie	f	s	0
 N	auto-stoppeur	auto-stoppeur	m	s	0
@@ -153597,7 +152989,6 @@ N	vannets	vannet	m	p	0
 A	varlopé	varloper	m	s	0
 A	vérificatifs	vérificatif	m	p	0
 N	écartomètre	écartomètre	m	s	0
-N	hWh	Wh	m	i	0
 N	adonides	adonide	f	p	0
 A	adonisés	adoniser	m	p	0
 N	anacardiacée	anacardiacée	f	s	0
@@ -154219,8 +153610,6 @@ N	torchettes	torchette	f	p	0
 N	véganisme	véganisme	m	s	0
 N	élargissure	élargissure	f	s	0
 A	œnanthiques	œnanthique	e	p	0
-N	daH	H	m	i	1
-N	daT	T	m	i	0
 N	adiantes	adiante	m	p	0
 N	annonceuses	annonceur	f	p	0
 A	boulangés	boulanger	m	p	0
@@ -154547,7 +153936,6 @@ A	phonatrices	phonateur	f	p	0
 N	pyrograveur	pyrograveur	m	s	0
 N	pérille	pérille	f	s	0
 N	pétrologue	pétrologue	e	s	0
-N	Erad	rad	m	i	0
 A	ratiné	ratiner	m	s	0
 A	retapissés	retapisser	m	p	0
 N	récréments	récrément	m	p	0
@@ -155003,7 +154391,6 @@ A	égayants	égayant	m	p	0
 N	électroencéphalographes	électroencéphalographe	m	p	0
 N	éthicienne	éthicien	f	s	0
 A	éthicienne	éthicien	f	s	0
-N	zW	W	m	i	0
 N	accoudements	accoudement	m	p	0
 A	aigretté	aigretté	m	s	0
 N	anabaptismes	anabaptisme	m	p	0
@@ -155050,7 +154437,6 @@ N	immunotolérance	immunotolérance	f	s	0
 A	interclassées	interclasser	f	p	0
 N	jaserans	jaseran	m	p	0
 A	liliacé	liliacé	m	s	0
-N	Ylm	lm	m	i	0
 A	magnétoscopée	magnétoscoper	f	s	0
 N	malawiens	malawien	m	p	0
 A	malawiens	malawien	m	p	0
@@ -155216,7 +154602,6 @@ N	vocifératrices	vociférateur	f	p	0
 N	économétricien	économétricien	m	s	0
 N	électronarcoses	électronarcose	f	p	0
 N	étuveuses	étuveur	f	p	0
-N	aPa	Pa	m	i	0
 A	alcyonienne	alcyonien	f	s	0
 N	arbalétrière	arbalétrier	f	s	0
 N	audiophone	audiophone	m	s	0
@@ -155327,7 +154712,6 @@ N	incorporateurs	incorporateur	m	p	0
 N	insolubilités	insolubilité	f	p	0
 N	ligotages	ligotage	m	p	0
 A	limonée	limoner	f	s	0
-N	plx	lx	m	i	0
 N	mot-clef	mot-clef	m	s	0
 A	musiquées	musiquer	f	p	0
 N	kilopascal	pascal	m	s	0
@@ -155919,7 +155303,6 @@ N	yèbles	yèble	f	p	0
 N	zazoue	zazou	f	s	0
 N	œdicnèmes	œdicnème	m	p	0
 N	œils-de-bœuf	œils-de-bœuf	m	p	0
-N	daV	V	m	i	0
 N	acculs	accul	m	p	0
 A	adipiques	adipique	e	p	0
 N	alimentarité	alimentarité	f	s	0
@@ -156431,7 +155814,6 @@ A	hiératisés	hiératisé	m	p	1
 A	houlomotrice	houlomoteur	f	s	1
 N	induvie	induvie	f	s	0
 A	jacassières	jacassier	f	p	0
-N	Tkat	kat	m	i	0
 N	lamages	lamage	m	p	0
 N	multiplexages	multiplexage	m	p	0
 A	médioocéanique	médioocéanique	e	s	0
@@ -156496,7 +155878,6 @@ A	irrassasiés	irrassasié	m	p	0
 A	jambonnées	jambonner	f	p	0
 A	jarretés	jarreter	m	p	0
 A	lacérants	lacérant	m	p	0
-N	dalm	lm	m	i	0
 N	lésineur	lésineur	m	s	0
 A	lésineur	lésineur	m	s	0
 N	malévolence	malévolence	f	s	0
@@ -156841,7 +156222,6 @@ N	électro-acoustique	électro-acoustique	f	s	0
 N	électroniciennes	électronicien	f	p	0
 A	électroniciennes	électronicien	f	p	0
 N	élimage	élimage	m	s	0
-N	nSv	Sv	m	i	0
 N	agnations	agnation	f	p	0
 A	agrippant	agrippant	m	s	0
 N	agrochimiste	agrochimiste	e	s	0
@@ -156941,7 +156321,6 @@ N	barnaches	barnache	f	p	0
 N	branleuses	branleur	f	p	0
 N	bringuebalement	bringuebalement	m	s	0
 N	béchamels	béchamel	f	p	0
-N	Zcd	cd	f	i	0
 N	colocalisations	colocalisation	f	p	0
 N	contresommets	contresommet	m	p	0
 A	contrevenues	contrevenir	f	p	0
@@ -157235,7 +156614,6 @@ N	apocynacée	apocynacée	f	s	0
 N	aérophagies	aérophagie	f	p	0
 N	bridgeuses	bridgeur	f	p	0
 N	burrito	burrito	m	s	0
-N	hcd	cd	f	i	0
 N	coquarts	coquart	m	p	0
 N	coroutine	coroutine	f	s	0
 N	coupe-papier	coupe-papier	m	i	0
@@ -157444,7 +156822,6 @@ N	scampis	scampi	m	p	0
 N	scampis	scampis	m	i	0
 N	sortances	sortance	f	p	0
 N	sponsorings	sponsoring	m	p	0
-N	Gsr	sr	m	i	0
 N	stouts	stout	m	p	0
 N	stéride	stéride	m	s	0
 A	télékinétiques	télékinétique	e	p	0
@@ -157455,7 +156832,6 @@ N	zappeuse	zappeur	f	s	0
 A	émulées	émuler	f	p	0
 N	états-uniens	états-unien	m	p	0
 A	états-uniens	états-unien	m	p	0
-N	µSv	Sv	m	i	0
 N	aiguilletages	aiguilletage	m	p	0
 N	allumetiers	allumetier	m	p	0
 A	allumetiers	allumetier	m	p	0
@@ -157524,8 +156900,6 @@ A	tiers-mondiste	tiers-mondiste	e	s	0
 A	tisonnées	tisonner	f	p	0
 A	velouteuses	velouteux	f	p	0
 A	vigousse	vigousse	e	s	0
-N	aDa	Da	m	i	0
-N	Ebit	Ebit	m	i	0
 A	abattable	abattable	e	s	0
 N	acuponcteurs	acuponcteur	m	p	0
 N	acétonuries	acétonurie	f	p	0
@@ -157678,7 +157052,6 @@ A	surimpressionnés	surimpressionner	m	p	0
 N	tubéracée	tubéracé	f	s	0
 A	tubéracée	tubéracé	f	s	0
 N	télénovela	télénovela	f	s	0
-N	nPa	Pa	m	i	0
 A	abominées	abominer	f	p	0
 N	aboutements	aboutement	m	p	0
 N	acétanilides	acétanilide	m	p	0
@@ -158086,7 +157459,6 @@ A	tambourinant	tambourinant	m	s	0
 A	transhumées	transhumer	f	p	0
 A	treuillés	treuiller	m	p	0
 N	tétrahydronaphtaline	tétrahydronaphtaline	f	s	0
-N	zvar	var	m	i	0
 N	électrooculographie	électrooculographie	f	s	0
 N	étagiste	étagiste	m	s	0
 N	artémia	artémia	f	s	0
@@ -158257,7 +157629,6 @@ N	voceratrices	voceratrice	f	p	0
 N	égrotantes	égrotant	f	p	0
 A	égrotantes	égrotant	f	p	0
 A	émerisées	émeriser	f	p	0
-N	cPa	Pa	m	i	0
 A	aldins	aldin	m	p	0
 A	anglaisées	anglaiser	f	p	0
 N	apicultures	apiculture	f	p	0
@@ -158604,7 +157975,6 @@ A	uranyles	uranyle	e	p	0
 N	uranyles	uranyle	m	p	0
 N	vade-mecum	vade-mecum	m	i	0
 A	zappés	zapper	m	p	0
-N	Tbit	Tbit	m	i	0
 N	acclamateur	acclamateur	m	s	0
 N	almagestes	almageste	m	p	0
 A	arnachés	arnacher	m	p	0
@@ -159025,7 +158395,6 @@ N	tousseries	tousserie	f	p	0
 N	webdesign	webdesign	m	s	0
 A	ébrouées	ébrouer	f	p	0
 A	écrouté	écrouter	m	s	0
-N	aVA	VA	m	i	0
 N	abat-son	abat-son	m	s	0
 N	abat-sons	abat-son	m	p	0
 N	affileurs	affileur	m	p	0
@@ -159395,7 +158764,6 @@ N	revisitations	revisitation	f	p	0
 A	sous-dural	sous-dural	m	s	0
 N	sous-garde	sous-garde	f	s	0
 N	spritz	spritz	m	i	0
-N	ysr	sr	m	i	0
 A	surjouées	surjouer	f	p	0
 A	technoculturelle	technoculturel	f	s	0
 A	tegmentales	tegmental	f	p	0
@@ -159428,7 +158796,6 @@ A	désabonnés	désabonner	m	p	0
 N	franco-canadiens	franco-canadien	m	p	0
 A	franco-canadiens	franco-canadien	m	p	0
 N	haplographies	haplographie	f	p	0
-N	klx	lx	m	i	0
 A	moyen-orientales	moyen-oriental	f	p	0
 A	médulleux	médulleux	m	i	0
 N	non-spécialiste	non-spécialiste	e	s	0
@@ -159476,7 +158843,6 @@ A	franchisées	franchiser	f	p	0
 A	franchisés	franchiser	m	p	0
 N	inauthenticités	inauthenticité	f	p	0
 A	lipophobe	lipophobe	e	s	0
-N	nlx	lx	m	i	0
 N	mordorure	mordorure	f	s	0
 N	nabuchodonosor	nabuchodonosor	m	s	0
 N	paraben	paraben	m	s	0
@@ -159493,7 +158859,6 @@ A	spammé	spammer	m	s	0
 A	sénatorien	sénatorien	m	s	0
 N	top-modèle	top-modèle	e	s	0
 N	turn-over	turn-over	m	i	0
-N	mvar	var	m	i	0
 A	vermifugé	vermifuger	m	s	0
 A	écoré	écorer	m	s	0
 N	africanités	africanité	f	p	0
@@ -159617,7 +158982,6 @@ A	bathmotropes	bathmotrope	e	p	0
 N	big-bang	big-bang	m	i	0
 N	blancs-becs	blancs-becs	m	p	0
 N	cadogans	cadogan	m	p	0
-N	hcal	cal	f	i	0
 A	catachrétiques	catachrétique	e	p	0
 N	concentricités	concentricité	f	p	0
 N	couvre-nuque	couvre-nuque	m	s	0
@@ -159808,11 +159172,9 @@ N	imprégnateur	imprégnateur	m	s	0
 A	imprégnateur	imprégnateur	m	s	0
 N	intersexuation	intersexuation	f	s	0
 N	jetstream	jetstream	m	s	0
-N	µl	l	m	i	0
 A	linacées	linacée	e	p	0
 N	linacées	linacée	f	p	0
 N	légiférations	légifération	f	p	0
-N	µmol	mol	f	i	0
 N	muntjacs	muntjac	m	p	0
 N	mécanicismes	mécanicisme	m	p	0
 N	mésadaptée	mésadapté	f	s	0
@@ -159874,9 +159236,7 @@ N	impondérabilités	impondérabilité	f	p	0
 N	insensibilisations	insensibilisation	f	p	0
 N	locatrices	locateur	f	p	0
 N	lois-cadres	lois-cadres	f	p	0
-N	hlx	lx	m	i	0
 A	lénifiées	lénifier	f	p	0
-N	mCE	mCE	m	i	0
 A	marxisées	marxiser	f	p	0
 A	monodirectionnels	monodirectionnel	m	p	0
 N	médiascopie	médiascopie	f	s	0
@@ -159969,7 +159329,6 @@ A	burelées	burelé	f	p	0
 A	cabanée	cabaner	f	s	0
 N	calzone	calzone	f	s	0
 A	catapultables	catapultable	e	p	0
-N	Gcd	cd	f	i	0
 N	crucificateur	crucificateur	m	s	0
 N	cytosols	cytosol	m	p	0
 A	dandinés	dandiner	m	p	0
@@ -159998,7 +159357,6 @@ N	partageuses	partageur	f	p	0
 A	partageuses	partageur	f	p	0
 N	platinages	platinage	m	p	0
 N	post-impressionnisme	post-impressionnisme	m	s	0
-N	ppq	ppq	f	i	0
 N	pulques	pulque	m	p	0
 N	péliades	péliade	f	p	0
 A	quadrifoliée	quadrifolié	f	s	0
@@ -160040,7 +159398,6 @@ A	hypothalamo-hypophysaire	hypothalamo-hypophysaire	e	s	0
 A	hystérisées	hystériser	f	p	0
 A	héliosphérique	héliosphérique	e	s	0
 N	ichtyologies	ichtyologie	f	p	0
-N	Ekat	kat	m	i	0
 A	mannequinés	mannequiner	m	p	0
 A	nanifiée	nanifier	f	s	0
 A	notificatif	notificatif	m	s	0
@@ -160054,7 +159411,6 @@ A	soixante-et-onzième	soixante-et-onzième	e	s	0
 A	syro-malabar	syro-malabar	m	s	0
 N	tue-mouches	tue-mouche	m	p	0
 A	tue-mouches	tue-mouches	e	i	0
-N	pvar	var	m	i	0
 A	violoné	violoner	m	s	0
 N	woks	wok	m	p	0
 N	épieuse	épieur	f	s	0
@@ -160233,7 +159589,6 @@ N	thérapsides	thérapside	m	p	0
 A	trichineuses	trichineux	f	p	0
 A	vice-premiers	vice-premier	m	p	0
 N	écharnement	écharnement	m	s	0
-N	hℓ	ℓ	m	i	0
 N	KNX	KNX	e	i	0
 N	abiétine	abiétin	f	s	0
 A	abiétine	abiétin	f	s	0
@@ -160266,7 +159621,6 @@ N	flambeuses	flambeur	f	p	0
 N	garde-malades	garde-malade	e	p	0
 A	gaudis	gaudir	m	p	0
 A	gouteuses	gouteux	f	p	0
-N	ckat	kat	m	i	0
 A	lactéal	lactéal	m	s	0
 N	malwares	malware	m	p	0
 N	millepatte	millepatte	m	s	0
@@ -160292,7 +159646,6 @@ N	anti-sioniste	anti-sioniste	e	s	0
 A	anti-sioniste	anti-sioniste	e	s	0
 N	antillanisme	antillanisme	m	s	0
 A	billetés	billeté	m	p	0
-N	ncal	cal	f	i	0
 N	camions-citernes	camions-citernes	m	p	0
 N	canalisatrices	canalisateur	f	p	0
 N	charias	charia	f	p	0
@@ -160527,10 +159880,8 @@ N	tie-breaks	tie-break	m	p	0
 A	tomée	tomer	f	s	0
 A	treuillée	treuiller	f	s	0
 A	vaccinable	vaccinable	e	s	0
-N	fvar	var	m	i	0
 N	voutain	voutain	m	s	0
 N	épointement	épointement	m	s	0
-N	Tibit	Tibit	m	i	0
 A	anglo-indiens	anglo-indien	m	p	0
 A	autoadaptative	autoadaptatif	f	s	0
 N	bandes-son	bandes-son	f	p	0
@@ -160613,7 +159964,6 @@ N	bouton-poussoir	bouton-poussoir	m	s	0
 N	bradels	bradel	m	p	0
 A	bromacétiques	bromacétique	e	p	0
 N	buvetière	buvetier	f	s	0
-N	ccal	cal	f	i	0
 A	calepinée	calepiner	f	s	0
 A	catholicisées	catholiciser	f	p	0
 A	chypré	chypré	m	s	0
@@ -160670,8 +160020,6 @@ A	ébaudie	ébaudir	f	s	0
 N	écroûtement	écroûtement	m	s	0
 N	électro-encéphalographie	électro-encéphalographie	f	s	0
 A	équerrées	équerrer	f	p	0
-N	fCi	Ci	m	i	0
-N	kCi	Ci	m	i	0
 N	ablier	ablier	m	s	0
 A	aigres-douces	aigres-douces	f	p	0
 N	amphibiennes	amphibien	f	p	0
@@ -160778,7 +160126,6 @@ N	judéo-bolchevisme	judéo-bolchevisme	m	s	0
 N	jugeuse	jugeur	f	s	0
 A	jugeuse	jugeur	f	s	0
 N	laïcismes	laïcisme	m	p	0
-N	Mlx	lx	m	i	0
 N	martin-chasseur	martin-chasseur	m	s	0
 A	molossoïdes	molossoïde	e	p	0
 N	molossoïdes	molossoïde	m	p	0
@@ -160791,7 +160138,6 @@ A	phraseuses	phraseur	f	p	0
 N	piochement	piochement	m	s	0
 A	poilées	poiler	f	p	0
 A	prénasalisés	prénasalisé	m	p	0
-N	drad	rad	m	i	0
 N	regrèvements	regrèvement	m	p	0
 N	sauveteuse	sauveteur	f	s	0
 N	scrapbooking	scrapbooking	m	s	0
@@ -161012,7 +160358,6 @@ A	inséminatrice	inséminateur	f	s	0
 A	japonisées	japoniser	f	p	0
 A	knock-out	knock-out	e	i	0
 N	knock-out	knock-out	m	i	0
-N	ylm	lm	m	i	0
 A	mignardée	mignarder	f	s	0
 A	miraillé	miraillé	m	s	0
 A	multicatégorielle	multicatégoriel	f	s	0
@@ -161272,7 +160617,6 @@ A	ultra-violets	ultra-violet	m	p	0
 A	zippées	zipper	f	p	0
 N	zoanthaire	zoanthaire	m	s	0
 N	émetteurs-récepteurs	émetteur-récepteur	m	p	0
-N	EDa	Da	m	i	0
 A	abréviatrices	abréviateur	f	p	0
 A	affabulées	affabuler	f	p	0
 N	aiguilleuse	aiguilleur	f	s	0
@@ -161520,8 +160864,6 @@ N	wiccans	wiccan	m	p	0
 A	wiccans	wiccan	m	p	0
 A	étanchéifiés	étanchéifier	m	p	0
 A	œsophagiques	œsophagique	e	p	0
-N	yCi	Ci	m	i	0
-N	Zibit	Zibit	m	i	0
 N	affineuse	affineur	f	s	0
 A	affineuse	affineur	f	s	0
 N	aide-comptable	aide-comptable	m	s	0
@@ -161887,7 +161229,6 @@ A	uniovulée	uniovulé	f	s	0
 A	vultueuses	vultueux	f	p	0
 A	élavés	élavé	m	p	0
 A	érotologiques	érotologique	e	p	0
-N	mWh	Wh	m	i	0
 N	adulescente	adulescent	f	s	0
 A	adulescente	adulescent	f	s	0
 A	affourragé	affourrager	m	s	0
@@ -161935,7 +161276,6 @@ A	kleptocratiques	kleptocratique	e	p	0
 A	lichées	licher	f	p	0
 A	loranthacée	loranthacée	e	s	0
 N	loranthacée	loranthacée	f	s	0
-N	Plx	lx	m	i	0
 N	légumines	légumine	f	p	0
 N	marbreuses	marbreur	f	p	0
 N	massothérapeutes	massothérapeute	e	p	0
@@ -161983,8 +161323,6 @@ N	épieuses	épieur	f	p	0
 A	épieuses	épieur	f	p	0
 A	équitant	équitant	m	s	0
 A	érubescents	érubescent	m	p	0
-N	cℓ	ℓ	m	i	0
-N	cCi	Ci	m	i	0
 N	Ditanyè	Ditanyè	m	i	0
 A	abasourdissants	abasourdissant	m	p	0
 A	absolutifs	absolutif	m	p	0
@@ -162116,7 +161454,6 @@ A	dégriffées	dégriffer	f	p	0
 A	délabialisé	délabialiser	m	s	0
 N	dépouilleuse	dépouilleur	f	s	0
 A	désapprovisionné	désapprovisionner	m	s	0
-N	heV	eV	m	i	0
 A	encrêpés	encrêper	m	p	0
 N	entreteneuse	entreteneur	f	s	0
 N	exothermes	exotherme	e	p	0
@@ -162476,8 +161813,6 @@ A	valisé	valiser	m	s	0
 N	wagon-salon	wagon-salon	m	s	0
 N	yakitori	yakitori	m	s	1
 A	épuratifs	épuratif	m	p	0
-N	kΩ	Ω	m	i	0
-N	µV	V	m	i	0
 N	abri-sous-roche	abri-sous-roche	m	s	0
 A	affamants	affamant	m	p	0
 A	anabolisé	anaboliser	m	s	0
@@ -162694,7 +162029,6 @@ N	bambochards	bambochard	m	p	0
 N	bibeloteuse	bibeloteur	f	s	0
 A	biosourcé	biosourcé	m	s	0
 A	buchée	bucher	f	s	0
-N	pcal	cal	f	i	0
 A	capriques	caprique	e	p	0
 A	carapatée	carapater	f	s	0
 N	chesters	chester	m	p	0
@@ -162855,7 +162189,6 @@ A	israélo-américain	israélo-américain	m	s	0
 A	joliets	joliet	m	p	0
 N	minispace	minispace	m	s	0
 A	mithridatisées	mithridatiser	f	p	0
-N	Emol	mol	f	i	0
 A	mordeuses	mordeur	f	p	0
 N	mortes-eaux	mortes-eaux	f	p	0
 N	napels	napel	m	p	0
@@ -162958,7 +162291,6 @@ N	passe-montagne	passe-montagne	m	i	0
 A	photo-électriques	photo-électrique	e	p	0
 A	pixelisé	pixeliser	m	s	0
 N	punchline	punchline	f	s	0
-N	nrad	rad	m	i	0
 A	raréfiable	raréfiable	e	s	0
 N	rêvasseuses	rêvasseur	f	p	0
 A	rêvasseuses	rêvasseur	f	p	0
@@ -162985,7 +162317,6 @@ A	échardonné	échardonner	m	s	0
 A	échoppées	échopper	f	p	0
 A	écorniflés	écornifler	m	p	0
 N	équilibrismes	équilibrisme	m	p	0
-N	cVA	VA	m	i	0
 A	agriffées	agriffer	f	p	0
 N	algéro-marocains	algéro-marocain	m	p	0
 A	algéro-marocains	algéro-marocain	m	p	0
@@ -163272,7 +162603,6 @@ A	yvelinoise	yvelinois	f	s	0
 N	zonoèdre	zonoèdre	m	s	0
 N	écoblanchiment	écoblanchiment	m	s	0
 N	Δt	Δt	e	i	0
-N	µF	F	m	i	0
 A	abélianisé	abélianisé	m	s	0
 A	aglyphe	aglyphe	e	s	0
 N	aglyphe	aglyphe	m	s	0
@@ -163740,7 +163070,6 @@ N	ultra-marins	ultra-marin	m	p	0
 A	ultra-marins	ultra-marin	m	p	0
 A	ultraportable	ultraportable	e	s	0
 A	électro-optiques	électro-optique	e	p	0
-N	PBq	Bq	m	i	0
 N	IRFM	IRFM	f	i	0
 N	abat-foin	abat-foin	m	i	0
 A	agro-environnementale	agro-environnemental	f	s	0
@@ -164246,7 +163575,6 @@ N	élapidés	élapidé	m	p	0
 N	électro-érosion	électro-érosion	f	s	0
 N	élevons	élevon	m	p	0
 A	équipolé	équipolé	m	s	0
-N	mBq	Bq	m	i	0
 N	Rimandoule	Rimandoule	f	i	0
 N	accroche-cœur	accroche-cœur	m	i	0
 N	accroche-cœur	accroche-cœur	m	s	0
@@ -164343,10 +163671,6 @@ N	vuvuzelas	vuvuzela	f	p	0
 N	énantiomérie	énantiomérie	f	s	0
 N	érouv	érouv	m	s	0
 N	Absurdistan	Absurdistan	m	i	0
-N	µH	H	m	i	1
-N	µL	L	m	i	0
-N	µS	S	m	i	0
-N	µT	T	m	i	0
 N	afro-brésiliens	afro-brésilien	m	p	0
 A	afro-brésiliens	afro-brésilien	m	p	0
 A	amphicrine	amphicrine	e	s	0
@@ -164882,8 +164206,6 @@ N	xénolithe	xénolithe	m	s	0
 N	écopoïèse	écopoïèse	m	s	0
 N	électrokinésie	électrokinésie	f	s	0
 N	épines-vinettes	épines-vinettes	f	p	0
-N	µA	A	m	i	0
-N	µW	W	m	i	0
 N	acérola	acérola	m	s	0
 N	algéro-marocain	algéro-marocain	m	s	0
 A	algéro-marocain	algéro-marocain	m	s	0
@@ -165010,7 +164332,6 @@ N	vide-poches	vide-poches	m	i	0
 N	zigouigoui	zigouigoui	m	s	0
 A	électro-faible	électro-faible	e	s	0
 N	érathème	érathème	m	s	0
-N	EHz	Hz	m	i	1
 N	acadianisme	acadianisme	m	s	0
 N	anglo-danois	anglo-danois	m	i	0
 A	anglo-danois	anglo-danois	m	i	0
@@ -165135,9 +164456,6 @@ N	zigouigouis	zigouigoui	m	p	0
 A	écoresponsables	écoresponsable	e	p	0
 N	équiprojectivité	équiprojectivité	f	s	0
 N	œil-de-perdrix	œil-de-perdrix	m	s	0
-N	mℓ	ℓ	m	i	0
-N	PHz	Hz	m	i	1
-N	µPa	Pa	m	i	0
 N	SFINX	SFINX	m	i	0
 N	abeillon	abeillon	m	s	0
 N	acquits-à-caution	acquits-à-caution	m	p	0
@@ -165276,7 +164594,6 @@ A	visuo-spatiales	visuo-spatial	f	p	0
 A	vétéro-testamentaire	vétéro-testamentaire	e	s	0
 N	wagons-trémies	wagons-trémies	m	p	0
 N	ægipans	ægipan	m	p	0
-N	µC	C	m	i	0
 N	CCTR	CCTR	e	i	0
 N	afghano-pakistanaise	afghano-pakistanais	f	s	0
 A	afghano-pakistanaise	afghano-pakistanais	f	s	0
@@ -165726,8 +165043,6 @@ A	économico-social	économico-social	m	s	0
 A	économico-sociale	économico-social	f	s	0
 A	éphéméroptère	éphéméroptère	e	s	0
 N	éphéméroptère	éphéméroptère	m	s	0
-N	MΩ	Ω	m	i	0
-N	ZVA	VA	m	i	0
 A	XXIIes	XXIIes	e	p	0
 N	accrobranches	accrobranche	m	p	0
 A	adextrés	adextré	m	p	0
@@ -166417,7 +165732,6 @@ A	décérébrée	décérébrer	f	s	0
 A	décérébrées	décérébrer	f	p	0
 A	décérébrés	décérébrer	m	p	0
 A	désallouée	désallouer	f	s	0
-N	µeV	eV	m	i	0
 A	encroutants	encroutant	m	p	0
 N	entartages	entartage	m	p	0
 A	envoutantes	envoutant	f	p	0
@@ -166598,8 +165912,6 @@ N	tradeurs	tradeur	m	p	0
 N	tébioctet	tébioctet	m	s	0
 A	ultra-résistant	ultra-résistant	m	s	0
 A	ultra-résistante	ultra-résistant	f	s	0
-N	kvad	vad	m	i	0
-N	mvad	vad	m	i	0
 N	validisme	validisme	m	s	0
 N	ventirads	ventirad	m	p	0
 N	vers-libriste	vers-libriste	e	s	0
@@ -166625,9 +165937,6 @@ A	électrosensibles	électrosensible	e	p	0
 N	érismatures	érismature	f	p	0
 N	étiopathes	étiopathe	e	p	0
 N	Aful	Aful	f	i	0
-N	µGy	Gy	m	i	0
-N	nHz	Hz	m	i	1
-N	µHz	Hz	m	i	1
 A	acratopège	acratopège	e	s	0
 N	adjudants-chefs	adjudants-chefs	m	p	0
 N	allènes	allène	m	p	0
@@ -166683,7 +165992,6 @@ N	carnettiste	carnettiste	e	s	0
 N	carte-réponse	carte-réponse	f	s	0
 N	castagneur	castagneur	m	s	0
 A	castagneur	castagneur	m	s	0
-N	kcd	cd	f	i	0
 N	cent-millièmes	cent-millième	e	p	0
 A	cent-millièmes	cent-millième	e	p	0
 N	chamboule-tout	chamboule-tout	m	i	0
@@ -166920,10 +166228,8 @@ A	zygodactyle	zygodactyle	e	s	0
 N	écopastille	écopastille	f	s	0
 N	gigaélectronvolt	électronvolt	m	s	0
 N	épluche-légumes	épluche-légumes	m	i	0
-N	dΩ	Ω	m	i	0
 N	AGRASC	AGRASC	f	i	0
 N	JJSDN	JJSDN	f	i	0
-N	PWh	Wh	m	i	0
 N	abandonnateur	abandonnateur	m	s	0
 N	abatture	abatture	f	s	0
 A	agri-environnementaux	agri-environnemental	m	p	0
@@ -167260,12 +166566,8 @@ A	éperdu	éperdre	m	s	0
 A	éperdue	éperdre	f	s	0
 A	éperdues	éperdre	f	p	0
 A	éperdus	éperdre	m	p	0
-N	PΩ	Ω	m	i	0
 A	2ᵉ	2ᵉ	e	s	0
-N	EBq	Bq	m	i	0
-N	daDa	Da	m	i	0
 N	FLOTUS	FLOTUS	f	i	0
-N	ZHz	Hz	m	i	1
 N	IMAPS	IMAPS	m	i	0
 A	accidentologiques	accidentologique	e	p	0
 N	actigramme	actigramme	m	s	0
@@ -167468,7 +166770,6 @@ N	jazzmans	jazzman	m	p	0
 N	jet-stream	jet-stream	m	s	0
 N	jobiste	jobiste	e	s	0
 N	kalanchoé	kalanchoé	m	s	0
-N	pkat	kat	m	i	0
 N	picokelvin	kelvin	m	s	0
 A	laminales	laminal	f	p	0
 A	lançable	lançable	e	s	0
@@ -167627,7 +166928,6 @@ N	ununhexium	ununhexium	m	s	0
 N	ununquadium	ununquadium	m	s	0
 A	upgradés	upgrader	m	p	0
 N	vapoteurs	vapoteur	m	p	0
-N	cvar	var	m	i	0
 N	verbicrucistes	verbicruciste	e	p	0
 N	vitrificateurs	vitrificateur	m	p	0
 N	wagon-foudre	wagon-foudre	m	s	0
@@ -167644,13 +166944,7 @@ A	électro-osmotiques	électro-osmotique	e	p	0
 A	électrocyclique	électrocyclique	e	s	0
 N	épervin	épervin	m	s	0
 N	éventements	éventement	m	p	0
-N	mΩ	Ω	m	i	0
 N	CMRT	CMRT	e	i	0
-N	GDa	Da	m	i	0
-N	nGy	Gy	m	i	0
-N	µJ	J	m	i	0
-N	Kibit	Kibit	m	i	0
-N	Mibit	Mibit	m	i	0
 A	abyssopélagique	abyssopélagique	e	s	0
 A	acalorique	acalorique	e	s	0
 A	accessoirisés	accessoiriser	m	p	0
@@ -168149,7 +167443,6 @@ N	webinaires	webinaire	m	p	0
 N	yottabit	yottabit	m	s	1
 N	yponomeutes	yponomeute	m	p	0
 N	zygomycète	zygomycète	m	s	0
-N	µas	µas	f	i	0
 N	ægyrine	ægyrine	f	s	0
 N	écogeste	écogeste	m	s	0
 N	écoparticipation	écoparticipation	f	s	0
@@ -168159,11 +167452,9 @@ N	éditocrate	éditocrate	e	s	0
 A	éditorialisé	éditorialiser	m	s	0
 N	électro-oculogramme	électro-oculogramme	m	s	0
 N	étouffe-chrétien	étouffe-chrétien	m	i	0
-N	dℓ	ℓ	m	i	0
 A	3ᵉ	3ᵉ	e	s	0
 N	GAFAM	GAFAM	e	i	0
 N	Halloweens	Halloween	f	p	0
-N	YHz	Hz	m	i	1
 A	XXVIes	XXVIes	e	p	0
 N	acanthaires	acanthaire	m	p	0
 A	accessoirisées	accessoiriser	f	p	0
@@ -168626,7 +167917,6 @@ N	pétro-dollars	pétro-dollar	m	p	0
 N	pétrologiste	pétrologiste	e	s	0
 A	pêchus	pêchu	m	p	0
 N	quatre-de-chiffre	quatre-de-chiffre	m	s	0
-N	darad	rad	m	i	0
 N	radiobornes	radioborne	f	p	0
 A	ragoutants	ragoutant	m	p	0
 N	rahat-loukoum	rahat-loukoum	m	s	0
@@ -168765,10 +168055,7 @@ N	épluche-légume	épluche-légume	m	s	0
 N	épluche-légumes	épluche-légume	m	p	0
 N	érinyes	érinye	f	p	0
 N	étiopathe	étiopathe	e	s	0
-N	µΩ	Ω	m	i	0
-N	µK	K	m	i	0
 N	Schtroumpfettes	Schtroumpfette	f	p	0
-N	kSv	Sv	m	i	0
 A	XIXᵉ	XIXᵉ	e	s	0
 N	abat-poussière	abat-poussière	m	s	0
 A	abdomino-génital	abdomino-génital	m	s	0
@@ -169221,7 +168508,6 @@ N	mille-raies	mille-raies	m	i	0
 A	minifié	minifier	m	s	0
 N	minotte	minot	f	s	0
 N	mnèmes	mnème	f	p	0
-N	Tmol	mol	f	i	0
 A	monomotrice	monomoteur	f	s	0
 A	monophyodonte	monophyodonte	e	s	0
 N	moquettiste	moquettiste	e	s	0
@@ -169380,7 +168666,6 @@ A	quarderonné	quarderonner	m	s	0
 N	quartiers-maitres	quartiers-maitres	e	p	0
 N	queues-de-cheval	queues-de-cheval	f	p	0
 N	quinzomadaires	quinzomadaire	m	p	0
-N	µrad	rad	m	i	0
 N	radio-altimètre	radio-altimètre	m	s	0
 N	radio-taxi	radio-taxi	m	s	0
 N	radio-électriciens	radio-électricien	m	p	0
@@ -169562,7 +168847,6 @@ A	unicamérales	unicaméral	f	p	0
 N	unionismes	unionisme	m	p	0
 N	uraète	uraète	m	s	0
 N	uridines	uridine	f	p	0
-N	Evad	vad	m	i	0
 A	vaguée	vaguer	f	s	0
 N	valses-hésitations	valses-hésitations	f	p	0
 A	valvé	valvé	m	s	0
@@ -169617,16 +168901,7 @@ A	étronçonnée	étronçonner	f	s	0
 A	étronçonnés	étronçonner	m	p	0
 N	êta	êta	m	s	0
 N	êtas	êta	m	p	0
-N	aHz	Hz	m	i	1
-N	fHz	Hz	m	i	1
-N	pHz	Hz	m	i	1
-N	Pbit	Pbit	m	i	0
-N	Pibit	Pibit	m	i	0
-N	cSv	Sv	m	i	0
-N	dVA	VA	m	i	0
 A	XXVIIIes	XXVIIIes	e	p	0
-N	Ybit	Ybit	m	i	0
-N	Zbit	Zbit	m	i	0
 N	abat-vent	abat-vent	m	s	0
 N	abat-vents	abat-vent	m	p	0
 N	ableret	ableret	m	s	0
@@ -169986,8 +169261,6 @@ A	désinscrits	désinscrit	m	p	0
 N	désinsectiseurs	désinsectiseur	m	p	0
 A	déstressantes	déstressant	f	p	0
 A	dézoomé	dézoomer	m	s	0
-N	YeV	eV	m	i	0
-N	ZeV	eV	m	i	0
 N	ecballium	ecballium	m	s	0
 A	embobelinés	embobeliner	m	p	0
 A	embouées	embouer	f	p	0
@@ -170203,7 +169476,6 @@ N	judéo-bolcheviques	judéo-bolchevique	e	p	0
 A	judéo-bolcheviques	judéo-bolchevique	e	p	0
 N	judéo-marxiste	judéo-marxiste	e	s	0
 A	judéo-marxiste	judéo-marxiste	e	s	0
-N	dakat	kat	m	i	0
 N	pétakelvin	kelvin	m	s	0
 N	térakelvin	kelvin	m	s	0
 N	yottakelvin	kelvin	m	s	0
@@ -170225,7 +169497,6 @@ N	yottalitre	litre	m	s	0
 N	zeptolitre	litre	m	s	0
 N	zettalitre	litre	m	s	0
 N	livres-cassettes	livres-cassettes	m	p	0
-N	zlm	lm	m	i	0
 N	loirétains	loirétain	m	p	0
 A	loirétains	loirétain	m	p	0
 N	lois-programmes	lois-programmes	f	p	0
@@ -170498,7 +169769,6 @@ A	pétrogaziers	pétrogazier	m	p	0
 N	quadrisaïeux	quadrisaïeux	m	p	0
 N	queues-de-rat	queues-de-rat	f	p	0
 N	rabbinismes	rabbinisme	m	p	0
-N	Yrad	rad	m	i	0
 N	radio-élément	radio-élément	m	s	0
 N	rajasthanis	rajasthani	m	p	0
 N	ramponeau	ramponeau	m	s	0
@@ -170773,15 +170043,9 @@ A	éthico-sociale	éthico-social	f	s	0
 A	éthico-sociales	éthico-social	f	p	0
 N	Aïd-el-Kébir	Aïd-el-Kébir	f	i	0
 N	Bas-Jura	Bas-Jura	m	i	0
-N	Eibit	Eibit	m	i	0
-N	Gibit	Gibit	m	i	0
 N	MADOI	MADOI	m	i	0
-N	MSv	Sv	m	i	0
-N	nWb	Wb	m	i	0
-N	YWh	Wh	m	i	0
 A	XXIVes	XXIVes	e	p	0
 A	XXVes	XXVes	e	p	0
-N	Yibit	Yibit	m	i	0
 N	abacules	abacule	m	p	0
 A	abecqués	abecquer	m	p	0
 N	aboteau	aboteau	m	s	0
@@ -171124,8 +170388,6 @@ N	casse-pipes	casse-pipes	m	i	0
 N	casse-tout	casse-tout	e	i	0
 A	casse-tout	casse-tout	e	i	0
 N	casseille	casseille	f	s	0
-N	ycd	cd	f	i	0
-N	zcd	cd	f	i	0
 N	censorats	censorat	m	p	0
 N	cent-et-unième	cent-et-unième	e	s	0
 A	cent-et-unième	cent-et-unième	e	s	0
@@ -171402,7 +170664,6 @@ N	désétablissements	désétablissement	m	p	0
 A	détallées	détaller	f	p	0
 A	dévirginées	dévirginer	f	p	0
 A	dézoomée	dézoomer	f	s	0
-N	EeV	eV	m	i	0
 N	effileur	effileur	m	s	0
 N	effrangements	effrangement	m	p	0
 A	embaluchonné	embaluchonner	m	s	0
@@ -171768,7 +171029,6 @@ N	kamishibaïs	kamishibaï	m	p	0
 N	kanbans	kanban	m	p	0
 N	karaïsmes	karaïsme	m	p	0
 N	karbau	karbau	m	s	0
-N	kkat	kat	m	i	0
 N	exakelvin	kelvin	m	s	0
 N	femtokelvin	kelvin	m	s	0
 N	yoctokelvin	kelvin	m	s	0
@@ -171885,7 +171145,6 @@ N	milk-bar	milk-bar	m	s	0
 A	millénal	millénal	m	s	0
 N	minestrones	minestrone	m	p	0
 A	miraillées	miraillé	f	p	0
-N	mmCE	mmCE	m	i	0
 N	mobilophones	mobilophone	m	p	0
 A	mochard	mochard	m	s	0
 N	modélismes	modélisme	m	p	0
@@ -172827,30 +172086,11 @@ N	étalière	étalier	f	s	0
 N	étamperches	étamperche	f	p	0
 N	éteigneuse	éteigneur	f	s	0
 N	éthuse	éthuse	f	s	0
-N	pBq	Bq	m	i	0
 N	Bîne	Bîne	f	i	0
 N	DUER	DUER	m	i	0
-N	TDa	Da	m	i	0
-N	YDa	Da	m	i	0
-N	cDa	Da	m	i	0
 N	FLOSH	FLOSH	m	i	0
-N	GGy	Gy	m	i	0
-N	MGy	Gy	m	i	0
-N	pGy	Gy	m	i	0
-N	zGy	Gy	m	i	0
-N	cHz	Hz	m	i	1
-N	dHz	Hz	m	i	1
-N	daHz	Hz	m	i	1
-N	hHz	Hz	m	i	1
-N	yHz	Hz	m	i	1
-N	zHz	Hz	m	i	1
-N	dPa	Pa	m	i	0
 N	RNA-seq	RNA-seq	f	i	0
 N	Ténakourou	Ténakourou	m	i	0
-N	mVA	VA	m	i	0
-N	EWh	Wh	m	i	0
-N	ZWh	Wh	m	i	0
-N	nWh	Wh	m	i	0
 A	XXIIIes	XXIIIes	e	p	0
 A	XXXIIes	XXXIIes	e	p	0
 N	abandonnateurs	abandonnateur	m	p	0
@@ -173434,7 +172674,6 @@ A	cafetée	cafeter	f	s	0
 N	cagerottes	cagerotte	f	p	0
 N	cajeputiers	cajeputier	m	p	0
 N	cake-walks	cake-walk	m	p	0
-N	zcal	cal	f	i	0
 A	calables	calable	e	p	0
 N	calambacs	calambac	m	p	0
 N	calcitriols	calcitriol	m	p	0
@@ -173506,8 +172745,6 @@ A	castillonnaises	castillonnais	f	p	0
 N	castoréums	castoréum	m	p	0
 N	caudrettes	caudrette	f	p	0
 N	caïpirinhas	caïpirinha	f	p	0
-N	Ycd	cd	f	i	0
-N	dacd	cd	f	i	0
 A	cellophané	cellophané	m	s	0
 A	cellophanés	cellophané	m	p	0
 N	cellulars	cellular	m	p	0
@@ -174855,7 +174092,6 @@ N	kachas	kacha	f	p	0
 N	kalanchoés	kalanchoé	m	p	0
 N	kamalas	kamala	m	p	0
 N	kaoliangs	kaoliang	m	p	0
-N	mkat	kat	m	i	0
 N	kebbés	kebbé	m	p	0
 N	attokelvin	kelvin	m	s	0
 N	centikelvin	kelvin	m	s	0
@@ -174952,7 +174188,6 @@ A	ludoéducatives	ludoéducatif	f	p	0
 N	kilolumen	lumen	m	s	0
 A	lustrants	lustrant	m	p	0
 N	lustreries	lustrerie	f	p	0
-N	Zlx	lx	m	i	0
 N	lycopes	lycope	m	p	0
 N	lyddites	lyddite	f	p	0
 N	lymphopénies	lymphopénie	f	p	0
@@ -175088,16 +174323,6 @@ N	moins-disants	moins-disant	m	p	0
 A	moins-disants	moins-disant	m	p	0
 N	moins-perçu	moins-perçu	m	s	0
 N	moins-perçus	moins-perçu	m	p	0
-N	Gmol	mol	f	i	0
-N	Mmol	mol	f	i	0
-N	Pmol	mol	f	i	0
-N	Ymol	mol	f	i	0
-N	Zmol	mol	f	i	0
-N	damol	mol	f	i	0
-N	dmol	mol	f	i	0
-N	hmol	mol	f	i	0
-N	ymol	mol	f	i	0
-N	zmol	mol	f	i	0
 N	attomole	mole	f	s	0
 N	décamole	mole	f	s	0
 N	décimole	mole	f	s	0
@@ -175735,7 +174960,6 @@ A	raccoutumé	raccoutumer	m	s	0
 A	raccoutumés	raccoutumer	m	p	0
 N	racketteuses	racketteur	f	p	0
 A	racrapoté	racrapoter	m	s	0
-N	Zrad	rad	m	i	0
 N	centiradian	radian	m	s	0
 N	radicandes	radicande	m	p	0
 N	radio-activités	radio-activité	f	p	0
@@ -176138,7 +175362,6 @@ A	spittés	spitter	m	p	0
 N	sportsmans	sportsman	m	p	0
 N	spéléonautes	spéléonaute	e	p	0
 A	squeezés	squeezer	m	p	0
-N	Ysr	sr	m	i	0
 A	staffé	staffer	m	s	0
 A	staffées	staffer	f	p	0
 N	staffeuses	staffeur	f	p	0
@@ -176500,7 +175723,6 @@ N	usinabilités	usinabilité	f	p	0
 N	ustilaginales	ustilaginale	f	p	0
 N	vacive	vacive	f	s	0
 A	vacive	vacive	f	s	0
-N	Tvad	vad	m	i	0
 N	vaginoplasties	vaginoplastie	f	p	0
 N	valdoisiennes	valdoisien	f	p	0
 A	valdoisiennes	valdoisien	f	p	0
@@ -176514,7 +175736,6 @@ N	valvuloplasties	valvuloplastie	f	p	0
 N	vanuatuanes	vanuatuan	f	p	0
 A	vanuatuanes	vanuatuan	f	p	0
 A	vapoté	vapoter	m	s	0
-N	Zvar	var	m	i	0
 N	vasouillarde	vasouillard	f	s	0
 A	vasouillarde	vasouillard	f	s	0
 N	vassiveau	vassiveau	m	s	0
@@ -176752,59 +175973,16 @@ A	9ᵉ	9ᵉ	e	s	0
 A	9ᵉˢ	9ᵉˢ	e	p	0
 N	Artémisions	Artémision	m	p	0
 N	Aïd-el-Adha	Aïd-el-Adha	f	i	0
-N	YBq	Bq	m	i	0
-N	ZBq	Bq	m	i	0
-N	aBq	Bq	m	i	0
-N	cBq	Bq	m	i	0
-N	dBq	Bq	m	i	0
-N	daBq	Bq	m	i	0
-N	fBq	Bq	m	i	0
-N	hBq	Bq	m	i	0
-N	nBq	Bq	m	i	0
-N	yBq	Bq	m	i	0
-N	zBq	Bq	m	i	0
-N	µBq	Bq	m	i	0
 N	Cantons-de-l’Est	Cantons-de-l’Est	m	p	0
-N	GCi	Ci	m	i	0
-N	YCi	Ci	m	i	0
-N	ZCi	Ci	m	i	0
-N	daCi	Ci	m	i	0
-N	hCi	Ci	m	i	0
-N	zCi	Ci	m	i	0
-N	µCi	Ci	m	i	0
 N	Cosa Nostra	Cosa Nostra	f	i	0
 N	Covid	Covid	e	i	0
 N	Covid-19	Covid-19	e	i	0
 N	Côte-d’Or	Côte-d’Or	f	i	0
 N	DPTH	DPTH	m	i	0
-N	PDa	Da	m	i	0
-N	ZDa	Da	m	i	0
-N	dDa	Da	m	i	0
-N	fDa	Da	m	i	0
-N	hDa	Da	m	i	0
-N	mDa	Da	m	i	0
-N	nDa	Da	m	i	0
-N	pDa	Da	m	i	0
-N	yDa	Da	m	i	0
-N	zDa	Da	m	i	0
-N	µDa	Da	m	i	0
 N	Deutsche Bank	Deutsche Bank	f	i	0
 N	Ergodis	Ergodis	e	i	0
-N	daF	F	m	i	0
-N	µG	G	m	i	0
 N	Gaspésie–Îles-de-la-Madeleine	Gaspésie–Îles-de-la-Madeleine	f	i	0
 N	Golden Show	Golden Show	m	i	0
-N	EGy	Gy	m	i	0
-N	PGy	Gy	m	i	0
-N	TGy	Gy	m	i	0
-N	YGy	Gy	m	i	0
-N	ZGy	Gy	m	i	0
-N	aGy	Gy	m	i	0
-N	dGy	Gy	m	i	0
-N	daGy	Gy	m	i	0
-N	fGy	Gy	m	i	0
-N	hGy	Gy	m	i	0
-N	yGy	Gy	m	i	0
 N	Géofonciers	Géofoncier	m	p	0
 N	Hanouccas	Hanoucca	f	p	0
 N	Hanoukkas	Hanoukka	f	p	0
@@ -176849,13 +176027,6 @@ N	J-pops	J-pop	f	p	0
 N	K-pops	K-pop	f	p	0
 N	Kâma-sûtra	Kâma-sûtra	m	i	0
 N	MIPAW	MIPAW	m	i	0
-N	µN	N	m	i	0
-N	YPa	Pa	m	i	0
-N	ZPa	Pa	m	i	0
-N	fPa	Pa	m	i	0
-N	pPa	Pa	m	i	0
-N	yPa	Pa	m	i	0
-N	zPa	Pa	m	i	0
 N	R&D	R&D	f	i	0
 N	RODP	RODP	f	i	0
 N	Rhode Island	Rhode Island	m	i	0
@@ -176865,28 +176036,6 @@ N	Saint-Vincent-et-les-Grenadines	Saint-Vincent-et-les-Grenadines	m	i	0
 N	Scrameustaches	Scrameustache	m	p	0
 N	Sierra Leone	Sierra Leone	f	i	0
 N	Silicon Valley	Silicon Valley	f	i	0
-N	ESv	Sv	m	i	0
-N	GSv	Sv	m	i	0
-N	PSv	Sv	m	i	0
-N	TSv	Sv	m	i	0
-N	YSv	Sv	m	i	0
-N	ZSv	Sv	m	i	0
-N	aSv	Sv	m	i	0
-N	dSv	Sv	m	i	0
-N	daSv	Sv	m	i	0
-N	fSv	Sv	m	i	0
-N	hSv	Sv	m	i	0
-N	pSv	Sv	m	i	0
-N	ySv	Sv	m	i	0
-N	zSv	Sv	m	i	0
-N	daVA	VA	m	i	0
-N	fVA	VA	m	i	0
-N	hVA	VA	m	i	0
-N	nVA	VA	m	i	0
-N	pVA	VA	m	i	0
-N	yVA	VA	m	i	0
-N	zVA	VA	m	i	0
-N	µVA	VA	m	i	0
 A	VIIIᵉ	VIIIᵉ	e	s	0
 A	VIIIᵉˢ	VIIIᵉˢ	e	p	0
 A	VIIᵉ	VIIᵉ	e	s	0
@@ -176896,33 +176045,6 @@ A	VIᵉˢ	VIᵉˢ	e	p	0
 N	Val-d’Oise	Val-d’Oise	m	i	0
 A	Vᵉ	Vᵉ	e	s	0
 A	Vᵉˢ	Vᵉˢ	e	p	0
-N	EWb	Wb	m	i	0
-N	GWb	Wb	m	i	0
-N	MWb	Wb	m	i	0
-N	PWb	Wb	m	i	0
-N	TWb	Wb	m	i	0
-N	YWb	Wb	m	i	0
-N	ZWb	Wb	m	i	0
-N	aWb	Wb	m	i	0
-N	cWb	Wb	m	i	0
-N	dWb	Wb	m	i	0
-N	daWb	Wb	m	i	0
-N	fWb	Wb	m	i	0
-N	hWb	Wb	m	i	0
-N	mWb	Wb	m	i	0
-N	pWb	Wb	m	i	0
-N	yWb	Wb	m	i	0
-N	zWb	Wb	m	i	0
-N	µWb	Wb	m	i	0
-N	aWh	Wh	m	i	0
-N	cWh	Wh	m	i	0
-N	dWh	Wh	m	i	0
-N	daWh	Wh	m	i	0
-N	fWh	Wh	m	i	0
-N	pWh	Wh	m	i	0
-N	yWh	Wh	m	i	0
-N	zWh	Wh	m	i	0
-N	µWh	Wh	m	i	0
 A	XIIIᵉ	XIIIᵉ	e	s	0
 A	XIIIᵉˢ	XIIIᵉˢ	e	p	0
 A	XIIᵉ	XIIᵉ	e	s	0
@@ -179700,12 +178822,6 @@ A	cagnardes	cagnard	f	p	0
 N	caillages	caillage	m	p	0
 N	caille-laits	caille-lait	m	p	0
 N	caillements	caillement	m	p	0
-N	Pcal	cal	f	i	0
-N	Ycal	cal	f	i	0
-N	Zcal	cal	f	i	0
-N	dacal	cal	f	i	0
-N	ycal	cal	f	i	0
-N	µcal	cal	f	i	0
 N	calaminages	calaminage	m	p	0
 N	calance	calance	f	s	0
 N	calances	calance	f	p	0
@@ -180075,7 +179191,6 @@ A	caïmanté	caïmanter	m	s	0
 A	caïmantée	caïmanter	f	s	0
 A	caïmantées	caïmanter	f	p	0
 A	caïmantés	caïmanter	m	p	0
-N	µcd	cd	f	i	0
 N	cebuanos	cebuano	m	p	0
 N	cedrelas	cedrela	m	p	0
 N	ceinturière	ceinturier	f	s	0
@@ -183436,10 +182551,6 @@ N	dézonages	dézonage	m	p	0
 A	dézoomées	dézoomer	f	p	0
 A	dézoomés	dézoomer	m	p	0
 N	dürüms	dürüm	m	p	0
-N	aeV	eV	m	i	0
-N	daeV	eV	m	i	0
-N	yeV	eV	m	i	0
-N	zeV	eV	m	i	0
 N	ecballiums	ecballium	m	p	0
 N	ecstasys	ecstasy	f	p	0
 N	ectogenèses	ectogenèse	f	p	0
@@ -186752,17 +185863,6 @@ A	kaotisés	kaotiser	m	p	0
 N	karbaus	karbau	m	p	0
 N	karchers	karcher	m	p	0
 N	karstologies	karstologie	f	p	0
-N	Gkat	kat	m	i	0
-N	Mkat	kat	m	i	0
-N	Ykat	kat	m	i	0
-N	Zkat	kat	m	i	0
-N	dkat	kat	m	i	0
-N	fkat	kat	m	i	0
-N	hkat	kat	m	i	0
-N	nkat	kat	m	i	0
-N	ykat	kat	m	i	0
-N	zkat	kat	m	i	0
-N	µkat	kat	m	i	0
 N	attokatal	katal	m	s	0
 N	attokatals	katal	m	p	0
 N	centikatal	katal	m	s	0
@@ -187101,8 +186201,6 @@ N	littérismes	littérisme	m	p	0
 N	living-rooms	living-room	m	p	0
 N	livèches	livèche	f	p	0
 A	liégés	liéger	m	p	0
-N	Zlm	lm	m	i	0
-N	µlm	lm	m	i	0
 N	loadeur	loadeur	m	s	0
 N	loadeurs	loadeur	m	p	0
 N	lobbyismes	lobbyisme	m	p	0
@@ -187287,11 +186385,6 @@ N	zeptolux	lux	m	i	0
 N	zettalux	lux	m	i	0
 N	luxembourgismes	luxembourgisme	m	p	0
 N	luétines	luétine	f	p	0
-N	Ylx	lx	m	i	0
-N	dalx	lx	m	i	0
-N	ylx	lx	m	i	0
-N	zlx	lx	m	i	0
-N	µlx	lx	m	i	0
 N	lycopodiale	lycopodiale	f	s	0
 N	lymphatismes	lymphatisme	m	p	0
 N	lymphocytopénies	lymphocytopénie	f	p	0
@@ -190890,8 +189983,6 @@ N	racketteuse	racketteur	f	s	0
 A	racrapotée	racrapoter	f	s	0
 A	racrapotées	racrapoter	f	p	0
 A	racrapotés	racrapoter	m	p	0
-N	yrad	rad	m	i	0
-N	zrad	rad	m	i	0
 A	radées	rader	f	p	0
 N	attoradian	radian	m	s	0
 N	attoradians	radian	m	p	0
@@ -193066,9 +192157,6 @@ A	squamifère	squamifère	e	s	0
 N	squatteuses	squatteur	f	p	0
 A	squeezée	squeezer	f	s	0
 A	squeezées	squeezer	f	p	0
-N	Zsr	sr	m	i	0
-N	dasr	sr	m	i	0
-N	µsr	sr	m	i	0
 N	stabilimètre	stabilimètre	m	s	0
 N	stabilimètres	stabilimètre	m	p	0
 N	stadière	stadier	f	s	0
@@ -194779,20 +193867,6 @@ N	vaccinodromes	vaccinodrome	m	p	0
 N	vacives	vacive	f	p	0
 A	vacives	vacive	f	p	0
 N	vacuomes	vacuome	m	p	0
-N	Gvad	vad	m	i	0
-N	Mvad	vad	m	i	0
-N	Pvad	vad	m	i	0
-N	Yvad	vad	m	i	0
-N	Zvad	vad	m	i	0
-N	cvad	vad	m	i	0
-N	davad	vad	m	i	0
-N	dvad	vad	m	i	0
-N	fvad	vad	m	i	0
-N	nvad	vad	m	i	0
-N	pvad	vad	m	i	0
-N	yvad	vad	m	i	0
-N	zvad	vad	m	i	0
-N	µvad	vad	m	i	0
 N	vadémécums	vadémécum	m	p	0
 A	vaguées	vaguer	f	p	0
 N	vaillanties	vaillantie	f	p	0
@@ -194832,11 +193906,6 @@ A	vapotée	vapoter	f	s	0
 A	vapotées	vapoter	f	p	0
 A	vapotés	vapoter	m	p	0
 N	vapoteuses	vapoteur	f	p	0
-N	Gvar	var	m	i	0
-N	Pvar	var	m	i	0
-N	nvar	var	m	i	0
-N	yvar	var	m	i	0
-N	µvar	var	m	i	0
 N	varappeuse	varappeur	f	s	0
 N	varappeuses	varappeur	f	p	0
 N	varheure	varheure	m	s	0
@@ -195599,7 +194668,6 @@ N	zérumbet	zérumbet	m	s	0
 N	zérumbets	zérumbet	m	p	0
 N	zétète	zétète	m	s	0
 N	zétètes	zétète	m	p	0
-N	µR	µR	m	i	0
 N	Îles-de-la-Madeleine	Îles-de-la-Madeleine	f	p	0
 N	à-plat-ventrisme	à-plat-ventrisme	m	s	0
 N	à-plat-ventrismes	à-plat-ventrisme	m	p	0
@@ -196242,54 +195310,3 @@ N	œstromanies	œstromanie	f	p	0
 N	œstrones	œstrone	f	p	0
 N	œufrier	œufrier	m	s	0
 N	œufriers	œufrier	m	p	0
-N	EΩ	Ω	m	i	0
-N	GΩ	Ω	m	i	0
-N	TΩ	Ω	m	i	0
-N	YΩ	Ω	m	i	0
-N	ZΩ	Ω	m	i	0
-N	aΩ	Ω	m	i	0
-N	cΩ	Ω	m	i	0
-N	daΩ	Ω	m	i	0
-N	fΩ	Ω	m	i	0
-N	hΩ	Ω	m	i	0
-N	nΩ	Ω	m	i	0
-N	pΩ	Ω	m	i	0
-N	yΩ	Ω	m	i	0
-N	zΩ	Ω	m	i	0
-N	Eℓ	ℓ	m	i	0
-N	Gℓ	ℓ	m	i	0
-N	Mℓ	ℓ	m	i	0
-N	Pℓ	ℓ	m	i	0
-N	Tℓ	ℓ	m	i	0
-N	Yℓ	ℓ	m	i	0
-N	Zℓ	ℓ	m	i	0
-N	aℓ	ℓ	m	i	0
-N	daℓ	ℓ	m	i	0
-N	fℓ	ℓ	m	i	0
-N	kℓ	ℓ	m	i	0
-N	nℓ	ℓ	m	i	0
-N	pℓ	ℓ	m	i	0
-N	yℓ	ℓ	m	i	0
-N	zℓ	ℓ	m	i	0
-N	µℓ	ℓ	m	i	0
-N	EΩ	Ω	m	i	0
-N	GΩ	Ω	m	i	0
-N	MΩ	Ω	m	i	0
-N	PΩ	Ω	m	i	0
-N	TΩ	Ω	m	i	0
-N	YΩ	Ω	m	i	0
-N	ZΩ	Ω	m	i	0
-N	aΩ	Ω	m	i	0
-N	cΩ	Ω	m	i	0
-N	daΩ	Ω	m	i	0
-N	dΩ	Ω	m	i	0
-N	fΩ	Ω	m	i	0
-N	hΩ	Ω	m	i	0
-N	kΩ	Ω	m	i	0
-N	mΩ	Ω	m	i	0
-N	nΩ	Ω	m	i	0
-N	pΩ	Ω	m	i	0
-N	yΩ	Ω	m	i	0
-N	zΩ	Ω	m	i	0
-N	µΩ	Ω	m	i	0
-N	Ω	Ω	m	i	0

@@ -1,8 +1,8 @@
 // Dérivation de data/morpho-oulipao.tsv à partir du lexique Grammalecte v7.7 (MPL 2.0) :
 // les noms communs et les adjectifs (participes adjectivés compris) avec forme, lemme, genre,
 // nombre, et l'interdiction d'élision (note « pel » du lexique : h aspiré, « onze », « yaourt ») ;
-// les adverbes, invariables, avec leur seule forme. Les formules chimiques sont écartées.
-import { isChemicalFormula } from './grammalecte.ts';
+// les adverbes, invariables, avec leur seule forme. Les formules chimiques et les symboles d'unités sont écartés.
+import { isChemicalFormula, isUnitSymbol } from './grammalecte.ts';
 
 const GENDERS: Record<string, string> = { mas: 'm', fem: 'f', epi: 'e' };
 const NUMBERS: Record<string, string> = { sg: 's', pl: 'p', inv: 'i' };
@@ -12,7 +12,7 @@ export function morphologyRowsOf(line: string): string[] {
   const columns = line.split('\t');
   if (columns.length < 20 || columns[2] === 'Flexion') return [];
   const form = columns[2]!;
-  if (isChemicalFormula(form, columns[8]!)) return [];
+  if (isChemicalFormula(form, columns[8]!) || isUnitSymbol(columns[7]!)) return [];
   const lemma = columns[3]!;
   const tags = columns[4]!.split(' ');
   const noElision = /(^| )pel( |$)/.test(columns[7]!) ? '1' : '0';
