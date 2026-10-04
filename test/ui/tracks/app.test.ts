@@ -86,7 +86,7 @@ test('chaque réglage de la page passe par le contrôleur', async () => {
   click(app(), byLabel('S+7 actif'));
   assert.match(renderToString(app()), /Contraintes coupées : texte d’origine\. Pistes coupées : noms, adjectifs, adverbes, autres\./);
   (find(app(), (e) => e.type === 'input' && e.props['type'] === 'number').props['onInput'] as (event: Event) => void)(inputEvent('3'));
-  (find(app(), (e) => e.type === 'select' && e.props['class'] !== 'form' && !e.props['aria-label']).props['onChange'] as (event: Event) => void)(inputEvent('same-gender'));
+  (find(app(), (e) => e.type === 'select' && e.props['class'] !== 'form' && !e.props['aria-label'] && JSON.stringify(e.props['children']).includes('same-gender')).props['onChange'] as (event: Event) => void)(inputEvent('same-gender'));
   assert.deepEqual(actions, [
     { type: 'toggle-mute', category: 'adjective' },
     { type: 'toggle-solo', category: 'verb' },
@@ -158,7 +158,7 @@ test('rack : un second S+n sur les adjectifs, rappelé par leur tranche, puis mo
   (find(unit(), (e) => e.type === 'input').props['onInput'] as (event: Event) => void)(inputEvent('3'));
   click(unit(), (e) => byClass('chip')(e) && byClass('adjective')(e));
   click(unit(), (e) => byClass('chip')(e) && byClass('noun')(e));
-  assert.deepEqual(controller.state.mixer.instances[2], { id: 's7-2', type: 's7', enabled: true, params: { offset: 3, mode: 'reagree', draw: 'fixed', seed: 1 }, targets: ['adjective'] });
+  assert.deepEqual(controller.state.mixer.instances[2], { id: 's7-2', type: 's7', enabled: true, params: { offset: 3, mode: 'reagree', order: 'alphabetical', draw: 'fixed', seed: 1 }, targets: ['adjective'] });
   const out = renderToString(app());
   assert.equal(elements(app()).filter((e) => byClass('pos')(e)).length, 3);
   assert.match(renderToString(find(app(), byLabel('Piste Adjectifs'))), /<p class="reminder">2\. [^·]* \(coupé\) · 3\. S\+3<\/p>/);

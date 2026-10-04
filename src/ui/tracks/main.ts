@@ -5,7 +5,7 @@ import { render } from 'preact';
 import { createSpeechSynthesis } from '../../adapters/speech/speech-synthesis.ts';
 import { createLocalStorageNotebook } from '../../adapters/storage/local-storage-notebook.ts';
 import { createLocalStoragePreferences } from '../../adapters/storage/local-storage-preferences.ts';
-import { createMorphologyLoader, createNeuralTagging, createPhoneticsLoader, createVerbsLoader } from '../composition.ts';
+import { createMorphologyLoader, createNeuralTagging, createPhoneticsLoader, createScalesLoader, createVerbsLoader } from '../composition.ts';
 import { App } from './app.ts';
 import { createTracksController, type TracksState } from './controller.ts';
 import { nextTheme, type Theme } from './components/theme-toggle.ts';
@@ -30,6 +30,7 @@ const controller = createTracksController(
     loadMorphology: createMorphologyLoader(import.meta.url),
     loadVerbs: createVerbsLoader(import.meta.url),
     loadPhonetics: createPhoneticsLoader(import.meta.url),
+    loadScales: createScalesLoader(import.meta.url),
     copy: (text) => navigator.clipboard.writeText(text),
     // La voix du système : sans synthèse vocale dans le navigateur, pas d'écoute.
     ...('speechSynthesis' in window && { speech: createSpeechSynthesis(speechSynthesis, SpeechSynthesisUtterance) }),

@@ -4,6 +4,7 @@ import { DEFAULT_PREFERENCES, MonitoringPreferencesSchema, tempoTiming, type Mon
 import type { MorphologyRepository } from '../../ports/morphology.ts';
 import type { NotebookStorage } from '../../ports/notebook-storage.ts';
 import type { PhoneticsRepository } from '../../ports/phonetics.ts';
+import type { ScaleRepository } from '../../ports/scales.ts';
 import type { Speech, Voice } from '../../ports/speech.ts';
 import type { Tagger } from '../../ports/tagger.ts';
 import type { VerbRepository } from '../../ports/verbs.ts';
@@ -20,6 +21,7 @@ export interface TracksDependencies {
   loadVerbs?: () => Promise<VerbRepository>;
   /** Les prononciations, demandées seulement quand une instance active est un filtre phonétique. */
   loadPhonetics?: () => Promise<PhoneticsRepository>;
+  loadScales?: () => Promise<ScaleRepository>;
   /** Télécharge le modèle d'étiquetage, en signalant l'avancement en octets. */
   preload: (onProgress: (loaded: number, total: number) => void) => Promise<void>;
   /** Place un texte dans le presse-papiers. */
@@ -104,6 +106,8 @@ export interface TracksState {
   verbs: Loading;
   /** Le chargement des prononciations : `idle` tant qu'aucun filtre phonétique n'est en marche. */
   phonetics: Loading;
+  /** Le chargement des échelles affectives : `idle` tant qu'aucun S+n ne prend un autre ordre que le dictionnaire. */
+  scales: Loading;
   /** Le mot d'origine ouvert dans l'inspecteur ; aucun : l'inspecteur est fermé. */
   selected?: number;
   /** La grille : pas par page (selon sa largeur) et page affichée. */
@@ -139,6 +143,7 @@ export interface TracksController {
   loadVerbs(): Promise<void>;
   /** Charge les prononciations ; relance après un échec. Le texte résultant se recalcule à leur arrivée. */
   loadPhonetics(): Promise<void>;
+  loadScales(): Promise<void>;
   /** Applique un geste à la table et met la vue à jour, sans réétiqueter. */
   dispatch(action: MixerAction): void;
   /** Ouvre l'inspecteur sur un mot d'origine. */
@@ -222,6 +227,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     unsaved: false,
     verbs: { status: 'idle', error: '' },
     phonetics: { status: 'idle', error: '' },
+    scales: { status: 'idle', error: '' },
     perPage: 16,
     page: 0,
     pinned: false,
@@ -235,6 +241,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
   let morphology: MorphologyRepository | undefined;
   let verbs: VerbRepository | undefined;
   let phonetics: PhoneticsRepository | undefined;
+  let scales: ScaleRepository | undefined;
   let loading: Promise<void> | undefined;
   let runs = 0;
   // L'entrée gardée ou rouverte en dernier : « Itérer » et « Figer » la reprennent comme parent si rien n'a changé depuis.
@@ -252,7 +259,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
   const rebuild = (patch: Partial<TracksState>) => {
     const mixer = patch.mixer ?? state.mixer;
     if (!session || !morphology) return update(patch);
-    const view = buildView(session, mixer, morphology, undefined, verbs, phonetics);
+    const view = buildView(session, mixer, morphology, undefined, verbs, phonetics, scales);
     const changed = changedWords(state.view, view);
     update({ ...patch, view, changed, generation: state.generation + 1, copyMessage: '' });
     wantResources(mixer);
@@ -266,6 +273,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     const enabled = mixer.instances.filter((instance) => instance.enabled);
     if (state.verbs.status === 'idle' && enabled.some((instance) => instance.targets.includes('verb'))) void controller.loadVerbs();
     if (state.phonetics.status === 'idle' && enabled.some((instance) => pluginById(instance.type).phonetic || readsSyllables(instance))) void controller.loadPhonetics();
+    if (state.scales.status === 'idle' && enabled.some((instance) => pluginById(instance.type).needsScales?.(instance.params))) void controller.loadScales();
   };
 
   /** La mention de la chaîne, avec « réglé en écoutant » si l'écoute a tourné. */
@@ -291,7 +299,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       if (!lineage) lastKept = undefined;
       // Nouvel étiquetage, nouvelles positions : les pas se rouvrent, les verrous tombent, l'inspecteur se ferme.
       const next = reduce(mixer, { type: 'reset-steps' });
-      const view = buildView(session, next, morphology!, undefined, verbs, phonetics);
+      const view = buildView(session, next, morphology!, undefined, verbs, phonetics, scales);
       update({ tagging: false, editing: false, stale: state.input !== text, mixer: next, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, unsaved: true, listened: false, lineage });
       wantResources(next);
     } catch (error) {
@@ -400,6 +408,17 @@ export function createTracksController(dependencies: TracksDependencies, onChang
         update({ phonetics: { status: 'error', error: `Échec du chargement des prononciations : ${messageOf(error)}.` } });
       }
     },
+    async loadScales() {
+      if (!dependencies.loadScales || state.scales.status === 'loading' || state.scales.status === 'ready') return;
+      update({ scales: { status: 'loading', error: '' } });
+      try {
+        scales = await dependencies.loadScales();
+        update({ scales: { status: 'ready', error: '' } });
+        rebuild({});
+      } catch (error) {
+        update({ scales: { status: 'error', error: `Échec du chargement des échelles : ${messageOf(error)}.` } });
+      }
+    },
     dispatch(action) {
       // Seul un geste rend le travail « non gardé » : le chargement d'une textbank ne compte pas.
       rebuild({ mixer: reduce(state.mixer, action), unsaved: session !== undefined });
@@ -506,7 +525,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       if (run !== runs || !morphology) return;
       session = entry.source;
       const mixer = MixerStateSchema.parse(entry.mixer);
-      const view = buildView(session, mixer, morphology, undefined, verbs, phonetics);
+      const view = buildView(session, mixer, morphology, undefined, verbs, phonetics, scales);
       lastKept = entry.id;
       update({ input: session.text, tagging: false, editing: false, stale: false, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, copyMessage: '', unsaved: false, lineage: entry.lineage });
       wantResources(mixer);

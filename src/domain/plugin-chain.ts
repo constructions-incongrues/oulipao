@@ -38,6 +38,8 @@ export interface StageWord {
   output: string;
   /** L'étape a mis un saut de ligne devant ce mot, qui n'y était pas avant elle. */
   newline: boolean;
+  /** Ce que l'étape précise sur ce mot remplacé (« valence 12 → 31 ») ; absent : rien. */
+  detail?: string;
 }
 
 /** Ce qu'un plugin a fait, une fois ses marques ramenées aux mots d'origine. */
@@ -189,7 +191,9 @@ export function runChain(text: string, tagged: readonly TaggedWord[], steps: rea
     const before = words;
     words = fold(result.words, current.origin, tagged.length);
     tail = result.tail;
-    stages.push(words.map((word, i) => ({ output: word.output, newline: word.gap.includes('\n') && !before[i]!.gap.includes('\n') })));
+    const stage: StageWord[] = words.map((word, i) => ({ output: word.output, newline: word.gap.includes('\n') && !before[i]!.gap.includes('\n') }));
+    for (const { index, detail } of result.marks) if (detail) stage[current.origin[index]!]!.detail = detail;
+    stages.push(stage);
     const report: StepReport = { id, replaced: 0, removed: 0, relaid: 0, kept: 0 };
     for (const mark of result.marks) {
       const index = current.origin[mark.index]!;

@@ -25,7 +25,7 @@ export interface AppProps {
   state: TracksState;
   controller: Pick<
     TracksController,
-    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'iterate' | 'freeze' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook' | 'copyEntry' | 'editEntry' | 'toggle' | 'setTempo' | 'setVoice'
+    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'loadScales' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'iterate' | 'freeze' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook' | 'copyEntry' | 'editEntry' | 'toggle' | 'setTempo' | 'setVoice'
   >;
   /** Bascule le thème clair ou sombre ; posé par le montage, qui seul touche au document. */
   onTheme?: () => void;
@@ -131,6 +131,8 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
       html`<p class="loading error" role="alert">${state.verbs.error} <button type="button" class="load" onClick=${() => void controller.loadVerbs()}>Relancer</button></p>`}
       ${state.phonetics.status === 'error' &&
       html`<p class="loading error" role="alert">${state.phonetics.error} <button type="button" class="load" onClick=${() => void controller.loadPhonetics()}>Relancer</button></p>`}
+      ${state.scales.status === 'error' &&
+      html`<p class="loading error" role="alert">${state.scales.error} <button type="button" class="load" onClick=${() => void controller.loadScales()}>Relancer</button></p>`}
       <${Chain} instances=${mixer.instances} plugins=${installedPlugins} recipes=${recipes} lookup=${pluginById} dispatch=${controller.dispatch} />
       ${view &&
       html`<${Transport}
