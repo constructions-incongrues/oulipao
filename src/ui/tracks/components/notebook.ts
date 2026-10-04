@@ -6,6 +6,8 @@ export interface NotebookProps {
   /** Les textes gardés, du plus récent au plus ancien. */
   entries: readonly NotebookEntry[];
   message: string;
+  /** Le carnet survit-il à la fermeture de l'onglet ? `false` : un avertissement reste en tête. Absent : oui. */
+  persistent?: boolean;
   /** Le jour où l'on regarde : il donne les jours depuis la dernière garde. */
   today: Date;
   onReopen: (id: string) => void;
@@ -18,6 +20,9 @@ export interface NotebookProps {
   /** Enregistre la retouche d'une entrée. */
   onEdit: (id: string, text: string) => void;
 }
+
+/** L'avertissement d'un carnet de séance, quand le navigateur refuse le stockage. */
+export const SESSION_ONLY = 'Ce navigateur bloque le stockage : le carnet ne sera pas conservé après la fermeture de l’onglet.';
 
 /** « Aucun texte gardé », « 1 texte gardé », « 3 textes gardés ». */
 export const keptCount = (n: number) => (n === 0 ? 'Aucun texte gardé' : `${n} texte${n > 1 ? 's' : ''} gardé${n > 1 ? 's' : ''}`);
@@ -59,7 +64,7 @@ function Retouch({ entry, onEdit }: { entry: NotebookEntry; onEdit: NotebookProp
  * depuis la dernière garde ; déplié, les textes gardés à relire, copier, retoucher, rouvrir ou
  * supprimer, et le fichier pour les emporter.
  */
-export function Notebook({ entries, message, today, onReopen, onRemove, onExport, onImport, onCopy, onEdit }: NotebookProps): VNode {
+export function Notebook({ entries, message, persistent = true, today, onReopen, onRemove, onExport, onImport, onCopy, onEdit }: NotebookProps): VNode {
   const onFile = async (event: Event) => {
     const input = event.currentTarget as HTMLInputElement;
     const file = input.files?.[0];
@@ -73,6 +78,7 @@ export function Notebook({ entries, message, today, onReopen, onRemove, onExport
       <summary class="notebook-summary">
         <span class="silk">Carnet</span>
         <span class="notebook-count">${keptCount(entries.length)}${last ? ` · dernier texte ${lastKeptLabel(daysSince(last.keptAt, today))}` : ''}</span>
+        ${!persistent && html`<span class="notebook-warning">${SESSION_ONLY}</span>`}
       </summary>
       <div class="notebook-header">
         <p class="section-hint">Le carnet vit dans ce navigateur : exportez-le avant d’en effacer les données.</p>

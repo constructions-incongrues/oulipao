@@ -102,9 +102,9 @@ test('à l’ouverture : le carnet stocké se relit, une entrée abîmée est si
   stored.entries.push({ id: 'cassée' });
   const reread = setup(fakeNotebook(JSON.stringify(stored)).notebook).controller;
   assert.deepEqual(reread.state.notebook.map((entry) => entry.id), ['t2', 't1']);
-  assert.equal(reread.state.notebookMessage, '1 texte illisible laissé de côté.');
+  assert.equal(reread.state.notebookMessage, '1 texte illisible par cette version, conservé : il reste dans l’export du carnet.');
   stored.entries.push({ id: 'cassée aussi' });
-  assert.equal(setup(fakeNotebook(JSON.stringify(stored)).notebook).controller.state.notebookMessage, '2 textes illisibles laissés de côté.');
+  assert.equal(setup(fakeNotebook(JSON.stringify(stored)).notebook).controller.state.notebookMessage, '2 textes illisibles par cette version, conservés : ils restent dans l’export du carnet.');
   assert.equal(setup(fakeNotebook('{abîmé').notebook).controller.state.notebookMessage, 'Le carnet est illisible.');
   assert.equal(setup(fakeNotebook().notebook).controller.state.notebookMessage, '');
 });

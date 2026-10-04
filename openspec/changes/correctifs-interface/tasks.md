@@ -9,15 +9,15 @@
 
 ## 2. Carnet et stockage
 
-- [ ] 2.1 (ui) `parseNotebook` rend les entrées rejetées brutes ; la sérialisation les réécrit dans `entries` ; tests : une entrée rejetée survit à un « Garder », à une suppression et à une retouche
-- [ ] 2.2 (ui) Copier un carnet illisible en entier sous `oulipao.notebook.bak` avant la première écriture, sans jamais écraser une copie existante ; test avec un JSON cassé et un mauvais fichier
-- [ ] 2.3 (ui) Relire et fusionner le stockage avant chaque écriture (garder, supprimer, retoucher, importer) ; test avec deux contrôleurs sur un stockage partagé
-- [ ] 2.4 (ui) Écouter l'événement `storage` sur la clé du carnet dans `main.ts` et rafraîchir l'état par une fonction testée ; test de la fonction de rafraîchissement
-- [ ] 2.5 (ui) Valider la réouverture : `plugin.parse` sur chaque instance, nombre de mots étiquetés égal à celui du texte, verrous dans les bornes, reconstruction sous `try` ; tests : décalage 500, étiquetage désaligné, table inchangée après échec
-- [ ] 2.6 (ui) Exporter aussi les entrées rejetées, telles quelles ; test de l'aller-retour avec une entrée illisible
-- [ ] 2.7 (adapters) `safeStorage(getter)` : tente le getter, renvoie un `Storage` en mémoire marqué `persistent: false` en cas d'échec ; protéger aussi `read` et `write` du carnet ; tests avec un getter qui lève
-- [ ] 2.8 (ui) Câbler `safeStorage` dans `main.ts` et exposer `persistent` ; avertissement permanent en tête du carnet et message « Gardé pour cette séance. Exportez le carnet pour le conserver. » ; tests du rendu et du message
-- [ ] 2.9 (ui) Textes des avis : « N texte(s) illisible(s) par cette version, conservé(s) : ils restent dans l'export du carnet. » et « Le carnet est illisible. Copie de secours gardée dans le navigateur. » ; tests des textes exacts, au singulier et au pluriel
+- [x] 2.1 (ui) `parseNotebook` rend les entrées rejetées brutes ; la sérialisation les réécrit dans `entries` ; tests : une entrée rejetée survit à un « Garder », à une suppression et à une retouche
+- [x] 2.2 (ui) Copier un carnet illisible en entier sous `oulipao.notebook.bak` avant la première écriture, sans jamais écraser une copie existante ; test avec un JSON cassé et un mauvais fichier
+- [x] 2.3 (ui) Relire et fusionner le stockage avant chaque écriture (garder, supprimer, retoucher, importer) ; test avec deux contrôleurs sur un stockage partagé
+- [x] 2.4 (ui) Écouter l'événement `storage` sur la clé du carnet dans `main.ts` et rafraîchir l'état par une fonction testée ; test de la fonction de rafraîchissement
+- [x] 2.5 (ui) Valider la réouverture : `plugin.parse` sur chaque instance, nombre de mots étiquetés égal à celui du texte, verrous dans les bornes, reconstruction sous `try` ; tests : décalage 500, étiquetage désaligné, table inchangée après échec
+- [x] 2.6 (ui) Exporter aussi les entrées rejetées, telles quelles ; test de l'aller-retour avec une entrée illisible
+- [x] 2.7 (adapters) `safeStorage(getter)` : tente le getter, renvoie un `Storage` en mémoire marqué `persistent: false` en cas d'échec ; protéger aussi `read` et `write` du carnet ; tests avec un getter qui lève
+- [x] 2.8 (ui) Câbler `safeStorage` dans `main.ts` et exposer `persistent` ; avertissement permanent en tête du carnet et message « Gardé pour cette séance. Exportez le carnet pour le conserver. » ; tests du rendu et du message
+- [x] 2.9 (ui) Textes des avis : « N texte(s) illisible(s) par cette version, conservé(s) : ils restent dans l'export du carnet. » et « Le carnet est illisible. Copie de secours gardée dans le navigateur. » ; tests des textes exacts, au singulier et au pluriel
 
 ## 3. Messages et chargements
 
