@@ -1,3 +1,4 @@
+import { tokenize } from '../../domain/tokenizer.ts';
 import type { NotebookStorage } from '../../ports/notebook-storage.ts';
 import type { TracksState } from './controller.ts';
 import { pluginById } from './mixer-state.ts';
@@ -13,6 +14,8 @@ export interface NotebookDependencies {
   confirm: (message: string) => boolean;
   /** Propose un fichier à enregistrer, sans rien envoyer. */
   download: (name: string, text: string) => void;
+  /** Le stockage survit-il à la fermeture de l'onglet ? `false` : carnet de séance. Absent : oui. */
+  persistent?: boolean;
 }
 
 /** Un carnet en mémoire : pour les pages et les tests qui n'en branchent pas. */
@@ -49,22 +52,82 @@ export interface NotebookController {
   importNotebook(text: string): void;
   copyEntry(id: string): Promise<void>;
   editEntry(id: string, text: string): void;
+  /** Relit le carnet gardé : un autre onglet vient de l'écrire. */
+  syncNotebook(): void;
 }
 
-/** « 1 texte illisible laissé de côté. » ; rien quand tout se lit. */
 export const count = (n: number, one: string, many: string) => `${n} ${n > 1 ? many : one}`;
-const unreadable = (rejected: number) => (rejected ? `${count(rejected, 'texte illisible laissé', 'textes illisibles laissés')} de côté.` : '');
+
+/** « 1 texte illisible par cette version, conservé : il reste dans l'export du carnet. » ; rien quand tout se lit. */
+export const unreadableNotice = (rejected: number) =>
+  rejected
+    ? `${count(rejected, 'texte illisible', 'textes illisibles')} par cette version, ${rejected > 1 ? 'conservés : ils restent' : 'conservé : il reste'} dans l’export du carnet.`
+    : '';
+
+/** Ce que dit la garde dans un carnet de séance (stockage refusé). */
+export const SESSION_KEPT = 'Gardé pour cette séance. Exportez le carnet pour le conserver.';
 
 export const messageOf = (error: unknown) => (error instanceof Error ? error.message : String(error));
 
-/** Le carnet tel qu'il est lu au démarrage : ses entrées et ce qu'il faut en dire. */
-export function initialNotebook(notebook: NotebookDependencies): Pick<TracksState, 'notebook' | 'notebookMessage'> {
-  const stored = parseNotebook(notebook.storage.read());
-  return { notebook: stored.entries, notebookMessage: stored.error ?? unreadable(stored.rejected) };
+/**
+ * Le carnet tel qu'il est lu au démarrage : ses entrées et ce qu'il faut en dire. Un carnet
+ * illisible en entier est copié en secours tout de suite, avant toute écriture.
+ */
+export function initialNotebook(notebook: NotebookDependencies): Pick<TracksState, 'notebook' | 'notebookMessage' | 'notebookPersistent'> {
+  const raw = notebook.storage.read();
+  const stored = parseNotebook(raw);
+  const persistent = notebook.persistent ?? true;
+  if (!stored.error) return { notebook: stored.entries, notebookMessage: unreadableNotice(stored.rejected), notebookPersistent: persistent };
+  let saved = false;
+  try {
+    if (raw !== null && notebook.storage.backup) {
+      notebook.storage.backup(raw);
+      saved = true;
+    }
+  } catch {
+    // Copie refusée (stockage plein) : on le dit en ne promettant pas de copie.
+  }
+  return { notebook: [], notebookMessage: saved ? `${stored.error} Copie de secours gardée dans le navigateur.` : stored.error, notebookPersistent: persistent };
 }
+
+/** Ce qu'une entrée gardée doit tenir pour être rouverte ; la raison de l'échec, ou rien. */
+export function reopenProblem(entry: NotebookEntry): string | undefined {
+  try {
+    for (const instance of entry.mixer.instances) {
+      const plugin = pluginById(instance.type);
+      plugin.parse(instance.params);
+      for (const lock of instance.locks ?? []) {
+        if (lock.index >= entry.source.tagged.length) return 'un verrou vise un mot absent du texte';
+        plugin.parse({ ...instance.params, [lock.key]: lock.value });
+      }
+    }
+  } catch (error) {
+    return messageOf(error);
+  }
+  if (tokenize(entry.source.text).length !== entry.source.tagged.length) return 'l’étiquetage gardé ne correspond plus au texte';
+  if ((entry.mixer.closed ?? []).some((index) => index >= entry.source.tagged.length)) return 'un pas bouché vise un mot absent du texte';
+  return undefined;
+}
+
+export const cannotReopen = (reason: string) => `Ce texte ne peut pas être rouvert : ${reason}.`;
 
 /** Les gestes du carnet : garder, rouvrir, supprimer, exporter, importer, copier, retoucher. */
 export function createNotebookController(host: NotebookHost, notebook: NotebookDependencies): NotebookController {
+  // Les entrées que cette version ne sait pas lire : réécrites à chaque sauvegarde, et exportées.
+  let unreadable = parseNotebook(notebook.storage.read()).unreadable;
+
+  /**
+   * Le carnet tel qu'il est gardé maintenant : un autre onglet a pu l'écrire. Illisible, on repart
+   * de ce que montre la page (le brut a été copié en secours au démarrage).
+   */
+  const latest = (): NotebookEntry[] => {
+    const parsed = parseNotebook(notebook.storage.read());
+    if (parsed.error) return host.state.notebook;
+    unreadable = parsed.unreadable;
+    return parsed.entries;
+  };
+  const write = (entries: readonly NotebookEntry[]) => notebook.storage.write(serializeNotebook(entries, unreadable));
+
   return {
     keep() {
       const { state } = host;
@@ -79,10 +142,10 @@ export function createNotebookController(host: NotebookHost, notebook: NotebookD
         source: session,
         mixer: state.mixer,
       };
-      const entries = addEntry(state.notebook, entry);
       try {
-        notebook.storage.write(serializeNotebook(entries));
-        host.update({ notebook: entries, copyMessage: 'Gardé.', unsaved: false });
+        const entries = addEntry(latest(), entry);
+        write(entries);
+        host.update({ notebook: entries, copyMessage: state.notebookPersistent ? 'Gardé.' : SESSION_KEPT, unsaved: false });
       } catch (error) {
         host.update({ copyMessage: `Impossible de garder : ${messageOf(error)}` });
       }
@@ -90,32 +153,29 @@ export function createNotebookController(host: NotebookHost, notebook: NotebookD
     async reopen(id) {
       const entry = host.state.notebook.find((candidate) => candidate.id === id);
       if (!entry) return;
-      try {
-        for (const instance of entry.mixer.instances) pluginById(instance.type);
-      } catch (error) {
-        return host.update({ notebookMessage: `Ce texte ne peut pas être rouvert : ${messageOf(error)}.` });
-      }
+      const problem = reopenProblem(entry);
+      if (problem) return host.update({ notebookMessage: cannotReopen(problem) });
       if (host.state.unsaved && !notebook.confirm('Le texte en cours n’est pas gardé. Rouvrir quand même ?')) return;
       await host.restore(entry);
     },
     remove(id) {
       if (!notebook.confirm('Supprimer ce texte du carnet ?')) return;
-      const entries = removeEntry(host.state.notebook, id);
       try {
-        notebook.storage.write(serializeNotebook(entries));
+        const entries = removeEntry(latest(), id);
+        write(entries);
         host.update({ notebook: entries, notebookMessage: '' });
       } catch (error) {
         host.update({ notebookMessage: `Suppression impossible : ${messageOf(error)}` });
       }
     },
     exportNotebook() {
-      notebook.download(exportFileName(notebook.now()), serializeNotebook(host.state.notebook));
+      notebook.download(exportFileName(notebook.now()), serializeNotebook(host.state.notebook, unreadable));
     },
     importNotebook(text) {
-      const merged = mergeEntries(host.state.notebook, text);
+      const merged = mergeEntries(latest(), text);
       if (merged.error) return host.update({ notebookMessage: `Import refusé : ${merged.error}` });
       try {
-        notebook.storage.write(serializeNotebook(merged.entries));
+        write(merged.entries);
       } catch (error) {
         return host.update({ notebookMessage: `Import impossible : ${messageOf(error)}` });
       }
@@ -134,13 +194,19 @@ export function createNotebookController(host: NotebookHost, notebook: NotebookD
       }
     },
     editEntry(id, text) {
-      const entries = editEntry(host.state.notebook, id, text);
       try {
-        notebook.storage.write(serializeNotebook(entries));
+        const entries = editEntry(latest(), id, text);
+        write(entries);
         host.update({ notebook: entries, notebookMessage: '' });
       } catch (error) {
         host.update({ notebookMessage: `Retouche impossible : ${messageOf(error)}` });
       }
+    },
+    syncNotebook() {
+      const parsed = parseNotebook(notebook.storage.read());
+      if (parsed.error) return; // illisible : on garde ce que montre la page
+      unreadable = parsed.unreadable;
+      host.update({ notebook: parsed.entries, notebookMessage: unreadableNotice(parsed.rejected) });
     },
   };
 }

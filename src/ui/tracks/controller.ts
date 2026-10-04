@@ -15,7 +15,7 @@ import type { VerbRepository } from '../../ports/verbs.ts';
 import { createListeningController, initialListening } from './listening-controller.ts';
 import { initialState, pluginById, reduce } from './mixer-state.ts';
 import type { NotebookEntry } from './notebook.ts';
-import { createNotebookController, initialNotebook, memoryNotebook, messageOf, type NotebookDependencies } from './notebook-controller.ts';
+import { cannotReopen, createNotebookController, initialNotebook, memoryNotebook, messageOf, type NotebookDependencies } from './notebook-controller.ts';
 import { MixerStateSchema, type MixerAction, type MixerState } from './types.ts';
 import { buildView, changedWords, pageOf, ruleMention, stepsPerPage, withListening, type Session, type TracksView } from './view-model.ts';
 
@@ -82,6 +82,8 @@ export interface TracksState {
   notebook: NotebookEntry[];
   /** Message du carnet : entrées illisibles, import, réouverture impossible. */
   notebookMessage: string;
+  /** Le carnet survit-il à la fermeture de l'onglet ? `false` : stockage refusé, carnet de séance. */
+  notebookPersistent: boolean;
   /** Un texte en pistes a changé, par un geste, depuis la dernière garde ou réouverture. */
   unsaved: boolean;
   /** Le chargement des verbes : `idle` tant qu'aucune instance ne les vise. */
@@ -151,6 +153,8 @@ export interface TracksController {
   copyEntry(id: string): Promise<void>;
   /** Retouche le résultat d'une entrée ; vide ou égal au résultat produit, la retouche tombe. */
   editEntry(id: string, text: string): void;
+  /** Relit le carnet gardé : un autre onglet vient de l'écrire. */
+  syncNotebook(): void;
   /** La grille a changé de largeur : le pas qui était en tête de page reste visible. */
   resize(width: number): void;
   /** Affiche une page de la grille, bornée aux pages existantes. */
@@ -263,9 +267,15 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     update({ notebookMessage: '', inputMessage: '', listened: false });
     await controller.preload();
     if (run !== runs || !morphology) return;
-    session = entry.source;
     const mixer = MixerStateSchema.parse(entry.mixer);
-    const view = buildView(session, mixer, morphology, undefined, verbs, phonetics);
+    let view: TracksView;
+    try {
+      // On reconstruit avant de toucher à la table : un échec la laisse telle quelle.
+      view = buildView(entry.source, mixer, morphology, undefined, verbs, phonetics);
+    } catch (error) {
+      return update({ notebookMessage: cannotReopen(messageOf(error)) });
+    }
+    session = entry.source;
     update({ input: session.text, tagging: false, editing: false, stale: false, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, copyMessage: '', unsaved: false });
     wantResources(mixer);
   };
@@ -398,6 +408,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     importNotebook: notebookController.importNotebook,
     copyEntry: notebookController.copyEntry,
     editEntry: notebookController.editEntry,
+    syncNotebook: notebookController.syncNotebook,
     async copy() {
       const view = state.view;
       if (!view || state.stale || view.empty) return;

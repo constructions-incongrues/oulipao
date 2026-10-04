@@ -87,6 +87,7 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
       <${Notebook}
         entries=${state.notebook}
         message=${state.notebookMessage}
+        persistent=${state.notebookPersistent}
         today=${today}
         onReopen=${(id: string) => void controller.reopen(id)}
         onRemove=${controller.remove}

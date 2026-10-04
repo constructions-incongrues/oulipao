@@ -24,31 +24,39 @@ export const NotebookFileSchema = z.object({ version: z.literal(1), entries: z.a
 
 export interface ParsedNotebook {
   entries: NotebookEntry[];
-  /** Les entrées illisibles, laissées de côté. */
+  /** Les entrées illisibles par cette version : comptées, et gardées telles quelles. */
   rejected: number;
+  /** Ces entrées, brutes : réécrites à chaque sauvegarde et exportées, pour qu'aucune ne se perde. */
+  unreadable: unknown[];
   /** Le texte n'est pas un carnet : aucune entrée n'a pu être lue. */
   error?: string;
 }
 
 const newestFirst = (entries: readonly NotebookEntry[]) => [...entries].sort((a, b) => b.keptAt.localeCompare(a.keptAt));
 
-/** Lit un carnet : une entrée abîmée est comptée et laissée de côté, sans cacher les autres. */
+/** Lit un carnet : une entrée abîmée est comptée et gardée à part, sans cacher les autres. */
 export function parseNotebook(raw: string | null): ParsedNotebook {
-  if (raw === null) return { entries: [], rejected: 0 };
+  if (raw === null) return { entries: [], rejected: 0, unreadable: [] };
   let json: unknown;
   try {
     json = JSON.parse(raw);
   } catch {
-    return { entries: [], rejected: 0, error: 'Le carnet est illisible.' };
+    return { entries: [], rejected: 0, unreadable: [], error: 'Le carnet est illisible.' };
   }
   const file = NotebookFileSchema.safeParse(json);
-  if (!file.success) return { entries: [], rejected: 0, error: 'Ce n’est pas un carnet d’Oulipao.' };
-  const parsed = file.data.entries.map((entry) => NotebookEntrySchema.safeParse(entry));
-  const entries = parsed.flatMap((result) => (result.success ? [result.data] : []));
-  return { entries: newestFirst(entries), rejected: parsed.length - entries.length };
+  if (!file.success) return { entries: [], rejected: 0, unreadable: [], error: 'Ce n’est pas un carnet d’Oulipao.' };
+  const entries: NotebookEntry[] = [];
+  const unreadable: unknown[] = [];
+  for (const entry of file.data.entries) {
+    const result = NotebookEntrySchema.safeParse(entry);
+    if (result.success) entries.push(result.data);
+    else unreadable.push(entry);
+  }
+  return { entries: newestFirst(entries), rejected: unreadable.length, unreadable };
 }
 
-export const serializeNotebook = (entries: readonly NotebookEntry[]) => JSON.stringify({ version: 1, entries });
+/** Le carnet à garder ou à exporter : les entrées lisibles, puis les illisibles telles qu'elles étaient. */
+export const serializeNotebook = (entries: readonly NotebookEntry[], unreadable: readonly unknown[] = []) => JSON.stringify({ version: 1, entries: [...entries, ...unreadable] });
 
 export const addEntry = (entries: readonly NotebookEntry[], entry: NotebookEntry) => newestFirst([entry, ...entries]);
 
@@ -66,7 +74,7 @@ export function mergeEntries(current: readonly NotebookEntry[], raw: string): Me
   if (incoming.error) return { ...incoming, entries: [...current], added: 0, present: 0 };
   const known = new Set(current.map((entry) => entry.id));
   const fresh = incoming.entries.filter((entry) => !known.has(entry.id));
-  return { entries: newestFirst([...current, ...fresh]), rejected: incoming.rejected, added: fresh.length, present: incoming.entries.length - fresh.length };
+  return { entries: newestFirst([...current, ...fresh]), rejected: incoming.rejected, unreadable: incoming.unreadable, added: fresh.length, present: incoming.entries.length - fresh.length };
 }
 
 /** Le nom du fichier exporté, à la date du jour : `oulipao-carnet-2026-10-03.json`. */

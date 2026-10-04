@@ -3,14 +3,17 @@
 import { html } from 'htm/preact';
 import { render } from 'preact';
 import { createSpeechSynthesis } from '../../adapters/speech/speech-synthesis.ts';
-import { createLocalStorageNotebook } from '../../adapters/storage/local-storage-notebook.ts';
+import { createLocalStorageNotebook, NOTEBOOK_KEY } from '../../adapters/storage/local-storage-notebook.ts';
 import { createLocalStoragePreferences } from '../../adapters/storage/local-storage-preferences.ts';
+import { safeStorage } from '../../adapters/storage/safe-storage.ts';
 import { createMorphologyLoader, createNeuralTagging, createPhoneticsLoader, createVerbsLoader } from '../composition.ts';
 import { App } from './app.ts';
 import { createTracksController, type TracksState } from './controller.ts';
 import { nextTheme, type Theme } from './components/theme-toggle.ts';
 
 const root = document.getElementById('app')!;
+// Cookies bloqués : lire `localStorage` lève ; la page démarre alors avec un carnet de séance.
+const { storage, persistent } = safeStorage(() => localStorage);
 const { tagger, preload } = createNeuralTagging();
 // À l'ouverture de l'inspecteur, le focus y passe, pour que les flèches et Échap répondent.
 let inspecting = false;
@@ -33,9 +36,10 @@ const controller = createTracksController(
     copy: (text) => navigator.clipboard.writeText(text),
     // La voix du système : sans synthèse vocale dans le navigateur, pas d'écoute.
     ...('speechSynthesis' in window && { speech: createSpeechSynthesis(speechSynthesis, SpeechSynthesisUtterance) }),
-    preferences: createLocalStoragePreferences(localStorage),
+    preferences: createLocalStoragePreferences(storage),
     notebook: {
-      storage: createLocalStorageNotebook(localStorage),
+      storage: createLocalStorageNotebook(storage),
+      persistent,
       now: () => new Date(),
       newId: () => crypto.randomUUID(),
       confirm: (message) => window.confirm(message),
@@ -51,6 +55,11 @@ const controller = createTracksController(
   draw,
 );
 draw(controller.state);
+
+// Un autre onglet a écrit le carnet : celui-ci le relit (clé du carnet, ou stockage vidé).
+addEventListener('storage', (event) => {
+  if (event.key === NOTEBOOK_KEY || event.key === null) controller.syncNotebook();
+});
 
 // Les raccourcis de l'inspecteur et de l'écoute répondent où que soit le focus, sauf dans un champ de saisie.
 const inField = (target: EventTarget | null) =>
