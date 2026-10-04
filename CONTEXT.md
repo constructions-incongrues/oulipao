@@ -1,37 +1,37 @@
 # Context
 # nanopm uses this to challenge your product thinking. Edit freely.
 # Lines marked [auto] were pre-filled — verify they're accurate.
-# Mis à jour par /pm-challenge-me le 2026-10-04.
+# Mis à jour par /pm-challenge-me le 2026-10-04, après le pari de l'instrument.
 
 1. What are you building? (one sentence, no jargon)
-   [auto from product.md + code] Oulipao : un instrument dans le navigateur qui découpe un texte français en pistes grammaticales et lui applique une chaîne de contraintes oulipiennes (S+7, V+7, lipogramme, rimes, formes à refrain), sans compte et sans que le texte quitte la page. En ligne sur https://oulipao.incongru.org.
+   [auto from product.md] Un instrument pour jouer de la littérature potentielle : on charge un texte français, on branche et règle en direct une chaîne de contraintes oulipiennes sur ses pistes, on garde les prises au carnet. En ligne sur https://oulipao.incongru.org (v0.6.2).
 
 2. Who is the primary user? (job title, company size, situation)
-   [auto from personas.md + feedback.md] Le fondateur, qui construit et écrit à parts égales. Publics non ciblés observés : miasmes (joue pour rire, montre le résultat) et Rozie (trouve ça rigolo mais « ça veut plus rien dire après » ; veut changer l'humeur d'un texte).
+   [auto from personas.md] Le fondateur, qui joue de l'instrument et le construit ; les textes sont le sous-produit. Secondaire : le proche qui reçoit un lien ou un puzzle (miasmes, Rozie), pour le lien et le puzzle seulement. Anti-persona : celui qui veut que l'IA écrive à sa place.
 
 3. What is the single most important thing users do with it today?
-   [auto from feedback.md] Coller un texte, enchaîner des contraintes, copier le bloc du carnet (résultat + ligne de chaîne) et l'envoyer dans une messagerie ou par mail.
+   [auto from feedback.md] Coller un texte, enchaîner des contraintes, copier le résultat et l'envoyer dans une messagerie ou par mail.
 
 4. What did you ship in the last 30 days?
-   [auto from git log] 3 octobre : moteur S+7, pistes, filtres chaînables, V+7, lipogramme, rimes, formes à refrain, mise en ligne. 4 octobre (~100 PR fusionnées depuis le 3 au soir) : carnet de textes gardés, texte libre, recettes (tautogramme, abécédaire, éclipse, S+dé), monitoring vocal, modulateur, itérer et figer, V+n par valence, exemples en rotation, correctifs d'audit (interface, données, domaine), critique de design, file de fusion ; PRD du mode puzzle en cours (#89).
+   [auto from git log] 3-4 octobre, 157 commits, v0.6.2 : moteur S+7 accordé, pistes, 15 moteurs, 15 recettes, carnet, écoute vocale et discrépance, modulateur et porte, verrous, itérer et figer, V+n, lien partageable, lettrisme (Ciselure, Alphabet augmenté), mise en vers par syllabes, temps linéaire, file de fusion. PRD du mode puzzle sur une branche (#89).
 
 5. What are your top 1-2 goals for this quarter?
-   [auto from objectives.md] O1 : un prototype à pistes avec un S+7 français correct (atteint). O2 : que le fondateur se serve d'Oulipao pour écrire : 5 textes gardés avant le 31 décembre, une séance par semaine pendant 6 semaines, 3 textes à plusieurs filtres.
+   [auto from objectives.md] O1 « Un instrument dont on joue » : une prise par semaine hors débogage, défauts corrigés sous 7 jours, 70 % du catalogue joué. O2 « D'autres en jouent sans relance » : lien nu à 7 personnes, retour spontané, puzzle renvoyé résolu.
 
 6. What are your users doing RIGHT NOW when your product doesn't cover their need?
-   [auto from feedback.md] Ils copient le bloc du carnet dans une messagerie ; l'original n'y figure pas, et Rozie demande si on retrouve le texte initial. Quand le sens disparaît, ils rient une fois puis décrochent.
+   [auto from feedback.md + code] Ils copient le résultat dans une messagerie ; « Copier » sous le résultat n'emporte pas l'original (`controller.ts:571`), et Rozie demande si on retrouve le texte initial. Quand le sens disparaît : « ça veut plus rien dire après 😅 ».
 
 7. What have you explicitly decided NOT to build, and why?
-   [auto from roadmap.md] Pas de génération par IA, pas de comptes ni de sauvegarde serveur, pas d'autres langues, pas de chaîne par piste, pas de nouvelle fiche du séquenceur tant qu'aucun texte n'est gardé ; en LATER : format de plugin publié, partage en un clic, cinq testeurs.
+   [auto from roadmap.md] Pas d'IA générative, pas de comptes ni de serveur, pas d'autres langues, pas de chaîne par piste, pas de format de plugin publié, pas de partage en un clic hors puzzles.
 
 8. Who are your 3 most important users/customers right now?
-   [auto from feedback.md] Le fondateur ; Rozie (critique et demande d'usage, 4 octobre) ; miasmes (premier texte extérieur le 3 octobre, sans réponse aux deux messages du 4).
+   [auto from personas.md + feedback.md] Le fondateur ; Rozie (critique et demande d'usage) ; miasmes (silencieux depuis le 3 octobre).
 
 9. What is the one metric that matters most to you right now?
-   [auto from objectives.md + feedback.md] Le nombre de textes gardés ou montrés : 1 de miasmes ; 3 du fondateur envoyés le 4 octobre (présence au carnet non vérifiée).
+   [auto from objectives.md] Prises de jeu par semaine hors débogage (O1 KR1) ; personnes qui ouvrent Oulipao d'elles-mêmes (O2, 0 sur 3).
 
 10. What's the biggest thing you're uncertain or worried about?
-    [auto from strategy.md] Construire au lieu d'écrire. Garde : trois semaines sans texte gardé alors que les commits continuent.
+    [auto from personas.md + strategy.md] Construire et corriger au lieu de jouer : personne, fondateur compris, n'a de prise documentée hors débogage.
 
 11. What development methodology does your team use?
     [auto from org.md] Aucune ; NOW / NEXT / LATER sans dates.
@@ -39,8 +39,7 @@
 12. How does this project ship?
     [auto from org.md] a) Solo + AI agents
 
-Réponse aux contradictions (2026-10-03, matin) : je ne sais pas si le lecteur reviendra. Je construis d'abord un prototype à pistes (la métaphore de MAO est l'idée), puis je le montre à cinq personnes des deux profils.
-
-Réponse aux contradictions (2026-10-03, soir) :
-- Q10, question évitée : je reviens autant pour construire l'instrument que pour écrire, à parts égales. Un objectif pour chacun, avec une garde pour que la construction ne mange pas l'écriture.
-- Q2 : un texte gardé ou montré par quelqu'un d'autre (comme celui de miasmes) compte pour les objectifs.
+Réponses aux défis précédents (historique) :
+- 2026-10-03 matin : je construis d'abord un prototype à pistes, puis je le montre.
+- 2026-10-03 soir : je reviens autant pour construire que pour écrire.
+- 2026-10-04 : pari de l'instrument : le plaisir vient de l'instrument, les textes sont le sous-produit.

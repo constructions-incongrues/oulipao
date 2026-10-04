@@ -1,22 +1,24 @@
 ---
 id: miasmes-joue-pour-rire
 type: persona
-title: "Public non ciblé — miasmes, qui joue pour rire"
+title: "miasmes, qui joue pour rire (persona secondaire, proche qui reçoit un lien)"
 status: active
 provenance: evidence-backed
 sources: [personas.md, feedback.md]
 relates_to:
   - page: personas/primary-lecteur-de-perec-leo
     rel: supersedes
+  - page: personas/secondary-proche-qui-recoit-un-lien
+    rel: supports
   - page: opportunities/partager-un-resultat
     rel: supports
   - page: opportunities/resultat-a-cote-de-l-original
     rel: supports
-last_updated: 2026-10-03
+last_updated: 2026-10-04
 ---
 
 ## Summary
-Personne réelle, proche du fondateur, observée le 2026-10-03 : la première à se servir d'Oulipao en dehors du fondateur. Public non ciblé : ce n'est pas un persona pour lequel on construit, mais il remplace le profil imaginé « Lecteur-de-Perec Léo ». Le genre de miasmes est inconnu ; la page les désigne par leur nom.
+Personne réelle, proche du fondateur, observée le 2026-10-03 : la première à se servir d'Oulipao en dehors du fondateur. Depuis le 2026-10-04, l'une des deux personnes réelles du persona secondaire [[personas/secondary-proche-qui-recoit-un-lien]] (avec Rozie) ; n'est plus « public non ciblé ». Le genre de miasmes est inconnu ; la page les désigne par leur nom.
 
 ## What we know
 **Ce qui s'est passé**
@@ -30,9 +32,10 @@ L'écart comique entre l'original et le résultat, et pouvoir le montrer sans ef
 
 Voir [[opportunities/resultat-a-cote-de-l-original]] et [[opportunities/partager-un-resultat]].
 
-**Statut : non ciblé**
-Un échange ne fait pas un public. Le fondateur reste le seul persona (voir [[personas/fondateur-tristan]]) ; miasmes montre seulement que des textes peuvent circuler sans qu'on construise pour cela. Le hasard du lexique a aussi produit des mots crus que le fondateur a trouvés drôles ; aucune décision de filtrage n'est prise.
+**Statut : persona secondaire (2026-10-04)**
+Rattaché au proche qui reçoit un lien, borné au lien et au puzzle. Le hasard du lexique a aussi produit des mots crus que le fondateur a trouvés drôles ; aucune décision de filtrage n'est prise. miasmes n'a pas répondu aux deux derniers messages du fondateur (larsen, V+n) (`feedback.md`).
+- "Deux personnes réelles à ce jour : miasmes et Rozie" — personas.md, 2026-10-04
 - "Léo n'avait jamais été observé ; miasmes l'a été" — personas.md, 2026-10-03
 
 ## Open / superseded
-_(rien)_
+**Statut : non ciblé (remplacé 2026-10-04)** — « Un échange ne fait pas un public. Le fondateur reste le seul persona ; miasmes montre seulement que des textes peuvent circuler sans qu'on construise pour cela. » Remplacé par la promotion du proche qui reçoit un lien en persona secondaire — "Deux personnes réelles à ce jour : miasmes et Rozie" — personas.md, 2026-10-04.
