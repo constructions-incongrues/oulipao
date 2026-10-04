@@ -21,11 +21,11 @@
 
 ## 4. Coûts linéaires (PR `perf:`)
 
-- [ ] 4.1 (domain) `reread` à deux pointeurs dans `plugin-chain.ts` ; `npm test` vert, banc de référence inchangé
-- [ ] 4.2 (domain) `removeWord` sans `slice` (`removal.ts`), `Set` des marques dans `track-sort/plugin.ts`, strophes sans recopie et `Set` des pas bouchés dans `rhyme/engine.ts` ; `npm test` vert, banc de référence inchangé
-- [ ] 4.3 (domain) Test de volume dans `test/domain/plugin-chain.test.ts` : une chaîne Tri par piste + Bord + Mise en vers sur un texte de 5 000 mots, sous un seuil large qui n'attrape qu'un retour au quadratique ; vérifier qu'il échoue sur l'ancien `reread`
-- [ ] 4.4 (domain) Lipogramme : `bare(word)` calculé une fois, cache par jeu de lettres des formes qui les évitent, passé en `among` à `nthNoun` ; banc de référence inchangé et temps du texte 2 mesuré avant/après (`--time`)
-- [ ] 4.5 Reporter les mesures avant/après dans RISK-08 de `docs/arc42/11-risques-et-dette-technique.md`
+- [x] 4.1 (domain) `reread` à deux pointeurs dans `plugin-chain.ts` ; `npm test` vert, banc de référence inchangé
+- [x] 4.2 (domain) `removeWord` sans `slice` (`removal.ts`), `Set` des marques dans `track-sort/plugin.ts`, strophes sans recopie et `Set` des pas bouchés dans `rhyme/engine.ts` ; `npm test` vert, banc de référence inchangé
+- [x] 4.3 (domain) Test de volume dans `test/domain/plugin-chain.test.ts` : une chaîne Tri par piste + Bord + Mise en vers sur un texte de 5 000 mots, sous un seuil large qui n'attrape qu'un retour au quadratique ; vérifier qu'il échoue sur l'ancien `reread`
+- [x] 4.4 (domain) Lipogramme : `bare(word)` calculé une fois, cache par jeu de lettres des formes qui les évitent, passé en `among` à `nthNoun` ; banc de référence inchangé et temps du texte 2 mesuré avant/après (`--time`)
+- [x] 4.5 Reporter les mesures avant/après dans RISK-08 de `docs/arc42/11-risques-et-dette-technique.md`
 
 ## 5. Copies regroupées (PR `refactor:`)
 

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { VerbRepository } from '../ports/verbs.ts';
-import { containsLetter } from './lipogram/neighbour.ts';
+import { containsLetter, poolWithout } from './lipogram/neighbour.ts';
 import { aroundAmong, before, candidatePositions } from './neighbours.ts';
 import type { WordMark } from './plugin.ts';
 import { GenderSchema, GrammaticalNumberSchema, type OutputWord } from './s7/types.ts';
@@ -111,6 +111,15 @@ export function shiftVerb(word: string, previous: readonly string[], offset: num
 }
 
 /**
+ * Les positions d'un tour du dictionnaire à partir de `start`, sans la place de départ quand
+ * `skipStart` vaut 1 : un générateur, pour ne pas allouer un tableau de tous les infinitifs à chaque
+ * verbe alors que le voisin est le plus souvent tout près.
+ */
+function* tour(length: number, start: number, step: number, skipStart: number): Generator<number> {
+  for (let k = 0; k < length - skipStart; k++) yield (((start + (k + 1) * step) % length) + length) % length;
+}
+
+/**
  * Le n-ième verbe qui suit dans le dictionnaire (`offset` négatif : qui précède) et qui a, aux
  * mêmes traits, une forme que `accept` retient ; `none` est la raison s'il n'y en a pas assez.
  */
@@ -145,7 +154,7 @@ export function nthVerb(
         start,
         step,
       )
-    : Array.from({ length: infinitives.length - (from ? 0 : 1) }, (_, k) => (((start + (k + 1) * step) % infinitives.length) + infinitives.length) % infinitives.length);
+    : tour(infinitives.length, start, step, from ? 0 : 1);
   for (const position of positions) {
     const target = infinitives[position]!;
     const form = verbs.forms(target).find((candidate) => fits(candidate, found.reading) && accept(candidate.form));
@@ -154,9 +163,15 @@ export function nthVerb(
   return { reason: none };
 }
 
+/** Les formes verbales sans ces lettres, une fois par jeu de lettres (formes nues calculées une fois). */
+const verbPool = (letters: string, verbs: VerbRepository): ReadonlySet<string> =>
+  poolWithout(verbs, 'verb', letters, function* () {
+    for (const infinitive of verbs.infinitives()) for (const form of verbs.forms(infinitive)) yield form.form;
+  });
+
 /** Le premier verbe qui suit dans le dictionnaire et qui a, aux mêmes traits, une forme sans la lettre. */
 export const neighbourVerb = (word: string, previous: readonly string[], letter: string, verbs: VerbRepository): VerbShift =>
-  nthVerb(word, previous, 1, (form) => !containsLetter(form, letter), verbs, 'aucun voisin sans la lettre');
+  nthVerb(word, previous, 1, (form) => !containsLetter(form, letter), verbs, 'aucun voisin sans la lettre', verbPool(letter, verbs));
 
 const FULL_PRONOUN: Record<string, string> = { j: 'je', m: 'me', t: 'te', s: 'se', n: 'ne', l: 'le' };
 

@@ -63,19 +63,25 @@ export const trackSortPlugin = definePlugin({
     const words = plain.words;
     let tail = plain.tail;
     const marks: WordMark[] = [];
+    // Le dernier mot resté visible : les retraits vont dans l'ordre du texte, il suffit de le suivre.
+    let visible = -1;
     tagged.forEach(({ word, category }, index) => {
-      if (targets.has(category) !== (mode === 'remove')) return;
-      if (skip.has(index)) return void marks.push({ index, original: word, reason: CLOSED });
-      tail = removeWord(words, index, tail);
+      if (targets.has(category) !== (mode === 'remove')) return void (words[index]!.output && (visible = index));
+      if (skip.has(index)) {
+        visible = index;
+        return void marks.push({ index, original: word, reason: CLOSED });
+      }
+      tail = removeWord(words, index, tail, visible);
       marks.push({ index, original: word, removed: true });
     });
     if (layout === 'one-per-line') {
+      const marked = new Set(marks.map((mark) => mark.index));
       let first = true;
       for (const word of words) {
         if (!word.output) continue;
         // Un mot collé au précédent (« l’horloge ») reste collé.
         const gap = first ? '' : word.gap === '' ? '' : '\n';
-        if (gap !== word.gap && !marks.some((mark) => mark.index === word.index)) marks.push({ index: word.index, original: tagged[word.index]!.word, relaid: true });
+        if (gap !== word.gap && !marked.has(word.index)) marks.push({ index: word.index, original: tagged[word.index]!.word, relaid: true });
         word.gap = gap;
         first = false;
       }

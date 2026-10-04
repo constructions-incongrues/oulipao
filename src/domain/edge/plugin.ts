@@ -71,14 +71,20 @@ export const edgePlugin = definePlugin({
     const lines = linesOf(output);
     const kept = new Set(lines.flatMap((line, k) => keptOf(line, mode, n, k === 0 || k === lines.length - 1)));
     const marks: WordMark[] = [];
+    // Le dernier mot resté visible : les retraits vont dans l'ordre du texte, il suffit de le suivre.
+    let visible = -1;
     for (const index of lines.flat()) {
-      if (kept.has(index)) continue;
+      if (kept.has(index)) {
+        visible = index;
+        continue;
+      }
       const original = tagged[index]!.word;
       if (skip.has(index)) {
         marks.push({ index, original, reason: CLOSED });
+        visible = index;
         continue;
       }
-      tail = removeWord(output, index, tail);
+      tail = removeWord(output, index, tail, visible);
       marks.push({ index, original, removed: true });
     }
     return { words: output, tail, marks };
