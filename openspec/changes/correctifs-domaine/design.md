@@ -24,7 +24,7 @@ Tout se passe dans la couche **domain**, qui est pure : elle ne parle à l'exté
 
 ### D2. Liste de composés lexicalisés (domain)
 
-`tokenizer.ts` gagne une constante `LEXICALISED`, un `Set` de composés en minuscules. Avant d'appliquer la règle `CLITIC`, le découpage teste la forme entière dans la liste. L'apostrophe U+02BC rejoint les classes `['’]` de `LETTER_RUN` et `ELISION`. Le prix : un impératif « Rendez-vous ! » devient un seul mot. L'étiqueteur lui donne alors sa catégorie, comme pour tout mot.
+`tokenizer.ts` gagne une constante `LEXICALISED`, un `Set` de composés en minuscules. Avant d'appliquer la règle `CLITIC`, le découpage teste la forme entière dans la liste. L'apostrophe U+02BC rejoint les classes `['’]` de `LETTER_RUN` et `ELISION`. Le prix : un impératif « Rendez-vous ! » devient un seul mot. L'étiqueteur lui donne alors sa catégorie, comme pour tout mot. Autre conséquence, acceptée par le fondateur : un texte gardé avant ce changement qui contient un de ces composés ou l'apostrophe U+02BC ne correspond plus à son étiquetage et ne se rouvre plus. Il reste lisible et exportable, et le message de refus dit de copier le texte puis de le remettre en pistes.
 *Alternative écartée :* un prédicat issu du dictionnaire. Le tokenizer aurait dépendu de la morphologie, et `reread`, qui tourne à chaque étape, aussi.
 
 ### D3. Insécables (domain)
@@ -45,11 +45,11 @@ Le lipogramme et le tautogramme distinguent un mot absent de la morphologie (sta
 - `track-sort/plugin.ts:78` : un `Set` des index déjà marqués.
 - `planByVerse` : `push` sur la liste de la strophe, et un `Set` pour `scope.skip`.
 
-La preuve d'identité tient en trois points : les tests existants, `npm run measure` (sorties mot à mot des trois textes de référence, avant et après), et un test de volume sur 5 000 mots, sous un seuil large qui n'attrape qu'un retour au quadratique.
+La preuve d'identité tient en trois points : les tests existants, un banc de référence (17 chaînes sur les trois textes de référence, sorties figées avant tout changement dans `test/support/chain-golden.json` ; `npm run measure` ne mesure que l'étiquetage), et un test de volume sur 5 000 mots, sous un seuil large qui n'attrape qu'un retour au quadratique.
 
 ### D6. Lipogramme indexé (domain)
 
-On mesure d'abord le texte de référence 2 avec `npm run measure`, pour confirmer ou infirmer le suspect de RISK-08. Ensuite, `bare(word)` n'est calculé qu'une fois par forme. Un cache par jeu de lettres (`WeakMap<MorphologyRepository, Map<string, Set<string>>>`) garde les formes qui évitent ces lettres. Il est passé en `among` à `nthNoun`, comme le font déjà les filtres de rime (`neighbours.ts:58`). Les chiffres avant et après vont dans RISK-08.
+On mesure d'abord le texte de référence 2 avec `node scripts/chain-golden.ts --time`, pour confirmer ou infirmer le suspect de RISK-08 (relevé de départ : lipogramme en « e » 240 ms au p95, lettres permises 444 ms). Ensuite, `bare(word)` n'est calculé qu'une fois par forme. Un cache par jeu de lettres (`WeakMap<MorphologyRepository, Map<string, Set<string>>>`) garde les formes qui évitent ces lettres. Il est passé en `among` à `nthNoun`, comme le font déjà les filtres de rime (`neighbours.ts:58`). Les chiffres avant et après vont dans RISK-08.
 
 ### D7. Copies regroupées (domain)
 

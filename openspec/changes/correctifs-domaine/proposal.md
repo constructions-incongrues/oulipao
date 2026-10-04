@@ -39,6 +39,6 @@ Aucune.
   - `plugin.ts` et `plugin-chain.ts` : la position d'origine est transmise aux plugins ;
   - `s7/plugin.ts`, `s7/adjective-shift.ts`, `tokenizer.ts`, `mixing.ts`, `removal.ts`, `lineation/plugin.ts`, `track-sort/plugin.ts`, `edge/plugin.ts`, `rhyme/engine.ts` ;
   - `lipogram/*`, `tautogram/plugin.ts`, `neighbours.ts`, `verb.ts`, `letters.ts`.
-- Tests : `test/domain/**`. Mesures `npm run measure` avant et après ; RISK-08 et DEBT-02 mis à jour dans `docs/arc42/11-risques-et-dette-technique.md`.
+- Tests : `test/domain/**`. Banc de référence des contraintes (sorties figées, temps avant et après) ; RISK-08 et DEBT-02 mis à jour dans `docs/arc42/11-risques-et-dette-technique.md`.
 - Aucun port ni adaptateur touché, aucune dépendance nouvelle.
 - Textes gardés : seul un S+dé placé après un retrait peut se rouvrir autrement (voir design.md).
