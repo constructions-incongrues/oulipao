@@ -109,6 +109,8 @@
   .name { font-stretch: var(--silk-stretch); font-weight: 700; text-transform: uppercase; font-size: var(--size-label); }
   .param, .targets, .slot-keys { display: inline-flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
   .param label { display: inline-flex; gap: var(--space-1); align-items: center; }
+  /* Paramètre modulé : son champ fixe passe en tirets et à l'encre secondaire, comme une ligne coupée. */
+  .param label.fixed-modulated input { color: var(--muted); border-style: dashed; }
   .chip { display: inline-flex; gap: 4px; align-items: center; color: var(--track); border-color: currentColor; font-size: 11px; }
   .chip .shape { width: 11px; height: 11px; }
   .chip[aria-pressed="true"] { background: transparent; color: var(--track); }

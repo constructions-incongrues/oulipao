@@ -96,7 +96,9 @@ function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance
       <span class="name">${name}</span>
       <span class="param">
         ${visibleParameters(plugin, params).map(
-          (parameter) => html`<label class="silk">${parameter.label}<${Control} parameter=${parameter} value=${params[parameter.key]}
+          // Modulé, le champ fixe s'estompe : il ne sert plus qu'aux mots sans valeur modulée (pas de voisin, prononciations en route).
+          (parameter) => html`<label class=${modulators[parameter.key] ? 'silk fixed-modulated' : 'silk'}
+            title=${modulators[parameter.key] ? 'Modulé : cette valeur ne sert qu’aux mots sans valeur modulée' : undefined}>${parameter.label}<${Control} parameter=${parameter} value=${params[parameter.key]}
             onParam=${(key: string, value: number | string) => dispatch({ type: 'set-param', id, key, value })} /></label>
             ${parameter.kind === 'integer' && parameter.lockable &&
             html`<${ModulatorField} label=${parameter.label} modulator=${modulators[parameter.key]} onModulator=${(modulator: unknown) => {

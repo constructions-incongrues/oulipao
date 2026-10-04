@@ -8,6 +8,7 @@ import { homophonyPlugin } from '../../../src/domain/rhyme/homophony.ts';
 import { rnPlugin } from '../../../src/domain/rhyme/rn.ts';
 import { s7Plugin } from '../../../src/domain/s7/plugin.ts';
 import { lipogramPlugin } from '../../../src/domain/lipogram/plugin.ts';
+import { App } from '../../../src/ui/tracks/app.ts';
 import { Chain } from '../../../src/ui/tracks/components/chain.ts';
 import { GateField } from '../../../src/ui/tracks/components/gate-field.ts';
 import { Inspector } from '../../../src/ui/tracks/components/inspector.ts';
@@ -313,6 +314,8 @@ test('Chain : la ligne d’un S+lettres porte son nom ; brancher, défaire, pose
   const chain = html`<${Chain} instances=${state.instances} plugins=${[]} lookup=${pluginById} dispatch=${(action: MixerAction) => actions.push(action)} />`;
   const out = renderToString(chain);
   assert.match(out, /<span class="name">S\+lettres<\/span>/);
+  assert.match(out, /<label class="silk fixed-modulated" title="Modulé : cette valeur ne sert qu’aux mots sans valeur modulée">Décalage<input/);
+  assert.match(out, /<label class="silk">Parmi<select/);
   assert.match(out, /<p class="help">Chaque nom avance d’autant de noms qu’il a de lettres ; seuls les noms d’un nombre pair de lettres sont traités\.<\/p>/);
   fire(chain, label('Source : Décalage'), 'onChange', 'rank');
   fire(chain, label('Source : Décalage'), 'onChange', 'fixed');
@@ -325,4 +328,13 @@ test('Chain : la ligne d’un S+lettres porte son nom ; brancher, défaire, pose
 test('Inspector : la valeur modulée sous le mot', () => {
   const window = { columns: [{ index: 0, distance: 0 }], bands: [{ id: 's7-1', label: 'S+lettres', cells: [{ text: 'chat', newline: false, modulation: '+4' }] }] };
   assert.match(renderToString(html`<${Inspector} window=${window} word="chat" onClose=${() => {}} />`), /chat<span class="mod" title="Valeur donnée par le modulateur">\+4<\/span>/);
+});
+
+test('App : sous les pistes, le rappel nomme l’instance modulée « S+lettres »', async () => {
+  const controller = createTracksController({ tagger: { name: 'factice', tag: (input) => tagRhymes(input) }, loadMorphology: async () => rhymeMorphology(), preload: async () => {}, copy: async () => {} });
+  controller.dispatch({ type: 'add-instance', plugin: 's7' });
+  controller.dispatch({ type: 'set-modulator', id: 's7-1', key: 'offset', modulator: letters });
+  controller.setInput('sur la chaise');
+  await controller.run();
+  assert.match(renderToString(html`<${App} state=${controller.state} controller=${controller} version="0" />`), /<p class="reminder">1\. S\+lettres<\/p>/);
 });
