@@ -41,6 +41,13 @@ test('guillemets et parenthèses suivent', () => {
   assert.equal(without('Quoi ?! Rien.', 'Rien'), 'Quoi ?!');
 });
 
+test('le guillemet fermant garde l’espace qui le précède', () => {
+  assert.equal(without('« Le chat\u202F», dit-il.', 'chat'), '« Le\u202F», dit-il.');
+  assert.equal(without('« Le chat dort\u00A0». Il', 'chat', 'dort'), '« Le\u00A0». Il');
+  assert.equal(without('« Le chat ». Il', 'chat'), '« Le ». Il');
+  assert.equal(without('« Le chat». Il', 'chat'), '« Le». Il');
+});
+
 test('mergeGaps et matchCase', () => {
   assert.equal(mergeGaps('', ''), '');
   assert.equal(mergeGaps(', ', ''), ', ');
