@@ -66,18 +66,33 @@ test('écoute : arrêtée au départ ; lancée, elle dit le premier pas de la pa
   assert.equal(speech.cancels, 1);
 });
 
-test('écoute : la tête parcourt la page et revient au premier pas ; changer de page la ramène au premier pas de la nouvelle', async () => {
+test('écoute : la tête lit tout le texte, la grille suit sa page, puis elle reprend au début', async () => {
   const { controller, speech, blanks } = await setup();
+  const total = controller.state.view!.tracks.length;
   controller.play();
   const heads = [controller.state.playhead];
-  for (let k = 0; k < 8; k++) {
+  const pages = [controller.state.page];
+  for (let k = 0; k < total; k++) {
     await next(speech, blanks);
     heads.push(controller.state.playhead);
+    pages.push(controller.state.page);
   }
-  assert.deepEqual(heads, [0, 1, 2, 3, 4, 5, 6, 7, 0]);
-  controller.showPage(1);
+  assert.deepEqual(heads, [...Array.from({ length: total }, (_, k) => k), 0]);
+  assert.equal(pages[8], 1); // le pas 9 : la grille passe à la page suivante
+  assert.equal(pages.at(-2), Math.floor((total - 1) / 8));
+  assert.equal(pages.at(-1), 0); // après le dernier mot, le début et sa page
+});
+
+test('écoute : une page choisie à la main fait repartir la tête de son premier pas', async () => {
+  const { controller, speech, blanks } = await setup();
+  controller.play();
+  for (let k = 0; k < 4; k++) await next(speech, blanks);
+  assert.equal(controller.state.playhead, 4);
+  controller.showPage(2);
   await next(speech, blanks);
-  assert.equal(controller.state.playhead, 8);
+  assert.equal(controller.state.playhead, 16);
+  await next(speech, blanks);
+  assert.equal(controller.state.playhead, 17);
 });
 
 test('écoute : un réglage changé s’entend au pas suivant, sans revenir au début ; le tempo aussi', async () => {
@@ -94,7 +109,8 @@ test('écoute : un réglage changé s’entend au pas suivant, sans revenir au d
   blanks.pass();
   await tick();
   assert.equal(controller.state.playhead, 6); // pas de retour au début
-  for (let k = 6; k < 13; k++) await next(speech, blanks);
+  const total = controller.state.view!.tracks.length;
+  for (let k = 6; k < total + 5; k++) await next(speech, blanks); // un tour du texte : le pas 5 revient
   assert.equal(controller.state.playhead, 5);
   assert.notDeepEqual(speech.said.at(-1)!.words, before);
   assert.equal(speech.said.at(-1)!.options.rate, 0.7);
@@ -206,11 +222,13 @@ test('discrépance : en « original », le pas dit le mot d’origine pendant qu
   const original = view.stages[0]!.words[5]!.output;
   assert.notEqual(view.segments.find((segment) => segment.index === 5)!.text, original); // la page montre le nom remplacé
   assert.deepEqual(speech.said.at(-1)!.words, [original]);
-  controller.dispatch({ type: 'toggle-mute', category: view.tracks[5]! });
+  const muted = view.tracks[5]!;
+  controller.dispatch({ type: 'toggle-mute', category: muted });
   const said = speech.said.length;
-  for (let k = 5; k < 13; k++) await next(speech, blanks); // un tour : le pas 5 revient, muet
+  const total = view.tracks.length;
+  for (let k = 5; k < total + 5; k++) await next(speech, blanks); // un tour du texte : le pas 5 revient, muet
   assert.equal(controller.state.playhead, 5);
-  assert.equal(speech.said.length, said + 6); // 8 pas, dont le 5 et l'autre nom (pas 7) muets
+  assert.equal(speech.said.length, said + total - view.tracks.filter((track) => track === muted).length); // les pas de la piste muette se taisent
 });
 
 test('discrépance : un changement de source s’entend au pas suivant ; la source est gardée ; une source inconnue est refusée', async () => {

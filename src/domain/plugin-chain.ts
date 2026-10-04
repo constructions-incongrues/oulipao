@@ -76,6 +76,30 @@ interface Reread {
   gaps: string[];
 }
 
+/** Un morceau de texte rattaché à un mot d'origine, et sa place dans le texte. */
+export interface OwnedSpan {
+  index: number;
+  start: number;
+  end: number;
+}
+
+/**
+ * Le mot d'origine de chaque jeton relu : celui du morceau qui le contient ; à défaut, du dernier
+ * morceau non vide commencé avant lui. Morceaux et jetons sont tous deux dans l'ordre du texte : un
+ * seul parcours, à deux pointeurs.
+ */
+export function ownersOf(spans: readonly OwnedSpan[], tokens: readonly { start: number }[]): number[] {
+  let owner = spans[0]?.index ?? 0;
+  let next = 0;
+  return tokens.map((token) => {
+    while (next < spans.length && spans[next]!.start <= token.start) {
+      if (spans[next]!.end > spans[next]!.start) owner = spans[next]!.index;
+      next++;
+    }
+    return owner;
+  });
+}
+
 /**
  * Relit une sortie mot par mot comme un texte : chaque mot relu garde la catégorie du mot
  * d'origine dont il vient. Une contraction peut donner deux mots relus (« du » → « de la »), un
@@ -91,17 +115,7 @@ function reread(words: readonly OutputWord[], tail: string, tagged: readonly Tag
   }
   text += tail;
   const tokens = tokenize(text);
-  // Un mot relu appartient au mot de sortie qui le contient ; à défaut, au dernier commencé avant lui.
-  // Mots relus et mots de sortie sont tous deux dans l'ordre du texte : un seul parcours, à deux pointeurs.
-  let owner = spans[0]?.index ?? 0;
-  let next = 0;
-  const origin = tokens.map((token) => {
-    while (next < spans.length && spans[next]!.start <= token.start) {
-      if (spans[next]!.end > spans[next]!.start) owner = spans[next]!.index;
-      next++;
-    }
-    return owner;
-  });
+  const origin = ownersOf(spans, tokens);
   const gaps = tokens.map((token, k) => text.slice(k ? tokens[k - 1]!.end : 0, token.start));
   return { text, tagged: tokens.map((token, k) => ({ word: token.word, category: tagged[origin[k]!]!.category })), origin, gaps };
 }

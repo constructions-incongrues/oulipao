@@ -9,6 +9,8 @@ import { ErrorMessage } from './components/error-message.ts';
 import { Notebook } from './components/notebook.ts';
 import { Result } from './components/result.ts';
 import { Source } from './components/source.ts';
+import { LoopRow } from './components/tour-cursor.ts';
+import { lineageOf, originSegments } from './loop.ts';
 import { exampleOf } from './examples.ts';
 import { StepGrid } from './components/step-grid.ts';
 import { ThemeToggle } from './components/theme-toggle.ts';
@@ -29,7 +31,7 @@ export interface AppProps {
   state: TracksState;
   controller: Pick<
     TracksController,
-    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'loadScales' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'iterate' | 'freeze' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook' | 'copyEntry' | 'shareEntry' | 'replayArrival' | 'closeArrival' | 'editEntry' | 'toggle' | 'setTempo' | 'setVoice' | 'setSource'
+    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'loadScales' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'iterate' | 'freeze' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook' | 'copyEntry' | 'shareEntry' | 'replayArrival' | 'closeArrival' | 'editEntry' | 'toggle' | 'setTempo' | 'setVoice' | 'setSource' | 'loop' | 'stopLoop' | 'showTour' | 'setLoopTours'
   >;
   /** Bascule le thème clair ou sombre ; posé par le montage, qui seul touche au document. */
   onTheme?: () => void;
@@ -81,6 +83,16 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
   ) as Record<Category, string[]>;
   const allTracks = mixer.instances.flatMap((instance, position) => (everywhere(instance) ? [reminder(instance, position)] : []));
   const selected = state.selected;
+  // La boucle : le papier montre le tour choisi au curseur ; la grille, la chaîne et l'inspecteur restent ceux du tour 1.
+  const loop = state.loop;
+  const shown = loop?.shown ?? 1;
+  const tour = loop && shown !== 1 ? loop.tours[shown]! : undefined;
+  const paper = !tour
+    ? view && { segments: view.segments, marks: view.marks, tracks: view.tracks, empty: view.empty, interactive: true }
+    : shown === 0
+      ? { segments: originSegments(tour.text), marks: new Map(), tracks: tour.session.tagged.map((word) => word.category), empty: false, interactive: true }
+      : { segments: tour.view!.segments, marks: tour.view!.marks, tracks: tour.view!.tracks, empty: loop!.emptyAt === shown, interactive: false };
+  const lineage = loop && loop.tours.length > 2 && selected !== undefined ? lineageOf(loop.tours, selected) : undefined;
   return html`
     <main class="tracks">
       <header class="bar">
@@ -101,11 +113,14 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
       />`}
       <div class="pin-sentinel" aria-hidden="true"></div>
       ${view &&
+      paper &&
       html`<${Result}
-        segments=${view.segments}
-        empty=${view.empty}
-        marks=${view.marks}
-        tracks=${view.tracks}
+        segments=${paper.segments}
+        empty=${paper.empty}
+        emptyText=${tour ? `Plus aucun mot au tour ${shown}.` : undefined}
+        marks=${paper.marks}
+        tracks=${paper.tracks}
+        interactive=${paper.interactive}
         selected=${selected}
         onSelect=${controller.select}
         changed=${state.changed}
@@ -119,7 +134,15 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
         onIterate=${() => void controller.iterate()}
         onFreeze=${() => void controller.freeze()}
         busy=${state.tagging}
-        syllables=${view.syllables}
+        onLoop=${() => void controller.loop()}
+        looping=${loop?.status === 'computing'}
+        keepLabel=${shown >= 2 ? `Garder le tour ${shown}` : 'Garder'}
+        keepDisabled=${shown === 0 || loop?.emptyAt === shown}
+        keepTitle=${shown === 0 ? 'Le texte d’origine est déjà à la saisie' : undefined}
+        spoken=${tour ? state.spoken : undefined}
+        loopRow=${loop &&
+        html`<${LoopRow} loop=${loop} pinned=${state.pinned} onShow=${controller.showTour} onStop=${controller.stopLoop} onTours=${controller.setLoopTours} />`}
+        syllables=${tour ? undefined : view.syllables}
         form=${state.mixer.form ?? 'none'}
         onForm=${(form: Form) => controller.dispatch({ type: 'set-form', form })}
       />`}
@@ -159,7 +182,7 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
       <${Fetching} loading=${state.phonetics} label="Chargement des prononciations…" onRetry=${() => void controller.loadPhonetics()} />
       <${Fetching} loading=${state.scales} label="Chargement des échelles…" onRetry=${() => void controller.loadScales()} />
       <${Chain} instances=${mixer.instances} plugins=${installedPlugins} recipes=${recipes} lookup=${pluginById} dispatch=${controller.dispatch}
-        status=${view ? summarize(mixer, view) : ''} />
+        status=${view ? summarize(mixer, view) + (shown !== 1 ? ' · la grille montre le tour 1' : '') : ''} />
       <${StepGrid}
         steps=${steps}
         tracks=${mixer.tracks}
@@ -202,6 +225,7 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
               controller.dispatch(value === undefined ? { type: 'clear-lock', id, index: selected, key } : { type: 'set-lock', id, index: selected, key, value })}
             onClose=${controller.closeInspector}
             pronunciation=${view.pronunciations[selected]}
+            lineage=${lineage}
           />`)}
     </main>
   ` as VNode;

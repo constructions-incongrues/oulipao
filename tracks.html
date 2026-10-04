@@ -267,6 +267,32 @@
   .retouch textarea { display: block; width: 100%; max-width: var(--measure); box-sizing: border-box; margin: var(--space-2) 0; padding: var(--space-2);
     font: var(--size-read)/1.6 var(--font-read); }
 
+  /* La rangée BOUCLE sous le texte : le curseur de tours, le tour montré, l'annonce, puis le nombre de tours. */
+  .loop-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin-top: var(--space-3); padding-top: var(--space-2); border-top: var(--rule) solid var(--line); }
+  .loop-row .pos { font-family: var(--font-mono); font-size: var(--size-value); color: var(--ink); }
+  .loop-note { font-size: var(--size-small); color: var(--muted); }
+  .loop-tours { margin-left: auto; display: inline-flex; align-items: center; gap: var(--space-1); }
+  .loop-tours input { width: 5ch; text-align: center; font-family: var(--font-mono); background: var(--paper); }
+  /* Le curseur : un trou par tour sur un filet d'encre ; calculé percé, montré plein, à venir vide. Pas de lueur. */
+  .tour-cursor { display: flex; align-items: flex-start; overflow-x: auto; cursor: pointer; touch-action: pan-x; }
+  .tour-cursor:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .hole { --hole: 14px; flex: none; width: 24px; position: relative; z-index: 0; display: flex; flex-direction: column; align-items: center; gap: 2px; user-select: none; }
+  /* Le filet d'encre passe sous les trous, d'un trou à l'autre. */
+  .hole::after { content: ''; position: absolute; z-index: -1; left: 0; right: 0; top: calc(var(--hole) / 2); border-top: var(--rule) solid var(--ink); }
+  .hole:first-child::after { left: 50%; }
+  .hole:last-child::after { right: 50%; }
+  .hole::before { content: ''; width: var(--hole); height: var(--hole); border-radius: 50%; box-sizing: border-box; background: var(--panel); border: var(--rule) solid var(--line); }
+  .hole.computed::before { border-color: var(--ink); }
+  .hole.shown::before { background: var(--ink); border-color: var(--ink); }
+  .hole.ahead { cursor: default; }
+  .hole.repeat { border-bottom: 2px solid var(--ink); }
+  .hole .num { font: normal var(--size-value) var(--font-mono); color: var(--muted); }
+  .hole.strong .num { font-weight: 700; color: var(--ink); }
+  .loop-row.pinned { margin-top: var(--space-1); padding-top: var(--space-1); }
+  /* Le mot que dit l'écoute dans un autre tour : marqué à l'encre, comme le pas joué. */
+  .word.spoken { background: var(--ink); color: var(--paper); }
+  .lineage { margin: 0 0 var(--space-2); font-family: var(--font-read); }
+  .lineage-step .num { font: var(--size-value) var(--font-mono); color: var(--muted); margin-left: 1px; }
   @media (prefers-reduced-motion: reduce) { .changed { animation: none; } .head { display: none; } }
 
   /* Sous 1024 px : chaque filtre passe sur plusieurs rangs ; sous 768 px, tout se resserre */
@@ -300,6 +326,9 @@
     .result.stuck .result-scroll { max-height: calc(3 * var(--size-read-compact) * 1.5); }
     /* Collée au téléphone, la bande ne garde que le texte : ses touches reviennent en haut de page */
     .result.stuck .result-header { display: none; }
+    /* Au doigt : un trou de 44 px par tour ; la rangée défile en elle-même, jamais la page. */
+    .hole { --hole: 20px; width: 44px; min-height: 44px; justify-content: center; }
+    .loop-tours { margin-left: 0; }
     /* Ligne de filtre au doigt : marche et ↑ ↓ sur un rang, Dupliquer et Retirer sur le suivant, sur toute la largeur */
     .slot { grid-template-columns: 10px 2ch minmax(0, 1fr) minmax(0, 1fr) 44px 44px; }
     .slot .name { grid-column: 3 / -1; }

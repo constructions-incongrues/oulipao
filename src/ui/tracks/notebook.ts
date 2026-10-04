@@ -19,6 +19,13 @@ export const LineageSchema = z.object({
 });
 export type Lineage = z.infer<typeof LineageSchema>;
 
+/** Une prise gardée depuis la boucle de tours : le nombre de tours demandé et le tour gardé. */
+export const LoopMarkSchema = z.object({
+  tours: z.number().int().min(2),
+  shown: z.number().int().min(2),
+});
+export type LoopMark = z.infer<typeof LoopMarkSchema>;
+
 export const NotebookEntrySchema = z.object({
   id: z.string().min(1),
   keptAt: z.iso.datetime(),
@@ -30,6 +37,8 @@ export const NotebookEntrySchema = z.object({
   edited: z.string().optional(),
   /** Absente : première génération. Illisible, elle est oubliée sans perdre l'entrée. */
   lineage: LineageSchema.optional().catch(undefined),
+  /** Présent : la prise vient d'un tour de la boucle, pas de k « Itérer ». Illisible, il est oublié. */
+  loop: LoopMarkSchema.optional().catch(undefined),
 });
 export type NotebookEntry = z.infer<typeof NotebookEntrySchema>;
 
