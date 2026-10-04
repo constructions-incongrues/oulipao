@@ -35,7 +35,7 @@ function Loading({ model, onLoad }: Pick<SourceProps, 'model' | 'onLoad'>): VNod
     case 'waiting':
       return html`<p class="loading">
         <button type="button" class="load" onClick=${onLoad}>Charger le modèle (141 Mo)</button>
-        Le modèle se télécharge une fois depuis jsDelivr et Hugging Face, qui voient alors votre adresse. Votre texte, lui, reste dans ce navigateur.
+        Il se télécharge une fois depuis jsDelivr et Hugging Face, qui voient alors votre adresse.
       </p>` as VNode;
     case 'loading':
       return html`<p class="loading">
@@ -62,7 +62,7 @@ export function Source(props: SourceProps): VNode {
   }
   return html`
     <div class="source">
-      <label for="input">Texte</label>
+      <label for="input" class="silk">Texte</label>
       <textarea id="input" placeholder="Collez un texte en français…" value=${input}
         onInput=${(event: Event) => props.onInput((event.currentTarget as HTMLTextAreaElement).value)}></textarea>
       <div class="controls">

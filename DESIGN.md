@@ -175,7 +175,7 @@ Les quatre polices sont sous licence SIL OFL 1.1 et servies par le projet via `@
 - **Largeur maximale de la page :** 1240 px.
 - **Petit écran :** la page ne défile jamais horizontalement (vérifié à 375, 768 et 1440 px).
 - **Densité :** multiples de 4 px. Lignes de piste de 48 px. Une touche a un rembourrage de 4 px sur 8.
-- **Au doigt :** sous 768 px, toute touche fait au moins 44 px de haut ; les pas, 48 px de haut et au moins 44 px de large.
+- **Au doigt :** sous 768 px, toute touche fait au moins 44 px de haut, comme les listes, les champs et les dépliants ; les pas, 48 px de haut et au moins 44 px de large. Dans une ligne de filtre, la marche et ↑ ↓ partagent un rang, Dupliquer et Retirer le suivant.
 
 ## Elevation & Depth
 
@@ -195,10 +195,12 @@ Le rayon est de 2 px, pour les touches, les champs et les emplacements de filtre
 
 Un pas où le filtre agit montre le poinçon plein. Un pas de la piste où le filtre n'agit pas montre le contour seul. Un pas qui n'est pas dans la piste reste vide.
 
+Le poinçon plein dit aussi l'issue, sans couleur nouvelle : à pleine taille, le mot a changé ; réduit de moitié, le filtre l'a laissé inchangé ; barré d'un trait d'encre, il est retiré.
+
 ## Components
 
-- **Touche (Muet, Seul, Actif) :** contour d'encre de 1 px, sérigraphie. Enfoncée : fond d'encre, texte couleur façade. Focus visible : contour d'encre de 2 px décalé de 2 px.
-- **Pas :** un bouton par mot de la piste. Un clic le bouche (aucun filtre ne touche le mot) ou le rouvre. Son nom accessible donne la piste, le mot, l'état (« percé, le filtre agit », « bouché, laissé tel quel ») et ses verrous.
+- **Touche (Muet, Seul, Actif) :** contour d'encre de 1 px, sérigraphie. Le geste principal d'un panneau (« Mettre en pistes ») a un contour de 2 px, à taille égale. Enfoncée : fond d'encre, texte couleur façade. Focus visible : contour d'encre de 2 px décalé de 2 px.
+- **Pas :** un bouton par mot de la piste. Un clic le bouche (aucun filtre ne touche le mot) ou le rouvre. Son nom accessible donne la piste, le mot, l'état (« percé, le filtre agit », « bouché, laissé tel quel »), l'issue (« mot changé », « mot retiré », « mot inchangé ») et ses verrous.
 - **En-tête de la grille :** chaque mot est un bouton qui l'ouvre dans l'inspecteur ; la colonne choisie passe sur fond papier.
 - **Verrou de paramètre :** posé dans l'inspecteur, un champ par paramètre entier dans la bande de l'instance (« S+3 sur ce mot ») ; vidé, il tombe. Sur le pas, une petite étiquette carrée à l'encre, en Martian Mono, dans l'angle. Une valeur hors bornes est refusée près du champ.
 - **Ligne de filtre :** contour d'encre ; s'il est coupé, contour en tirets et encre secondaire. Une poignée pointillée à gauche : on la tire pour réordonner, un trait d'encre de 3 px marque la place. Les touches ↑ et ↓ font la même chose au clavier et au doigt.
@@ -236,3 +238,4 @@ Un pas où le filtre agit montre le poinçon plein. Un pas de la piste où le fi
 | 2026-10-03 | Système porté dans le code | Changement OpenSpec `instrument-perfore` : `styles/tokens.css`, `fonts/`, grille de pas, verrous, chaîne réordonnable, bande collée. Pretext, utilisé dans la page de référence, n'est pas repris : la hauteur de la bande se fait en CSS. |
 | 2026-10-04 | Tailles toutes en jetons, seuil étroit à 768 px, cibles de 44 px | Revue de design du plan de correction (DD8 à DD10, DD12) : les tailles en dur de `tracks.html` deviennent les jetons `--size-value` (11 px), `--size-grid-word` (14 px), `--size-read-narrow` (19 px) et `--size-mark-narrow` (34 px) ; le verrou passe de 9 à 11 px. Le seuil de 768 px, vérifié en usage, remplace les 640 px écrits ici. Rembourrage des touches sur la grille de 4 px ; touches de 44 px au doigt (elles étaient à 32). |
 | 2026-10-04 | Inspecteur sur les colonnes de la grille ; transport dans l'en-tête de la grille ; phrase d'état dans la chaîne ; bande collée sans touches au téléphone | Critique de design du 2026-10-04 (`/design:design-critique`), changements `critique-de-design` et `critique-de-design-suite`. |
+| 2026-10-04 | Issue du pas (poinçon réduit ou barré) ; geste principal à 2 px ; 44 px pour tous les contrôles au doigt | Deuxième critique de design du 2026-10-04, accordée par le fondateur (« traite toutes les recos ») ; changement `critique-de-design-3`. |

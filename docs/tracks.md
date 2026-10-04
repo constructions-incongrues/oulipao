@@ -9,7 +9,9 @@ Page : `tracks.html` (script assemblé `dist/tracks.js`, par `npm run build`). L
   (les mots-outils : déterminants, pronoms, prépositions…).
 - **Tranche** : la ligne d'une piste dans la table de mixage (colonne de gauche) : pastille de
   couleur, nom, nombre de mots, « Muet », « Seul », et le rappel des filtres qui visent la piste
-  (« 1. S+7 · 2. Lipogramme en e (coupé) »), numérotés à leur place dans la chaîne.
+  (« 1. S+7 · 2. Lipogramme en e (coupé) »), numérotés à leur place dans la chaîne. Un filtre
+  qui vise les cinq pistes n'est rappelé qu'une fois, en tête des tranches (« Toutes les pistes :
+  2. Monovocalisme (a) »).
 - **Filtre** : une instance d'un type de contrainte (S+n, lipogramme), avec ses réglages et ses
   pistes visées. Un type peut être instancié plusieurs fois. La page dessine les réglages
   d'après la déclaration du type : voir `docs/plugins.md`.
@@ -26,7 +28,10 @@ Page : `tracks.html` (script assemblé `dist/tracks.js`, par `npm run build`). L
   une ou plusieurs instances. Celles qui demandent un réglage (la voyelle gardée, la piste
   interdite) déplient un choix : « Brancher » ou « Annuler » (Échap). Puis les **moteurs** : un
   bouton par type, qui ajoute une instance aux réglages et pistes par défaut. Tout ajout va en fin
-  de chaîne ; une copie aussi. Après un ajout, le navigateur se replie et la première contrainte
+  de chaîne ; une copie aussi. Une instance branchée par une recette porte son nom, avec son
+  choix (« Monovocalisme (a) »), dans la chaîne (le moteur en dessous), la phrase d'état, les
+  tranches, l'inspecteur et la mention copiée ; un réglage, des pistes, un modulateur ou une
+  porte changés le font tomber. Après un ajout, le navigateur se replie et la première contrainte
   ajoutée vient au milieu de l'écran, le focus sur son premier réglage. L'Éclipse (un texte suivi de son S+7) n'a pas de recette : le S+7
   donne la seconde partie, mais la sortie ne sait pas encore juxtaposer les deux.
 - **Texte résultant** : ce qu'on lit et qu'on copie, une fois les filtres appliqués et les
@@ -36,6 +41,10 @@ Page : `tracks.html` (script assemblé `dist/tracks.js`, par `npm run build`). L
   l'affichage, une espace insécable (fine avant ; ! ?) colle la ponctuation française à son mot :
   aucune ligne ne commence par « ; ». La copie garde le texte tel quel. Collée en haut de l'écran au
   téléphone, la bande ne garde que son texte : ses touches reviennent quand on remonte.
+- **Grille de pas** : un pas percé dit aussi l'issue du mot, sans couleur nouvelle : poinçon
+  plein, le mot a changé ; réduit de moitié, il est inchangé ; barré d'un trait d'encre, il est
+  retiré. Avant la mise en pistes, les pages laissent la place à « Les pas apparaissent une fois
+  le texte mis en pistes. ».
 - **Écoute** : dans l'en-tête de la grille, entre son titre et les pages : « Écouter » (barre
   d'espace, écrite en touche de clavier), le tempo et la voix.
 - **Inspecteur** : sous le texte résultant, fermé tant qu'aucun mot n'est choisi (une phrase
@@ -109,7 +118,7 @@ Preact ; les composants (`components/`, `app.ts`) sont des fonctions de cet éta
   s'éclairent un tiers de seconde, sauf si le système demande de réduire les animations.
 - **Lecteurs d'écran** : l'inspecteur est un tableau dont chaque ligne est nommée par son
   étape ; sa légende annonce le mot choisi.
-- **Sous 1024 px** : une seule colonne. Sous 768 px, l'inspecteur ne montre que deux voisins.
+- **Sous 1024 px** : une seule colonne. Sous 768 px, l'inspecteur suit les quatre pas de la page.
 - **Carnet** : « Garder », à côté de « Copier », range le texte résultant dans le carnet. Le
   bouton est actif quand « Copier » l'est, et « Copier » ne range rien. Chaque entrée garde sa
   date, sa mention (la même que celle de la copie), le texte d'origine avec son étiquetage, et
