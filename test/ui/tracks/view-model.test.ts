@@ -42,16 +42,16 @@ test('mode et décalage changent le résultat ; mute et solo s’appliquent au t
 
 test('fenêtre de l’inspecteur : le mot au centre, bornée au texte, « · » pour un mot retiré', () => {
   const view = buildView(session, offsetOne, m);
-  const middle = inspectorWindow(view, 5, 2);
+  const middle = inspectorWindow(view, 5, 3, 7);
   assert.deepEqual(middle.columns, [3, 4, 5, 6, 7].map((index) => ({ index, distance: Math.abs(index - 5) })));
   const texts = (band: { cells: { text: string }[] }) => band.cells.map((cell) => cell.text);
   assert.deepEqual({ ...middle.bands[0]!, cells: texts(middle.bands[0]!) }, { id: 'origin', label: 'Origine', cells: ['du', 'village', 'est', 'grise', 'et'] });
   assert.deepEqual(texts(middle.bands[1]!), ['de la', 'ville', 'est', 'gris', 'et']);
   assert.ok(middle.bands.every((band) => band.cells.every((cell) => !cell.newline)));
-  assert.deepEqual(inspectorWindow(view, 0, 2).columns.map((c) => c.index), [0, 1, 2]); // début du texte
-  assert.deepEqual(inspectorWindow(view, 10, 6).columns.at(-1), { index: 10, distance: 0 }); // fin du texte
+  assert.deepEqual(inspectorWindow(view, 0, -2, 2).columns.map((c) => c.index), [0, 1, 2]); // début du texte
+  assert.deepEqual(inspectorWindow(view, 10, 4, 16).columns.at(-1), { index: 10, distance: 0 }); // fin du texte
   const removed = { ...view, stages: [...view.stages, { id: 'x', label: 'X', words: view.stages[1]!.words.map((w, k) => (k === 4 ? { output: '', newline: true } : w)) }] };
-  assert.deepEqual(inspectorWindow(removed, 4, 0).bands[2]!.cells[0], { text: '·', newline: true });
+  assert.deepEqual(inspectorWindow(removed, 4, 4, 4).bands[2]!.cells[0], { text: '·', newline: true });
 });
 
 test('marques des noms : remplacé, ou laissé tel quel avec sa raison ; rien quand le plugin n’agit pas', () => {

@@ -47,8 +47,16 @@ export interface ResultProps {
 const count = (syllables: number | undefined) =>
   syllables === undefined ? '' : html`<span class="syllables" title=${`${syllables} syllabe${syllables > 1 ? 's' : ''}`}>${syllables}</span>`;
 
+/**
+ * Les espaces de la ponctuation française, à l'affichage seulement (la copie garde le texte) :
+ * fine insécable avant ; ! ?, insécable avant : et », après «. Aucune ligne ne commence par « ; ».
+ */
+export const frenchSpacing = (text: string) =>
+  text.replace(/ ([;!?])/g, ' $1').replace(/ ([:»])/g, ' $1').replace(/« /g, '« ');
+
 /** Un séparateur entre deux mots, avec le compte de chaque ligne qu'il termine ; `line` avance d'autant. */
-function between(text: string, syllables: readonly (number | undefined)[] | undefined, line: { at: number }) {
+function between(raw: string, syllables: readonly (number | undefined)[] | undefined, line: { at: number }) {
+  const text = frenchSpacing(raw);
   if (!syllables || !text.includes('\n')) return text;
   return text.split('\n').flatMap((part, k) => (k === 0 ? [part] : [count(syllables[line.at++]), '\n', part]));
 }
@@ -85,7 +93,7 @@ export function Result({ segments, empty, marks, tracks, selected, onSelect, cha
             const { index, text, copyOf } = segment;
             if (index === undefined) {
               if (text.includes('\n')) refrain = undefined;
-              return copyOf === undefined ? between(text, syllables, line) : html`${announce(copyOf)}<span class="copy">${text}</span>`;
+              return copyOf === undefined ? between(text, syllables, line) : html`${announce(copyOf)}<span class="copy">${frenchSpacing(text)}</span>`;
             }
             const mark = marks.get(index);
             const replaced = mark?.state === 'replaced';

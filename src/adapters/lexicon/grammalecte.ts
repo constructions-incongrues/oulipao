@@ -11,8 +11,21 @@ import { z } from 'zod';
 const GrammalecteRowSchema = z
   .array(z.string())
   .min(20)
-  .transform((columns) => ({ form: columns[2]!, lemma: columns[3]!, tags: columns[4]! }))
-  .pipe(z.object({ form: z.string().min(1), lemma: z.string().min(1), tags: z.string().min(1) }));
+  .transform((columns) => ({ form: columns[2]!, lemma: columns[3]!, tags: columns[4]!, domains: columns[8]! }))
+  .pipe(z.object({ form: z.string().min(1), lemma: z.string().min(1), tags: z.string().min(1), domains: z.string() }));
+
+/**
+ * Formule chimique étiquetée nom (« AgBF₄ », « CO₂ », « NaCl ») : à écarter, aucun texte
+ * n'en attend une en remplaçant. Tout chiffre en indice suffit (toutes les formes du lexique
+ * qui en ont sont du domaine « chim ») ; sans indice, il faut le domaine « chim » ET une suite
+ * de symboles d'éléments avec au moins une minuscule, pour garder les sigles (RMN, CPG) et
+ * les unités (GHz, MeV) qui ont la même forme. Une « CO2 » en chiffres ordinaires sortirait
+ * aussi : c'est une formule, pas un nom qu'on écrit.
+ */
+export function isChemicalFormula(form: string, domains: string): boolean {
+  if (/[₀-₉]/.test(form)) return true;
+  return /(^| )chim( |$)/.test(domains) && /^([A-Z][a-z]?\d*){2,}$/.test(form) && /[a-z\d]/.test(form);
+}
 
 export const LexiconCodeSchema = z.enum(['n', 'v', 'a', 'r', 'o']);
 export type LexiconCode = z.infer<typeof LexiconCodeSchema>;
@@ -46,7 +59,8 @@ export function deriveLexicon(lines: Iterable<string>): DerivedLexicon {
   for (const line of lines) {
     const row = GrammalecteRowSchema.safeParse(line.split('\t'));
     if (!row.success || row.data.form === 'Flexion') continue; // commentaires, corpus, en-tête
-    const { form, lemma, tags } = row.data;
+    const { form, lemma, tags, domains } = row.data;
+    if (isChemicalFormula(form, domains)) continue;
     if (/(^| )nom( |$)/.test(tags) && /(^| )(mas|fem|epi)( |$)/.test(tags)) {
       nounRowsWithGender++;
       nounLemmas.add(lemma);

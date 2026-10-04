@@ -413,16 +413,19 @@ export function modulationText(word: WordModulation | undefined, plugin: Constra
   return parts.length ? parts.join(' · ') : undefined;
 }
 
-/** Ce que montre l'inspecteur : les colonnes autour du mot choisi, et chaque bande sur ces colonnes. */
+/** Ce que montre l'inspecteur : les colonnes de la page de pas du mot choisi, et chaque bande sur ces colonnes. */
 export interface InspectorWindow {
   columns: InspectorColumn[];
   bands: { id: string; label: string; cells: InspectorCell[] }[];
 }
 
-/** La fenêtre de l'inspecteur : le mot choisi et `radius` voisins de chaque côté, bornés au texte ; « · » pour un mot retiré. */
-export function inspectorWindow(view: TracksView, index: number, radius: number, plugins: (id: string) => ConstraintPlugin | undefined = () => undefined): InspectorWindow {
-  const from = Math.max(0, index - radius);
-  const to = Math.min(view.tracks.length - 1, index + radius);
+/**
+ * La fenêtre de l'inspecteur : les mots d'origine de `start` à `end` compris, bornés au texte (la
+ * page de pas de la grille, pour que chaque mot garde sa colonne) ; « · » pour un mot retiré.
+ */
+export function inspectorWindow(view: TracksView, index: number, start: number, end: number, plugins: (id: string) => ConstraintPlugin | undefined = () => undefined): InspectorWindow {
+  const from = Math.max(0, start);
+  const to = Math.min(view.tracks.length - 1, end);
   const columns = Array.from({ length: to - from + 1 }, (_, k) => ({ index: from + k, distance: Math.abs(from + k - index) }));
   return {
     columns,

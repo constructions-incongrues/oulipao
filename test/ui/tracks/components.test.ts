@@ -15,7 +15,7 @@ import { s7Plugin } from '../../../src/domain/s7/plugin.ts';
 import { edgePlugin } from '../../../src/domain/edge/plugin.ts';
 import { Browser } from '../../../src/ui/tracks/components/browser.ts';
 import { recipes } from '../../../src/ui/tracks/mixer-state.ts';
-import { Result } from '../../../src/ui/tracks/components/result.ts';
+import { Result, frenchSpacing } from '../../../src/ui/tracks/components/result.ts';
 import { Inspector } from '../../../src/ui/tracks/components/inspector.ts';
 import { Source, type SourceProps } from '../../../src/ui/tracks/components/source.ts';
 import { EXAMPLES } from '../../../src/ui/tracks/examples.ts';
@@ -153,7 +153,7 @@ test('StepGrid : au-delà de six pages, des flèches ; dernière page incomplèt
   assert.match(renderToString(html`<${StepGrid} ...${first.props} />`), /aria-label="Page précédente" disabled/);
 });
 
-test('Inspector : une ligne par étape, la colonne choisie, les colonnes lointaines ; Fermer', () => {
+test('Inspector : une ligne par étape, la colonne choisie, une page courte complétée ; Fermer', () => {
   const calls: string[] = [];
   const window = {
     columns: [0, 1, 2, 3, 4].map((index) => ({ index, distance: Math.abs(index - 3) })),
@@ -163,12 +163,14 @@ test('Inspector : une ligne par étape, la colonne choisie, les colonnes lointai
       { id: 'lineation-1', label: 'Mise en vers', cells: [...cells('dans', 'la', 'cuistrerie'), { text: 'étroite', newline: true }, ...cells('·')] },
     ],
   };
-  const inspector = html`<${Inspector} window=${window} word="étroite" onStep=${(d: number) => calls.push(`step ${d}`)} onClose=${() => calls.push('close')} />`;
+  const inspector = html`<${Inspector} window=${window} word="étroite" perPage=${8} onStep=${(d: number) => calls.push(`step ${d}`)} onClose=${() => calls.push('close')} />`;
   const out = renderToString(inspector);
   assert.match(out, /<section class="inspector" tabindex="0" aria-label="Inspecteur">/);
   assert.match(out, /<caption>« étroite » à chaque étape de la chaîne<\/caption>/);
-  assert.match(out, /<tr><th scope="row">Origine<\/th><td class="far">dans<\/td><td>la<\/td><td>cuisine<\/td><td class="chosen" aria-current="true">étroite<\/td><td>comme<\/td><\/tr>/);
-  assert.match(out, /<th scope="row">S\+7 sur les noms<\/th>.*<td>cuistrerie<\/td>.*<td>·<\/td><\/tr>/s);
+  assert.match(out, /<tr><th scope="row">Origine<\/th><td>dans<\/td><td>la<\/td><td>cuisine<\/td><td class="chosen" aria-current="true">étroite<\/td><td>comme<\/td>(<td class="pad"><\/td>){3}<\/tr>/);
+  // La tranche des étapes a la largeur de celle de la grille.
+  assert.match(out, /<\/caption><colgroup><col class="strip"\/><\/colgroup>/);
+  assert.match(out, /<th scope="row">S\+7 sur les noms<\/th>.*<td>cuistrerie<\/td>.*<td>·<\/td>(<td class=\"pad\"><\/td>)*<\/tr>/s);
   // Un mot mis à la ligne par l'étape : « ↵ » devant lui, dit « à la ligne » au lecteur d'écran.
   assert.match(out, /<th scope="row">Mise en vers<\/th>.*<td class="chosen" aria-current="true"><span class="newline" aria-hidden="true">↵ <\/span><span class="sr-only">à la ligne, <\/span>étroite<\/td>/s);
   // Les flèches et Échap passent par le contrôleur, où que soit le focus ; ici, la touche Fermer.
@@ -210,6 +212,20 @@ test('Inspector : état du pas, champ de verrou dans la bande de l’instance, v
   (find(empty, (e) => e.type === 'input').props['onChange'] as (event: Event) => void)({ currentTarget: bare } as unknown as Event);
   assert.equal(bare.value, '');
   (find(empty, (e) => e.type === 'input').props['onChange'] as (event: Event) => void)({ currentTarget: { value: '4', setCustomValidity() {} } } as unknown as Event);
+});
+
+test('frenchSpacing : espaces insécables de la ponctuation française, sans toucher aux retours à la ligne', () => {
+  assert.equal(frenchSpacing(' ; '), '\u202F; ');
+  assert.equal(frenchSpacing(' ! ? '), '\u202F!\u202F? ');
+  assert.equal(frenchSpacing(' : « '), '\u00A0: «\u00A0');
+  assert.equal(frenchSpacing(' » '), '\u00A0» ');
+  assert.equal(frenchSpacing('\n; '), '\n; ');
+});
+
+test('Result : la ponctuation française ne commence jamais une ligne, la copie ne change pas', () => {
+  const out = renderToString(html`<${Result} segments=${[{ text: 'heure', index: 0 }, { text: ' ; ' }, { text: 'je', index: 1 }]} empty=${false} marks=${new Map()}
+    tracks=${['noun', 'other']} onSelect=${() => {}} changed=${new Set()} generation=${0} audibleCount=${5} stale=${false} copyMessage="" onCopy=${() => {}} />`);
+  assert.match(out, /heure<\/span>\u202F; <span/);
 });
 
 test('Result : mots remplacés soulignés à la couleur de leur piste, mots cliquables, éclat, pistes coupées, copie', () => {
@@ -444,12 +460,31 @@ test('Browser : replié par défaut, recettes puis moteurs ; une recette sans ch
   // une recette à choix : sa touche dit ce qu'elle déplie, le choix est caché
   assert.match(out, /class="add-recipe" aria-expanded="false" aria-controls="recipe-liponymie">\+ Liponymie</);
   assert.match(out, /<form class="choice" id="recipe-liponymie" hidden>/);
-  click(browser, (e) => byClass('add-recipe')(e) && String(e.props['children']).includes('Juliennes'));
-  click(browser, (e) => byClass('add-instance')(e) && String(e.props['children']).includes('Bord'));
+  const outside = { currentTarget: { closest: () => null } };
+  const press = (predicate: Parameters<typeof find>[1]) => (find(browser, predicate).props['onClick'] as (event: unknown) => void)(outside);
+  press((e) => byClass('add-recipe')(e) && String(e.props['children']).includes('Juliennes'));
+  press((e) => byClass('add-instance')(e) && String(e.props['children']).includes('Bord'));
   assert.deepEqual(actions, [
     { type: 'add-recipe', recipe: 'juliennes', choice: undefined, today: '2026-10-03' },
     { type: 'add-instance', plugin: 'edge' },
   ]);
+});
+
+test('Browser : après un ajout, le navigateur se replie et l’œil va à la première contrainte ajoutée', async () => {
+  const calls: string[] = [];
+  const slot = (n: number) => ({
+    scrollIntoView: (options: unknown) => calls.push(`scroll ${n} ${JSON.stringify(options)}`),
+    querySelector: () => ({ focus: (options: unknown) => calls.push(`focus ${n} ${JSON.stringify(options)}`) }),
+  });
+  // Une contrainte avant l'ajout, deux après : la chaîne se redessine entre les deux.
+  let slots = [slot(0)];
+  const chain = { querySelectorAll: () => slots };
+  const details = { open: true, closest: () => chain };
+  const browser = html`<${Browser} recipes=${[]} plugins=${[s7Plugin]} dispatch=${() => void (slots = [slot(0), slot(1)])} />`;
+  (find(browser, byClass('add-instance')).props['onClick'] as (event: unknown) => void)({ currentTarget: { closest: () => details } });
+  assert.equal(details.open, false);
+  await new Promise((resolve) => setTimeout(resolve));
+  assert.deepEqual(calls, ['scroll 1 {"block":"center"}', 'focus 1 {"preventScroll":true}']);
 });
 
 test('Browser : le choix se déplie, Brancher ajoute la recette réglée, Annuler et Échap replient sans rien ajouter', () => {
@@ -468,7 +503,7 @@ test('Browser : le choix se déplie, Brancher ajoute la recette réglée, Annule
   assert.deepEqual(calls, ['aria-expanded=true', 'focus select']);
   const choice = find(liponymie, (e) => e.type === 'form');
   let prevented = false;
-  (choice.props['onSubmit'] as (event: unknown) => void)({ preventDefault: () => (prevented = true), currentTarget: { ...form, closest: () => row } });
+  (choice.props['onSubmit'] as (event: unknown) => void)({ preventDefault: () => (prevented = true), currentTarget: { ...form, closest: (selector: string) => (selector === 'details' ? null : row) } });
   assert.ok(prevented);
   assert.deepEqual(actions, [{ type: 'add-recipe', recipe: 'liponymie', choice: 'adjective', today: '2026-10-03' }]);
   assert.equal(form.hidden, true);

@@ -147,9 +147,9 @@ test('vue : la bande d’un S+lettres, ses valeurs sous les mots, la mention', (
   const view = buildView(session, modulated, morphology());
   assert.equal(view.stages[1]!.label, 'S+lettres sur les noms (chaque nom avance d’autant de noms qu’il a de lettres)');
   assert.deepEqual(view.stages[1]!.modulation!.get(2), { values: { offset: 5 } });
-  const window = inspectorWindow(view, 2, 2, (id) => (id === 's7-1' ? s7Plugin : undefined));
+  const window = inspectorWindow(view, 2, 0, 4, (id) => (id === 's7-1' ? s7Plugin : undefined));
   assert.deepEqual(window.bands[1]!.cells.map((cell) => cell.modulation), [undefined, undefined, '+5', undefined, '+7']);
-  assert.deepEqual(inspectorWindow(view, 2, 0).bands[1]!.cells[0]!.modulation, '5');
+  assert.deepEqual(inspectorWindow(view, 2, 2, 2).bands[1]!.cells[0]!.modulation, '5');
   assert.equal(ruleMention(modulated, view.audible, undefined, view.folded), '\n\n— S+lettres sur les noms (chaque nom avance d’autant de noms qu’il a de lettres) (Oulipao)');
   const steps = gridSteps(modulated, view.tracks, session.tagged.map((word) => word.word), undefined, view.stages);
   assert.deepEqual(steps[2]!.modulated, ['+5']);
