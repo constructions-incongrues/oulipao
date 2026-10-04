@@ -32,6 +32,18 @@ export type AdjectiveForm = z.infer<typeof AdjectiveFormSchema>;
 export const S7ModeSchema = z.enum(['same-gender', 'reagree']);
 export type S7Mode = z.infer<typeof S7ModeSchema>;
 
+/**
+ * L'ordre de la liste que parcourt le S+n : celui du dictionnaire, ou une échelle affective (de la note
+ * la plus basse à la plus haute : du plus sombre au plus clair, du plus calme au plus intense, du plus
+ * abstrait au plus concret).
+ */
+export const S7OrderSchema = z.enum(['alphabetical', 'valence', 'arousal', 'concreteness']);
+export type S7Order = z.infer<typeof S7OrderSchema>;
+/** Les ordres qui viennent d'une échelle. */
+export type ScaleOrder = Exclude<S7Order, 'alphabetical'>;
+/** Les catégories qui ont une échelle. */
+export type ScaleCategory = 'noun' | 'adjective';
+
 export const S7OptionsSchema = z.object({
   /** Le « 7 » du S+7 ; négatif pour revenir en arrière. */
   offset: z.number().int().default(7),

@@ -62,6 +62,31 @@ sous-ensemble, qui reste sous la licence d'origine.
   Les formes que GLÀFF ignore (noms composés, ~20 % des formes de Grammalecte) sont phonétisées
   par des règles, et marquées « prononciation devinée ».
 
+### Normes affectives (openlexicon)
+
+Quatre bases de normes notées par des lecteurs, distribuées par le dépôt openlexicon sous
+CC BY-SA 4.0 (licence par défaut du dépôt ; aucune des quatre fiches ne déroge). Téléchargées le
+2026-10-04 dans `data/brut/autres/openlexicon/` (non versionné) :
+
+| Base | Fichier | Mots | Notes gardées |
+|---|---|---|---|
+| Gobin et al. 2017 (EMA) | https://lexique.org/databases/Gobin_2017_ValEmo_Arous_1286/ValEmo_Arous_1286.tsv | 1 286, catégorie par mot | valence (−3 à +3), intensité |
+| Bonin et al. 2018 | https://lexique.org/databases/Bonin_2018_Concr_ContextAv_ValEmo_Arous_1659/Concr_ContextAv_ValEmo_Arous_1659.tsv | 1 659 noms | valence, intensité, concrétude |
+| Bonin et al. 2003 | https://lexique.org/databases/Bonin_2003_Concr_Imag_FreqSub_Valemo_866/Concr_Imag_FreqSub_Valemo_866.tsv | 866 noms | valence, concrétude |
+| Gilet et al. 2012 (FEEL) | https://lexique.org/databases/Gilet_2012_ValEmo_Arous_Imag_835/ValEmo_Arous_Imag_835.tsv | 835 adjectifs de personne | valence, intensité |
+
+`npm run build:scales` (`src/adapters/lexicon/openlexicon-scales.ts`) en dérive
+`data/echelles-oulipao.tsv` (CC BY-SA 4.0) : chaque mot est ramené à un lemme de nom ou
+d'adjectif de Grammalecte, chaque note à son rang dans sa base (de 0 à 1), et un lemme présent
+dans plusieurs bases reçoit la moyenne de ses rangs, arrondie à une note de 0 à 100. Mesuré le
+2026-10-04 : 2 313 noms et 1 081 adjectifs en valence, 1 956 noms et 1 081 adjectifs en
+intensité, 1 788 noms en concrétude ; 644 entrées écartées (verbes, mots grammaticaux, formes
+inconnues) ; 211 Ko brut, 45 Ko compressé. La page ne le télécharge que lorsqu'un S+n prend
+un ordre autre que celui du dictionnaire.
+
+Écartés : NRC VAD (usage non commercial, redistribution interdite, français traduit par
+machine), FEEL d'Abdaoui et al. (licence non vérifiée, polarité seule).
+
 ### Morphalou 3.1
 - Licence : « LGPL-LR (Lesser General Public License For Linguistic Resources) » —
   https://repository.ortolang.fr/api/content/morphalou/latest/LISEZ-MOI.html

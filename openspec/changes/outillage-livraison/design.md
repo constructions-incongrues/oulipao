@@ -28,10 +28,6 @@ On ajoute deux étapes, dans le même ordre dans `ci.yml` et dans `release.yml`,
 
 Le script `build` gagne `--minify`, et `--sourcemap` reste. Les tests ne passent pas par le bundle, donc rien d'autre ne change. On vérifie à la main que les deux pages fonctionnent dans l'aperçu après `build:site`.
 
-### D4. Archivage de `monitoring-vocal`
-
-`openspec archive monitoring-vocal`, après avoir vérifié que ses 14 tâches sont cochées et que `openspec validate monitoring-vocal --strict` passe. Le delta, uniquement `ADDED`, devient la spec principale `openspec/specs/monitoring-vocal/spec.md`. Cet archivage précède tout changement futur qui voudrait modifier l'exigence « Lancer et arrêter la lecture ».
-
 ## Risks / Trade-offs
 
 - [`build:references` produit un JSON au formatage instable] → le script écrit `JSON.stringify(…, null, 2)` suivi d'un saut de ligne, ce qui est déterministe ; on lance le contrôle une fois en local avant de pousser.
@@ -40,4 +36,4 @@ Le script `build` gagne `--minify`, et `--sourcemap` reste. Les tests ne passent
 
 ## Migration Plan
 
-Une PR `ci:`, qui n'entre pas au journal des versions, et une PR `docs:` pour l'archivage OpenSpec. On revient en arrière par revert.
+Une PR `ci:`, qui n'entre pas au journal des versions. On revient en arrière par revert.

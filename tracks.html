@@ -90,12 +90,12 @@
   .source label { display: block; margin-bottom: var(--space-1); }
   textarea { width: 100%; height: 8rem; box-sizing: border-box; padding: var(--space-3); font: var(--size-read-compact)/1.55 var(--font-read); }
   .controls { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-top: var(--space-2); }
-  .input-message, .privacy, .more, .summary, .inspector-hint, .section-hint { color: var(--muted); font-size: var(--size-small); }
+  .input-message, .privacy, .example-source, .more, .summary, .inspector-hint, .section-hint { color: var(--muted); font-size: var(--size-small); }
   .loading { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; color: var(--muted); margin: var(--space-3) 0 0; }
   .loading progress { width: 12rem; accent-color: var(--ink); }
   .error { border-top: var(--rule) solid var(--error); padding-top: var(--space-2); color: var(--ink); }
   .error strong { color: var(--error); font-weight: 700; }
-  .privacy { margin: var(--space-2) 0 0; }
+  .privacy, p.example-source { margin: var(--space-2) 0 0; }
   .stale-bar { margin: 0 0 var(--space-3); }
   .summary { margin: 0 0 var(--space-3); }
 
@@ -194,8 +194,10 @@
   .lock-field { display: inline-flex; gap: var(--space-1); align-items: center; margin-left: var(--space-2); }
   .lock-field input { width: 3.5rem; }
   .lock-note { margin-left: var(--space-2); color: var(--ink); }
-  /* Une valeur modulée : sous le mot, en Martian Mono, à l'encre secondaire (le verrou est à l'encre). */
-  .inspector td .mod { display: block; font: var(--size-small) var(--font-mono); color: var(--muted); }
+  /* Une valeur modulée, ou la note d'une échelle : sous le mot, en Martian Mono, à l'encre secondaire (le verrou est à l'encre). */
+  .inspector td .mod, .inspector td .detail { display: block; font: var(--size-small) var(--font-mono); color: var(--muted); }
+  /* La note passe à la ligne (« valence » / « 12 → 31 ») pour ne pas élargir la colonne du mot. */
+  .inspector td .detail { white-space: normal; }
   .modulator, .mod-settings, .gate { display: inline-flex; flex-wrap: wrap; gap: var(--space-1); align-items: center; }
   .mod-settings, .gate { font-size: var(--size-small); }
   .mod-settings summary, .gate summary { cursor: pointer; }

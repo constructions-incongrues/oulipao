@@ -48,7 +48,7 @@ export interface GoldenRun {
   marks: string[];
 }
 
-export async function loadResources(): Promise<Required<PluginResources>> {
+export async function loadResources(): Promise<PluginResources> {
   const data = (file: string) => fileTextSource(new URL(`../../data/${file}`, import.meta.url));
   const [morphology, verbs, phonetics] = await Promise.all([loadMorphology(data('morpho-oulipao.tsv')), loadVerbs(data('verbes-oulipao.tsv')), loadPhonetics(data('phonetique-oulipao.tsv'))]);
   return { morphology, verbs, phonetics };

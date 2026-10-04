@@ -79,12 +79,12 @@ test('Tautogramme et Abécédaire : un tautogramme progressif sur les noms, adje
 test('Éclipse : un S+7 sur les noms et la forme éclipse, qui remplace la forme courante', () => {
   const rondel = MixerStateSchema.parse(reduce(initialState, { type: 'set-form', form: 'rondel' }));
   const state = add('eclipse', undefined, rondel);
-  assert.deepEqual(summary(state), ['s7-1 {"offset":7,"mode":"reagree","draw":"fixed","seed":1} noun']);
+  assert.deepEqual(summary(state), ['s7-1 {"offset":7,"mode":"reagree","order":"alphabetical","draw":"fixed","seed":1} noun']);
   assert.equal(state.form, 'eclipse');
   assert.equal(add('monovocalisme', 'a', rondel).form, 'rondel'); // une recette sans forme laisse la forme
 });
 
 test('S+dé le 4 octobre 2026 : un S+n au dé sur les noms, de graine 2461318', () => {
   const state = MixerStateSchema.parse(reduce(initialState, { type: 'add-recipe', recipe: 's-de', today: '2026-10-04' }));
-  assert.deepEqual(summary(state), ['s7-1 {"offset":7,"mode":"reagree","draw":"dice","seed":2461318} noun']);
+  assert.deepEqual(summary(state), ['s7-1 {"offset":7,"mode":"reagree","order":"alphabetical","draw":"dice","seed":2461318} noun']);
 });

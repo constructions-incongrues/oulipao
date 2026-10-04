@@ -11,7 +11,7 @@ The system SHALL be published as a static site at `https://oulipao.incongru.org`
 #### Scenario: Ouverture de l'adresse
 - **GIVEN** le site publié sur GitHub Pages
 - **WHEN** on ouvre `https://oulipao.incongru.org`
-- **THEN** la page à pistes s'affiche, et « Essayer avec un exemple » met le texte d'exemple en pistes
+- **THEN** la page à pistes s'affiche, et « Essayer avec un exemple » met en pistes le premier texte d'exemple
 
 #### Scenario: Adresse en clair
 - **GIVEN** le site publié
