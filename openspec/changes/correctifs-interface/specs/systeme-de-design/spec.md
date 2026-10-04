@@ -16,7 +16,7 @@ The system SHALL render every error message with a 1 px rule in the error colour
 - **THEN** le filet et la tête prennent la couleur d'erreur du thème sombre, et le détail l'encre du thème sombre
 
 ### Requirement: Tailles en jetons
-The system SHALL take every font size and spacing of the tracks page from the design tokens, with no size written directly, and SHALL keep every spacing a multiple of 4 px. The token scale SHALL include a value size of 11 px, a grid-word size of 14 px, and the narrow-screen sizes used below 768 px: 19 px for reading and 34 px for the brand mark; DESIGN.md SHALL state the same scale and threshold.
+The system SHALL take every font size of the tracks page from the design tokens, with no font size written directly, and SHALL take the padding of every key from the spacing tokens, a multiple of 4 px. The token scale SHALL include a value size of 11 px, a grid-word size of 14 px, and the narrow-screen sizes used below 768 px: 19 px for reading and 34 px for the brand mark; DESIGN.md SHALL state the same scale and threshold.
 
 #### Scenario: Aucune taille en dur
 - **GIVEN** la feuille de style de la page des pistes
