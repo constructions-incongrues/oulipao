@@ -104,7 +104,9 @@ export const lineationPlugin = definePlugin({
   parse: params,
   needsPhonetics: (values) => ['syllables', 'measures'].includes(params(values).cut),
   acts: () => true,
-  title: () => 'Mise en vers',
+  // Coupée par syllabes, le titre dit la mesure : un verrou s'annonce « Vers de 4 syllabes sur ce mot ».
+  title: (values) => (params(values).cut === 'syllables' ? `Vers de ${params(values).syllables} syllabes` : 'Mise en vers'),
+  modulatedLabel: (_values, source) => `mise en vers en syllabes : ${source}`,
   label: (values) => {
     const { cut, n, syllables, measures, number } = params(values);
     if (cut === 'every') return `mise en vers tous les ${n} mots`;
