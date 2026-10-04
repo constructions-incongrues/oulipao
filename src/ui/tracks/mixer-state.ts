@@ -1,24 +1,12 @@
 import { CATEGORIES } from '../../domain/categories.ts';
 import type { Tracks } from '../../domain/mixing.ts';
 import type { ConstraintPlugin } from '../../domain/plugin.ts';
-import { edgePlugin } from '../../domain/edge/plugin.ts';
-import { lineationPlugin } from '../../domain/lineation/plugin.ts';
-import { lipogramPlugin } from '../../domain/lipogram/plugin.ts';
-import { tautogramPlugin } from '../../domain/tautogram/plugin.ts';
-import { anterhymePlugin } from '../../domain/rhyme/anterhyme.ts';
-import { antirhymePlugin } from '../../domain/rhyme/antirhyme.ts';
-import { berrychonnePlugin } from '../../domain/rhyme/berrychonne.ts';
-import { homophonyPlugin } from '../../domain/rhyme/homophony.ts';
-import { monorhymePlugin } from '../../domain/rhyme/monorhyme.ts';
-import { rhymeSchemePlugin } from '../../domain/rhyme/rhyme-scheme.ts';
-import { rnPlugin } from '../../domain/rhyme/rn.ts';
-import { s7Plugin } from '../../domain/s7/plugin.ts';
-import { trackSortPlugin } from '../../domain/track-sort/plugin.ts';
+import { installedPlugins } from '../../domain/registry.ts';
 import { RECIPES, validRecipes, type Recipe } from './recipes.ts';
 import { MixerActionSchema, type Instance, type MixerAction, type MixerState } from './types.ts';
 
-/** Les types de contraintes qu'on peut brancher sur la table. */
-export const installedPlugins: readonly ConstraintPlugin[] = [s7Plugin, lipogramPlugin, trackSortPlugin, edgePlugin, lineationPlugin, rnPlugin, monorhymePlugin, antirhymePlugin, homophonyPlugin, rhymeSchemePlugin, anterhymePlugin, berrychonnePlugin, tautogramPlugin];
+// Le registre vit dans le domaine (`registry.ts`) ; réexporté ici pour les appelants de l'interface.
+export { installedPlugins };
 
 /** Les recettes proposées : celles qui tiennent avec les types installés. */
 export const recipes: readonly Recipe[] = validRecipes(RECIPES, installedPlugins);

@@ -1,14 +1,21 @@
-import { wordsAtStep } from '../../domain/monitoring.ts';
+// La page des pistes : une façade qui garde l'état et compose deux contrôleurs.
+//
+//   app.ts ──► createTracksController (façade : saisie, étiquetage, table, inspecteur, grille)
+//                ├─ createNotebookController  (notebook-controller.ts : garder, rouvrir, supprimer, importer…)
+//                └─ createListeningController (listening-controller.ts : écoute, tempo, voix)
+//
+// Les deux contrôleurs lisent et changent l'état par la façade (`host`) ; seule elle le tient.
 import { tagText } from '../../domain/tagging.ts';
-import { DEFAULT_PREFERENCES, MonitoringPreferencesSchema, tempoTiming, type MonitoringPreferencesStorage } from '../../ports/monitoring-preferences.ts';
+import type { MonitoringPreferencesStorage } from '../../ports/monitoring-preferences.ts';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
-import type { NotebookStorage } from '../../ports/notebook-storage.ts';
 import type { PhoneticsRepository } from '../../ports/phonetics.ts';
 import type { Speech, Voice } from '../../ports/speech.ts';
 import type { Tagger } from '../../ports/tagger.ts';
 import type { VerbRepository } from '../../ports/verbs.ts';
+import { createListeningController, initialListening } from './listening-controller.ts';
 import { initialState, pluginById, reduce } from './mixer-state.ts';
-import { addEntry, editEntry, entryClipboard, exportFileName, mergeEntries, parseNotebook, removeEntry, serializeNotebook, type NotebookEntry } from './notebook.ts';
+import type { NotebookEntry } from './notebook.ts';
+import { createNotebookController, initialNotebook, memoryNotebook, messageOf, type NotebookDependencies } from './notebook-controller.ts';
 import { MixerStateSchema, type MixerAction, type MixerState } from './types.ts';
 import { buildView, changedWords, pageOf, ruleMention, stepsPerPage, withListening, type Session, type TracksView } from './view-model.ts';
 
@@ -34,28 +41,7 @@ export interface TracksDependencies {
   sleep?: (ms: number) => Promise<void>;
 }
 
-/** Ce dont le carnet a besoin de l'extérieur. */
-export interface NotebookDependencies {
-  storage: NotebookStorage;
-  now: () => Date;
-  newId: () => string;
-  /** Demande une confirmation ; `true` si elle est donnée. */
-  confirm: (message: string) => boolean;
-  /** Propose un fichier à enregistrer, sans rien envoyer. */
-  download: (name: string, text: string) => void;
-}
-
-/** Un carnet en mémoire : pour les pages et les tests qui n'en branchent pas. */
-const memoryNotebook = (): NotebookDependencies => {
-  let data: string | null = null;
-  return {
-    storage: { read: () => data, write: (text) => void (data = text) },
-    now: () => new Date(),
-    newId: () => crypto.randomUUID(),
-    confirm: () => true,
-    download: () => {},
-  };
-};
+export type { NotebookDependencies } from './notebook-controller.ts';
 
 /** Le chargement du modèle et du dictionnaire. */
 export interface ModelState {
@@ -187,19 +173,11 @@ export interface TracksController {
 export const EXAMPLE_TEXT =
   "Le matin où la vieille horloge du village s'arrêta, personne ne le remarqua vraiment. Le boulanger ouvrit sa boutique à l'heure habituelle, les enfants coururent vers l'école, et le chat du notaire dormit au soleil sur le mur de la mairie.";
 
-/** « 1 texte illisible laissé de côté. » ; rien quand tout se lit. */
-const count = (n: number, one: string, many: string) => `${n} ${n > 1 ? many : one}`;
-const unreadable = (rejected: number) => (rejected ? `${count(rejected, 'texte illisible laissé', 'textes illisibles laissés')} de côté.` : '');
-
-const messageOf = (error: unknown) => (error instanceof Error ? error.message : String(error));
-
 /** L'état de la page des pistes et ses gestes ; `onChange` est appelé à chaque changement. */
 export function createTracksController(dependencies: TracksDependencies, onChange: (state: TracksState) => void = () => {}): TracksController {
   const notebook = dependencies.notebook ?? memoryNotebook();
-  const stored = parseNotebook(notebook.storage.read());
-  const speech = dependencies.speech;
-  const preferences = dependencies.preferences?.load() ?? DEFAULT_PREFERENCES;
   const sleep = dependencies.sleep ?? ((ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms)));
+  const listeningDependencies = { speech: dependencies.speech, preferences: dependencies.preferences, sleep };
   let state: TracksState = {
     input: '',
     editing: true,
@@ -211,19 +189,15 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     changed: new Set(),
     generation: 0,
     copyMessage: '',
-    notebook: stored.entries,
-    notebookMessage: stored.error ?? unreadable(stored.rejected),
+    ...initialNotebook(notebook),
     unsaved: false,
     verbs: { status: 'idle', error: '' },
     phonetics: { status: 'idle', error: '' },
     perPage: 16,
     page: 0,
     pinned: false,
-    playing: false,
     listened: false,
-    tempo: preferences.tempo,
-    voice: preferences.voice,
-    voices: speech?.voices() ?? [],
+    ...initialListening(listeningDependencies),
   };
   let session: Session | undefined;
   let morphology: MorphologyRepository | undefined;
@@ -231,8 +205,6 @@ export function createTracksController(dependencies: TracksDependencies, onChang
   let phonetics: PhoneticsRepository | undefined;
   let loading: Promise<void> | undefined;
   let runs = 0;
-  // Le numéro de l'écoute en cours : arrêter le change, et la boucle d'avant s'éteint d'elle-même.
-  let playback = 0;
 
   const update = (patch: Partial<TracksState>) => {
     state = { ...state, ...patch };
@@ -263,31 +235,40 @@ export function createTracksController(dependencies: TracksDependencies, onChang
   /** La mention de la chaîne, avec « réglé en écoutant » si l'écoute a tourné. */
   const mention = (view: TracksView) => withListening(ruleMention(state.mixer, view.audible), state.listened);
 
-  /**
-   * L'écoute : à chaque pas, elle relit l'état (vue, page, tempo, voix), dit les mots du pas ou se
-   * tait, attend un blanc, puis passe au suivant, en boucle sur la page affichée. Un réglage changé
-   * s'entend donc au pas suivant, sans revenir au début.
-   */
-  const listen = async (token: number) => {
-    let at = state.page * state.perPage;
-    while (token === playback) {
-      const first = state.page * state.perPage;
-      const end = Math.min(first + state.perPage, state.view?.tracks.length ?? 0);
-      if (end <= first) return controller.stop();
-      if (at < first || at >= end) at = first; // fin de page, ou page changée : premier pas de la page
-      update({ playhead: at });
-      const { rate, gap } = tempoTiming(state.tempo);
-      const words = wordsAtStep(state.view!.segments, at);
-      if (words.length) await speech!.speak(words, { rate, voice: state.voice });
-      if (token !== playback) return;
-      await sleep(gap);
-      at++;
-    }
+  const host = {
+    get state() {
+      return state;
+    },
+    update,
   };
+  const listening = createListeningController(host, listeningDependencies);
+  const notebookController = createNotebookController(
+    {
+      ...host,
+      get state() {
+        return state;
+      },
+      session: () => session,
+      mention,
+      restore: (entry) => restore(entry),
+      copy: (text) => dependencies.copy(text),
+    },
+    notebook,
+  );
 
-  const savePreferences = () => dependencies.preferences?.save(MonitoringPreferencesSchema.parse({ tempo: state.tempo, voice: state.voice }));
-
-  speech?.onVoices(() => update({ voices: speech.voices() }));
+  /** Rouvre un texte gardé : son texte d'origine, son étiquetage et sa table, sans réétiqueter. */
+  const restore = async (entry: NotebookEntry) => {
+    const run = ++runs; // une mise en pistes en cours ne doit pas l'écraser
+    controller.stop();
+    update({ notebookMessage: '', inputMessage: '', listened: false });
+    await controller.preload();
+    if (run !== runs || !morphology) return;
+    session = entry.source;
+    const mixer = MixerStateSchema.parse(entry.mixer);
+    const view = buildView(session, mixer, morphology, undefined, verbs, phonetics);
+    update({ input: session.text, tagging: false, editing: false, stale: false, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, copyMessage: '', unsaved: false });
+    wantResources(mixer);
+  };
 
   const controller: TracksController = {
     get state() {
@@ -405,114 +386,18 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     pin(pinned) {
       if (pinned !== state.pinned) update({ pinned });
     },
-    play() {
-      if (state.playing || !speech || !state.view || !state.voices.length) return;
-      update({ playing: true, listened: true });
-      void listen(++playback);
-    },
-    stop() {
-      if (!state.playing) return;
-      playback++;
-      speech!.cancel();
-      update({ playing: false, playhead: undefined });
-    },
-    toggle() {
-      if (state.playing) controller.stop();
-      else controller.play();
-    },
-    setTempo(tempo) {
-      if (!MonitoringPreferencesSchema.shape.tempo.safeParse(tempo).success) return;
-      update({ tempo });
-      savePreferences();
-    },
-    setVoice(voice) {
-      if (!state.voices.some((candidate) => candidate.id === voice)) return;
-      update({ voice });
-      savePreferences();
-    },
-    keep() {
-      const view = state.view;
-      if (!view || !session || state.stale || view.empty) return;
-      const entry: NotebookEntry = {
-        id: notebook.newId(),
-        keptAt: notebook.now().toISOString(),
-        result: view.result,
-        mention: mention(view),
-        source: session,
-        mixer: state.mixer,
-      };
-      const entries = addEntry(state.notebook, entry);
-      try {
-        notebook.storage.write(serializeNotebook(entries));
-        update({ notebook: entries, copyMessage: 'Gardé.', unsaved: false });
-      } catch (error) {
-        update({ copyMessage: `Impossible de garder : ${messageOf(error)}` });
-      }
-    },
-    async reopen(id) {
-      const entry = state.notebook.find((candidate) => candidate.id === id);
-      if (!entry) return;
-      try {
-        for (const instance of entry.mixer.instances) pluginById(instance.type);
-      } catch (error) {
-        return update({ notebookMessage: `Ce texte ne peut pas être rouvert : ${messageOf(error)}.` });
-      }
-      if (state.unsaved && !notebook.confirm('Le texte en cours n’est pas gardé. Rouvrir quand même ?')) return;
-      const run = ++runs; // une mise en pistes en cours ne doit pas l'écraser
-      controller.stop();
-      update({ notebookMessage: '', inputMessage: '', listened: false });
-      await controller.preload();
-      if (run !== runs || !morphology) return;
-      session = entry.source;
-      const mixer = MixerStateSchema.parse(entry.mixer);
-      const view = buildView(session, mixer, morphology, undefined, verbs, phonetics);
-      update({ input: session.text, tagging: false, editing: false, stale: false, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, copyMessage: '', unsaved: false });
-      wantResources(mixer);
-    },
-    remove(id) {
-      if (!notebook.confirm('Supprimer ce texte du carnet ?')) return;
-      const entries = removeEntry(state.notebook, id);
-      try {
-        notebook.storage.write(serializeNotebook(entries));
-        update({ notebook: entries, notebookMessage: '' });
-      } catch (error) {
-        update({ notebookMessage: `Suppression impossible : ${messageOf(error)}` });
-      }
-    },
-    exportNotebook() {
-      notebook.download(exportFileName(notebook.now()), serializeNotebook(state.notebook));
-    },
-    importNotebook(text) {
-      const merged = mergeEntries(state.notebook, text);
-      if (merged.error) return update({ notebookMessage: `Import refusé : ${merged.error}` });
-      try {
-        notebook.storage.write(serializeNotebook(merged.entries));
-      } catch (error) {
-        return update({ notebookMessage: `Import impossible : ${messageOf(error)}` });
-      }
-      const counts = [count(merged.added, 'texte ajouté', 'textes ajoutés'), count(merged.present, 'déjà présent', 'déjà présents')];
-      if (merged.rejected) counts.push(count(merged.rejected, 'illisible', 'illisibles'));
-      update({ notebook: merged.entries, notebookMessage: `Import : ${counts.join(', ')}.` });
-    },
-    async copyEntry(id) {
-      const entry = state.notebook.find((candidate) => candidate.id === id);
-      if (!entry) return;
-      try {
-        await dependencies.copy(entryClipboard(entry));
-        update({ notebookMessage: 'Copié.' });
-      } catch (error) {
-        update({ notebookMessage: `Copie impossible : ${messageOf(error)}` });
-      }
-    },
-    editEntry(id, text) {
-      const entries = editEntry(state.notebook, id, text);
-      try {
-        notebook.storage.write(serializeNotebook(entries));
-        update({ notebook: entries, notebookMessage: '' });
-      } catch (error) {
-        update({ notebookMessage: `Retouche impossible : ${messageOf(error)}` });
-      }
-    },
+    play: listening.play,
+    stop: listening.stop,
+    toggle: listening.toggle,
+    setTempo: listening.setTempo,
+    setVoice: listening.setVoice,
+    keep: notebookController.keep,
+    reopen: notebookController.reopen,
+    remove: notebookController.remove,
+    exportNotebook: notebookController.exportNotebook,
+    importNotebook: notebookController.importNotebook,
+    copyEntry: notebookController.copyEntry,
+    editEntry: notebookController.editEntry,
     async copy() {
       const view = state.view;
       if (!view || state.stale || view.empty) return;
