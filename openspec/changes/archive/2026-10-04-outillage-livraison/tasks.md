@@ -13,4 +13,4 @@
 
 ## 3. Vérification d'ensemble
 
-- [ ] 3.1 La CI de chaque PR passe, avec les nouvelles étapes visibles dans le journal de la vérification
+- [x] 3.1 La CI de chaque PR passe, avec les nouvelles étapes visibles dans le journal de la vérification
