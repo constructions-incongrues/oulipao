@@ -6,6 +6,7 @@ import { runChain, type ChainStep, type StageWord, type StepReport } from '../..
 import { describeReading, lineSyllables, PHONETICS_LOADING, pronounce, type VerseWord } from '../../domain/phonetics/lookup.ts';
 import { FORM_LABELS, layoutForm } from '../../domain/forms/form.ts';
 import { rhymeSchemePlugin, schemeOf } from '../../domain/rhyme/rhyme-scheme.ts';
+import { edgePlugin } from '../../domain/edge/plugin.ts';
 import { schemeLetters } from '../../domain/rhyme/scheme.ts';
 import type { TaggedWord } from '../../domain/tagged-word.ts';
 import { tokenize } from '../../domain/tokenizer.ts';
@@ -70,6 +71,8 @@ export interface TracksView {
   missing?: number;
   /** Les paramètres modulés dont une valeur a été repliée, par instance : la mention dit « modulo ». */
   folded: Readonly<Record<string, readonly string[]>>;
+  /** Le nombre de vers du texte saisi (lignes non vides) : une mise en page par vers en demande deux. */
+  verses: number;
 }
 
 /**
@@ -146,10 +149,22 @@ export interface GridStep {
   locks: { id: string; key: string; value: number }[];
   /** Ce que les modulateurs ont donné à ce mot, étape par étape : « +4 », « porte fermée » ; absent : rien. */
   modulated?: string[];
+  /**
+   * Ce que la chaîne a fait du mot d'un pas percé : changé (remplacé ou remis en ligne), retiré, ou
+   * inchangé (rien à changer, ou laissé tel quel faute de mieux) ; absent pour un pas non percé.
+   */
+  outcome?: 'changed' | 'removed' | 'unchanged';
 }
 
 /** Les pas de la grille, un par mot d'origine ; `stages` (ceux de la vue) donne les valeurs modulées. */
-export function gridSteps(mixer: MixerState, tracks: readonly Category[], words: readonly string[], lookup: PluginLookup = pluginById, stages: readonly Stage[] = []): GridStep[] {
+export function gridSteps(
+  mixer: MixerState,
+  tracks: readonly Category[],
+  words: readonly string[],
+  lookup: PluginLookup = pluginById,
+  stages: readonly Stage[] = [],
+  marks: ReadonlyMap<number, Mark> = new Map(),
+): GridStep[] {
   const closed = new Set(mixer.closed ?? []);
   const acting = activeSteps(mixer, lookup);
   const modulatedAt = (index: number) => {
@@ -160,16 +175,24 @@ export function gridSteps(mixer: MixerState, tracks: readonly Category[], words:
     });
     return modulated.length ? { modulated } : {};
   };
-  return tracks.map((track, index) => ({
-    index,
-    word: words[index]!,
-    track,
-    state: closed.has(index) ? 'closed' : acting.some((step) => step.targets.has(track)) ? 'punched' : 'outline',
-    locks: mixer.instances.flatMap((instance) =>
-      (instance.locks ?? []).filter((lock) => lock.index === index).map(({ key, value }) => ({ id: instance.id, key, value })),
-    ),
-    ...modulatedAt(index),
-  }));
+  const outcome = (index: number): GridStep['outcome'] => {
+    const mark = marks.get(index)?.state;
+    return mark === 'replaced' || mark === 'relaid' ? 'changed' : mark === 'removed' ? 'removed' : 'unchanged';
+  };
+  return tracks.map((track, index) => {
+    const state = closed.has(index) ? 'closed' : acting.some((step) => step.targets.has(track)) ? 'punched' : 'outline';
+    return {
+      index,
+      word: words[index]!,
+      track,
+      state,
+      ...(state === 'punched' && { outcome: outcome(index) }),
+      locks: mixer.instances.flatMap((instance) =>
+        (instance.locks ?? []).filter((lock) => lock.index === index).map(({ key, value }) => ({ id: instance.id, key, value })),
+      ),
+      ...modulatedAt(index),
+    };
+  });
 }
 
 /** Le nombre de pas par page : seize sur un écran large, huit sur une tablette, quatre sur un téléphone. */
@@ -189,10 +212,14 @@ function tracksPhrase(targets: readonly Category[]): string {
  * quand elle vise toutes celles que son type sait traiter (« S+7 sur les noms », « lipogramme en e ») ;
  * puis la règle de ses modulateurs et de sa porte, entre parenthèses, une phrase chacun.
  */
+/** Une phrase ou un libellé qui ouvre une ligne : « lipogramme en e » devient « Lipogramme en e ». */
+const capitalized = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+
 export function describeInstance(instance: Instance, lookup: PluginLookup = pluginById, context: DescribeContext = {}): string {
   const plugin = lookup(instance.type);
   const label = modulatedLabel(plugin, instance.params, instance.modulators);
-  const named = plugin.tracks.every((track) => instance.targets.includes(track)) ? label : `${label}${label.includes(',') ? ',' : ''} sur ${tracksPhrase(instance.targets)}`;
+  // Une recette se nomme elle-même : ses pistes et ses réglages font partie de son nom.
+  const named = instance.recipe ?? (plugin.tracks.every((track) => instance.targets.includes(track)) ? label : `${label}${label.includes(',') ? ',' : ''} sur ${tracksPhrase(instance.targets)}`);
   const statement = { earlier: context.earlier ?? false, folded: false };
   const rules = [
     ...Object.entries(instance.modulators ?? {}).map(([key, modulator]) =>
@@ -247,13 +274,14 @@ export function buildView(
       { id: 'origin', label: 'Origine', words: tagged.map((word) => ({ output: word.word, newline: false })) },
       ...active.map((instance, k) => ({
         id: instance.id,
-        label: describeInstance(instance, lookup, { earlier: k > 0, folded: chain.modulation[k]!.folded }),
+        label: capitalized(describeInstance(instance, lookup, { earlier: k > 0, folded: chain.modulation[k]!.folded })),
         words: chain.stages[k]!,
         ...(chain.modulation[k]!.words.size > 0 && { modulation: chain.modulation[k]!.words }),
       })),
     ],
     folded: Object.fromEntries(active.flatMap((instance, k) => (chain.modulation[k]!.folded.length ? [[instance.id, chain.modulation[k]!.folded]] : []))),
     tracks: tagged.map((word) => word.category),
+    verses: text.split('\n').filter((line) => line.trim()).length,
     result: segments.map((segment) => segment.text).join(''),
     segments,
     empty: !segments.some((segment) => segment.index !== undefined),
@@ -314,11 +342,22 @@ function stepSentence(instance: Instance, view: TracksView, lookup: PluginLookup
   return `${name} : ${counts.join(', ')}.`;
 }
 
+/**
+ * Une mise en page par vers (Bord, donc Haï-kaïsation) sur un texte d'un seul vers ne garde presque
+ * rien : la phrase d'état le dit, sauf si une étape avant elle a mis le texte en vers.
+ */
+function verseWarning(instance: Instance, view: TracksView): string {
+  if (instance.type !== edgePlugin.id || view.verses > 1) return '';
+  const at = view.stages.findIndex((stage) => stage.id === instance.id);
+  if (view.stages.slice(1, at).some((stage) => stage.words.some((word) => word.newline))) return '';
+  return ' Le texte n’a qu’un vers : collez un poème, ou mettez-le d’abord en vers.';
+}
+
 /** La phrase qui résume l'état du texte, affichée et annoncée après chaque geste. */
 export function summarize(mixer: MixerState, view: TracksView, lookup: PluginLookup = pluginById): string {
   const enabled = enabledInstances(mixer);
   const rule = enabled.length
-    ? enabled.map((instance) => stepSentence(instance, view, lookup)).join(' ')
+    ? enabled.map((instance) => capitalized(stepSentence(instance, view, lookup)) + verseWarning(instance, view)).join(' ')
     : !mixer.instances.length
       ? 'Aucune contrainte : texte d’origine.'
       : `${mixer.instances.length > 1 ? 'Contraintes coupées' : 'Contrainte coupée'} : texte d’origine.`;

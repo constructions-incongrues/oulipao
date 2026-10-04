@@ -18,7 +18,8 @@ import { EXAMPLES } from './examples.ts';
 import { createListeningController, initialListening } from './listening-controller.ts';
 import { initialState, pluginById, reduce } from './mixer-state.ts';
 import type { Lineage, NotebookEntry } from './notebook.ts';
-import { cannotReopen, createNotebookController, initialNotebook, memoryNotebook, messageOf, type NotebookDependencies } from './notebook-controller.ts';
+import { cannotReopen, createNotebookController, initialNotebook, memoryNotebook, messageOf, reopenProblem, type NotebookDependencies } from './notebook-controller.ts';
+import type { SharedEntry } from './share-link.ts';
 import { MixerStateSchema, type MixerAction, type MixerState } from './types.ts';
 import { buildView, changedWords, composeMention, pageOf, readsSyllables, ruleBody, ruleMention, stepsPerPage, withListening, type Session, type TracksView } from './view-model.ts';
 
@@ -43,7 +44,12 @@ export interface TracksDependencies {
   preferences?: MonitoringPreferencesStorage;
   /** Attend un blanc, en millisecondes ; remplacé dans les tests. */
   sleep?: (ms: number) => Promise<void>;
+  /** L'entrée portée par le lien qui a ouvert la page ; rien : la page s'ouvre sans lien d'Oulipao. */
+  arrival?: Promise<SharedEntry | 'unreadable' | undefined>;
 }
+
+/** Ce que dit la page quand le lien qui l'a ouverte est tronqué, abîmé, ou d'une autre version. */
+export const UNREADABLE_LINK = 'Ce lien n’est pas lisible.';
 
 export type { NotebookDependencies } from './notebook-controller.ts';
 
@@ -107,6 +113,14 @@ export interface TracksState {
   notebookError?: ErrorText;
   /** Le carnet survit-il à la fermeture de l'onglet ? `false` : stockage refusé, carnet de séance. */
   notebookPersistent: boolean;
+  /** Le lien d'une entrée partagée, affiché à copier quand le presse-papiers l'a refusé. */
+  sharedLink?: string;
+  /** L'entrée reçue par un lien, montrée avant tout le reste ; aucune : pas de vue d'arrivée. */
+  arrival?: SharedEntry;
+  /** « Ce lien n'est pas lisible. », ou rien. */
+  arrivalMessage: string;
+  /** La raison pour laquelle l'entrée reçue ne peut pas être rejouée. */
+  arrivalError?: ErrorText;
   /** Un texte en pistes a changé, par un geste, depuis la dernière garde ou réouverture. */
   unsaved: boolean;
   /** La filiation du texte en cours, né d'« Itérer » ou de « Figer » ; absente : première génération. */
@@ -187,6 +201,11 @@ export interface TracksController {
   importNotebook(text: string): void;
   /** Copie une entrée d'un bloc : l'original, le résultat (retouché), la chaîne. */
   copyEntry(id: string): Promise<void>;
+  shareEntry(id: string): Promise<void>;
+  /** Rejoue l'entrée reçue par un lien : charge le modèle à ce premier clic, puis la rouvre dans la table. */
+  replayArrival(): Promise<void>;
+  /** Ferme la vue d'arrivée ; l'outil s'affiche tel qu'il l'aurait été sans le lien. */
+  closeArrival(): void;
   /** Retouche le résultat d'une entrée ; vide ou égal au résultat produit, la retouche tombe. */
   editEntry(id: string, text: string): void;
   /** Relit le carnet gardé : un autre onglet vient de l'écrire. */
@@ -235,6 +254,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     changed: new Set(),
     generation: 0,
     copyMessage: '',
+    arrivalMessage: '',
     ...initialNotebook(notebook),
     unsaved: false,
     verbs: { status: 'idle' },
@@ -524,6 +544,24 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     exportNotebook: notebookController.exportNotebook,
     importNotebook: notebookController.importNotebook,
     copyEntry: notebookController.copyEntry,
+    shareEntry: notebookController.shareEntry,
+    async replayArrival() {
+      const shared = state.arrival;
+      if (!shared) return;
+      if (state.unsaved && !notebook.confirm('Le texte en cours n’est pas gardé. Rejouer quand même ?')) return;
+      update({ arrivalError: undefined });
+      await controller.preload();
+      if (state.model.status !== 'ready') return; // la vue reste ouverte, avec la raison ; un clic réessaie
+      // Une entrée reçue n'est dans aucun carnet : son identifiant ne désigne rien à reprendre.
+      const entry: NotebookEntry = { ...shared, id: 'reçue', keptAt: new Date(0).toISOString() };
+      const problem = reopenProblem(entry);
+      if (problem) return update({ arrivalError: cannotReopen(problem) });
+      update({ arrival: undefined });
+      await restore(entry);
+    },
+    closeArrival() {
+      update({ arrival: undefined, arrivalError: undefined });
+    },
     editEntry: notebookController.editEntry,
     syncNotebook: notebookController.syncNotebook,
     async copy() {
@@ -537,5 +575,9 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       }
     },
   };
+  void dependencies.arrival?.then((received) => {
+    if (received === 'unreadable') update({ arrivalMessage: UNREADABLE_LINK });
+    else if (received) update({ arrival: received, arrivalMessage: '' });
+  });
   return controller;
 }

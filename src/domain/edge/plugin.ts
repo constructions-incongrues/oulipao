@@ -54,12 +54,17 @@ export const edgePlugin = definePlugin({
   help(values) {
     const { mode, n } = params(values);
     switch (mode) {
+      // Un seul mot se dit « le dernier mot », pas « les 1 mot ».
       case 'ends':
-        return `Ne garde que les ${words(n)} de la fin de chaque vers.`;
+        return n === 1 ? 'Ne garde que le dernier mot de chaque vers.' : `Ne garde que les ${words(n)} de la fin de chaque vers.`;
       case 'head-tail':
-        return `Ne garde que les ${words(n)} du début et de la fin de chaque vers.`;
+        return n === 1
+          ? 'Ne garde que le premier et le dernier mot de chaque vers.'
+          : `Ne garde que les ${words(n)} du début et de la fin de chaque vers.`;
       case 'inside':
-        return `Ôte le premier et le dernier vers, puis les ${words(n)} du début et de la fin des autres.`;
+        return n === 1
+          ? 'Ôte le premier et le dernier vers, puis le premier et le dernier mot des autres.'
+          : `Ôte le premier et le dernier vers, puis les ${words(n)} du début et de la fin des autres.`;
     }
   },
   apply(text, tagged, values, _resources, _targets, scope = FULL_SCOPE) {

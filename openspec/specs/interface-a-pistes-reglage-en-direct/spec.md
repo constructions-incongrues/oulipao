@@ -6,12 +6,17 @@ Montrer un texte français comme une partition de pistes linguistiques sur laque
 ## Requirements
 
 ### Requirement: Tranche de réglage par piste
-The system SHALL give each track a channel strip, at the head of its row in the step grid, showing the track's shape, its name, its word count, a mute button, a solo button and a reminder of the instances that target it; filters are set in the chain, not on the strip.
+The system SHALL give each track a channel strip, at the head of its row in the step grid, showing the track's shape, its name, its word count, a mute button, a solo button and a reminder of the instances that target it; an instance that targets all five tracks SHALL be recalled once, at the head of the strips, instead of in each strip. Filters are set in the chain, not on the strip.
 
 #### Scenario: Piste sans plugin
 - **GIVEN** la piste des verbes et aucun filtre qui la vise
 - **WHEN** sa tranche s'affiche
 - **THEN** elle montre le carré des verbes, leur nom, leur nombre de mots, Muet et Seul, et aucun rappel de filtre
+
+#### Scenario: Filtre sur les cinq pistes
+- **GIVEN** un S+7 sur les noms puis un lipogramme sur les cinq pistes
+- **WHEN** les tranches s'affichent
+- **THEN** la tranche des noms rappelle « 1. S+7 », aucune tranche ne rappelle le lipogramme, et la tête des tranches dit « Toutes les pistes : 2. Lipogramme en e »
 
 ### Requirement: Plugin S+7 sur la piste des noms
 The system SHALL open with an empty chain; a S+7 added to the chain targets the nouns track, enabled, with offset 7 and re-agreement mode.
@@ -115,7 +120,7 @@ The system SHALL process the text entirely in the browser, with no network reque
 - **THEN** aucune requête ne contient le texte
 
 ### Requirement: Texte résultant toujours visible
-The system SHALL keep the resulting text on screen while the page scrolls: once its band would leave the top of the screen, it SHALL stay pinned at the top in a compact form showing at most four lines (three below 768 px), the rest scrolling inside the band, with the copy button still reachable.
+The system SHALL keep the resulting text on screen while the page scrolls: once its band would leave the top of the screen, it SHALL stay pinned at the top in a compact form showing at most four lines (three below 768 px), the rest scrolling inside the band, with the copy button still reachable on screens 768 px wide or more. While not pinned, the band SHALL take the height of its text and SHALL NOT scroll on its own.
 
 #### Scenario: Régler la grille
 - **GIVEN** un texte de 44 mots mis en pistes sur un écran de 1280 × 900
@@ -126,6 +131,11 @@ The system SHALL keep the resulting text on screen while the page scrolls: once 
 - **GIVEN** une fenêtre de 375 px de large
 - **WHEN** la page défile
 - **THEN** la bande collée montre trois lignes au plus et la page ne défile pas à l'horizontale
+
+#### Scenario: Poème long en haut de page
+- **GIVEN** un poème de 30 vers mis en pistes, la page en haut
+- **WHEN** l'utilisateur fait tourner la molette au-dessus de la bande
+- **THEN** c'est la page qui défile, pas la bande
 
 ### Requirement: Ordre de la page
 The system SHALL present, from top to bottom: the resulting text, the notebook panel, the source text, the filter chain, the step grid with its track strips, then the inspector. The notebook panel SHALL NOT be pinned with the resulting text.
@@ -295,3 +305,32 @@ Below 768 px, the system SHALL hide the header of the pinned result strip (its t
 - **GIVEN** la page à 375 px de large et un texte mis en pistes
 - **WHEN** l'utilisateur descend jusqu'à la grille
 - **THEN** la bande collée ne montre que trois lignes de texte, sans touches
+
+### Requirement: Phrases qui commencent par une majuscule
+The system SHALL start each sentence of the status line and each inspector band label with a capital letter; the mention appended to a copy SHALL keep its own case.
+
+#### Scenario: Lipogramme
+- **GIVEN** un lipogramme en e dans la chaîne
+- **WHEN** la phrase d'état s'affiche
+- **THEN** elle dit « Lipogramme en e : … »
+
+### Requirement: Geste principal de la saisie
+The system SHALL mark « Mettre en pistes » as the main key of the source panel with a 2 px ink outline, at the same size as the other keys and without an accent colour.
+
+#### Scenario: Saisie dépliée
+- **GIVEN** la saisie dépliée
+- **WHEN** l'utilisateur la regarde
+- **THEN** « Mettre en pistes » a un contour de 2 px et « Essayer avec un exemple » un contour de 1 px
+
+### Requirement: Texte d'un seul vers sous une mise en page par vers
+The system SHALL add to the status sentence « Le texte n'a qu'un vers : collez un poème, ou mettez-le d'abord en vers. » when a Bord instance acts on a text of a single line and no step before it has put the text into lines.
+
+#### Scenario: Haï-kaïsation sur de la prose
+- **GIVEN** l'extrait de Proust, d'un seul paragraphe
+- **WHEN** on branche Haï-kaïsation
+- **THEN** la phrase d'état dit « Haï-kaïsation : 117 mots retirés. Le texte n'a qu'un vers : collez un poème, ou mettez-le d'abord en vers. »
+
+#### Scenario: Après une mise en vers
+- **GIVEN** le même extrait, une mise en vers tous les 8 mots puis un Bord
+- **WHEN** la phrase d'état s'affiche
+- **THEN** elle ne parle pas d'un seul vers

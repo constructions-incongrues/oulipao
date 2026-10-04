@@ -10,14 +10,20 @@ import { createMorphologyLoader, createNeuralTagging, createPhoneticsLoader, cre
 import { App } from './app.ts';
 import { downloadText } from './download.ts';
 import { claimsSpace, createTracksController, type TracksState } from './controller.ts';
+import { decodeFragment, isShareFragment } from './share-link.ts';
 import { nextTheme, type Theme } from './components/theme-toggle.ts';
 
 const root = document.getElementById('app')!;
 // Cookies bloqués : lire `localStorage` lève ; la page démarre alors avec un carnet de séance.
 const { storage, persistent } = safeStorage(() => localStorage);
 const { tagger, preload } = createNeuralTagging();
+// Le lien qui a ouvert la page : lu une fois, puis effacé, pour qu'un rechargement montre l'outil.
+const fragment = location.hash;
+if (isShareFragment(fragment)) history.replaceState(null, '', location.pathname + location.search);
 // À l'ouverture de l'inspecteur, le focus y passe, pour que les flèches et Échap répondent.
 let inspecting = false;
+// À l'ouverture de la vue d'arrivée, le focus passe sur son titre.
+let arriving = false;
 const page = document.documentElement;
 const onTheme = () => {
   page.dataset['theme'] = nextTheme(page.dataset['theme'] as Theme | undefined, matchMedia('(prefers-color-scheme: dark)').matches);
@@ -26,6 +32,8 @@ const draw = (state: TracksState) => {
   render(html`<${App} state=${state} controller=${controller} onTheme=${onTheme} version=${__OULIPAO_VERSION__} today=${new Date()} />`, root);
   if (state.selected !== undefined && !inspecting) root.querySelector<HTMLElement>('.inspector')?.focus();
   inspecting = state.selected !== undefined;
+  if (state.arrival && !arriving) root.querySelector<HTMLElement>('#arrival-title')?.focus();
+  arriving = state.arrival !== undefined;
 };
 const controller = createTracksController(
   {
@@ -36,12 +44,14 @@ const controller = createTracksController(
     loadPhonetics: createPhoneticsLoader(import.meta.url),
     loadScales: createScalesLoader(import.meta.url),
     copy: (text) => navigator.clipboard.writeText(text),
+    arrival: decodeFragment(fragment),
     // La voix du système : sans synthèse vocale dans le navigateur, pas d'écoute.
     ...('speechSynthesis' in window && { speech: createSpeechSynthesis(speechSynthesis, SpeechSynthesisUtterance) }),
     preferences: createLocalStoragePreferences(storage),
     notebook: {
       storage: createLocalStorageNotebook(storage),
       persistent,
+      shareBase: location.origin + location.pathname,
       now: () => new Date(),
       newId: () => crypto.randomUUID(),
       confirm: (message) => window.confirm(message),

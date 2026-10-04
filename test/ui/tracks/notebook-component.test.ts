@@ -30,6 +30,7 @@ const handlers = (calls: string[]) => ({
   onImport: (text: string) => calls.push(`importer ${text}`),
   onCopy: (id: string) => calls.push(`copier ${id}`),
   onEdit: (id: string, text: string) => calls.push(`retoucher ${id} : ${text}`),
+  onShare: (id: string) => calls.push(`partager ${id}`),
 });
 
 test('Carnet : un panneau replié dont l’en-tête donne le compte et les jours ; les entrées et leurs gestes', async () => {
@@ -45,11 +46,20 @@ test('Carnet : un panneau replié dont l’en-tête donne le compte et les jours
   assert.match(out, /^<details class="notebook"><summary class="notebook-summary"><span class="silk">Carnet<\/span><span class="notebook-count">2 textes gardés · dernier texte il y a 3 jours<\/span><\/summary>/);
   assert.match(out, /<p class="kept-text">Texte c retouché\.<\/p><p class="kept-mention">S\+7 sur les noms \(Oulipao\) · retouché<\/p>.*<p class="kept-text">Texte a\.<\/p><div class="kept-actions">/s);
   assert.match(out, /<textarea name="text" rows="6" aria-label="Texte retouché">Texte c retouché\.<\/textarea>/);
+  // Chaque entrée est repliée sur une ligne : sa date et ses premiers mots.
+  assert.match(out, /<li class="notebook-entry"><details class="kept"><summary class="kept-summary"><time class="kept-at" datetime="[^"]+">[^<]+<\/time><span class="kept-preview">Texte c retouché\.<\/span><span class="kept-rule">S\+7 sur les noms<\/span><\/summary>/);
+  // La mention commence par une majuscule, comme une phrase.
+  const lower = renderToString(html`<${Notebook} ...${{ ...props, entries: [{ ...entry('b', '2026-10-04T20:00:00.000Z'), mention: '\n\n— lipogramme en e (Oulipao)' }] }} />`);
+  assert.match(lower, /<p class="kept-mention">Lipogramme en e \(Oulipao\)<\/p>/);
+  // Repliée, l'entrée dit aussi ce qui a fait le texte : deux entrées d'un même poème se distinguent.
+  assert.match(lower, /<span class="kept-preview">Texte b\.<\/span><span class="kept-rule">Lipogramme en e<\/span><\/summary>/);
   assert.match(out, /role="status" aria-live="polite">Import : 1 texte ajouté/);
   assert.match(out, /Le carnet vit dans ce navigateur/);
   const buttons = elements(notebook).filter((e) => e.type === 'button' && e.props['type'] === 'button');
   for (const button of buttons) (button.props['onClick'] as () => void)();
-  assert.deepEqual(calls, ['exporter', 'copier c', 'rouvrir c', 'supprimer c', 'copier a', 'rouvrir a', 'supprimer a']);
+  assert.deepEqual(calls, ['exporter', 'copier c', 'partager c', 'rouvrir c', 'supprimer c', 'copier a', 'partager a', 'rouvrir a', 'supprimer a']);
+  assert.match(String(buttons[2]!.props['aria-label']), /^Partager le texte du .*2026/);
+  assert.doesNotMatch(out, /shared-link/);
   assert.match(String(buttons[1]!.props['aria-label']), /^Copier le texte du .*2026/);
 
   const input = find(notebook, (e) => e.type === 'input');
@@ -60,7 +70,7 @@ test('Carnet : un panneau replié dont l’en-tête donne le compte et les jours
   assert.equal(calls.at(-1), 'importer {"version":1}');
   assert.equal(target.value, '');
   await onChange({ currentTarget: { files: [] } } as unknown as Event); // aucun fichier choisi
-  assert.equal(calls.length, 8);
+  assert.equal(calls.length, 10);
 });
 
 test('Retoucher : enregistrer envoie le brouillon et replie ; annuler replie sans rien envoyer', () => {
@@ -112,4 +122,14 @@ test('Texte résultant : « Garder » suit « Copier », désactivé comme lui',
   assert.match(renderToString(html`<${Result} ...${{ ...props, stale: true }} />`), /class="key keep" disabled/);
   assert.match(renderToString(html`<${Result} ...${{ ...props, empty: true }} />`), /class="key keep" disabled/);
   assert.doesNotMatch(renderToString(html`<${Result} ...${{ ...props, onKeep: undefined }} />`), /Garder/);
+});
+
+test('Carnet : sans presse-papiers, le lien partagé s’affiche à copier, sélectionné au focus', () => {
+  const notebook = html`<${Notebook} ...${{ entries: [], message: 'Copiez ce lien.', today: TODAY, ...handlers([]), sharedLink: 'https://exemple.test/#v1.abc' }} />`;
+  const field = find(notebook, byClass('shared-link'));
+  assert.equal(field.props['value'], 'https://exemple.test/#v1.abc');
+  assert.equal(field.props['readonly'], true);
+  let selected = false;
+  (field.props['onFocus'] as (event: Event) => void)({ currentTarget: { select: () => (selected = true) } } as unknown as Event);
+  assert.equal(selected, true);
 });

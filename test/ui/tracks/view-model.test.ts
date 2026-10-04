@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { seededState } from '../../support/chain.ts';
 import { reduce } from '../../../src/ui/tracks/mixer-state.ts';
-import { buildView, changedWords, describeInstance, gridSteps, inspectorLocks, inspectorWindow, pageOf, ruleMention, stepsPerPage, summarize } from '../../../src/ui/tracks/view-model.ts';
+import { type Mark, buildView, changedWords, describeInstance, gridSteps, inspectorLocks, inspectorWindow, pageOf, ruleMention, stepsPerPage, summarize } from '../../../src/ui/tracks/view-model.ts';
 import { morphology, tag, verbs } from '../../support/morphology.ts';
 import { sansPlugin } from '../../support/plugins.ts';
 import { s7Plugin } from '../../../src/domain/s7/plugin.ts';
@@ -115,8 +115,8 @@ test('chaîne avec un plugin sur toutes les pistes : résumé, mention, mots ret
   assert.deepEqual(view.marks.get(2), { state: 'removed', original: 'ferme' });
   assert.deepEqual(view.steps, [{ id: 's7-1', replaced: 1, removed: 0, relaid: 0, kept: 0 }, { id: 'sans-1', replaced: 0, removed: 3, relaid: 0, kept: 0 }]);
   // trois bandes : l'origine, puis chaque contrainte active dans l'ordre de la chaîne
-  assert.deepEqual(view.stages.map((stage) => [stage.label, stage.words[2]!.output]), [['Origine', 'ferme'], ['S+1 sur les noms', 'fermoir'], ['sans e', '']]);
-  assert.equal(summarize(mixer, view, lookup), 'S+1 sur les noms : 1 nom remplacé sur 1. sans e : 3 mots retirés.');
+  assert.deepEqual(view.stages.map((stage) => [stage.label, stage.words[2]!.output]), [['Origine', 'ferme'], ['S+1 sur les noms', 'fermoir'], ['Sans e', '']]);
+  assert.equal(summarize(mixer, view, lookup), 'S+1 sur les noms : 1 nom remplacé sur 1. Sans e : 3 mots retirés.');
   assert.equal(ruleMention(mixer, view.audible, lookup), '\n\n— S+1 sur les noms · sans e (Oulipao)');
   const verbs = buildView({ text: 'Le chat est vite.', tagged: tag('Le chat est vite.') }, mixer, m, lookup);
   assert.match(summarize(mixer, verbs, lookup), /3 mots retirés, 1 laissé tel quel\.$/); // « Le cheval » et « vite » retirés, « est » laissé
@@ -164,7 +164,13 @@ test('grille : percé si une contrainte agit sur la piste, contour sinon, bouch�
   const steps = gridSteps(mixer, view.tracks, words);
   assert.equal(steps.length, words.length);
   assert.deepEqual(steps[2], { index: 2, word: 'ferme', track: 'noun', state: 'closed', locks: [] });
-  assert.deepEqual(steps[4], { index: 4, word: 'village', track: 'noun', state: 'punched', locks: [{ id: 's7-1', key: 'offset', value: 3 }] });
+  assert.deepEqual(steps[4], { index: 4, word: 'village', track: 'noun', state: 'punched', outcome: 'unchanged', locks: [{ id: 's7-1', key: 'offset', value: 3 }] });
+  // L'issue vient des marques de la vue : changé, retiré, inchangé.
+  const marks = new Map<number, Mark>([[4, { state: 'replaced', original: 'village' }], [0, { state: 'removed', original: 'La' }]]);
+  const outcomes = gridSteps(offsetOne, view.tracks, words, undefined, [], marks);
+  assert.equal(outcomes[4]!.outcome, 'changed');
+  assert.equal(outcomes[0]!.outcome, undefined); // « La » : pas percé, pas d'issue
+  assert.equal(gridSteps(reduce(offsetOne, { type: 'set-targets', id: 's7-1', targets: ['noun'] }), view.tracks.map(() => 'noun'), words, undefined, [], marks)[0]!.outcome, 'removed');
   assert.equal(steps[5]!.state, 'outline'); // « est » : aucune contrainte ne vise les verbes
   // Contrainte coupée : plus rien n'est percé.
   assert.ok(gridSteps(reduce(offsetOne, { type: 'toggle-instance', id: 's7-1' }), view.tracks, words).every((step) => step.state === 'outline'));
@@ -209,18 +215,32 @@ test('résumé d’un retrait et d’une mise en page : seulement ce qui a eu li
   const poem = { text: 'Le chat dort sur le mur.', tagged: tag('Le chat dort sur le mur.', { chat: 'noun', mur: 'noun' }) };
   const withSort = reduce(reduce(seededState, { type: 'remove-instance', id: 's7-1' }), { type: 'add-instance', plugin: 'track-sort' });
   const sorted = buildView(poem, withSort, m);
-  assert.match(summarize(withSort, sorted), /^retrait sur les noms : 2 mots retirés\./);
+  assert.match(summarize(withSort, sorted), /^Retrait sur les noms : 2 mots retirés\./);
   // Un tri qui n'a rien retiré ne parle pas de remplacement.
   const nothing = { text: 'Le dort.', tagged: tag('Le dort.') };
-  assert.match(summarize(withSort, buildView(nothing, withSort, m)), /^retrait sur les noms : aucun changement\./);
+  assert.match(summarize(withSort, buildView(nothing, withSort, m)), /^Retrait sur les noms : aucun changement\./);
   const lined = reduce(withSort, { type: 'add-instance', plugin: 'lineation' });
   const both = reduce(reduce(lined, { type: 'set-param', id: 'lineation-1', key: 'n', value: 2 }), { type: 'toggle-instance', id: 'track-sort-1' });
   const view = buildView(poem, both, m);
   assert.equal(view.result, 'Le chat\ndort sur\nle mur.');
-  assert.match(summarize(both, view), /mise en vers tous les 2 mots : 2 mots remis en ligne\./);
+  assert.match(summarize(both, view), /Mise en vers tous les 2 mots : 2 mots remis en ligne\./);
   assert.deepEqual(view.marks.get(2), { state: 'relaid', original: 'dort' });
   assert.deepEqual(view.stages.at(-1)!.words.map((word) => word.newline), [false, false, true, false, true, false]);
   // Rien à faire : on le dit.
   const flat = { text: 'Le chat.', tagged: tag('Le chat.') };
-  assert.match(summarize(both, buildView(flat, both, m)), /mise en vers tous les 2 mots : aucun changement\./);
+  assert.match(summarize(both, buildView(flat, both, m)), /Mise en vers tous les 2 mots : aucun changement\./);
+});
+
+test('Bord sur un texte d’un seul vers : la phrase d’état le dit, sauf après une mise en vers', () => {
+  const prose = { text: 'Le chat dort sur le mur.', tagged: tag('Le chat dort sur le mur.', { chat: 'noun', mur: 'noun' }) };
+  const edged = reduce(reduce(seededState, { type: 'remove-instance', id: 's7-1' }), { type: 'add-instance', plugin: 'edge' });
+  const warning = /Le texte n’a qu’un vers : collez un poème, ou mettez-le d’abord en vers\.$/;
+  assert.match(summarize(edged, buildView(prose, edged, m)), warning);
+  // Deux vers : rien à dire.
+  const poem = { text: 'Le chat dort.\nSur le mur.', tagged: tag('Le chat dort.\nSur le mur.', { chat: 'noun', mur: 'noun' }) };
+  assert.doesNotMatch(summarize(edged, buildView(poem, edged, m)), warning);
+  // Une mise en vers avant le Bord : le texte qu'il reçoit a plusieurs vers.
+  const lined = reduce(reduce(edged, { type: 'add-instance', plugin: 'lineation' }), { type: 'move-instance', id: 'lineation-1', position: 0 });
+  const relaid = reduce(lined, { type: 'set-param', id: 'lineation-1', key: 'n', value: 2 });
+  assert.doesNotMatch(summarize(relaid, buildView(prose, relaid, m)), warning);
 });

@@ -56,7 +56,9 @@ function help(instance: Instance, plugin: ConstraintPlugin): string {
 function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance; position: number; ids: readonly string[]; plugin: ConstraintPlugin; dispatch: ChainProps['dispatch'] }): VNode {
   const { id, targets, enabled, params, modulators = {}, gate } = instance;
   // Un paramètre principal modulé donne son nom à l'instance : « S+lettres ».
-  const name = modulators[Object.keys(modulators)[0] ?? ''] ? modulatedLabel(plugin, params, modulators).split(',')[0]! : (plugin.nameOf?.(params) ?? plugin.name);
+  const engine = modulators[Object.keys(modulators)[0] ?? ''] ? modulatedLabel(plugin, params, modulators).split(',')[0]! : (plugin.nameOf?.(params) ?? plugin.name);
+  // Branchée par une recette, l'instance porte son nom ; le moteur reste dit dessous.
+  const name = instance.recipe ?? engine;
   const rank = position + 1;
   const last = ids.length - 1;
   // Glisser-déposer natif : seule la poignée rend la ligne déplaçable, les champs restent utilisables.
@@ -95,7 +97,7 @@ function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance
       <span class="grip" aria-hidden="true" title="Glisser pour réordonner"
         onPointerDown=${(event: PointerEvent) => ((event.currentTarget as HTMLElement).closest('.slot') as HTMLElement).setAttribute('draggable', 'true')}></span>
       <span class="pos mono" aria-hidden="true">${rank}</span>
-      <span class="name">${name}</span>
+      <span class="name">${name}${instance.recipe && html`<span class="engine">${engine}</span>`}</span>
       <span class="param">
         ${visibleParameters(plugin, params).map(
           // Modulé, le champ fixe s'estompe : il ne sert plus qu'aux mots sans valeur modulée (pas de voisin, prononciations en route).

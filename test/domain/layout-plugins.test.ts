@@ -69,9 +69,12 @@ test('Bord : déclaration non ciblable, titre, aide', () => {
   assert.equal(edgePlugin.targetable, false);
   assert.deepEqual(edgePlugin.defaults, { mode: 'ends', n: 1 });
   assert.equal(edgePlugin.label({ mode: 'inside', n: 2 }), 'bord : intérieur, 2 mots');
-  assert.equal(edgePlugin.help({}), 'Ne garde que les 1 mot de la fin de chaque vers.');
+  assert.equal(edgePlugin.help({}), 'Ne garde que le dernier mot de chaque vers.');
+  assert.equal(edgePlugin.help({ n: 3 }), 'Ne garde que les 3 mots de la fin de chaque vers.');
+  assert.equal(edgePlugin.help({ mode: 'head-tail' }), 'Ne garde que le premier et le dernier mot de chaque vers.');
   assert.match(edgePlugin.help({ mode: 'head-tail', n: 2 }), /2 mots du début et de la fin/);
-  assert.match(edgePlugin.help({ mode: 'inside' }), /premier et le dernier vers/);
+  assert.equal(edgePlugin.help({ mode: 'inside' }), 'Ôte le premier et le dernier vers, puis le premier et le dernier mot des autres.');
+  assert.match(edgePlugin.help({ mode: 'inside', n: 2 }), /puis les 2 mots du début et de la fin des autres/);
   assert.throws(() => edgePlugin.parse({ n: 10 }));
 });
 

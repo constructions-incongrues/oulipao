@@ -36,6 +36,25 @@ test('Monovocalisme en a : un lipogramme sur les cinq autres voyelles, en fin de
   assert.deepEqual(add('bivocalisme', 'ou').instances.map((i) => i.params), [{ letters: 'aeiy', mode: 'forbidden' }]);
 });
 
+test('une instance branchée par une recette porte son nom, jusqu’à ce qu’on la règle autrement', async () => {
+  const { describeInstance } = await import('../../../src/ui/tracks/view-model.ts');
+  const mono = add('monovocalisme', 'a');
+  assert.equal(mono.instances[0]!.recipe, 'Monovocalisme (a)');
+  assert.equal(describeInstance(mono.instances[0]!), 'Monovocalisme (a)');
+  assert.equal(add('prisonnier').instances[0]!.recipe, 'Contrainte du prisonnier');
+  assert.equal(add('bivocalisme', 'ou').instances[0]!.recipe, 'Bivocalisme (o et u)');
+  // Le double garde le nom ; un réglage, des pistes, un modulateur ou une porte le font tomber.
+  assert.equal(reduce(mono, { type: 'duplicate-instance', id: 'lipogram-1' }).instances[1]!.recipe, 'Monovocalisme (a)');
+  const gestures: MixerAction[] = [
+    { type: 'set-param', id: 'lipogram-1', key: 'letters', value: 'e' },
+    { type: 'set-targets', id: 'lipogram-1', targets: ['noun'] },
+    { type: 'set-gate', id: 'lipogram-1', gate: { source: { kind: 'letters' }, read: { kind: 'self' }, test: { kind: 'even' } } } as MixerAction,
+  ];
+  for (const gesture of gestures) assert.equal(reduce(mono, gesture).instances[0]!.recipe, undefined, gesture.type);
+  const s7 = add('s-de');
+  assert.equal(reduce(s7, { type: 'set-modulator', id: 's7-1', key: 'offset', modulator: { source: { kind: 'letters' }, read: { kind: 'self' }, base: 0, depth: 1 } } as MixerAction).instances[0]!.recipe, undefined);
+});
+
 test('Contrainte du prisonnier : une instance au lieu de douze', () => {
   assert.deepEqual(add('prisonnier').instances.map((i) => i.params), [{ letters: 'bdfghjklpqty', mode: 'forbidden' }]);
 });

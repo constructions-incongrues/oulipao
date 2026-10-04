@@ -2,6 +2,7 @@ import { html } from 'htm/preact';
 import type { VNode } from 'preact';
 import { CATEGORIES, type Category } from '../../domain/categories.ts';
 import { audibleCategories } from '../../domain/mixing.ts';
+import { Arrival } from './components/arrival.ts';
 import { Chain } from './components/chain.ts';
 import { Inspector } from './components/inspector.ts';
 import { ErrorMessage } from './components/error-message.ts';
@@ -28,7 +29,7 @@ export interface AppProps {
   state: TracksState;
   controller: Pick<
     TracksController,
-    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'loadScales' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'iterate' | 'freeze' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook' | 'copyEntry' | 'editEntry' | 'toggle' | 'setTempo' | 'setVoice' | 'setSource'
+    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'loadScales' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'iterate' | 'freeze' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook' | 'copyEntry' | 'shareEntry' | 'replayArrival' | 'closeArrival' | 'editEntry' | 'toggle' | 'setTempo' | 'setVoice' | 'setSource'
   >;
   /** Bascule le thème clair ou sombre ; posé par le montage, qui seul touche au document. */
   onTheme?: () => void;
@@ -52,6 +53,7 @@ function Fetching({ loading, label, onRetry }: { loading: Loading; label: string
  */
 /** Le nom court d'une instance sous les pistes : « S+7 », ou « S+lettres » quand son paramètre principal est modulé. */
 function reminderName(instance: Instance): string {
+  if (instance.recipe) return instance.recipe;
   const plugin = pluginById(instance.type);
   return Object.keys(instance.modulators ?? {}).length ? modulatedLabel(plugin, instance.params, instance.modulators).split(',')[0]! : plugin.title(instance.params);
 }
@@ -62,20 +64,22 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
   const release = versionLink(version);
   const audible = view?.audible ?? audibleCategories(mixer.tracks);
   const words = view?.stages[0]!.words.map((word) => word.output) ?? [];
-  const steps = view ? gridSteps(mixer, view.tracks, words, undefined, view.stages) : [];
+  const steps = view ? gridSteps(mixer, view.tracks, words, undefined, view.stages, view.marks) : [];
   // Le type d'une instance de la chaîne, pour écrire ses valeurs modulées dans l'inspecteur.
   const instancePlugin = (id: string) => {
     const instance = mixer.instances.find((candidate) => candidate.id === id);
     return instance && pluginById(instance.type);
   };
+  // Une contrainte qui vise les cinq pistes se rappelle une seule fois, en tête des tranches.
+  const reminder = (instance: Instance, position: number) => `${position + 1}. ${reminderName(instance)}${instance.enabled ? '' : ' (coupé)'}`;
+  const everywhere = (instance: Instance) => CATEGORIES.every((category) => instance.targets.includes(category));
   const reminders = Object.fromEntries(
     CATEGORIES.map((category) => [
       category,
-      mixer.instances.flatMap((instance, position) =>
-        instance.targets.includes(category) ? [`${position + 1}. ${reminderName(instance)}${instance.enabled ? '' : ' (coupé)'}`] : [],
-      ),
+      mixer.instances.flatMap((instance, position) => (instance.targets.includes(category) && !everywhere(instance) ? [reminder(instance, position)] : [])),
     ]),
   ) as Record<Category, string[]>;
+  const allTracks = mixer.instances.flatMap((instance, position) => (everywhere(instance) ? [reminder(instance, position)] : []));
   const selected = state.selected;
   return html`
     <main class="tracks">
@@ -86,6 +90,15 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
         <a class="key source-link" href=${SOURCE_URL}>Code source</a>
         <${ThemeToggle} onToggle=${onTheme} />
       </header>
+      ${state.arrivalMessage && html`<p class="arrival-message" role="status">${state.arrivalMessage}</p>`}
+      ${state.arrival &&
+      html`<${Arrival}
+        entry=${state.arrival}
+        model=${state.model}
+        error=${state.arrivalError}
+        onReplay=${() => void controller.replayArrival()}
+        onClose=${controller.closeArrival}
+      />`}
       <div class="pin-sentinel" aria-hidden="true"></div>
       ${view &&
       html`<${Result}
@@ -122,6 +135,8 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
         onImport=${controller.importNotebook}
         onCopy=${(id: string) => void controller.copyEntry(id)}
         onEdit=${controller.editEntry}
+        onShare=${(id: string) => void controller.shareEntry(id)}
+        sharedLink=${state.sharedLink}
       />
       <${Source}
         input=${state.input}
@@ -150,6 +165,7 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
         tracks=${mixer.tracks}
         audible=${audible}
         reminders=${reminders}
+        allTracks=${allTracks}
         perPage=${state.perPage}
         page=${state.page}
         selected=${selected}
