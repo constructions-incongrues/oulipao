@@ -77,6 +77,19 @@ test('Échec de la textbank phonétique : l’erreur reste, les autres filtres s
   assert.equal(controller.state.view!.result, 'un vair'); // vert, puis son premier homophone
 });
 
+test('Mise en vers par syllabes : les prononciations chargées, chaque vers montre son compte', async () => {
+  const controller = setup({ loadPhonetics: async () => rhymePhonetics() });
+  controller.dispatch({ type: 'add-instance', plugin: 'lineation' });
+  controller.dispatch({ type: 'set-param', id: 'lineation-1', key: 'cut', value: 'syllables' });
+  controller.dispatch({ type: 'set-param', id: 'lineation-1', key: 'syllables', value: 3 });
+  controller.setInput('sur la chaise la maison');
+  await controller.run();
+  await tick();
+  assert.equal(controller.state.phonetics.status, 'ready');
+  assert.equal(controller.state.view!.result, 'sur la chaise\nla maison');
+  assert.deepEqual(controller.state.view!.syllables, [3, 3]);
+});
+
 test('Sans chargeur de prononciations : rien n’est demandé', async () => {
   const controller = setup();
   await controller.loadPhonetics();
@@ -102,6 +115,9 @@ test('S+7 puis R+2 : le R+2 lit la sortie du S+7, la mention nomme les deux rég
 test('Syllabes par ligne : une ligne vide n’en a pas, un morceau de plusieurs mots les compte tous', () => {
   const segments = [{ text: 'la', index: 0 }, { text: ' ' }, { text: 'chaise', index: 1 }, { text: '\n\n' }, { text: 'sur la', index: 2 }, { text: ' ' }, { text: 'maison', index: 3 }];
   assert.deepEqual(segmentSyllables(segments, ['other', 'noun', 'other', 'noun'], rhymePhonetics()), [2, undefined, 4]);
+  // « qu’ » seul dans son morceau reste élidé : aucune syllabe, et non « qu » deviné /ky/.
+  const elided = [{ text: 'qu’', index: 0 }, { text: 'il', index: 1 }];
+  assert.deepEqual(segmentSyllables(elided, ['other', 'other'], rhymePhonetics()), [1]);
 });
 
 test('Inspector : la prononciation du mot choisi, quand elle est connue', () => {
