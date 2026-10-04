@@ -18,6 +18,7 @@ import { recipes } from '../../../src/ui/tracks/mixer-state.ts';
 import { Result } from '../../../src/ui/tracks/components/result.ts';
 import { Inspector } from '../../../src/ui/tracks/components/inspector.ts';
 import { Source, type SourceProps } from '../../../src/ui/tracks/components/source.ts';
+import { EXAMPLES } from '../../../src/ui/tracks/examples.ts';
 import type { Parameter } from '../../../src/domain/plugin.ts';
 import type { GridStep, Mark } from '../../../src/ui/tracks/view-model.ts';
 import { tag } from '../../support/morphology.ts';
@@ -261,7 +262,7 @@ test('Source : définition et exemple au premier contact, avancement du modèle,
   const calls: string[] = [];
   const model = (patch: Partial<ModelState>): ModelState => ({ status: 'ready', loaded: 0, total: 0, ...patch });
   const props: SourceProps = {
-    input: '', words: 0, editing: true, started: false, tagging: false, message: '', model: model({ status: 'loading', loaded: 42e6, total: 111e6 }),
+    input: '', words: 0, editing: true, exampleLabel: 'Essayer avec un exemple', tagging: false, message: '', model: model({ status: 'loading', loaded: 42e6, total: 111e6 }),
     onInput: (text) => calls.push(`input:${text}`), onEdit: () => calls.push('edit'), onRun: () => calls.push('run'),
     onExample: () => calls.push('example'), onLoad: () => calls.push('load'),
   };
@@ -285,15 +286,20 @@ test('Source : définition et exemple au premier contact, avancement du modèle,
   assert.match(renderToString(failed), /<button type="button" class="run">Mettre en pistes/); // relancer en mettant en pistes
   assert.match(renderToString(failed), /class="error" role="alert">\s*<strong>Le chargement du modèle a échoué\.<\/strong> hors ligne\. <button type="button" class="load">Relancer/);
   click(failed, byClass('load'));
-  const ready = render({ model: model({}), started: true, message: 'Collez d’abord un texte.' });
-  assert.doesNotMatch(ready, /class="example"|progress/);
+  const ready = render({ model: model({}), exampleLabel: undefined, message: 'Collez d’abord un texte.' });
+  assert.doesNotMatch(ready, /class="example|progress/); // un texte à soi : ni bouton d'exemple ni source
+  // un exemple dans la saisie : le bouton passe au suivant, la source est nommée
+  const rimbaud = render({ input: EXAMPLES[2]!.text, exampleLabel: 'Autre exemple', example: EXAMPLES[2] });
+  assert.match(rimbaud, /<button type="button" class="example">Autre exemple<\/button>/);
+  assert.match(rimbaud, /<p class="example-source">Arthur Rimbaud, <cite>Le Dormeur du val<\/cite> \(1870\)<\/p>/);
   assert.match(ready, /<button type="button" class="run">Mettre en pistes<\/button>/);
   assert.match(ready, /class="input-message" role="status" aria-live="polite">Collez d’abord un texte\./);
   assert.match(render({ model: model({}), tagging: true }), /Étiquetage du texte…/);
-  const folded = html`<${Source} ...${{ ...props, editing: false, started: true, words: 44 }} />`;
+  const folded = html`<${Source} ...${{ ...props, editing: false, words: 44 }} />`;
   assert.match(renderToString(folded), /<div class="source folded"><span>Texte : 44 mots<\/span><button type="button" class="edit">Modifier<\/button>/);
   click(folded, byClass('edit'));
   assert.match(render({ editing: false, words: 1 }), /Texte : 1 mot</);
+  assert.match(render({ editing: false, words: 118, example: EXAMPLES[0] }), /Texte : 118 mots · <span class="example-source">Marcel Proust, <cite>Du côté de chez Swann<\/cite> \(1913\)<\/span><\/span><button type="button" class="edit">/);
   assert.deepEqual(calls, ['input:Un texte', 'run', 'example', 'load', 'load', 'edit']);
 });
 

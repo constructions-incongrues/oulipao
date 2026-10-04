@@ -74,11 +74,11 @@ test('prononciation : la catégorie choisit la lecture, puis une autre catégori
   assert.match(describeReading(pronounce('glorbiture', 'noun', phonetics)!), / · devinée$/);
 });
 
-test('syllabes d’un vers : e muet devant consonne, élidé devant voyelle, muet en fin de vers', () => {
+test('syllabes d’un vers : e muet devant consonne, élidé devant voyelle, muet en fin de vers ; « -es » et « -ent » comptent devant voyelle', () => {
   const phonetics = new InMemoryPhonetics(
     [
       ['je', 'ʒə'], ['fais', 'fɛ'], ['souvent', 'su.vɑ̃'], ['ce', 'sə'], ['rêve', 'ʁɛv'], ['étrange', 'e.tʁɑ̃ʒ'], ['et', 'e'], ['pénétrant', 'pe.ne.tʁɑ̃'],
-      ['dort', 'dɔʁ'],
+      ['dort', 'dɔʁ'], ['voiles', 'vwal'], ['au', 'o'], ['chantent', 'ʃɑ̃t'], ['encore', 'ɑ̃.kɔʁ'],
     ].map(([form, ipa]) => ({ form: form!, category: 'other' as const, reading: parseReading(ipa!)! })),
   );
   const line = (text: string) => lineSyllables(text.split(' ').map((word) => ({ word })), phonetics);
@@ -86,6 +86,9 @@ test('syllabes d’un vers : e muet devant consonne, élidé devant voyelle, mue
   assert.equal(line('rêve dort'), 3);
   assert.equal(line('dort rêve'), 2);
   assert.equal(line("l' rêve"), 1); // « l' » n'a pas de voyelle
+  assert.equal(line('voiles au'), 3); // la liaison porte le « s » : voi-le-z‿au
+  assert.equal(line('chantent encore'), 4);
+  assert.equal(line('rêve voiles'), 3); // en fin de vers, l'e reste muet
   assert.equal(lineSyllables([], phonetics), undefined);
 });
 

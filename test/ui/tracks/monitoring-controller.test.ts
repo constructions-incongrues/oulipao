@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { SEED } from '../../support/chain.ts';
+import { SAMPLE_TEXT, SEED } from '../../support/chain.ts';
 import { fakeSpeech, type FakeSpeech } from '../../support/speech.ts';
 import { morphology, tag } from '../../support/morphology.ts';
-import { createTracksController, EXAMPLE_TEXT, type TracksDependencies } from '../../../src/ui/tracks/controller.ts';
+import { createTracksController, type TracksDependencies } from '../../../src/ui/tracks/controller.ts';
 import type { MonitoringPreferences } from '../../../src/ports/monitoring-preferences.ts';
 
 /** Un blanc que le test laisse passer quand il veut. */
@@ -33,7 +33,8 @@ const setup = async (overrides: Partial<TracksDependencies> = {}, speech: FakeSp
   });
   for (const action of SEED) controller.dispatch(action);
   controller.resize(700); // huit pas par page
-  await controller.example();
+  controller.setInput(SAMPLE_TEXT);
+  await controller.run();
   return { controller, speech, blanks, saved, copied };
 };
 /** Laisse dire le pas en cours, puis passer son blanc. */
@@ -181,7 +182,7 @@ test('mention : « réglé en écoutant » après une écoute, à la copie comme
   assert.match(copied[1]!, /\n\n— S\+7 sur les noms · réglé en écoutant \(Oulipao\)$/);
   controller.keep();
   assert.equal(controller.state.notebook[0]!.mention, copied[1]!.slice(copied[1]!.indexOf('\n\n—')));
-  controller.setInput(EXAMPLE_TEXT);
+  controller.setInput(SAMPLE_TEXT);
   await controller.run();
   await controller.copy();
   assert.doesNotMatch(copied[2]!, /réglé en écoutant/);

@@ -121,6 +121,13 @@ test('premier contact : l’exemple et le chargement du modèle passent par le c
   click(app(), byClass('example'));
   await tick();
   assert.ok(controller.state.view);
+  assert.match(renderToString(app()), /Texte : \d+ mots · <span class="example-source">Marcel Proust/);
+  controller.edit();
+  assert.match(renderToString(app()), /<button type="button" class="example">Autre exemple<\/button>/);
+  controller.setInput('Un texte à moi.'); // un texte collé : rien ne l'écrase
+  assert.doesNotMatch(renderToString(app()), /class="example/);
+  controller.setInput('');
+  assert.match(renderToString(app()), /class="example">Autre exemple</);
   const waiting = createTracksController({
     tagger: { name: 'factice', tag: (text) => tag(text) },
     loadMorphology: async () => morphology(),
