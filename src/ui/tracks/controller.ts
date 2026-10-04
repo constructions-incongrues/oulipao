@@ -13,6 +13,7 @@ import { StalledError } from '../../ports/stalled.ts';
 import type { Speech, Voice } from '../../ports/speech.ts';
 import type { Tagger } from '../../ports/tagger.ts';
 import type { VerbRepository } from '../../ports/verbs.ts';
+import { EXAMPLES } from './examples.ts';
 import { createListeningController, initialListening } from './listening-controller.ts';
 import { initialState, pluginById, reduce } from './mixer-state.ts';
 import type { Lineage, NotebookEntry } from './notebook.ts';
@@ -80,6 +81,8 @@ export interface TracksState {
   input: string;
   /** La saisie est-elle dépliée ? Elle se replie une fois le texte mis en pistes. */
   editing: boolean;
+  /** Exemples déjà mis en pistes pendant la visite : le suivant est `EXAMPLES[examplesShown % EXAMPLES.length]`. */
+  examplesShown: number;
   /** Étiquetage en cours. */
   tagging: boolean;
   /** Message de la zone de saisie : texte vide, échec de l'étiquetage. */
@@ -139,7 +142,7 @@ export interface TracksController {
   edit(): void;
   /** Étiquette le texte saisi et affiche le texte résultant. */
   run(): Promise<void>;
-  /** Place le texte d'exemple dans la saisie et le met en pistes. */
+  /** Place l'exemple suivant dans la saisie et le met en pistes, avec la même table ; après le dernier, revient au premier. */
   example(): Promise<void>;
   /** Charge les verbes ; relance après un échec. Le texte résultant se recalcule à leur arrivée. */
   loadVerbs(): Promise<void>;
@@ -204,10 +207,6 @@ export interface TracksController {
  */
 export const claimsSpace = (state: Pick<TracksState, 'view' | 'voices'>, inField: boolean) => !inField && state.view !== undefined && state.voices.length > 0;
 
-/** Un texte d'exemple, écrit pour Oulipao. */
-export const EXAMPLE_TEXT =
-  "Le matin où la vieille horloge du village s'arrêta, personne ne le remarqua vraiment. Le boulanger ouvrit sa boutique à l'heure habituelle, les enfants coururent vers l'école, et le chat du notaire dormit au soleil sur le mur de la mairie.";
-
 /** L'état de la page des pistes et ses gestes ; `onChange` est appelé à chaque changement. */
 export function createTracksController(dependencies: TracksDependencies, onChange: (state: TracksState) => void = () => {}): TracksController {
   const notebook = dependencies.notebook ?? memoryNotebook();
@@ -216,6 +215,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
   let state: TracksState = {
     input: '',
     editing: true,
+    examplesShown: 0,
     tagging: false,
     inputMessage: '',
     model: { status: 'waiting', loaded: 0, total: 0 },
@@ -418,7 +418,8 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       return tagInto(state.input, state.mixer);
     },
     example() {
-      controller.setInput(EXAMPLE_TEXT);
+      controller.setInput(EXAMPLES[state.examplesShown % EXAMPLES.length]!.text);
+      update({ examplesShown: state.examplesShown + 1 });
       return controller.run();
     },
     async loadVerbs() {
