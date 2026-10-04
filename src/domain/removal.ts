@@ -57,12 +57,21 @@ export function mergeGaps(removed: string, next: string, first = false): string 
  * visible après lui (ou à la fin du texte). Un mot retiré en tête de phrase lègue sa majuscule.
  * Rend la fin du texte, changée si le mot retiré était le dernier visible.
  */
-export function removeWord(words: OutputWord[], index: number, tail: string): string {
+/**
+ * `previous` : la position du dernier mot encore visible avant `index` (-1 s'il n'y en a pas), quand
+ * l'appelant la connaît parce qu'il retire dans l'ordre du texte ; sans elle, on la cherche. Un
+ * retrait en boucle qui la passe reste linéaire même quand presque tout disparaît (le Bord en prose).
+ */
+export function removeWord(words: OutputWord[], index: number, tail: string, previous?: number): string {
   const word = words[index]!;
-  const previous = words.slice(0, index).findLast((candidate) => candidate.output);
-  const first = !previous;
+  // Le mot visible le plus proche de chaque côté, sans recopier le tableau : un retrait en boucle reste linéaire.
+  let before = previous ?? index - 1;
+  while (before >= 0 && !words[before]!.output) before--;
+  const first = before < 0;
   const sentenceStart = first || STRONG.test(word.gap);
-  const next = words.slice(index + 1).find((candidate) => candidate.output);
+  let after = index + 1;
+  while (after < words.length && !words[after]!.output) after++;
+  const next = words[after];
   if (next && sentenceStart && word.output[0] !== word.output[0]!.toLowerCase()) next.output = matchCase(word.output, next.output);
   const gap = word.gap;
   word.output = '';

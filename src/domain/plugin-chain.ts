@@ -90,11 +90,13 @@ function reread(words: readonly OutputWord[], tail: string, tagged: readonly Tag
   text += tail;
   const tokens = tokenize(text);
   // Un mot relu appartient au mot de sortie qui le contient ; à défaut, au dernier commencé avant lui.
+  // Mots relus et mots de sortie sont tous deux dans l'ordre du texte : un seul parcours, à deux pointeurs.
+  let owner = spans[0]?.index ?? 0;
+  let next = 0;
   const origin = tokens.map((token) => {
-    let owner = spans[0]!.index;
-    for (const span of spans) {
-      if (span.start > token.start) break;
-      if (span.end > span.start) owner = span.index;
+    while (next < spans.length && spans[next]!.start <= token.start) {
+      if (spans[next]!.end > spans[next]!.start) owner = spans[next]!.index;
+      next++;
     }
     return owner;
   });

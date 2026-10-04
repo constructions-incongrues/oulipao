@@ -7,6 +7,8 @@ import { runChain, type ChainStep } from '../../src/domain/plugin-chain.ts';
 import { lipogramPlugin } from '../../src/domain/lipogram/plugin.ts';
 import { s7Plugin } from '../../src/domain/s7/plugin.ts';
 import { trackSortPlugin } from '../../src/domain/track-sort/plugin.ts';
+import { edgePlugin } from '../../src/domain/edge/plugin.ts';
+import { lineationPlugin } from '../../src/domain/lineation/plugin.ts';
 import { morphology, tag, verbs } from '../support/morphology.ts';
 
 const resources = { morphology: morphology() };
@@ -212,4 +214,21 @@ test('S+dé après un retrait en amont : chaque nom garde sa face de dé, l’é
   assert.ok(nouns.length >= 3);
   // Les adverbes « Ici » et « vite », retirés en amont, décaleraient les positions des noms suivants.
   for (const index of nouns) assert.equal(after.words[index]!.output, alone.words[index]!.output, tag(text)[index]!.word);
+});
+
+test('volume : le coût de la chaîne croît avec le texte, pas avec son carré', () => {
+  const steps = [
+    { ...step(trackSortPlugin, { mode: 'remove' }), values: trackSortPlugin.parse({ mode: 'remove' }) },
+    { ...step(edgePlugin, {}), values: edgePlugin.parse({}) },
+    { ...step(lineationPlugin, {}), values: lineationPlugin.parse({}) },
+  ];
+  // 40 000 mots : en linéaire, quelques centaines de ms ; en quadratique, plusieurs secondes
+  // (6,2 s mesurés avant la linéarisation, 0,2 s après). Le seuil laisse un facteur 5 de chaque côté,
+  // pour une machine lente ou une suite qui tourne en parallèle.
+  const text = Array.from({ length: 40000 / 5 }, () => 'Le chat dort très vite.').join(' ');
+  const tagged = tag(text);
+  const start = performance.now();
+  runChain(text, tagged, steps, resources);
+  const elapsed = performance.now() - start;
+  assert.ok(elapsed < 1500, `40 000 mots en ${Math.round(elapsed)} ms`);
 });

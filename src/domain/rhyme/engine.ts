@@ -273,8 +273,9 @@ export function planByVerse(
 ): PluginResult {
   const sounds = soundsFor(resources);
   const decisions = new Map<number, Decision>();
+  const skipped = new Set(scope.skip);
   if (sounds) {
-    const skip = new Set(scope.skip);
+    const skip = skipped;
     const tools: StanzaTools = {
       sounds,
       settle(slot, decision) {
@@ -288,7 +289,9 @@ export function planByVerse(
       if (!pick(place)) return;
       const { word, category } = tagged[index]!;
       const slot = { index, place, word, category, sound: sounds.of(word, category), open: targets.has(category) && !skip.has(index) };
-      stanzas.set(place.stanza, [...(stanzas.get(place.stanza) ?? []), slot]);
+      const slots = stanzas.get(place.stanza);
+      if (slots) slots.push(slot); // sans recopie : un texte en prose ne forme qu'une strophe
+      else stanzas.set(place.stanza, [slot]);
     });
     for (const slots of stanzas.values()) plan(slots, tools);
   }
@@ -300,7 +303,7 @@ export function planByVerse(
     scope,
     {
       // Sans prononciations, tous les mots retenus attendent ; ensuite, seuls ceux du plan changent.
-      eligible: (index, places) => pick(places[index]!) && (!sounds || decisions.has(index) || scope.skip.includes(index)),
+      eligible: (index, places) => pick(places[index]!) && (!sounds || decisions.has(index) || skipped.has(index)),
       decide: (index) => decisions.get(index)!,
     },
     sounds,
