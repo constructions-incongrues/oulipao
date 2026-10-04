@@ -46,3 +46,4 @@
 ## [2026-10-04] ingest | pm-prd: wrote docs/prds/iterer-et-figer.md
 ## [2026-10-04] ingest | pm-prd: wrote docs/prds/v-n-du-mineur-au-majeur.md
 ## [2026-10-04] ingest | pm-opportunities: add entities/opportunities/lexique-tire-d-un-texte.md
+## [2026-10-04] ingest | pm-prd: wrote docs/prds/mode-puzzle.md
