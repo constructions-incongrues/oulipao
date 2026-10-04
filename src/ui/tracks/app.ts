@@ -4,13 +4,14 @@ import { CATEGORIES, type Category } from '../../domain/categories.ts';
 import { audibleCategories } from '../../domain/mixing.ts';
 import { Chain } from './components/chain.ts';
 import { Inspector } from './components/inspector.ts';
+import { ErrorMessage } from './components/error-message.ts';
 import { Notebook } from './components/notebook.ts';
 import { Result } from './components/result.ts';
 import { Source } from './components/source.ts';
 import { StepGrid } from './components/step-grid.ts';
 import { ThemeToggle } from './components/theme-toggle.ts';
 import { Transport } from './components/transport.ts';
-import type { TracksController, TracksState } from './controller.ts';
+import type { Loading, TracksController, TracksState } from './controller.ts';
 import { installedPlugins } from '../../domain/registry.ts';
 import { pluginById, recipes } from './mixer-state.ts';
 import { gridSteps, inspectorLocks, inspectorWindow, summarize } from './view-model.ts';
@@ -34,6 +35,13 @@ export interface AppProps {
   version: string;
   /** Le jour où l'on regarde, pour les jours depuis la dernière garde ; posé par le montage à chaque rendu. */
   today?: Date;
+}
+
+/** Une textbank demandée à la volée : une ligne d'état pendant son chargement, son erreur s'il échoue. */
+function Fetching({ loading, label, onRetry }: { loading: Loading; label: string; onRetry: () => void }): VNode | null {
+  if (loading.status === 'loading') return html`<p class="loading" role="status">${label}</p>` as VNode;
+  if (loading.status === 'error' && loading.error) return html`<${ErrorMessage} error=${loading.error} onRetry=${onRetry} />` as VNode;
+  return null;
 }
 
 /**
@@ -103,6 +111,7 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
       <${Notebook}
         entries=${state.notebook}
         message=${state.notebookMessage}
+        error=${state.notebookError}
         persistent=${state.notebookPersistent}
         today=${today}
         onReopen=${(id: string) => void controller.reopen(id)}
@@ -129,10 +138,8 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
       ${stale &&
       html`<p class="stale-bar">Texte modifié — <button type="button" class="key rerun" onClick=${() => void controller.run()}>remettre en pistes</button></p>`}
       <p class="summary" role="status" aria-live="polite">${view ? summarize(mixer, view) : ''}</p>
-      ${state.verbs.status === 'error' &&
-      html`<p class="loading error" role="alert">${state.verbs.error} <button type="button" class="load" onClick=${() => void controller.loadVerbs()}>Relancer</button></p>`}
-      ${state.phonetics.status === 'error' &&
-      html`<p class="loading error" role="alert">${state.phonetics.error} <button type="button" class="load" onClick=${() => void controller.loadPhonetics()}>Relancer</button></p>`}
+      <${Fetching} loading=${state.verbs} label="Chargement des verbes…" onRetry=${() => void controller.loadVerbs()} />
+      <${Fetching} loading=${state.phonetics} label="Chargement des prononciations…" onRetry=${() => void controller.loadPhonetics()} />
       <${Chain} instances=${mixer.instances} plugins=${installedPlugins} recipes=${recipes} lookup=${pluginById} dispatch=${controller.dispatch} />
       ${view &&
       html`<${Transport}

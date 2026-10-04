@@ -65,10 +65,10 @@ test('Échec de la textbank phonétique : l’erreur reste, les autres filtres s
   controller.setInput('un vers');
   await controller.run();
   await tick();
-  assert.deepEqual(controller.state.phonetics, { status: 'error', error: 'Échec du chargement des prononciations : 404.' });
+  assert.deepEqual(controller.state.phonetics, { status: 'error', error: { lead: 'Le chargement des prononciations a échoué.', detail: '404.' } });
   assert.equal(controller.state.view!.result, 'un vert'); // le S+1 s'est appliqué
   const out = renderToString(html`<${App} state=${controller.state} controller=${controller} version="0.2.0" />`);
-  assert.match(out, /<p class="loading error" role="alert">Échec du chargement des prononciations : 404\. <button type="button" class="load">Relancer<\/button><\/p>/);
+  assert.match(out, /<p class="error" role="alert">\s*<strong>Le chargement des prononciations a échoué\.<\/strong> 404\. <button type="button" class="load">Relancer<\/button>/);
   const app = App({ state: controller.state, controller, version: "0.2.0" });
   const retry = find(app, (node) => node.props['class'] === 'load');
   (retry.props['onClick'] as () => void)();

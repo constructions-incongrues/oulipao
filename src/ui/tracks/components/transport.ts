@@ -20,7 +20,10 @@ export function Transport({ playing, tempo, voice, voices, onToggle, onTempo, on
   const none = voices.length === 0;
   return html`
     <section class="transport" aria-label="Écoute">
-      <button type="button" class="key play" aria-pressed=${playing} disabled=${none} title="Barre d'espace" onClick=${onToggle}>${playing ? 'Arrêter' : 'Écouter'}</button>
+      <span class="play-key">
+        <button type="button" class="key play" aria-pressed=${playing} disabled=${none} aria-keyshortcuts=${none ? undefined : 'Space'} onClick=${onToggle}>${playing ? 'Arrêter' : 'Écouter'}</button>
+        ${!none && html`<span class="silk shortcut" aria-hidden="true">Espace</span>`}
+      </span>
       ${none
         ? html`<p class="transport-note">Aucune voix française n’est installée sur ce système : l’écoute est impossible.</p>`
         : html`<label class="silk">Tempo <${Control} parameter=${{ kind: 'integer', key: 'tempo', label: 'Tempo', min: TEMPO_MIN, max: TEMPO_MAX }} value=${tempo}

@@ -61,14 +61,14 @@ test('échec du chargement (D12) : la page le dit, et relancer recharge vraiment
   });
   await controller.preload();
   assert.equal(controller.state.model.status, 'error');
-  assert.match(controller.state.model.error, /Échec : réseau coupé\. Vous pouvez relancer\./);
+  assert.deepEqual(controller.state.model.error, { lead: 'Le chargement du modèle a échoué.', detail: 'réseau coupé.' });
   await controller.preload();
   assert.equal(controller.state.model.status, 'ready');
   assert.equal(attempts, 2);
   // un dictionnaire injoignable fait échouer le chargement de la même façon
   const odd = setup({ loadMorphology: () => Promise.reject('panne') });
   await odd.controller.preload();
-  assert.match(odd.controller.state.model.error, /Échec : panne/);
+  assert.equal(odd.controller.state.model.error?.detail, 'panne.');
 });
 
 test('mettre en pistes : attente, puis partition, texte résultant et saisie repliée', async () => {
@@ -358,7 +358,7 @@ test('Verbes injoignables : l’erreur reste affichée, la relance les charge', 
   await controller.run();
   controller.dispatch({ type: 'set-targets', id: 's7-1', targets: ['verb'] });
   await tick();
-  assert.deepEqual(controller.state.verbs, { status: 'error', error: 'Échec du chargement des verbes : 503.' });
+  assert.deepEqual(controller.state.verbs, { status: 'error', error: { lead: 'Le chargement des verbes a échoué.', detail: '503.' } });
   controller.dispatch({ type: 'set-param', id: 's7-1', key: 'offset', value: 7 });
   await tick();
   assert.equal(calls, 1); // un geste ne relance pas : le bouton le fait

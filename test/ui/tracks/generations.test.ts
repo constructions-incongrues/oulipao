@@ -176,7 +176,7 @@ test('stockage plein : le geste s’arrête, rien ne bouge', async () => {
   box.full = true;
   const before = { input: controller.state.input, result: controller.state.view!.result, mixer: controller.state.mixer };
   await controller.iterate();
-  assert.match(controller.state.copyMessage, /Impossible de garder : stockage plein/);
+  assert.deepEqual(controller.state.notebookError, { lead: 'Impossible de garder :', detail: 'stockage plein.' });
   assert.deepEqual({ input: controller.state.input, result: controller.state.view!.result, mixer: controller.state.mixer }, before);
   assert.equal(tagged.length, 1);
   assert.equal(controller.state.lineage, undefined);

@@ -8,7 +8,7 @@ import { createLocalStoragePreferences } from '../../adapters/storage/local-stor
 import { safeStorage } from '../../adapters/storage/safe-storage.ts';
 import { createMorphologyLoader, createNeuralTagging, createPhoneticsLoader, createVerbsLoader } from '../composition.ts';
 import { App } from './app.ts';
-import { createTracksController, type TracksState } from './controller.ts';
+import { claimsSpace, createTracksController, type TracksState } from './controller.ts';
 import { nextTheme, type Theme } from './components/theme-toggle.ts';
 
 const root = document.getElementById('app')!;
@@ -68,9 +68,10 @@ document.addEventListener('keydown', (event) => {
   if (event.altKey || event.ctrlKey || event.metaKey) return;
   if (controller.shortcut(event.key, inField(event.target))) event.preventDefault();
 });
-// Sur un bouton qui a le focus, la barre d'espace l'activerait au relâché : elle sert à l'écoute.
+// Sur un bouton qui a le focus, la barre d'espace l'activerait au relâché : elle sert à l'écoute,
+// sauf sans voix française, où elle garde son effet ordinaire.
 document.addEventListener('keyup', (event) => {
-  if (event.key === ' ' && controller.state.view && !inField(event.target)) event.preventDefault();
+  if (event.key === ' ' && claimsSpace(controller.state, inField(event.target))) event.preventDefault();
 });
 // L'écoute se tait quand l'onglet est masqué ou la page quittée, et ne reprend pas seule.
 document.addEventListener('visibilitychange', () => document.hidden && controller.stop());

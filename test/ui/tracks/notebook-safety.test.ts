@@ -197,7 +197,7 @@ test('rouvrir une entrée hors bornes : un message, et la table, la saisie et le
   controller.setInput('Le texte en cours.');
   const before = { mixer: controller.state.mixer, view: controller.state.view, input: controller.state.input };
   await controller.reopen('hors-bornes');
-  assert.match(controller.state.notebookMessage, /^Ce texte ne peut pas être rouvert : /);
+  assert.equal(controller.state.notebookError?.lead, 'Ce texte ne peut pas être rouvert :');
   assert.deepEqual({ mixer: controller.state.mixer, view: controller.state.view, input: controller.state.input }, before);
 });
 
@@ -222,6 +222,6 @@ test('une reconstruction qui échoue à la réouverture laisse la table telle qu
   const before = controller.state.view;
   failing = true;
   await controller.reopen(controller.state.notebook[0]!.id);
-  assert.equal(controller.state.notebookMessage, 'Ce texte ne peut pas être rouvert : dictionnaire abîmé.');
+  assert.deepEqual(controller.state.notebookError, { lead: 'Ce texte ne peut pas être rouvert :', detail: 'dictionnaire abîmé.' });
   assert.equal(controller.state.view, before);
 });

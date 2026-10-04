@@ -92,7 +92,8 @@
   .input-message, .privacy, .more, .summary, .inspector-hint, .section-hint { color: var(--muted); font-size: var(--size-small); }
   .loading { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; color: var(--muted); margin: var(--space-3) 0 0; }
   .loading progress { width: 12rem; accent-color: var(--ink); }
-  .error { color: var(--error); }
+  .error { border-top: var(--rule) solid var(--error); padding-top: var(--space-2); color: var(--ink); }
+  .error strong { color: var(--error); font-weight: 700; }
   .privacy { margin: var(--space-2) 0 0; }
   .stale-bar { margin: 0 0 var(--space-3); }
   .summary { margin: 0 0 var(--space-3); }
@@ -160,6 +161,7 @@
   /* Transport de l'écoute, au-dessus de la grille */
   .transport { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin: 0 0 var(--space-2); }
   .transport label { display: flex; gap: var(--space-1); align-items: center; }
+  .play-key { display: inline-flex; flex-direction: column; align-items: center; gap: var(--space-1); }
   .transport-note { margin: 0; color: var(--muted); font-size: var(--size-small); }
   /* Le pas que dit l'écoute : son numéro passe en touche enfoncée, à l'encre, sans lueur ni transition */
   .hd.playing .num { background: var(--ink); color: var(--panel); font-weight: 700; }
@@ -252,6 +254,7 @@
     .recipe .rule { grid-column: 1 / -1; grid-row: 2; }
   }
   @media (max-width: 767px) {
+    .play-key .shortcut { display: none; }
     .bar .silk { display: none; }
     .bar h1 { font-size: 34px; }
     .result { padding: var(--space-3) var(--space-6); }
