@@ -11,8 +11,8 @@ import { z } from 'zod';
 const GrammalecteRowSchema = z
   .array(z.string())
   .min(20)
-  .transform((columns) => ({ form: columns[2]!, lemma: columns[3]!, tags: columns[4]!, domains: columns[8]! }))
-  .pipe(z.object({ form: z.string().min(1), lemma: z.string().min(1), tags: z.string().min(1), domains: z.string() }));
+  .transform((columns) => ({ form: columns[2]!, lemma: columns[3]!, tags: columns[4]!, notes: columns[7]!, domains: columns[8]! }))
+  .pipe(z.object({ form: z.string().min(1), lemma: z.string().min(1), tags: z.string().min(1), notes: z.string(), domains: z.string() }));
 
 /**
  * Formule chimique étiquetée nom (« AgBF₄ », « CO₂ », « NaCl ») : à écarter, aucun texte
@@ -22,6 +22,9 @@ const GrammalecteRowSchema = z
  * les unités (GHz, MeV) qui ont la même forme. Une « CO2 » en chiffres ordinaires sortirait
  * aussi : c'est une formule, pas un nom qu'on écrit.
  */
+/** Symbole d'unité noté « symb » (« km », « dB », « ET » pour exatesla) : pas un nom qu'on écrit. */
+export const isUnitSymbol = (notes: string) => /(^| )symb( |$)/.test(notes);
+
 export function isChemicalFormula(form: string, domains: string): boolean {
   if (/[₀-₉]/.test(form)) return true;
   return /(^| )chim( |$)/.test(domains) && /^([A-Z][a-z]?\d*){2,}$/.test(form) && /[a-z\d]/.test(form);
@@ -59,8 +62,8 @@ export function deriveLexicon(lines: Iterable<string>): DerivedLexicon {
   for (const line of lines) {
     const row = GrammalecteRowSchema.safeParse(line.split('\t'));
     if (!row.success || row.data.form === 'Flexion') continue; // commentaires, corpus, en-tête
-    const { form, lemma, tags, domains } = row.data;
-    if (isChemicalFormula(form, domains)) continue;
+    const { form, lemma, tags, notes, domains } = row.data;
+    if (isChemicalFormula(form, domains) || isUnitSymbol(notes)) continue;
     if (/(^| )nom( |$)/.test(tags) && /(^| )(mas|fem|epi)( |$)/.test(tags)) {
       nounRowsWithGender++;
       nounLemmas.add(lemma);

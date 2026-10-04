@@ -32,6 +32,8 @@
     background: var(--panel); border: var(--rule) solid var(--ink); border-radius: var(--radius); padding: var(--space-1) var(--space-2); min-height: 28px;
     box-sizing: border-box; cursor: pointer; }
   button[aria-pressed="true"] { background: var(--ink); color: var(--panel); }
+  /* Le geste principal d'un panneau : contour de 2 px, même taille de touche, sans couleur d'accent */
+  button.run { border-width: 2px; padding: calc(var(--space-1) - 1px) calc(var(--space-2) - 1px); }
   /* Un lien de façade : une touche qui mène ailleurs (« Code source ») */
   a.key, label.key { color: var(--ink); display: inline-flex; align-items: center; text-decoration: none; }
   a.key:hover, label.key:hover { background: var(--ink); color: var(--panel); }
@@ -94,13 +96,17 @@
   textarea { width: 100%; height: 8rem; box-sizing: border-box; padding: var(--space-3); font: var(--size-read-compact)/1.55 var(--font-read); }
   .controls { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-top: var(--space-2); }
   .input-message, .privacy, .example-source, .more, .summary, .inspector-hint, .section-hint { color: var(--muted); font-size: var(--size-small); }
-  .loading { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; color: var(--muted); margin: var(--space-3) 0 0; }
+  .loading { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; color: var(--muted); font-size: var(--size-small); margin: var(--space-3) 0 0; }
   .loading progress { width: 12rem; accent-color: var(--ink); }
   .error { border-top: var(--rule) solid var(--error); padding-top: var(--space-2); color: var(--ink); }
   .error strong { color: var(--error); font-weight: 700; }
   .privacy, p.example-source { margin: var(--space-2) 0 0; }
   .stale-bar { margin: 0 0 var(--space-3); }
-  .summary { margin: 0 0 var(--space-3); }
+  .summary { margin: 0; }
+  /* Vide, la phrase d'état reste une région annoncée mais ne creuse pas d'espace dans la chaîne */
+  .chain .summary:empty { margin-bottom: calc(-1 * var(--space-2)); }
+  .chain .more { margin: 0; }
+  .rack-empty { margin: 0; color: var(--muted); font-size: var(--size-small); }
 
   /* Chaîne : une ligne par filtre, toutes de même largeur, colonnes alignées */
   .chain { border: var(--rule) solid var(--line); padding: var(--space-3); margin-bottom: var(--space-4); display: grid; gap: var(--space-2); }
@@ -112,6 +118,7 @@
   .grip { width: 10px; height: 18px; cursor: grab; background-image: radial-gradient(circle, var(--muted) 1.2px, transparent 1.5px); background-size: 5px 5px; }
   .pos { font-size: var(--size-value); color: var(--muted); }
   .name { font-stretch: var(--silk-stretch); font-weight: 700; text-transform: uppercase; font-size: var(--size-label); }
+  .slot .engine { display: block; font-weight: 400; color: var(--muted); }
   .param, .targets, .slot-keys { display: inline-flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
   .param label { display: inline-flex; gap: var(--space-1); align-items: center; }
   /* Paramètre modulé : son champ fixe passe en tirets et à l'encre secondaire, comme une ligne coupée. */
@@ -152,7 +159,7 @@
   .grid, .inspector { --strip: 236px; }
   .grid { display: grid; grid-template-columns: var(--strip) repeat(var(--per), minmax(0, 1fr)); position: relative; container-type: inline-size; }
   .grid > * { border-bottom: var(--rule) solid var(--line); }
-  .corner { padding: var(--space-2) var(--space-3); display: flex; align-items: end; }
+  .corner { padding: var(--space-2) var(--space-3); display: flex; flex-direction: column; justify-content: end; gap: var(--space-1); }
   .hd { all: unset; box-sizing: border-box; padding: var(--space-2) 2px var(--space-1); text-align: center; border-left: var(--rule) solid var(--line); border-bottom: var(--rule) solid var(--line); cursor: pointer; min-width: 0; }
   div.hd { cursor: default; }
   .hd .num { display: block; font-size: var(--size-value); color: var(--muted); }
@@ -161,10 +168,11 @@
   .hd[aria-pressed="true"] { background: var(--paper); color: var(--ink); }
   .hd[aria-pressed="true"] .w { font-weight: 600; }
   .hd:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
-  /* Transport de l'écoute, au-dessus de la grille */
-  .transport { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin: 0 0 var(--space-2); }
+  /* Transport de l'écoute, dans l'en-tête de la grille ; le raccourci en touche de clavier */
+  .transport { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin: 0 auto 0 var(--space-4); }
   .transport label { display: flex; gap: var(--space-1); align-items: center; }
-  .play-key { display: inline-flex; flex-direction: column; align-items: center; gap: var(--space-1); }
+  .play-key { display: inline-flex; align-items: center; gap: var(--space-1); }
+  .shortcut { font: var(--size-value) var(--font-mono); color: var(--muted); border: var(--rule) solid var(--muted); border-radius: var(--radius); padding: 1px 4px; }
   .transport-note { margin: 0; color: var(--muted); font-size: var(--size-small); }
   /* Le pas que dit l'écoute : son numéro passe en touche enfoncée, à l'encre, sans lueur ni transition */
   .hd.playing .num { background: var(--ink); color: var(--panel); font-weight: 700; }
@@ -179,6 +187,9 @@
   button.cell:focus-visible { outline: 2px solid var(--ink); outline-offset: -3px; }
   .cell .shape { width: 24px; height: 24px; }
   .cell.closed .shape { opacity: .55; }
+  /* L'issue d'un pas percé : changé, poinçon plein ; inchangé, poinçon réduit ; retiré, poinçon barré d'un trait d'encre */
+  .cell.unchanged .shape { width: 12px; height: 12px; }
+  .cell.removed::after { content: ""; position: absolute; width: 30px; height: 2px; background: var(--ink); transform: rotate(-45deg); pointer-events: none; }
   .cell.sel { background: color-mix(in srgb, var(--paper) 60%, transparent); }
   .lock { position: absolute; top: 3px; right: 3px; font-size: var(--size-value); line-height: 1; border: var(--rule) solid var(--ink); padding: 1px 2px; background: var(--panel); }
   /* Le moment signé : une tête de lecture balaie la grille quand le texte change */
@@ -200,6 +211,7 @@
   .inspector th { text-align: left; font: var(--size-small) var(--font-ui); color: var(--muted); padding: var(--space-1) var(--space-3); border-bottom: var(--rule) solid var(--line); }
   .lock-field { display: inline-flex; gap: var(--space-1); align-items: center; margin-left: var(--space-2); }
   .lock-field input { width: 3.5rem; }
+  .lock-field input::placeholder { color: var(--muted); }
   .lock-note { margin-left: var(--space-2); color: var(--ink); }
   /* Une valeur modulée, ou la note d'une échelle : sous le mot, en Martian Mono, à l'encre secondaire (le verrou est à l'encre). */
   .inspector td .mod, .inspector td .detail { display: block; font: var(--size-small) var(--font-mono); color: var(--muted); }
@@ -269,7 +281,24 @@
     .result-text, .kept-text, .retouch textarea { font-size: var(--size-read-narrow); }
     /* Au doigt : des touches d'au moins 44 px (les pas, eux, font 48 px de haut et au moins 44 de large à 375 px) */
     button, a.key, label.key, .browser > summary, .retouch > summary { min-height: 44px; }
+    /* Les autres contrôles aussi : listes, champs et dépliants (porte, carnet) font 44 px au doigt */
+    select, input[type="number"], input[type="text"].param-text, .gate > summary, .notebook-summary { min-height: 44px; }
+    .gate > summary { display: inline-flex; align-items: center; }
     .result.stuck .result-scroll { max-height: calc(3 * var(--size-read-compact) * 1.5); }
+    /* Collée au téléphone, la bande ne garde que le texte : ses touches reviennent en haut de page */
+    .result.stuck .result-header { display: none; }
+    /* Ligne de filtre au doigt : marche et ↑ ↓ sur un rang, Dupliquer et Retirer sur le suivant, sur toute la largeur */
+    .slot { grid-template-columns: 10px 2ch minmax(0, 1fr) minmax(0, 1fr) 44px 44px; }
+    .slot .name { grid-column: 3 / -1; }
+    .slot .power { grid-column: 1 / 5; }
+    .slot .slot-keys { display: contents; }
+    .slot .up { grid-column: 5; }
+    .slot .down { grid-column: 6; }
+    .slot .duplicate { grid-column: 1 / 4; }
+    .slot .remove { grid-column: 4 / -1; }
+    /* La tranche de l'inspecteur fait 116 px : le champ de verrou passe sous son libellé */
+    .lock-field { flex-direction: column; align-items: start; margin-left: 0; }
+    .lock-field input { width: 100%; }
     .grid, .inspector { --strip: 116px; }
     .ch { grid-template-columns: 14px 1fr; padding: var(--space-1) var(--space-2); }
     .ch-keys { grid-column: 1 / -1; }

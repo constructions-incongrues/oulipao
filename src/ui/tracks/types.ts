@@ -46,6 +46,11 @@ export const InstanceSchema = PluginStateSchema.extend({
   modulators: z.record(z.string(), ModulatorSchema).optional().catch(undefined),
   /** La porte : les mots que l'instance laisse passer ; absente : tous. Illisible, elle est oubliée. */
   gate: GateSchema.optional().catch(undefined),
+  /**
+   * Le nom de la recette qui l'a branchée, avec son choix (« Monovocalisme (a) ») ; absent pour un
+   * moteur branché nu. Il tombe dès qu'on règle l'instance autrement que la recette.
+   */
+  recipe: z.string().min(1).optional(),
 });
 export type Instance = z.infer<typeof InstanceSchema>;
 

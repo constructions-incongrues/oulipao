@@ -6,12 +6,17 @@ Montrer un texte français comme une partition de pistes linguistiques sur laque
 ## Requirements
 
 ### Requirement: Tranche de réglage par piste
-The system SHALL give each track a channel strip, at the head of its row in the step grid, showing the track's shape, its name, its word count, a mute button, a solo button and a reminder of the instances that target it; filters are set in the chain, not on the strip.
+The system SHALL give each track a channel strip, at the head of its row in the step grid, showing the track's shape, its name, its word count, a mute button, a solo button and a reminder of the instances that target it; an instance that targets all five tracks SHALL be recalled once, at the head of the strips, instead of in each strip. Filters are set in the chain, not on the strip.
 
 #### Scenario: Piste sans plugin
 - **GIVEN** la piste des verbes et aucun filtre qui la vise
 - **WHEN** sa tranche s'affiche
 - **THEN** elle montre le carré des verbes, leur nom, leur nombre de mots, Muet et Seul, et aucun rappel de filtre
+
+#### Scenario: Filtre sur les cinq pistes
+- **GIVEN** un S+7 sur les noms puis un lipogramme sur les cinq pistes
+- **WHEN** les tranches s'affichent
+- **THEN** la tranche des noms rappelle « 1. S+7 », aucune tranche ne rappelle le lipogramme, et la tête des tranches dit « Toutes les pistes : 2. Lipogramme en e »
 
 ### Requirement: Plugin S+7 sur la piste des noms
 The system SHALL open with an empty chain; a S+7 added to the chain targets the nouns track, enabled, with offset 7 and re-agreement mode.
@@ -180,7 +185,7 @@ The system SHALL normalise every source text to Unicode composed form (NFC) as s
 - **THEN** les deux textes résultants sont identiques
 
 ### Requirement: Raccourci de l'écoute signalé
-The system SHALL declare the space-bar shortcut of the play control to assistive technology and SHALL print « ESPACE » as a silk-screen label under that control on screens 768 px wide or more. When no French voice is available, the space bar SHALL keep its ordinary effect, including activating the focused button.
+The system SHALL declare the space-bar shortcut of the play control to assistive technology and SHALL print « Espace » as a keyboard key beside that control on screens 768 px wide or more. When no French voice is available, the space bar SHALL keep its ordinary effect, including activating the focused button.
 
 #### Scenario: Raccourci déclaré
 - **GIVEN** un texte mis en pistes
@@ -190,7 +195,7 @@ The system SHALL declare the space-bar shortcut of the play control to assistive
 #### Scenario: Étiquette sur petit écran
 - **GIVEN** la page à 375 px de large
 - **WHEN** la console d'écoute s'affiche
-- **THEN** l'étiquette « ESPACE » n'apparaît pas
+- **THEN** la touche « Espace » n'apparaît pas
 
 #### Scenario: Sans voix française
 - **GIVEN** aucune voix française installée et le focus sur la touche « Muet » de la piste des noms
@@ -266,3 +271,48 @@ The system SHALL display the result text with a narrow no-break space before « 
 #### Scenario: Copie
 - **WHEN** l'utilisateur copie le texte résultant
 - **THEN** le presse-papiers reçoit les espaces ordinaires du texte
+
+### Requirement: Écoute dans l'en-tête de la grille
+The system SHALL place the listening controls (play, tempo, voice) in the header of the step grid, between its title and its page keys.
+
+#### Scenario: Texte mis en pistes
+- **GIVEN** un texte mis en pistes
+- **WHEN** la grille s'affiche
+- **THEN** son en-tête montre, dans l'ordre, son titre, « Écouter », le tempo, la voix, puis les pages
+
+### Requirement: Phrase d'état dans la chaîne
+The system SHALL announce what the chain did to the text in a status sentence placed under the chain's title, and SHALL NOT show the chain's own empty message when that sentence already says there is no constraint.
+
+#### Scenario: Une contrainte
+- **GIVEN** un S+7 qui remplace 19 noms sur 20
+- **WHEN** la chaîne s'affiche
+- **THEN** sous « Contraintes », la phrase « S+7 sur les noms : 19 noms remplacés sur 20. » est lue par les lecteurs d'écran
+
+#### Scenario: Aucune contrainte
+- **GIVEN** un texte mis en pistes et une chaîne vide
+- **WHEN** la chaîne s'affiche
+- **THEN** elle dit « Aucune contrainte : texte d'origine. » une seule fois
+
+### Requirement: Bande collée réduite au texte au téléphone
+Below 768 px, the system SHALL hide the header of the pinned result strip (its title, keys and form choice) and SHALL keep only its text; the header SHALL come back when the strip is no longer pinned.
+
+#### Scenario: On descend
+- **GIVEN** la page à 375 px de large et un texte mis en pistes
+- **WHEN** l'utilisateur descend jusqu'à la grille
+- **THEN** la bande collée ne montre que trois lignes de texte, sans touches
+
+### Requirement: Phrases qui commencent par une majuscule
+The system SHALL start each sentence of the status line and each inspector band label with a capital letter; the mention appended to a copy SHALL keep its own case.
+
+#### Scenario: Lipogramme
+- **GIVEN** un lipogramme en e dans la chaîne
+- **WHEN** la phrase d'état s'affiche
+- **THEN** elle dit « Lipogramme en e : … »
+
+### Requirement: Geste principal de la saisie
+The system SHALL mark « Mettre en pistes » as the main key of the source panel with a 2 px ink outline, at the same size as the other keys and without an accent colour.
+
+#### Scenario: Saisie dépliée
+- **GIVEN** la saisie dépliée
+- **WHEN** l'utilisateur la regarde
+- **THEN** « Mettre en pistes » a un contour de 2 px et « Essayer avec un exemple » un contour de 1 px

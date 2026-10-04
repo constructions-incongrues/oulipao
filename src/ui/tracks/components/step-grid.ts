@@ -14,6 +14,8 @@ export interface StepGridProps {
   audible: ReadonlySet<Category>;
   /** Rappel des contraintes qui visent chaque piste, dans l'ordre de la chaîne. */
   reminders: Record<Category, readonly string[]>;
+  /** Les contraintes qui visent les cinq pistes, rappelées une fois en tête des tranches. */
+  allTracks?: readonly string[];
   perPage: number;
   page: number;
   /** Le mot ouvert dans l'inspecteur. */
@@ -27,6 +29,8 @@ export interface StepGridProps {
   onMute: (category: Category) => void;
   onSolo: (category: Category) => void;
   onPage: (page: number) => void;
+  /** Le transport de l'écoute, entre le titre et les pages, comme sur la façade d'un séquenceur. */
+  transport?: VNode | false;
 }
 
 /** Au-delà de ce nombre de pages, des flèches remplacent la liste des pages. */
@@ -39,9 +43,12 @@ const STATE_LABELS: Record<GridStep['state'], string> = {
 };
 
 /** Le nom accessible d'un pas : piste, mot, état, et ses verrous. */
+const OUTCOMES: Record<NonNullable<GridStep['outcome']>, string> = { changed: 'mot changé', removed: 'mot retiré', unchanged: 'mot inchangé' };
+
 function stepLabel(step: GridStep): string {
   const locks = [...step.locks.map((lock) => `verrou ${lock.value}`), ...(step.modulated ?? []).map((value) => `modulé ${value}`)].join(', ');
-  return `${TRACK_NAMES[step.track]}, ${step.word} : ${STATE_LABELS[step.state]}${locks ? `, ${locks}` : ''}`;
+  const outcome = step.outcome ? `, ${OUTCOMES[step.outcome]}` : '';
+  return `${TRACK_NAMES[step.track]}, ${step.word} : ${STATE_LABELS[step.state]}${outcome}${locks ? `, ${locks}` : ''}`;
 }
 
 /** Les touches de page : une par page, ou des flèches quand il y en a trop. */
@@ -73,10 +80,16 @@ export function StepGrid(props: StepGridProps): VNode {
     <section class="rack" aria-labelledby="grid-title">
       <div class="rack-head">
         <h2 class="silk" id="grid-title">Pistes · un pas par mot</h2>
-        <${Pages} count=${count} page=${page} perPage=${perPage} total=${steps.length} onPage=${props.onPage} />
+        ${props.transport}
+        ${steps.length
+          ? html`<${Pages} count=${count} page=${page} perPage=${perPage} total=${steps.length} onPage=${props.onPage} />`
+          : html`<p class="rack-empty">Les pas apparaissent une fois le texte mis en pistes.</p>`}
       </div>
       <div class="grid" style=${`--per: ${perPage}`}>
-        <div class="corner silk" aria-hidden="true">Pas</div>
+        <div class="corner">
+          <span class="silk" aria-hidden="true">Pas</span>
+          ${props.allTracks?.length ? html`<p class="reminder">Toutes les pistes : ${props.allTracks.join(' · ')}</p>` : ''}
+        </div>
         ${columns.map((step) =>
           step
             ? html`<button type="button" class=${`hd${step.index % 4 === 0 ? ' beat' : ''}${step.index === playing ? ' playing' : ''}`} aria-pressed=${step.index === selected}
@@ -105,7 +118,8 @@ export function StepGrid(props: StepGridProps): VNode {
               const chosen = step?.index === selected ? ' sel' : '';
               if (!step || step.track !== track) return html`<div class=${`cell${chosen}`} aria-hidden="true"></div>`;
               const lock = step.locks[0];
-              return html`<button type="button" class=${`cell step ${step.state}${chosen}`} aria-pressed=${step.state !== 'closed'}
+              // L'issue se lit sans couleur nouvelle : un trou barré à l'encre pour un mot retiré, un trou réduit pour un mot inchangé.
+              return html`<button type="button" class=${`cell step ${step.state}${step.outcome ? ` ${step.outcome}` : ''}${chosen}`} aria-pressed=${step.state !== 'closed'}
                 aria-label=${stepLabel(step)} onClick=${() => props.onToggleStep(step.index)}>
                 <${Shape} track=${track} filled=${step.state === 'punched'} />
                 ${lock && html`<span class="lock mono" aria-hidden="true">${lock.value}</span>`}

@@ -22,6 +22,8 @@ export interface ChainProps {
   now?: () => Date;
   lookup: (type: string) => ConstraintPlugin;
   dispatch: (action: MixerAction) => void;
+  /** Ce que la chaîne a fait au texte, en une phrase annoncée (« S+7 sur les noms : 19 noms remplacés sur 20. ») ; vide sans texte. */
+  status?: string;
 }
 
 /**
@@ -54,7 +56,9 @@ function help(instance: Instance, plugin: ConstraintPlugin): string {
 function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance; position: number; ids: readonly string[]; plugin: ConstraintPlugin; dispatch: ChainProps['dispatch'] }): VNode {
   const { id, targets, enabled, params, modulators = {}, gate } = instance;
   // Un paramètre principal modulé donne son nom à l'instance : « S+lettres ».
-  const name = modulators[Object.keys(modulators)[0] ?? ''] ? modulatedLabel(plugin, params, modulators).split(',')[0]! : (plugin.nameOf?.(params) ?? plugin.name);
+  const engine = modulators[Object.keys(modulators)[0] ?? ''] ? modulatedLabel(plugin, params, modulators).split(',')[0]! : (plugin.nameOf?.(params) ?? plugin.name);
+  // Branchée par une recette, l'instance porte son nom ; le moteur reste dit dessous.
+  const name = instance.recipe ?? engine;
   const rank = position + 1;
   const last = ids.length - 1;
   // Glisser-déposer natif : seule la poignée rend la ligne déplaçable, les champs restent utilisables.
@@ -93,7 +97,7 @@ function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance
       <span class="grip" aria-hidden="true" title="Glisser pour réordonner"
         onPointerDown=${(event: PointerEvent) => ((event.currentTarget as HTMLElement).closest('.slot') as HTMLElement).setAttribute('draggable', 'true')}></span>
       <span class="pos mono" aria-hidden="true">${rank}</span>
-      <span class="name">${name}</span>
+      <span class="name">${name}${instance.recipe && html`<span class="engine">${engine}</span>`}</span>
       <span class="param">
         ${visibleParameters(plugin, params).map(
           // Modulé, le champ fixe s'estompe : il ne sert plus qu'aux mots sans valeur modulée (pas de voisin, prononciations en route).
@@ -145,11 +149,12 @@ function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance
  * La chaîne, au-dessus des pistes : les contraintes dans l'ordre où le texte les traverse, une ligne
  * de même largeur chacune ; en dessous, le navigateur qui en ajoute en fin de chaîne.
  */
-export function Chain({ instances, plugins, recipes = [], now, lookup, dispatch }: ChainProps): VNode {
+export function Chain({ instances, plugins, recipes = [], now, lookup, dispatch, status = '' }: ChainProps): VNode {
   const ids = instances.map((instance) => instance.id);
   return html`
     <section class="chain" aria-labelledby="chain-title">
       <h2 class="silk" id="chain-title">Contraintes</h2>
+      <p class="summary" role="status" aria-live="polite">${status}</p>
       ${instances.length
         ? html`<ol class="slots">
             ${instances.map(
@@ -157,7 +162,7 @@ export function Chain({ instances, plugins, recipes = [], now, lookup, dispatch 
                 plugin=${lookup(instance.type)} dispatch=${dispatch} />`,
             )}
           </ol>`
-        : html`<p class="more">Aucune contrainte : le texte passe tel quel.</p>`}
+        : !status && html`<p class="more">Aucune contrainte : le texte passe tel quel.</p>`}
       <${Browser} recipes=${recipes} plugins=${plugins} dispatch=${dispatch} now=${now} />
     </section>
   ` as VNode;

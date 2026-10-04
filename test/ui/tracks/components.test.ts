@@ -105,6 +105,21 @@ const gridProps = (overrides: Partial<StepGridProps> = {}) => {
   return { props, calls };
 };
 
+test('StepGrid : l’issue de chaque pas percé, sans couleur nouvelle ; grille vide sans pages', () => {
+  const steps: GridStep[] = [
+    { index: 0, word: 'matin', track: 'noun', state: 'punched', outcome: 'changed', locks: [] },
+    { index: 1, word: 'soir', track: 'noun', state: 'punched', outcome: 'removed', locks: [] },
+    { index: 2, word: 'nuit', track: 'noun', state: 'punched', outcome: 'unchanged', locks: [] },
+  ];
+  const out = renderToString(html`<${StepGrid} ...${gridProps({ steps }).props} />`);
+  assert.match(out, /class="cell step punched changed[^"]*" aria-pressed="true" aria-label="Noms, matin : percé, la contrainte agit, mot changé"/);
+  assert.match(out, /class="cell step punched removed[^"]*"[^>]*aria-label="Noms, soir : percé, la contrainte agit, mot retiré"/);
+  assert.match(out, /class="cell step punched unchanged[^"]*"[^>]*aria-label="Noms, nuit : percé, la contrainte agit, mot inchangé"/);
+  const empty = renderToString(html`<${StepGrid} ...${gridProps({ steps: [] }).props} />`);
+  assert.match(empty, /<p class="rack-empty">Les pas apparaissent une fois le texte mis en pistes\.<\/p>/);
+  assert.doesNotMatch(empty, /class="pages"/);
+});
+
 test('StepGrid : une colonne par mot, temps forts, un pas par mot sur la ligne de sa piste, poinçons et verrous', () => {
   const { props, calls } = gridProps();
   const grid = html`<${StepGrid} ...${props} />`;
@@ -295,7 +310,8 @@ test('Source : définition et exemple au premier contact, avancement du modèle,
   const waiting = html`<${Source} ...${{ ...props, model: model({ status: 'waiting' }) }} />`;
   const before = renderToString(waiting);
   assert.match(before, /Charger le modèle \(141 Mo\)/);
-  assert.match(before, /depuis jsDelivr et Hugging Face, qui voient alors votre adresse\. Votre texte, lui, reste dans ce navigateur\./);
+  assert.match(before, /Il se télécharge une fois depuis jsDelivr et Hugging Face, qui voient alors votre adresse\.\s*<\/p>/);
+  assert.match(before, /<label for="input" class="silk">Texte<\/label>/);
   assert.match(before, /<button type="button" class="run">Mettre en pistes<\/button>/); // le premier clic vaut accord
   click(waiting, byClass('load'));
   const failed = html`<${Source} ...${{ ...props, model: model({ status: 'error', error: { lead: 'Le chargement du modèle a échoué.', detail: 'hors ligne.' } }) }} />`;
@@ -327,7 +343,7 @@ test('Chain : les contraintes numérotées dans l’ordre de la chaîne, leurs p
   const props = { instances: [s7, sans], plugins: [s7Plugin, sansPlugin], lookup, dispatch: (action: MixerAction) => void actions.push(action) };
   const chain = html`<${Chain} ...${props} />`;
   const out = renderToString(chain);
-  assert.match(out, /<section class="chain" aria-labelledby="chain-title"><h2 class="silk" id="chain-title">Contraintes<\/h2><ol class="slots">/);
+  assert.match(out, /<section class="chain" aria-labelledby="chain-title"><h2 class="silk" id="chain-title">Contraintes<\/h2><p class="summary" role="status" aria-live="polite"><\/p><ol class="slots">/);
   assert.ok(out.indexOf('Contrainte 1 : S+7') < out.indexOf('Contrainte 2 : Sans'));
   assert.match(out, /<span class="pos mono" aria-hidden="true">1<\/span><span class="name">S\+7<\/span>/);
   assert.match(out, /class="slot off" aria-label="Contrainte 2 : Sans"/);
@@ -367,9 +383,17 @@ test('Chain : les contraintes numérotées dans l’ordre de la chaîne, leurs p
     { type: 'add-instance', plugin: 'sans' },
   ]);
   assert.match(renderToString(chain), />\+ S\+7<.*>\+ Sans</s);
+  // Branchée par une recette : la ligne porte son nom, le moteur dessous.
+  const mono = renderToString(html`<${Chain} ...${{ ...props, instances: [{ ...sans, enabled: true, recipe: 'Monovocalisme (a)' }] }} />`);
+  assert.match(mono, /aria-label="Contrainte 1 : Monovocalisme \(a\)"/);
+  assert.match(mono, /<span class="name">Monovocalisme \(a\)<span class="engine">Sans<\/span><\/span>/);
   const empty = renderToString(html`<${Chain} ...${{ ...props, instances: [] }} />`);
   assert.match(empty, /Aucune contrainte : le texte passe tel quel\./);
   assert.doesNotMatch(empty, /<ol/);
+  // Avec un texte, la phrase d'état dit déjà qu'il n'y a pas de contrainte : pas de doublon.
+  const said = renderToString(html`<${Chain} ...${{ ...props, instances: [], status: 'Aucune contrainte : texte d’origine.' }} />`);
+  assert.match(said, /<h2 class="silk" id="chain-title">Contraintes<\/h2><p class="summary" role="status" aria-live="polite">Aucune contrainte : texte d’origine\.<\/p>/);
+  assert.doesNotMatch(said, /le texte passe tel quel/);
 });
 
 test('dropPosition : la place dans la chaîne privée de l’instance déplacée', () => {

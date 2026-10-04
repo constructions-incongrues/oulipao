@@ -146,10 +146,22 @@ export interface GridStep {
   locks: { id: string; key: string; value: number }[];
   /** Ce que les modulateurs ont donné à ce mot, étape par étape : « +4 », « porte fermée » ; absent : rien. */
   modulated?: string[];
+  /**
+   * Ce que la chaîne a fait du mot d'un pas percé : changé (remplacé ou remis en ligne), retiré, ou
+   * inchangé (rien à changer, ou laissé tel quel faute de mieux) ; absent pour un pas non percé.
+   */
+  outcome?: 'changed' | 'removed' | 'unchanged';
 }
 
 /** Les pas de la grille, un par mot d'origine ; `stages` (ceux de la vue) donne les valeurs modulées. */
-export function gridSteps(mixer: MixerState, tracks: readonly Category[], words: readonly string[], lookup: PluginLookup = pluginById, stages: readonly Stage[] = []): GridStep[] {
+export function gridSteps(
+  mixer: MixerState,
+  tracks: readonly Category[],
+  words: readonly string[],
+  lookup: PluginLookup = pluginById,
+  stages: readonly Stage[] = [],
+  marks: ReadonlyMap<number, Mark> = new Map(),
+): GridStep[] {
   const closed = new Set(mixer.closed ?? []);
   const acting = activeSteps(mixer, lookup);
   const modulatedAt = (index: number) => {
@@ -160,16 +172,24 @@ export function gridSteps(mixer: MixerState, tracks: readonly Category[], words:
     });
     return modulated.length ? { modulated } : {};
   };
-  return tracks.map((track, index) => ({
-    index,
-    word: words[index]!,
-    track,
-    state: closed.has(index) ? 'closed' : acting.some((step) => step.targets.has(track)) ? 'punched' : 'outline',
-    locks: mixer.instances.flatMap((instance) =>
-      (instance.locks ?? []).filter((lock) => lock.index === index).map(({ key, value }) => ({ id: instance.id, key, value })),
-    ),
-    ...modulatedAt(index),
-  }));
+  const outcome = (index: number): GridStep['outcome'] => {
+    const mark = marks.get(index)?.state;
+    return mark === 'replaced' || mark === 'relaid' ? 'changed' : mark === 'removed' ? 'removed' : 'unchanged';
+  };
+  return tracks.map((track, index) => {
+    const state = closed.has(index) ? 'closed' : acting.some((step) => step.targets.has(track)) ? 'punched' : 'outline';
+    return {
+      index,
+      word: words[index]!,
+      track,
+      state,
+      ...(state === 'punched' && { outcome: outcome(index) }),
+      locks: mixer.instances.flatMap((instance) =>
+        (instance.locks ?? []).filter((lock) => lock.index === index).map(({ key, value }) => ({ id: instance.id, key, value })),
+      ),
+      ...modulatedAt(index),
+    };
+  });
 }
 
 /** Le nombre de pas par page : seize sur un écran large, huit sur une tablette, quatre sur un téléphone. */
@@ -189,10 +209,14 @@ function tracksPhrase(targets: readonly Category[]): string {
  * quand elle vise toutes celles que son type sait traiter (« S+7 sur les noms », « lipogramme en e ») ;
  * puis la règle de ses modulateurs et de sa porte, entre parenthèses, une phrase chacun.
  */
+/** Une phrase ou un libellé qui ouvre une ligne : « lipogramme en e » devient « Lipogramme en e ». */
+const capitalized = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+
 export function describeInstance(instance: Instance, lookup: PluginLookup = pluginById, context: DescribeContext = {}): string {
   const plugin = lookup(instance.type);
   const label = modulatedLabel(plugin, instance.params, instance.modulators);
-  const named = plugin.tracks.every((track) => instance.targets.includes(track)) ? label : `${label}${label.includes(',') ? ',' : ''} sur ${tracksPhrase(instance.targets)}`;
+  // Une recette se nomme elle-même : ses pistes et ses réglages font partie de son nom.
+  const named = instance.recipe ?? (plugin.tracks.every((track) => instance.targets.includes(track)) ? label : `${label}${label.includes(',') ? ',' : ''} sur ${tracksPhrase(instance.targets)}`);
   const statement = { earlier: context.earlier ?? false, folded: false };
   const rules = [
     ...Object.entries(instance.modulators ?? {}).map(([key, modulator]) =>
@@ -247,7 +271,7 @@ export function buildView(
       { id: 'origin', label: 'Origine', words: tagged.map((word) => ({ output: word.word, newline: false })) },
       ...active.map((instance, k) => ({
         id: instance.id,
-        label: describeInstance(instance, lookup, { earlier: k > 0, folded: chain.modulation[k]!.folded }),
+        label: capitalized(describeInstance(instance, lookup, { earlier: k > 0, folded: chain.modulation[k]!.folded })),
         words: chain.stages[k]!,
         ...(chain.modulation[k]!.words.size > 0 && { modulation: chain.modulation[k]!.words }),
       })),
@@ -318,7 +342,7 @@ function stepSentence(instance: Instance, view: TracksView, lookup: PluginLookup
 export function summarize(mixer: MixerState, view: TracksView, lookup: PluginLookup = pluginById): string {
   const enabled = enabledInstances(mixer);
   const rule = enabled.length
-    ? enabled.map((instance) => stepSentence(instance, view, lookup)).join(' ')
+    ? enabled.map((instance) => capitalized(stepSentence(instance, view, lookup))).join(' ')
     : !mixer.instances.length
       ? 'Aucune contrainte : texte d’origine.'
       : `${mixer.instances.length > 1 ? 'Contraintes coupées' : 'Contrainte coupée'} : texte d’origine.`;
@@ -449,6 +473,8 @@ export interface LockField {
   max: number;
   /** La valeur verrouillée ; absente : le mot suit l'instance. */
   value?: number;
+  /** La valeur que le mot suit sans verrou : le réglage de l'instance ; absente s'il est modulé. */
+  inherited?: number;
 }
 
 /** Les verrous qu'on peut poser sur un mot : par instance en marche qui vise sa piste. */
@@ -467,7 +493,14 @@ export function inspectorLocks(mixer: MixerState, index: number, track: Category
       const plugin = lookup(instance.type);
       const fields = plugin.parameters.flatMap((parameter) =>
         parameter.kind === 'integer' && parameter.lockable
-          ? [{ key: parameter.key, label: parameter.label, min: parameter.min, max: parameter.max, value: instance.locks?.find((lock) => lock.index === index && lock.key === parameter.key)?.value }]
+          ? [{
+              key: parameter.key,
+              label: parameter.label,
+              min: parameter.min,
+              max: parameter.max,
+              value: instance.locks?.find((lock) => lock.index === index && lock.key === parameter.key)?.value,
+              ...(!instance.modulators?.[parameter.key] && typeof instance.params[parameter.key] === 'number' && { inherited: instance.params[parameter.key] as number }),
+            }]
           : [],
       );
       if (!fields.length) return [];

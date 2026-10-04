@@ -25,7 +25,7 @@ const STEP_STATES: Record<GridStep['state'], string> = {
   closed: 'pas bouché : aucune contrainte ne le touche',
 };
 
-/** Un champ de verrou : vide, le mot suit l'instance ; une valeur hors bornes est refusée sur place. */
+/** Un champ de verrou : vide, le mot suit l'instance, dont la valeur s'affiche en encre secondaire ; une valeur hors bornes est refusée sur place. */
 function LockInput({ id, field, onLock }: { id: string; field: LockField; onLock: NonNullable<InspectorProps['onLock']> }): VNode {
   const onChange = (event: Event) => {
     const input = event.currentTarget as HTMLInputElement;
@@ -42,7 +42,7 @@ function LockInput({ id, field, onLock }: { id: string; field: LockField; onLock
     input.value = field.value === undefined ? '' : String(field.value);
   };
   return html`<label class="silk lock-field">${field.label}
-    <input type="number" step="1" min=${field.min} max=${field.max} value=${field.value ?? ''} placeholder="—"
+    <input type="number" step="1" min=${field.min} max=${field.max} value=${field.value ?? ''} placeholder=${field.inherited ?? '—'}
       aria-label=${`Verrou ${field.label} pour ce mot`} onChange=${onChange} />
   </label>` as VNode;
 }

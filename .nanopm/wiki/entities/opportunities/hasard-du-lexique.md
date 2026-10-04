@@ -8,7 +8,7 @@ sources: [feedback.md]
 relates_to: 
   - page: opportunities/partager-un-resultat
     rel: extends
-last_updated: 2026-10-03
+last_updated: 2026-10-04
 ---
 
 ## Summary
@@ -20,6 +20,10 @@ Les trois messages saluent l'effet comique du tirage. Le même hasard sur un dic
 
 **Tension**
 Rien ne filtre le lexique aujourd'hui ; filtrer retirerait aussi une part du ressort.
+
+**Ce qu'on retire**
+Les formules chimiques sont sorties du lexique : elles ne sont pas des mots, pas des mots crus. La frontière « on retire ce qui n'est pas un mot, pas ce qui choque » est tracée sans avoir été décidée.
+- "Elles sortaient du S+n comme remplaçants (« Les BiC₆H₅O₇ décrivent… » dans le banc de référence)" — description de la PR #85, 2026-10-04
 
 ## Open / superseded
 _(rien)_

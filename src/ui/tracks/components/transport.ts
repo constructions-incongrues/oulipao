@@ -15,14 +15,14 @@ export interface TransportProps {
   onVoice: (voice: string) => void;
 }
 
-/** Le transport de l'écoute : lancer ou arrêter (barre d'espace), le tempo, la voix. */
+/** Le transport de l'écoute, dans l'en-tête de la grille : lancer ou arrêter (barre d'espace), le tempo, la voix. */
 export function Transport({ playing, tempo, voice, voices, onToggle, onTempo, onVoice }: TransportProps): VNode {
   const none = voices.length === 0;
   return html`
     <section class="transport" aria-label="Écoute">
       <span class="play-key">
         <button type="button" class="key play" aria-pressed=${playing} disabled=${none} aria-keyshortcuts=${none ? undefined : 'Space'} onClick=${onToggle}>${playing ? 'Arrêter' : 'Écouter'}</button>
-        ${!none && html`<span class="silk shortcut" aria-hidden="true">Espace</span>`}
+        ${!none && html`<kbd class="shortcut" aria-hidden="true">Espace</kbd>`}
       </span>
       ${none
         ? html`<p class="transport-note">Aucune voix française n’est installée sur ce système : l’écoute est impossible.</p>`

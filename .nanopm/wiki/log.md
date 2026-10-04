@@ -46,4 +46,9 @@
 ## [2026-10-04] ingest | pm-prd: wrote docs/prds/iterer-et-figer.md
 ## [2026-10-04] ingest | pm-prd: wrote docs/prds/v-n-du-mineur-au-majeur.md
 ## [2026-10-04] ingest | pm-opportunities: add entities/opportunities/lexique-tire-d-un-texte.md
+## [2026-10-04] ingest | pm-user-feedback: wrote docs/feedback.md
+## [2026-10-04] ingest | pm-challenge-me: wrote docs/challenges.md
+## [2026-10-04] ingest | pm-strategy: wrote docs/strategy.md
+## [2026-10-04] ingest | pm-roadmap: wrote docs/roadmap.md
+## [2026-10-04] ingest | pm-objectives: wrote docs/objectives.md
 ## [2026-10-04] ingest | pm-prd: wrote docs/prds/lien-partageable.md

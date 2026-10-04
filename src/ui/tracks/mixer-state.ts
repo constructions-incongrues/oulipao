@@ -55,6 +55,9 @@ function instanceOf(state: MixerState, id: string): Instance {
   return instance;
 }
 
+/** Une instance réglée autrement que sa recette : elle n'en porte plus le nom. */
+const retuned = ({ recipe: _, ...instance }: Instance): Instance => instance;
+
 const replace = (state: MixerState, next: Instance): MixerState => ({
   ...state,
   instances: state.instances.map((instance) => (instance.id === next.id ? next : instance)),
@@ -80,7 +83,7 @@ export function reduce(state: MixerState, action: MixerAction): MixerState {
       const instance = instanceOf(state, checked.id);
       const plugin = pluginById(instance.type);
       if (!plugin.parameters.some((parameter) => parameter.key === checked.key)) throw new Error(`paramètre inconnu : ${checked.key}`);
-      return replace(state, { ...instance, params: plugin.parse({ ...instance.params, [checked.key]: checked.value }) });
+      return replace(state, { ...retuned(instance), params: plugin.parse({ ...instance.params, [checked.key]: checked.value }) });
     }
     case 'set-targets': {
       const instance = instanceOf(state, checked.id);
@@ -89,7 +92,7 @@ export function reduce(state: MixerState, action: MixerAction): MixerState {
       const refused = checked.targets.filter((track) => !plugin.tracks.includes(track));
       if (refused.length) throw new Error(`${plugin.name} ne traite pas : ${refused.join(', ')}`);
       // Dans l'ordre des pistes de la table, sans doublon.
-      return replace(state, { ...instance, targets: CATEGORIES.filter((track) => checked.targets.includes(track)) });
+      return replace(state, { ...retuned(instance), targets: CATEGORIES.filter((track) => checked.targets.includes(track)) });
     }
     case 'add-instance': {
       const plugin = pluginById(checked.plugin);
@@ -101,6 +104,8 @@ export function reduce(state: MixerState, action: MixerAction): MixerState {
       if (options ? !options.includes(checked.choice ?? '') : checked.choice !== undefined) throw new Error(`${recipe.name} : choix refusé`);
       const [year, month, day] = checked.today.split('-').map(Number) as [number, number, number];
       const instances = [...state.instances];
+      const option = recipe.choice?.options.find((candidate) => candidate.value === checked.choice);
+      const named = option ? `${recipe.name} (${option.label})` : recipe.name;
       for (const step of recipe.build(checked.choice, new Date(year, month - 1, day))) {
         const plugin = pluginById(step.type);
         instances.push({
@@ -109,6 +114,7 @@ export function reduce(state: MixerState, action: MixerAction): MixerState {
           enabled: true,
           params: plugin.parse(step.params),
           targets: CATEGORIES.filter((track) => step.targets.includes(track)),
+          recipe: named,
         });
       }
       // Une recette qui pose une forme (Éclipse) remplace la forme courante.
@@ -152,7 +158,7 @@ export function reduce(state: MixerState, action: MixerAction): MixerState {
       const instance = instanceOf(state, checked.id);
       const parameter = pluginById(instance.type).parameters.find((candidate) => candidate.key === checked.key);
       if (parameter?.kind !== 'integer' || !parameter.lockable) throw new Error(`paramètre non modulable : ${checked.key}`);
-      return replace(state, { ...instance, modulators: { ...instance.modulators, [checked.key]: checked.modulator } });
+      return replace(state, { ...retuned(instance), modulators: { ...instance.modulators, [checked.key]: checked.modulator } });
     }
     case 'clear-modulator': {
       const instance = instanceOf(state, checked.id);
@@ -162,7 +168,7 @@ export function reduce(state: MixerState, action: MixerAction): MixerState {
     case 'set-gate': {
       const instance = instanceOf(state, checked.id);
       if (pluginById(instance.type).targetable === false) throw new Error('une mise en page n’a pas de porte');
-      return replace(state, { ...instance, gate: checked.gate });
+      return replace(state, { ...retuned(instance), gate: checked.gate });
     }
     case 'clear-gate': {
       const { gate: _, ...instance } = instanceOf(state, checked.id);

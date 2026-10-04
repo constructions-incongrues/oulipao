@@ -59,8 +59,10 @@ test('mise en pistes : saisie repliée, texte résultant, inspecteur fermé, ré
   assert.ok(out.indexOf('Contrainte 1 : S+7') < out.indexOf('Contrainte 2 : Lipogramme'));
   // les tranches rappellent les contraintes qui les visent, sans leurs réglages
   const strip = (name: string) => renderToString(find(app(), byLabel(`Piste ${name}`)));
-  assert.match(strip('Noms'), /<p class="reminder">1\. S\+7 · 2\. .* \(coupé\)<\/p>/);
-  assert.match(strip('Verbes'), /<p class="reminder">2\. [^·]* \(coupé\)<\/p>/);
+  assert.match(strip('Noms'), /<p class="reminder">1\. S\+7<\/p>/);
+  // Le lipogramme vise les cinq pistes : un seul rappel, en tête des tranches, pas cinq.
+  assert.doesNotMatch(strip('Verbes'), /class="reminder"/);
+  assert.match(out, /<div class="corner"><span class="silk" aria-hidden="true">Pas<\/span><p class="reminder">Toutes les pistes : 2\. [^<]* \(coupé\)<\/p><\/div>/);
   assert.doesNotMatch(strip('Noms'), /class="plugin/);
   assert.match(out, /<p class="summary" role="status" aria-live="polite">S\+7 sur les noms : 2 noms remplacés sur 2\.<\/p>/);
   assert.equal(controller.state.view!.result, 'Le vieil oncle du cheval dort.');
@@ -145,7 +147,7 @@ test('le lipogramme se met en marche dans la page, après le S+7, puis passe dev
   await controller.run();
   click(find(app(), byLabel('Contrainte 2 : Lipogramme')), byClass('power'));
   const out = renderToString(app());
-  assert.match(out, /S\+7 sur les noms : 2 noms remplacés sur 2\. lipogramme en e : /);
+  assert.match(out, /S\+7 sur les noms : 2 noms remplacés sur 2. Lipogramme en e : /);
   assert.doesNotMatch(controller.state.view!.result.replace(/\bdort\b/, ''), /e/); // plus de « e » hors verbes
   click(app(), byClass('copy'));
   await tick();
@@ -171,7 +173,7 @@ test('rack : un second S+n sur les adjectifs, rappelé par leur tranche, puis mo
   assert.deepEqual(controller.state.mixer.instances[2], { id: 's7-2', type: 's7', enabled: true, params: { offset: 3, mode: 'reagree', order: 'alphabetical', draw: 'fixed', seed: 1 }, targets: ['adjective'] });
   const out = renderToString(app());
   assert.equal(elements(app()).filter((e) => byClass('pos')(e)).length, 3);
-  assert.match(renderToString(find(app(), byLabel('Piste Adjectifs'))), /<p class="reminder">2\. [^·]* \(coupé\) · 3\. S\+3<\/p>/);
+  assert.match(renderToString(find(app(), byLabel('Piste Adjectifs'))), /<p class="reminder">3\. S\+3<\/p>/);
   assert.match(out, /S\+7 sur les noms : .* S\+3 sur les adjectifs : /);
   assert.match(renderToString(unit()), /Chaque adjectif devient le 3e adjectif/); // l'aide suit les pistes visées
   click(app(), byLabel('Monter la contrainte 3'));
@@ -195,7 +197,7 @@ test('inspecteur : un clic sur un mot, une bande par étape, les flèches, une c
   const inspector = () => renderToString(find(app(), byClass('inspector')));
   assert.match(inspector(), /<caption>« ferme » à chaque étape de la chaîne · <span class="step-state">pas percé<\/span><\/caption>/);
   const rows = () => [...inspector().matchAll(/<th scope="row">([^<]*)</g)].map((match) => match[1]);
-  assert.deepEqual(rows(), ['Origine', 'S+7 sur les noms', 'lipogramme en e', 'S+7 sur les adjectifs']);
+  assert.deepEqual(rows(), ['Origine', 'S+7 sur les noms', 'Lipogramme en e', 'S+7 sur les adjectifs']);
   assert.match(inspector(), /<td class="chosen" aria-current="true">ferme<\/td>/);
   assert.doesNotMatch(renderToString(app()), /Cliquez un mot/);
   const key = (k: string) => controller.shortcut(k, false);
@@ -205,7 +207,7 @@ test('inspecteur : un clic sur un mot, une bande par étape, les flèches, une c
   click(app(), byLabel('Monter la contrainte 3'));
   click(app(), byLabel('Monter la contrainte 2'));
   assert.equal(controller.state.selected, 3);
-  assert.deepEqual(rows(), ['Origine', 'S+7 sur les adjectifs', 'S+7 sur les noms', 'lipogramme en e']);
+  assert.deepEqual(rows(), ['Origine', 'S+7 sur les adjectifs', 'S+7 sur les noms', 'Lipogramme en e']);
   key('Escape');
   assert.equal(controller.state.selected, undefined);
   assert.match(renderToString(app()), /Cliquez un mot/);
@@ -217,7 +219,7 @@ test('grille : un clic bouche un pas, l’inspecteur s’ouvre depuis l’en-tê
   await controller.run();
   assert.equal(controller.state.view!.result, 'Le vieil oncle du cheval dort.');
   // « ferme » (pas 3) bouché : son groupe reste tel quel, « village » change toujours
-  click(app(), byLabel('Noms, ferme : percé, la contrainte agit'));
+  click(app(), byLabel('Noms, ferme : percé, la contrainte agit, mot changé'));
   assert.equal(controller.state.view!.result, 'La vieille ferme du cheval dort.');
   assert.match(renderToString(app()), /aria-label="Noms, ferme : bouché, laissé tel quel"/);
   // l'en-tête ouvre l'inspecteur ; le verrou se pose depuis la bande du S+7

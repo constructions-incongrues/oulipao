@@ -53,6 +53,7 @@ function Fetching({ loading, label, onRetry }: { loading: Loading; label: string
  */
 /** Le nom court d'une instance sous les pistes : « S+7 », ou « S+lettres » quand son paramètre principal est modulé. */
 function reminderName(instance: Instance): string {
+  if (instance.recipe) return instance.recipe;
   const plugin = pluginById(instance.type);
   return Object.keys(instance.modulators ?? {}).length ? modulatedLabel(plugin, instance.params, instance.modulators).split(',')[0]! : plugin.title(instance.params);
 }
@@ -63,20 +64,22 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
   const release = versionLink(version);
   const audible = view?.audible ?? audibleCategories(mixer.tracks);
   const words = view?.stages[0]!.words.map((word) => word.output) ?? [];
-  const steps = view ? gridSteps(mixer, view.tracks, words, undefined, view.stages) : [];
+  const steps = view ? gridSteps(mixer, view.tracks, words, undefined, view.stages, view.marks) : [];
   // Le type d'une instance de la chaîne, pour écrire ses valeurs modulées dans l'inspecteur.
   const instancePlugin = (id: string) => {
     const instance = mixer.instances.find((candidate) => candidate.id === id);
     return instance && pluginById(instance.type);
   };
+  // Une contrainte qui vise les cinq pistes se rappelle une seule fois, en tête des tranches.
+  const reminder = (instance: Instance, position: number) => `${position + 1}. ${reminderName(instance)}${instance.enabled ? '' : ' (coupé)'}`;
+  const everywhere = (instance: Instance) => CATEGORIES.every((category) => instance.targets.includes(category));
   const reminders = Object.fromEntries(
     CATEGORIES.map((category) => [
       category,
-      mixer.instances.flatMap((instance, position) =>
-        instance.targets.includes(category) ? [`${position + 1}. ${reminderName(instance)}${instance.enabled ? '' : ' (coupé)'}`] : [],
-      ),
+      mixer.instances.flatMap((instance, position) => (instance.targets.includes(category) && !everywhere(instance) ? [reminder(instance, position)] : [])),
     ]),
   ) as Record<Category, string[]>;
+  const allTracks = mixer.instances.flatMap((instance, position) => (everywhere(instance) ? [reminder(instance, position)] : []));
   const selected = state.selected;
   return html`
     <main class="tracks">
@@ -152,26 +155,17 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
       />
       ${stale &&
       html`<p class="stale-bar">Texte modifié — <button type="button" class="key rerun" onClick=${() => void controller.run()}>remettre en pistes</button></p>`}
-      <p class="summary" role="status" aria-live="polite">${view ? summarize(mixer, view) : ''}</p>
       <${Fetching} loading=${state.verbs} label="Chargement des verbes…" onRetry=${() => void controller.loadVerbs()} />
       <${Fetching} loading=${state.phonetics} label="Chargement des prononciations…" onRetry=${() => void controller.loadPhonetics()} />
       <${Fetching} loading=${state.scales} label="Chargement des échelles…" onRetry=${() => void controller.loadScales()} />
-      <${Chain} instances=${mixer.instances} plugins=${installedPlugins} recipes=${recipes} lookup=${pluginById} dispatch=${controller.dispatch} />
-      ${view &&
-      html`<${Transport}
-        playing=${state.playing}
-        tempo=${state.tempo}
-        voice=${state.voice}
-        voices=${state.voices}
-        onToggle=${controller.toggle}
-        onTempo=${controller.setTempo}
-        onVoice=${controller.setVoice}
-      />`}
+      <${Chain} instances=${mixer.instances} plugins=${installedPlugins} recipes=${recipes} lookup=${pluginById} dispatch=${controller.dispatch}
+        status=${view ? summarize(mixer, view) : ''} />
       <${StepGrid}
         steps=${steps}
         tracks=${mixer.tracks}
         audible=${audible}
         reminders=${reminders}
+        allTracks=${allTracks}
         perPage=${state.perPage}
         page=${state.page}
         selected=${selected}
@@ -182,6 +176,16 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
         onMute=${(category: Category) => controller.dispatch({ type: 'toggle-mute', category })}
         onSolo=${(category: Category) => controller.dispatch({ type: 'toggle-solo', category })}
         onPage=${controller.showPage}
+        transport=${view &&
+        html`<${Transport}
+          playing=${state.playing}
+          tempo=${state.tempo}
+          voice=${state.voice}
+          voices=${state.voices}
+          onToggle=${controller.toggle}
+          onTempo=${controller.setTempo}
+          onVoice=${controller.setVoice}
+        />`}
       />
       ${view &&
       (selected === undefined
