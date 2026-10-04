@@ -346,6 +346,24 @@ export function ruleMention(
   return parts.length ? `\n\n— ${parts.join(' · ')} (Oulipao)` : '';
 }
 
+/** Le corps d'une mention, sans son tiret ni « (Oulipao) » : « S+7 sur les noms · pistes coupées : adjectifs » ; vide sans règle. */
+export const ruleBody = (mention: string) => mention.replace(/^\n\n— /, '').replace(/ \(Oulipao\)$/, '');
+
+/**
+ * La mention de toutes les passes depuis l'ancêtre, la chaîne en cours en dernier : des passes de
+ * même libellé qui se suivent se fondent en « ×n », des chaînes différentes se lient par « · puis ».
+ */
+export function composeMention(passes: readonly string[], current: string): string {
+  const runs: { body: string; count: number }[] = [];
+  for (const body of [...passes, current].filter(Boolean)) {
+    const last = runs.at(-1);
+    if (last?.body === body) last.count++;
+    else runs.push({ body, count: 1 });
+  }
+  const text = runs.map(({ body, count }) => (count > 1 ? `${body} ×${count}` : body)).join(' · puis ');
+  return text ? `\n\n— ${text} (Oulipao)` : '';
+}
+
 /**
  * La mention, quand le texte a été réglé en écoutant : « réglé en écoutant » en dernière partie
  * (« — S+7 … · réglé en écoutant (Oulipao) »), ou seule quand aucune règle n'agit.

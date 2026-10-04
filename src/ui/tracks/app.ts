@@ -25,7 +25,7 @@ export interface AppProps {
   state: TracksState;
   controller: Pick<
     TracksController,
-    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook' | 'copyEntry' | 'editEntry' | 'toggle' | 'setTempo' | 'setVoice'
+    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'iterate' | 'freeze' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook' | 'copyEntry' | 'editEntry' | 'toggle' | 'setTempo' | 'setVoice'
   >;
   /** Bascule le thème clair ou sombre ; posé par le montage, qui seul touche au document. */
   onTheme?: () => void;
@@ -92,6 +92,9 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
         copyMessage=${state.copyMessage}
         onCopy=${() => void controller.copy()}
         onKeep=${controller.keep}
+        onIterate=${() => void controller.iterate()}
+        onFreeze=${() => void controller.freeze()}
+        busy=${state.tagging}
         syllables=${view.syllables}
         form=${state.mixer.form ?? 'none'}
         onForm=${(form: Form) => controller.dispatch({ type: 'set-form', form })}
