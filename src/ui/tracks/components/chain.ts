@@ -22,6 +22,8 @@ export interface ChainProps {
   now?: () => Date;
   lookup: (type: string) => ConstraintPlugin;
   dispatch: (action: MixerAction) => void;
+  /** Ce que la chaîne a fait au texte, en une phrase annoncée (« S+7 sur les noms : 19 noms remplacés sur 20. ») ; vide sans texte. */
+  status?: string;
 }
 
 /**
@@ -145,11 +147,12 @@ function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance
  * La chaîne, au-dessus des pistes : les contraintes dans l'ordre où le texte les traverse, une ligne
  * de même largeur chacune ; en dessous, le navigateur qui en ajoute en fin de chaîne.
  */
-export function Chain({ instances, plugins, recipes = [], now, lookup, dispatch }: ChainProps): VNode {
+export function Chain({ instances, plugins, recipes = [], now, lookup, dispatch, status = '' }: ChainProps): VNode {
   const ids = instances.map((instance) => instance.id);
   return html`
     <section class="chain" aria-labelledby="chain-title">
       <h2 class="silk" id="chain-title">Contraintes</h2>
+      <p class="summary" role="status" aria-live="polite">${status}</p>
       ${instances.length
         ? html`<ol class="slots">
             ${instances.map(
@@ -157,7 +160,7 @@ export function Chain({ instances, plugins, recipes = [], now, lookup, dispatch 
                 plugin=${lookup(instance.type)} dispatch=${dispatch} />`,
             )}
           </ol>`
-        : html`<p class="more">Aucune contrainte : le texte passe tel quel.</p>`}
+        : !status && html`<p class="more">Aucune contrainte : le texte passe tel quel.</p>`}
       <${Browser} recipes=${recipes} plugins=${plugins} dispatch=${dispatch} now=${now} />
     </section>
   ` as VNode;

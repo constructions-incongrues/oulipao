@@ -178,9 +178,12 @@ test('pages de pas : 16, 8 ou 4 selon la largeur', () => {
 test('inspecteur : un champ de verrou par paramètre verrouillable, pour les instances en marche qui visent la piste', () => {
   const locked = reduce(offsetOne, { type: 'set-lock', id: 's7-1', index: 4, key: 'offset', value: 3 });
   assert.deepEqual(inspectorLocks(locked, 4, 'noun'), [
-    { id: 's7-1', fields: [{ key: 'offset', label: 'Décalage', min: -99, max: 99, value: 3 }], note: 'S+3 sur ce mot' },
+    { id: 's7-1', fields: [{ key: 'offset', label: 'Décalage', min: -99, max: 99, value: 3, inherited: 1 }], note: 'S+3 sur ce mot' },
   ]);
-  assert.deepEqual(inspectorLocks(locked, 2, 'noun'), [{ id: 's7-1', fields: [{ key: 'offset', label: 'Décalage', min: -99, max: 99, value: undefined }] }]);
+  assert.deepEqual(inspectorLocks(locked, 2, 'noun'), [{ id: 's7-1', fields: [{ key: 'offset', label: 'Décalage', min: -99, max: 99, value: undefined, inherited: 1 }] }]);
+  // Modulé, le décalage n'a pas une valeur à suivre : pas de valeur héritée affichée.
+  const modulated = reduce(locked, { type: 'set-modulator', id: 's7-1', key: 'offset', modulator: { source: { kind: 'letters' }, read: { kind: 'self' }, base: 0, depth: 1 } });
+  assert.equal(inspectorLocks(modulated, 2, 'noun')[0]!.fields[0]!.inherited, undefined);
   // Le lipogramme n'a pas de paramètre entier ; un verbe n'est visé par aucune contrainte.
   const both = reduce(locked, { type: 'toggle-instance', id: 'lipogram-1' });
   assert.deepEqual(inspectorLocks(both, 4, 'noun').map((entry) => entry.id), ['s7-1']);

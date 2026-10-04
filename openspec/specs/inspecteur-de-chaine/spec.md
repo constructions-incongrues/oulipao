@@ -37,17 +37,17 @@ The system SHALL show in the inspector one band labelled « Origine » carrying 
 - **THEN** l'inspecteur montre deux bandes, « Origine » et le premier filtre
 
 ### Requirement: Fenêtre autour du mot
-The system SHALL show in each band the chosen word and its neighbours, six on each side on a wide screen and two on each side below 768 px, each original word staying in the same column from one band to the next; the chosen word's column SHALL be highlighted, and a word removed by a filter SHALL show as « · ». The page SHALL not scroll horizontally.
+The system SHALL show in each band the words of the step page of the chosen word, each original word in the column it has in the step grid, from one band to the next; the chosen word's column SHALL be highlighted, and a word removed by a filter SHALL show as « · ». The page SHALL not scroll horizontally.
 
 #### Scenario: Mot retiré
 - **GIVEN** un lipogramme en e qui retire « je »
-- **WHEN** un mot voisin de « je » est choisi
+- **WHEN** un mot de la même page de pas que « je » est choisi
 - **THEN** la bande du lipogramme montre « · » dans la colonne de « je »
 
 #### Scenario: Téléphone
-- **GIVEN** une fenêtre de 375 px de large
+- **GIVEN** une fenêtre de 375 px de large, donc quatre pas par page
 - **WHEN** l'inspecteur est ouvert
-- **THEN** chaque bande montre cinq mots et la page ne défile pas à l'horizontale
+- **THEN** chaque bande montre les quatre mots de la page, sous les colonnes de la grille, et la page ne défile pas à l'horizontale
 
 ### Requirement: Navigation au clavier
 The system SHALL handle the inspector's keys wherever the focus is, except while typing in a text or number field: the left and right arrow keys SHALL open the inspector on the first word of the displayed grid page when it is closed, and SHALL otherwise move the choice to the previous or next original word, including words absent from the resulting text; Escape SHALL close the inspector.
@@ -110,12 +110,17 @@ The system SHALL update the resulting text and the open inspector in less than h
 - **THEN** le texte et l'inspecteur sont à jour en moins d'une demi-seconde
 
 ### Requirement: Verrous dans l'inspecteur
-The system SHALL show, in the band of each enabled instance that targets the chosen word's track, a field per integer parameter holding the value locked for that word, empty when none, and SHALL show the step's state (open or closed).
+The system SHALL show, in the band of each enabled instance that targets the chosen word's track, a field per integer parameter holding the value locked for that word; when none is locked, the empty field SHALL show the instance's value in secondary ink, or « — » when that parameter is modulated. The system SHALL show the step's state (open or closed).
 
 #### Scenario: Mot verrouillé
 - **GIVEN** un verrou à 3 sur « chat » pour le premier S+7
 - **WHEN** l'inspecteur s'ouvre sur « chat »
 - **THEN** la bande de ce S+7 montre un champ Décalage qui vaut 3 et sa légende dit « S+3 sur ce mot »
+
+#### Scenario: Mot sans verrou
+- **GIVEN** un S+7 réglé à 7, sans verrou sur « heure »
+- **WHEN** l'inspecteur s'ouvre sur « heure »
+- **THEN** le champ Décalage est vide et montre « 7 » en encre secondaire
 
 ### Requirement: Mot remis en ligne
 The system SHALL show, in the band of a step that put a word on a new line, a « ↵ » mark before that word, and SHALL announce it to screen readers as « à la ligne ».

@@ -18,7 +18,8 @@ Page : `tracks.html` (script assemblé `dist/tracks.js`, par `npm run build`). L
   traiter (enfoncée si elle est visée ; la dernière visée ne s'éteint pas), et ↑, ↓,
   « Dupliquer », « Retirer ». Une mise en page (Bord, Mise en vers) agit sur tout le texte : à
   la place des pastilles, « Tout le texte ». À l'ouverture, la chaîne est vide : le texte passe
-  tel quel.
+  tel quel. Sous le titre « Contraintes », une phrase d'état (annoncée aux lecteurs d'écran)
+  dit ce que la chaîne a fait au texte : « S+7 sur les noms : 19 noms remplacés sur 20. ».
 - **Navigateur de contraintes** : sous le rack, la touche « Ajouter une contrainte » le déplie.
   D'abord les **recettes**, par leur nom de l'Oulipo (Haï-kaïsation, Liponymie, Monovocalisme…),
   chacune avec sa règle en une phrase et le lien vers sa fiche oulipo.net ; une recette branche
@@ -33,12 +34,16 @@ Page : `tracks.html` (script assemblé `dist/tracks.js`, par `npm run build`). L
   la piste et le mot d'origine (« Noms : cuisine → cuissot »), ou dit pourquoi un mot est laissé
   tel quel. Chaque mot se clique ; seuls les mots remplacés reçoivent le focus clavier. À
   l'affichage, une espace insécable (fine avant ; ! ?) colle la ponctuation française à son mot :
-  aucune ligne ne commence par « ; ». La copie garde le texte tel quel.
+  aucune ligne ne commence par « ; ». La copie garde le texte tel quel. Collée en haut de l'écran au
+  téléphone, la bande ne garde que son texte : ses touches reviennent quand on remonte.
+- **Écoute** : dans l'en-tête de la grille, entre son titre et les pages : « Écouter » (barre
+  d'espace, écrite en touche de clavier), le tempo et la voix.
 - **Inspecteur** : sous le texte résultant, fermé tant qu'aucun mot n'est choisi (une phrase
   invite à cliquer). Un tableau : une ligne « Origine », puis une ligne par filtre actif dans
   l'ordre de la chaîne ; les mots de la page de pas du mot choisi, chacun dans la colonne qu'il a
   dans la grille (la tranche des étapes a la largeur de celle des pistes) ; « · » pour un mot retiré, « ↵ » devant un mot que l'étape a mis à
-  la ligne (dit « à la ligne » au lecteur d'écran). À l'ouverture, le focus y passe :
+  la ligne (dit « à la ligne » au lecteur d'écran). Un champ de verrou vide montre, en encre secondaire, la
+  valeur que le mot suit (le réglage de l'instance), sauf si ce réglage est modulé. À l'ouverture, le focus y passe :
   ← → changent de mot (y compris les mots absents du texte résultant), Échap ferme. Le choix
   survit aux réglages ; un nouvel étiquetage le ferme. Un mot trop long pour sa colonne est
   tronqué, comme dans la grille.

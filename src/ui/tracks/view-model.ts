@@ -449,6 +449,8 @@ export interface LockField {
   max: number;
   /** La valeur verrouillée ; absente : le mot suit l'instance. */
   value?: number;
+  /** La valeur que le mot suit sans verrou : le réglage de l'instance ; absente s'il est modulé. */
+  inherited?: number;
 }
 
 /** Les verrous qu'on peut poser sur un mot : par instance en marche qui vise sa piste. */
@@ -467,7 +469,14 @@ export function inspectorLocks(mixer: MixerState, index: number, track: Category
       const plugin = lookup(instance.type);
       const fields = plugin.parameters.flatMap((parameter) =>
         parameter.kind === 'integer' && parameter.lockable
-          ? [{ key: parameter.key, label: parameter.label, min: parameter.min, max: parameter.max, value: instance.locks?.find((lock) => lock.index === index && lock.key === parameter.key)?.value }]
+          ? [{
+              key: parameter.key,
+              label: parameter.label,
+              min: parameter.min,
+              max: parameter.max,
+              value: instance.locks?.find((lock) => lock.index === index && lock.key === parameter.key)?.value,
+              ...(!instance.modulators?.[parameter.key] && typeof instance.params[parameter.key] === 'number' && { inherited: instance.params[parameter.key] as number }),
+            }]
           : [],
       );
       if (!fields.length) return [];

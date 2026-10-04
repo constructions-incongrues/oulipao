@@ -97,7 +97,7 @@
   .error strong { color: var(--error); font-weight: 700; }
   .privacy, p.example-source { margin: var(--space-2) 0 0; }
   .stale-bar { margin: 0 0 var(--space-3); }
-  .summary { margin: 0 0 var(--space-3); }
+  .summary { margin: 0; }
 
   /* Chaîne : une ligne par filtre, toutes de même largeur, colonnes alignées */
   .chain { border: var(--rule) solid var(--line); padding: var(--space-3); margin-bottom: var(--space-4); display: grid; gap: var(--space-2); }
@@ -158,10 +158,11 @@
   .hd[aria-pressed="true"] { background: var(--paper); color: var(--ink); }
   .hd[aria-pressed="true"] .w { font-weight: 600; }
   .hd:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
-  /* Transport de l'écoute, au-dessus de la grille */
-  .transport { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin: 0 0 var(--space-2); }
+  /* Transport de l'écoute, dans l'en-tête de la grille ; le raccourci en touche de clavier */
+  .transport { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin: 0 auto 0 var(--space-4); }
   .transport label { display: flex; gap: var(--space-1); align-items: center; }
-  .play-key { display: inline-flex; flex-direction: column; align-items: center; gap: var(--space-1); }
+  .play-key { display: inline-flex; align-items: center; gap: var(--space-1); }
+  .shortcut { font: var(--size-value) var(--font-mono); color: var(--muted); border: var(--rule) solid var(--muted); border-radius: var(--radius); padding: 1px 4px; }
   .transport-note { margin: 0; color: var(--muted); font-size: var(--size-small); }
   /* Le pas que dit l'écoute : son numéro passe en touche enfoncée, à l'encre, sans lueur ni transition */
   .hd.playing .num { background: var(--ink); color: var(--panel); font-weight: 700; }
@@ -197,6 +198,7 @@
   .inspector th { text-align: left; font: var(--size-small) var(--font-ui); color: var(--muted); padding: var(--space-1) var(--space-3); border-bottom: var(--rule) solid var(--line); }
   .lock-field { display: inline-flex; gap: var(--space-1); align-items: center; margin-left: var(--space-2); }
   .lock-field input { width: 3.5rem; }
+  .lock-field input::placeholder { color: var(--muted); }
   .lock-note { margin-left: var(--space-2); color: var(--ink); }
   /* Une valeur modulée, ou la note d'une échelle : sous le mot, en Martian Mono, à l'encre secondaire (le verrou est à l'encre). */
   .inspector td .mod, .inspector td .detail { display: block; font: var(--size-small) var(--font-mono); color: var(--muted); }
@@ -265,6 +267,11 @@
     /* Au doigt : des touches d'au moins 44 px (les pas, eux, font 48 px de haut et au moins 44 de large à 375 px) */
     button, a.key, label.key, .browser > summary, .retouch > summary { min-height: 44px; }
     .result.stuck .result-scroll { max-height: calc(3 * var(--size-read-compact) * 1.5); }
+    /* Collée au téléphone, la bande ne garde que le texte : ses touches reviennent en haut de page */
+    .result.stuck .result-header { display: none; }
+    /* La tranche de l'inspecteur fait 116 px : le champ de verrou passe sous son libellé */
+    .lock-field { flex-direction: column; align-items: start; margin-left: 0; }
+    .lock-field input { width: 100%; }
     .grid, .inspector { --strip: 116px; }
     .ch { grid-template-columns: 14px 1fr; padding: var(--space-1) var(--space-2); }
     .ch-keys { grid-column: 1 / -1; }

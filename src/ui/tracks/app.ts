@@ -140,21 +140,11 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
       />
       ${stale &&
       html`<p class="stale-bar">Texte modifié — <button type="button" class="key rerun" onClick=${() => void controller.run()}>remettre en pistes</button></p>`}
-      <p class="summary" role="status" aria-live="polite">${view ? summarize(mixer, view) : ''}</p>
       <${Fetching} loading=${state.verbs} label="Chargement des verbes…" onRetry=${() => void controller.loadVerbs()} />
       <${Fetching} loading=${state.phonetics} label="Chargement des prononciations…" onRetry=${() => void controller.loadPhonetics()} />
       <${Fetching} loading=${state.scales} label="Chargement des échelles…" onRetry=${() => void controller.loadScales()} />
-      <${Chain} instances=${mixer.instances} plugins=${installedPlugins} recipes=${recipes} lookup=${pluginById} dispatch=${controller.dispatch} />
-      ${view &&
-      html`<${Transport}
-        playing=${state.playing}
-        tempo=${state.tempo}
-        voice=${state.voice}
-        voices=${state.voices}
-        onToggle=${controller.toggle}
-        onTempo=${controller.setTempo}
-        onVoice=${controller.setVoice}
-      />`}
+      <${Chain} instances=${mixer.instances} plugins=${installedPlugins} recipes=${recipes} lookup=${pluginById} dispatch=${controller.dispatch}
+        status=${view ? summarize(mixer, view) : ''} />
       <${StepGrid}
         steps=${steps}
         tracks=${mixer.tracks}
@@ -170,6 +160,16 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
         onMute=${(category: Category) => controller.dispatch({ type: 'toggle-mute', category })}
         onSolo=${(category: Category) => controller.dispatch({ type: 'toggle-solo', category })}
         onPage=${controller.showPage}
+        transport=${view &&
+        html`<${Transport}
+          playing=${state.playing}
+          tempo=${state.tempo}
+          voice=${state.voice}
+          voices=${state.voices}
+          onToggle=${controller.toggle}
+          onTempo=${controller.setTempo}
+          onVoice=${controller.setVoice}
+        />`}
       />
       ${view &&
       (selected === undefined

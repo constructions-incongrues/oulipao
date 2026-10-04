@@ -27,6 +27,8 @@ export interface StepGridProps {
   onMute: (category: Category) => void;
   onSolo: (category: Category) => void;
   onPage: (page: number) => void;
+  /** Le transport de l'écoute, entre le titre et les pages, comme sur la façade d'un séquenceur. */
+  transport?: VNode | false;
 }
 
 /** Au-delà de ce nombre de pages, des flèches remplacent la liste des pages. */
@@ -73,6 +75,7 @@ export function StepGrid(props: StepGridProps): VNode {
     <section class="rack" aria-labelledby="grid-title">
       <div class="rack-head">
         <h2 class="silk" id="grid-title">Pistes · un pas par mot</h2>
+        ${props.transport}
         <${Pages} count=${count} page=${page} perPage=${perPage} total=${steps.length} onPage=${props.onPage} />
       </div>
       <div class="grid" style=${`--per: ${perPage}`}>

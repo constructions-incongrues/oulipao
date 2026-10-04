@@ -327,7 +327,7 @@ test('Chain : les contraintes numérotées dans l’ordre de la chaîne, leurs p
   const props = { instances: [s7, sans], plugins: [s7Plugin, sansPlugin], lookup, dispatch: (action: MixerAction) => void actions.push(action) };
   const chain = html`<${Chain} ...${props} />`;
   const out = renderToString(chain);
-  assert.match(out, /<section class="chain" aria-labelledby="chain-title"><h2 class="silk" id="chain-title">Contraintes<\/h2><ol class="slots">/);
+  assert.match(out, /<section class="chain" aria-labelledby="chain-title"><h2 class="silk" id="chain-title">Contraintes<\/h2><p class="summary" role="status" aria-live="polite"><\/p><ol class="slots">/);
   assert.ok(out.indexOf('Contrainte 1 : S+7') < out.indexOf('Contrainte 2 : Sans'));
   assert.match(out, /<span class="pos mono" aria-hidden="true">1<\/span><span class="name">S\+7<\/span>/);
   assert.match(out, /class="slot off" aria-label="Contrainte 2 : Sans"/);
@@ -370,6 +370,10 @@ test('Chain : les contraintes numérotées dans l’ordre de la chaîne, leurs p
   const empty = renderToString(html`<${Chain} ...${{ ...props, instances: [] }} />`);
   assert.match(empty, /Aucune contrainte : le texte passe tel quel\./);
   assert.doesNotMatch(empty, /<ol/);
+  // Avec un texte, la phrase d'état dit déjà qu'il n'y a pas de contrainte : pas de doublon.
+  const said = renderToString(html`<${Chain} ...${{ ...props, instances: [], status: 'Aucune contrainte : texte d’origine.' }} />`);
+  assert.match(said, /<h2 class="silk" id="chain-title">Contraintes<\/h2><p class="summary" role="status" aria-live="polite">Aucune contrainte : texte d’origine\.<\/p>/);
+  assert.doesNotMatch(said, /le texte passe tel quel/);
 });
 
 test('dropPosition : la place dans la chaîne privée de l’instance déplacée', () => {
