@@ -1,16 +1,19 @@
-# Vérifie chaque PR avant sa fusion : types, tests (couverture ≥ 90 %) et assemblage du site.
-# Les mêmes étapes que la publication (release.yml), sans rien publier.
+# Vérifie chaque PR, puis chaque groupe de la file de fusion (main + les PR en file) : types,
+# tests (couverture ≥ 90 %) et assemblage du site. Les mêmes étapes que la publication
+# (release.yml), sans rien publier. Le job garde le nom « check », le contexte obligatoire.
 name: Vérification
 
 on:
   pull_request:
+  merge_group:
 
 permissions:
   contents: read
 
-# Une nouvelle poussée sur la PR annule la vérification en cours.
+# Une nouvelle poussée sur la PR annule la vérification en cours. Dans la file, le numéro de PR
+# manque : chaque groupe a sa propre référence (gh-readonly-queue/main/…), qui sert de clé.
 concurrency:
-  group: ci-${{ github.event.pull_request.number }}
+  group: ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
