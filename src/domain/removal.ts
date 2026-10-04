@@ -47,9 +47,12 @@ export function mergeGaps(removed: string, next: string, first = false): string 
   const punctuation = /^[;:!?]/.test(kept) ? `${space}${kept}` : kept;
   // En tête de texte, ni ponctuation ni blanc avant le premier mot.
   const separator = first || !chars.some((char) => /\s/.test(char)) ? '' : lines ? '\n'.repeat(lines) : ' ';
+  // Le guillemet français fermant garde l'espace (fine, insécable ou simple) qui le précédait.
+  const closingSpace = (removed.match(/[ \u00A0\u202F](?=»)/) ?? next.match(/[ \u00A0\u202F](?=»)/))?.[0] ?? '';
+  const closed = closing.map((char) => (char === '»' ? `${closingSpace}»` : char)).join('');
   // Le guillemet français ouvrant prend une espace après lui.
   const opening = others.map((char) => (char === '«' ? '« ' : char)).join('');
-  return `${first ? '' : closing.join('')}${punctuation}${separator}${opening}`;
+  return `${first ? '' : closed}${punctuation}${separator}${opening}`;
 }
 
 /**
