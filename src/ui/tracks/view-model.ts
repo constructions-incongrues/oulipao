@@ -87,7 +87,8 @@ export function segmentSyllables(segments: readonly MixedSegment[], tracks: read
     words = [];
   };
   for (const { text, index } of segments) {
-    if (index !== undefined) words.push(...tokenize(text).map((token) => ({ word: token.word, category: tracks[index] })));
+    // Un mot élidé seul dans son morceau (« qu’ ») garde son apostrophe : sans elle, « qu » se prononcerait /ky/.
+    if (index !== undefined) words.push(...tokenize(text).map(({ word, end }) => ({ word: /['’]/.test(text[end] ?? '') ? word + text[end] : word, category: tracks[index] })));
     else for (const _ of text.matchAll(/\n/g)) close();
   }
   close();
@@ -296,7 +297,7 @@ export function buildView(
       const letter = letters?.[index];
       return `${describeReading(reading, word)}${letter ? ` · lettre ${letter}` : ''}`;
     }) : [],
-    ...(phonetics && steps.some((step) => step.plugin.phonetic) && { syllables: segmentSyllables(segments, tagged.map((word) => word.category), phonetics) }),
+    ...(phonetics && steps.some((step) => step.plugin.phonetic || step.plugin.needsPhonetics?.(step.values)) && { syllables: segmentSyllables(segments, tagged.map((word) => word.category), phonetics) }),
   };
 }
 
