@@ -107,8 +107,12 @@ export function editEntry(entries: readonly NotebookEntry[], id: string, text: s
 }
 
 /** Une entrée copiée d'un bloc, comme dans un mail : l'ancêtre s'il y en a un, l'original, le résultat (retouché), la chaîne. */
+/** Un texte transformé d'un bloc : l'ancêtre s'il y en a, l'original, le résultat, la mention. */
+export const takeClipboard = (original: string, result: string, mention: string, ancestor?: string) =>
+  `${ancestor !== undefined ? `${ancestor}\n\n` : ''}${original}\n\n${result}${mention}`;
+
 export const entryClipboard = (entry: NotebookEntry) =>
-  `${entry.lineage ? `${entry.lineage.ancestor}\n\n` : ''}${entry.source.text}\n\n${entry.edited ?? entry.result}${entry.mention}`;
+  takeClipboard(entry.source.text, entry.edited ?? entry.result, entry.mention, entry.lineage?.ancestor);
 
 /** Les jours de calendrier, en heure locale, entre une garde et aujourd'hui : 23 h 50 la veille compte 1. */
 export function daysSince(iso: string, today: Date): number {
