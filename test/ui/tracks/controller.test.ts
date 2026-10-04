@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { SEED } from '../../support/chain.ts';
-import { createTracksController, EXAMPLE_TEXT, type TracksDependencies, type TracksState } from '../../../src/ui/tracks/controller.ts';
+import { SAMPLE_TEXT, SEED } from '../../support/chain.ts';
+import { EXAMPLES } from '../../../src/ui/tracks/examples.ts';
+import { createTracksController, type TracksDependencies, type TracksState } from '../../../src/ui/tracks/controller.ts';
 import type { Tagger } from '../../../src/ports/tagger.ts';
 import { LOADING } from '../../../src/domain/verb.ts';
 import { morphology, tag, verbs } from '../../support/morphology.ts';
@@ -88,10 +89,23 @@ test('mettre en pistes : attente, puis partition, texte résultant et saisie rep
 test('l’exemple : placé dans la saisie et mis en pistes', async () => {
   const { controller, copied } = setup();
   await controller.example();
-  assert.equal(controller.state.input, EXAMPLE_TEXT);
+  assert.equal(controller.state.input, EXAMPLES[0]!.text);
   assert.ok(controller.state.view);
   await controller.copy();
   assert.match(copied[0]!, /— S\+7 sur les noms \(Oulipao\)$/);
+});
+
+test('les exemples tournent : un par clic, dans l’ordre, puis de nouveau le premier ; la table reste', async () => {
+  const { controller } = setup();
+  controller.dispatch({ type: 'toggle-mute', category: 'noun' }); // une table qui n'est plus celle de départ
+  const authors: string[] = [];
+  for (let click = 0; click < 6; click++) {
+    await controller.example();
+    authors.push(EXAMPLES.find((example) => example.text === controller.state.input)!.author);
+  }
+  assert.deepEqual(authors, ['Marcel Proust', 'Jean de La Fontaine', 'Arthur Rimbaud', 'Paul Verlaine', 'Victor Hugo', 'Marcel Proust']);
+  assert.equal(controller.state.examplesShown, 6);
+  assert.equal(controller.state.mixer.tracks.noun.muted, true);
 });
 
 test('chaque geste met la vue à jour sans réétiqueter ; les mots changés s’éclairent', async () => {
@@ -261,7 +275,7 @@ test('nouveau texte : les pas bouchés se rouvrent et les verrous tombent', asyn
 
 test('grille : pas par page selon la largeur, la page du pas en tête reste ; pages bornées ; le mot choisi amène sa page', async () => {
   const { controller } = setup();
-  controller.setInput(EXAMPLE_TEXT);
+  controller.setInput(SAMPLE_TEXT);
   await controller.run();
   assert.equal(controller.state.perPage, 16);
   controller.showPage(2);
@@ -299,7 +313,7 @@ test('raccourcis avant la mise en pistes : rien', () => {
 
 test('raccourcis de l’inspecteur : où que soit le focus, pas dans un champ ; une flèche l’ouvre ; la grille suit la page', async () => {
   const { controller } = setup();
-  controller.setInput(EXAMPLE_TEXT);
+  controller.setInput(SAMPLE_TEXT);
   await controller.run();
   controller.resize(375); // quatre pas par page
   controller.showPage(2);

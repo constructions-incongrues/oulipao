@@ -26,9 +26,58 @@ export function categoryOfLabel(label: string | undefined): Category {
   return (label !== undefined && CATEGORY_OF[label]) || 'other';
 }
 
-/** Une phrase à la fois : le modèle accepte 512 sous-mots au plus. */
-export function splitSentences(text: string): { sentence: string; offset: number }[] {
-  return [...text.matchAll(/[^.!?…]+[.!?…]*\s*/g)].map((m) => ({ sentence: m[0], offset: m.index }));
+/**
+ * Les mots au plus par morceau envoyé au modèle. CamemBERT accepte 512 sous-mots, et un mot français
+ * en donne en moyenne de 1,3 à 2 : 200 mots restent sous la limite, marqueurs compris.
+ */
+export const MAX_WORDS = 200;
+
+type Piece = { sentence: string; offset: number };
+
+const wordCount = (text: string) => text.split(/\s+/).filter(Boolean).length;
+
+/** Coupe un morceau trop long en fenêtres de `maxWords` mots, sur des frontières de mot. */
+function windows({ sentence, offset }: Piece, maxWords: number): Piece[] {
+  const out: Piece[] = [];
+  const starts = [...sentence.matchAll(/\S+/g)].map((m) => m.index);
+  for (let k = 0; k < starts.length; k += maxWords) {
+    const from = k === 0 ? 0 : starts[k]!;
+    const to = k + maxWords < starts.length ? starts[k + maxWords]! : sentence.length;
+    out.push({ sentence: sentence.slice(from, to), offset: offset + from });
+  }
+  return out;
+}
+
+/** Regroupe les lignes d'une phrase trop longue en morceaux de `maxWords` mots au plus ; une ligne trop longue est fenêtrée. */
+function byLines(piece: Piece, maxWords: number): Piece[] {
+  const out: Piece[] = [];
+  let current: Piece | undefined;
+  for (const m of piece.sentence.matchAll(/[^\n]*\n|[^\n]+$/g)) {
+    const line = { sentence: m[0], offset: piece.offset + m.index };
+    if (wordCount(line.sentence) > maxWords) {
+      if (current) out.push(current);
+      current = undefined;
+      out.push(...windows(line, maxWords));
+    } else if (current && wordCount(current.sentence) + wordCount(line.sentence) <= maxWords) {
+      current.sentence += line.sentence;
+    } else {
+      if (current) out.push(current);
+      current = { ...line };
+    }
+  }
+  if (current) out.push(current);
+  return out;
+}
+
+/**
+ * Une phrase à la fois : le modèle accepte 512 sous-mots au plus. Une phrase sans ponctuation forte
+ * trop longue (un poème sans point) est coupée aux retours à la ligne, puis par fenêtres de mots.
+ */
+export function splitSentences(text: string, maxWords = MAX_WORDS): Piece[] {
+  return [...text.matchAll(/[^.!?…]+[.!?…]*\s*/g)].flatMap((m) => {
+    const piece = { sentence: m[0], offset: m.index };
+    return wordCount(piece.sentence) > maxWords ? byLines(piece, maxWords) : [piece];
+  });
 }
 
 /** Retrouve la position de chaque sous-mot dans la phrase ; ignore ceux qu'on ne retrouve pas. */
