@@ -1,4 +1,5 @@
 import type { OutputWord } from './s7/types.ts';
+import { matchCase } from './text-case.ts';
 
 // La règle commune du retrait d'un mot : son blanc (ponctuation, sauts de ligne) ne disparaît pas
 // avec lui, il se fond dans celui du mot suivant. Partagée par toutes les contraintes qui retirent.
@@ -13,8 +14,7 @@ const PAIRS: Record<string, string> = { '«': '»', '“': '”', '(': ')', '[':
 const strength = (mark: string) => (STRONG.test(mark) ? 3 : MIDDLE.test(mark) ? 2 : 1);
 
 /** Reporte la majuscule initiale du mot d'origine sur le mot nouveau. */
-export const matchCase = (original: string, replacement: string) =>
-  original[0] !== original[0]!.toLowerCase() ? replacement[0]!.toUpperCase() + replacement.slice(1) : replacement;
+export { matchCase } from './text-case.ts';
 
 /** Les espaces insécables du français : fine (devant « ; ! ? ») et normale (devant « : »). */
 export const NARROW_NBSP = '\u202F';

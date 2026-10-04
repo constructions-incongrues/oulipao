@@ -4,10 +4,9 @@ import type { TaggedWord } from '../tagged-word.ts';
 import { formInParadigm } from './agreement.ts';
 import { elides } from './elision.ts';
 import type { ConcreteGender, ConcreteNumber, OutputWord } from './types.ts';
+import { matchCase } from '../text-case.ts';
 
 /** Reporte la majuscule initiale du mot d'origine sur le mot nouveau. */
-const matchCase = (original: string, replacement: string) =>
-  original[0] !== original[0]!.toLowerCase() ? replacement[0]!.toUpperCase() + replacement.slice(1) : replacement;
 
 /** Ce que devient un adjectif : sa nouvelle forme, ou la raison pour laquelle il reste. */
 export type AdjectiveShift = { form: string } | { reason: string };

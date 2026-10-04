@@ -1,4 +1,5 @@
 import type { MorphologyRepository } from '../../ports/morphology.ts';
+import type { VerbRepository } from '../../ports/verbs.ts';
 import { VARIABLE_FORMS, type Determiner } from './determiners.ts';
 import type { ConcreteGender, ConcreteNumber } from './types.ts';
 
@@ -12,6 +13,15 @@ export function elides(word: string, lexicon: Pick<MorphologyRepository, 'blocks
   if (!VOWEL_OR_H.test(word)) return false;
   return !lexicon.blocksElision(word) && !lexicon.blocksElision(word.toLowerCase());
 }
+
+/**
+ * Le test d'élision d'une chaîne de filtres : un mot élide le précédent sauf si la morphologie ou,
+ * quand ils sont chargés, les verbes l'interdisent (« le hait », « le onze »).
+ */
+export const elidesWith =
+  (morphology: Pick<MorphologyRepository, 'blocksElision'>, verbs?: Pick<VerbRepository, 'blocksElision'>) =>
+  (word: string): boolean =>
+    elides(word, { blocksElision: (form) => !!verbs?.blocksElision(form) || morphology.blocksElision(form) });
 
 export interface Realization {
   gender: ConcreteGender;

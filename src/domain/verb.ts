@@ -5,6 +5,8 @@ import { aroundAmong, before, candidatePositions } from './neighbours.ts';
 import type { WordMark } from './plugin.ts';
 import { GenderSchema, GrammaticalNumberSchema, type OutputWord } from './s7/types.ts';
 import type { TaggedWord } from './tagged-word.ts';
+import { matchCase } from './text-case.ts';
+import { UNKNOWN } from './reasons.ts';
 
 /** Les temps qu'on garde d'un verbe remplacé, de l'infinitif au participe passé. */
 export const TENSES = [
@@ -45,7 +47,7 @@ export type VerbShift = { form: string } | { reason: string };
 export const AUXILIARIES = new Set(['être', 'avoir']);
 export const AUXILIARY = 'auxiliaire';
 export const LOADING = 'conjugaisons en cours de chargement';
-export const UNKNOWN = 'absent du dictionnaire';
+export { UNKNOWN } from './reasons.ts';
 export const NO_FORM = 'aucune forme à ce temps et à cette personne';
 
 const SUBJECTS: Record<string, Person> = {
@@ -88,8 +90,6 @@ function fits(form: VerbForm, wanted: VerbFeatures): boolean {
 }
 
 /** Reporte la majuscule initiale du mot d'origine sur le mot nouveau. */
-const matchCase = (original: string, replacement: string) =>
-  original[0] !== original[0]!.toLowerCase() ? replacement[0]!.toUpperCase() + replacement.slice(1) : replacement;
 
 /** La lecture d'un verbe et sa place dans le dictionnaire, ou la raison de le laisser. */
 function locate(word: string, previous: readonly string[], verbs: VerbRepository): { reading: VerbForm; start: number } | { reason: string } {

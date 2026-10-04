@@ -4,8 +4,10 @@ import { definePlugin, FULL_SCOPE, type ParameterValues, type WordMark } from '.
 import { shiftAdjectives } from './adjective-shift.ts';
 import { rewriteVerbs, shiftVerb } from '../verb.ts';
 import { applyS7 } from './engine.ts';
-import { elides } from './elision.ts';
+import { elidesWith } from './elision.ts';
 import { S7ModeSchema, type SubstitutionStatus } from './types.ts';
+import { apostropheOf } from '../text-case.ts';
+import { CLOSED } from '../reasons.ts';
 
 /** Bornes du décalage. */
 const MIN_OFFSET = -99;
@@ -29,8 +31,8 @@ const REASONS: Record<Exclude<SubstitutionStatus, 'replaced'>, string> = {
   'missing-form': 'aucun nom au bon genre et au bon nombre',
 };
 
-/** La raison d'un mot laissé parce que son pas est bouché. */
-export const CLOSED = 'pas bouché';
+/** La raison d'un mot laissé parce que son pas est bouché (réexportée pour les appelants existants). */
+export { CLOSED } from '../reasons.ts';
 
 /**
  * Le dé du S+dé : une face de 1 à 6, déduite de la graine et de la position du mot seulement, pour
@@ -125,7 +127,7 @@ export const s7Plugin = definePlugin({
     } else {
       ({ words, tail } = plainWords(text));
     }
-    const apostrophe = text.includes('’') ? '’' : "'";
+    const apostrophe = apostropheOf(text);
     if (targets.has('adjective')) {
       // Comme les verbes : un adjectif bouché porte sa raison.
       for (const index of skip) if (tagged[index]?.category === 'adjective') marks.push({ index, original: tagged[index]!.word, reason: CLOSED });
@@ -142,7 +144,7 @@ export const s7Plugin = definePlugin({
           (word, previous, repository, index) => shiftVerb(word, previous, offsetAt(index), repository),
           verbs,
           apostrophe,
-          (word) => elides(word, { blocksElision: (form) => !!verbs?.blocksElision(form) || morphology.blocksElision(form) }),
+          elidesWith(morphology, verbs),
         ),
       );
     }

@@ -7,12 +7,14 @@ import { phonemesOf, type Phoneme } from '../phonetics/phoneme.ts';
 import { requiredEnding, rhymeOf, type Richness } from '../phonetics/rhyme.ts';
 import type { PluginResources, PluginResult, WordMark, WordScope } from '../plugin.ts';
 import { fixElision } from '../s7/adjective-shift.ts';
-import { elides } from '../s7/elision.ts';
+import { elidesWith } from '../s7/elision.ts';
 import { keepNoun, rewriteNouns } from '../s7/engine.ts';
 import type { ConcreteGender, OutputWord } from '../s7/types.ts';
 import type { TaggedWord } from '../tagged-word.ts';
 import { nthVerb, rewriteVerbs } from '../verb.ts';
 import { layoutVerse, type VersePlace } from '../verse.ts';
+import { apostropheOf, matchCase } from '../text-case.ts';
+import { CLOSED, UNKNOWN } from '../reasons.ts';
 
 /**
  * Ce qu'un filtre de rime fait d'un mot : le n-ième voisin que `accept` retient, ou la raison de le
@@ -22,8 +24,7 @@ import { layoutVerse, type VersePlace } from '../verse.ts';
 export type Decision = { offset: number; accept: (form: string) => boolean; none: string; among?: ReadonlySet<string> } | { reason: string };
 
 /** La raison d'un mot laissé parce que son pas est bouché (comme au S+n). */
-export const CLOSED = 'pas bouché';
-const UNKNOWN = 'absent du dictionnaire';
+export { CLOSED } from '../reasons.ts';
 
 /** Les prononciations du texte, retenues pour la durée d'un passage. */
 export interface Sounds {
@@ -81,8 +82,6 @@ function soundsOf(phonetics: PhoneticsRepository): Sounds {
 }
 
 /** Reporte la majuscule initiale du mot d'origine sur le mot nouveau. */
-const matchCase = (original: string, replacement: string) =>
-  original[0] !== original[0]!.toLowerCase() ? replacement[0]!.toUpperCase() + replacement.slice(1) : replacement;
 
 /** Ce qu'un filtre de rime fournit au moteur. */
 export interface RhymeFilter {
@@ -189,7 +188,7 @@ export function applyRhymeFilter(
   }
 
   // 2. Les adjectifs et les adverbes, au même genre et au même nombre que la forme en place.
-  const apostrophe = text.includes('’') ? '’' : "'";
+  const apostrophe = apostropheOf(text);
   words.forEach((word, index) => {
     const category = tagged[index]!.category;
     if ((category !== 'adjective' && category !== 'adverb') || !word.output) return;
@@ -229,7 +228,7 @@ export function applyRhymeFilter(
       },
       verbs,
       apostrophe,
-      (word) => elides(word, { blocksElision: (form) => !!verbs?.blocksElision(form) || morphology.blocksElision(form) }),
+      elidesWith(morphology, verbs),
     ),
   );
 
