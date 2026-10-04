@@ -54,23 +54,39 @@ function syllabify(phonemes: readonly Phoneme[]): Phoneme[][] {
   return syllables;
 }
 
-/** Les phonèmes d'un mot simple, règle après règle. */
-function guessPhonemes(lower: string): Phoneme[] {
-  const phonemes: Phoneme[] = [];
+/** Un morceau d'un mot : les lettres `[start, end)` et les phonèmes qu'elles portent (aucun : lettres muettes). */
+export interface LetterSpan {
+  start: number;
+  end: number;
+  phonemes: readonly Phoneme[];
+}
+
+/**
+ * Les lettres d'un mot simple et les sons qu'elles portent, règle après règle, par la même table
+ * que la prononciation devinée : « garçon » donne g /g/, a /a/, r /ʁ/, ç /s/, on /ɔ̃/. Le mot est
+ * lu en minuscules ; les positions sont celles du mot donné.
+ */
+export function alignLetters(word: string): LetterSpan[] {
+  const lower = word.toLowerCase();
+  const spans: LetterSpan[] = [];
   for (let at = 0; at < lower.length; ) {
     const rule = COMPILED.find(([pattern]) => {
       pattern.lastIndex = at;
       return pattern.test(lower);
     });
     if (!rule) {
-      at++; // une lettre étrangère à la table ne se prononce pas
+      spans.push({ start: at, end: at + 1, phonemes: [] }); // une lettre étrangère à la table ne se prononce pas
+      at++;
       continue;
     }
-    phonemes.push(...rule[1]);
+    spans.push({ start: at, end: rule[0].lastIndex, phonemes: rule[1] });
     at = rule[0].lastIndex;
   }
-  return phonemes;
+  return spans;
 }
+
+/** Les phonèmes d'un mot simple, règle après règle. */
+const guessPhonemes = (lower: string): Phoneme[] => alignLetters(lower).flatMap((span) => span.phonemes);
 
 /**
  * Devine la prononciation d'un mot par des règles, partie par partie pour un mot composé

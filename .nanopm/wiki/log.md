@@ -52,3 +52,4 @@
 ## [2026-10-04] ingest | pm-roadmap: wrote docs/roadmap.md
 ## [2026-10-04] ingest | pm-objectives: wrote docs/objectives.md
 ## [2026-10-04] ingest | pm-prd: wrote docs/prds/lien-partageable.md
+## [2026-10-04] ingest | pm-prd: wrote docs/prds/lettrisme-discrepance-ciselure.md

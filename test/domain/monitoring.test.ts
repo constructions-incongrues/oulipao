@@ -39,3 +39,11 @@ test('wordsAtStep : un vers recopié par un refrain ne se dit qu’à son pas d�
   ];
   assert.deepEqual(wordsAtStep(refrain, 2), ['chat']);
 });
+
+test('originalWordsAtStep : le mot d’origine si sa piste s’entend, sans ponctuation ; rien sinon', async () => {
+  const { originalWordsAtStep } = await import('../../src/domain/monitoring.ts');
+  const all = new Set<Category>(CATEGORIES);
+  assert.deepEqual(originalWordsAtStep('chat', 'noun', all), ['chat']);
+  assert.deepEqual(originalWordsAtStep('« chat »,', 'noun', all), ['chat']);
+  assert.deepEqual(originalWordsAtStep('chat', 'noun', new Set<Category>(['verb'])), []); // muette, ou une autre piste en solo
+});

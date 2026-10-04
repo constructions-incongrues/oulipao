@@ -28,7 +28,7 @@ const setup = async (overrides: Partial<TracksDependencies> = {}, speech: FakeSp
     copy: async (text) => void copied.push(text),
     speech,
     sleep: blanks.sleep,
-    preferences: { load: () => ({ tempo: 3 }), save: (p) => void saved.push(p) },
+    preferences: { load: () => ({ tempo: 3, source: 'result' as const }), save: (p) => void saved.push(p) },
     ...overrides,
   });
   for (const action of SEED) controller.dispatch(action);
@@ -146,7 +146,7 @@ test('tempo et voix : bornés, gardés ; une voix inconnue est refusée', async 
   assert.equal(saved.length, 0);
   controller.setTempo(5);
   controller.setVoice('fr-1');
-  assert.deepEqual(saved.at(-1), { tempo: 5, voice: 'fr-1' });
+  assert.deepEqual(saved.at(-1), { tempo: 5, voice: 'fr-1', source: 'result' });
   assert.equal(controller.state.voice, 'fr-1');
 });
 
@@ -193,4 +193,48 @@ test('withListening : en dernière partie, seule sans règle, rien sans écoute'
   assert.equal(withListening('\n\n— S+7 sur les noms (Oulipao)', true), '\n\n— S+7 sur les noms · réglé en écoutant (Oulipao)');
   assert.equal(withListening('', true), '\n\n— réglé en écoutant (Oulipao)');
   assert.equal(withListening('\n\n— S+7 sur les noms (Oulipao)', false), '\n\n— S+7 sur les noms (Oulipao)');
+  assert.equal(withListening('', true, true), '\n\n— réglé en écoutant · écouté en discrépance (Oulipao)');
+  assert.equal(withListening('', false, true), '\n\n— écouté en discrépance (Oulipao)');
+});
+
+test('discrépance : en « original », le pas dit le mot d’origine pendant que la page montre le remplaçant ; une piste muette se tait', async () => {
+  const { controller, speech, blanks } = await setup();
+  controller.setSource('original');
+  controller.play();
+  for (let k = 0; k < 5; k++) await next(speech, blanks);
+  const view = controller.state.view!;
+  const original = view.stages[0]!.words[5]!.output;
+  assert.notEqual(view.segments.find((segment) => segment.index === 5)!.text, original); // la page montre le nom remplacé
+  assert.deepEqual(speech.said.at(-1)!.words, [original]);
+  controller.dispatch({ type: 'toggle-mute', category: view.tracks[5]! });
+  const said = speech.said.length;
+  for (let k = 5; k < 13; k++) await next(speech, blanks); // un tour : le pas 5 revient, muet
+  assert.equal(controller.state.playhead, 5);
+  assert.equal(speech.said.length, said + 6); // 8 pas, dont le 5 et l'autre nom (pas 7) muets
+});
+
+test('discrépance : un changement de source s’entend au pas suivant ; la source est gardée ; une source inconnue est refusée', async () => {
+  const { controller, speech, blanks, saved } = await setup();
+  controller.play();
+  for (let k = 0; k < 4; k++) await next(speech, blanks);
+  controller.setSource('original');
+  await next(speech, blanks);
+  assert.deepEqual(speech.said.at(-1)!.words, [controller.state.view!.stages[0]!.words[5]!.output]);
+  assert.deepEqual(saved.at(-1), { tempo: 3, voice: undefined, source: 'original' });
+  controller.setSource('envers' as never);
+  assert.equal(controller.state.source, 'original');
+});
+
+test('mention : « écouté en discrépance » après une écoute sur l’original, après « réglé en écoutant » ; remise à zéro par une nouvelle mise en pistes', async () => {
+  const { controller, copied } = await setup();
+  controller.setSource('original');
+  controller.play();
+  controller.stop();
+  await controller.copy();
+  assert.match(copied[0]!, / · réglé en écoutant · écouté en discrépance \(Oulipao\)$/);
+  controller.keep();
+  assert.match(controller.state.notebook[0]!.mention, / · réglé en écoutant · écouté en discrépance \(Oulipao\)$/);
+  await controller.run();
+  await controller.copy();
+  assert.doesNotMatch(copied.at(-1)!, /réglé en écoutant|écouté en discrépance/);
 });

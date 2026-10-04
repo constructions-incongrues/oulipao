@@ -8,17 +8,19 @@ import { createTracksController } from '../../../src/ui/tracks/controller.ts';
 import { SAMPLE_TEXT, SEED } from '../../support/chain.ts';
 import { morphology, tag } from '../../support/morphology.ts';
 import { fakeSpeech } from '../../support/speech.ts';
-import { byClass, find, inputEvent } from '../../support/vnode.ts';
+import { byClass, elements, find, inputEvent } from '../../support/vnode.ts';
 
 const props = (overrides: Partial<TransportProps> = {}) => {
   const calls: string[] = [];
   const all: TransportProps = {
     playing: false,
     tempo: 3,
+    source: 'result',
     voices: [{ id: 'fr-1', name: 'Amélie' }, { id: 'fr-2', name: 'Thomas' }],
     onToggle: () => calls.push('toggle'),
     onTempo: (tempo) => calls.push(`tempo ${tempo}`),
     onVoice: (voice) => calls.push(`voice ${voice}`),
+    onSource: (source) => calls.push(`source ${source}`),
     ...overrides,
   };
   return { all, calls };
@@ -68,4 +70,15 @@ test('App : le transport paraît une fois le texte en pistes, et la grille marqu
   controller.play();
   assert.match(app(), /class="hd beat playing" aria-pressed="false" aria-current="step" aria-label="Inspecter « Le », pas 1"/);
   controller.stop();
+});
+
+test('Transport : « La voix dit » le résultat ou l’original ; le choix remonte', () => {
+  const { all, calls } = props({ source: 'original' });
+  const node = html`<${Transport} ...${all} />`;
+  const out = renderToString(node);
+  assert.match(out, /La voix dit <select><option value="result">le résultat<\/option><option value="original" selected>l’original<\/option><\/select>/);
+  const selects = elements(node).filter((e) => e.type === 'select');
+  (selects.at(-1)!.props['onChange'] as (event: Event) => void)(inputEvent('result'));
+  assert.deepEqual(calls, ['source result']);
+  assert.doesNotMatch(renderToString(html`<${Transport} ...${props({ voices: [] }).all} />`), /La voix dit/);
 });

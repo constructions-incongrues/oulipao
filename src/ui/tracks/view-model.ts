@@ -409,9 +409,10 @@ export function composeMention(passes: readonly string[], current: string): stri
  * La mention, quand le texte a été réglé en écoutant : « réglé en écoutant » en dernière partie
  * (« — S+7 … · réglé en écoutant (Oulipao) »), ou seule quand aucune règle n'agit.
  */
-export function withListening(mention: string, listened: boolean): string {
-  if (!listened) return mention;
-  return mention ? mention.replace(/ \(Oulipao\)$/, ' · réglé en écoutant (Oulipao)') : '\n\n— réglé en écoutant (Oulipao)';
+export function withListening(mention: string, listened: boolean, discrepant = false): string {
+  const parts = [listened && 'réglé en écoutant', discrepant && 'écouté en discrépance'].filter(Boolean).join(' · ');
+  if (!parts) return mention;
+  return mention ? mention.replace(/ \(Oulipao\)$/, ` · ${parts} (Oulipao)`) : `\n\n— ${parts} (Oulipao)`;
 }
 
 /** Les mots dont le texte a changé d'une vue à l'autre, par position : ce sont eux qui s'éclairent. */
