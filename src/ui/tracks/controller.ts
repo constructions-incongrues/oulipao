@@ -300,7 +300,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
   const wantResources = (mixer: MixerState) => {
     const enabled = mixer.instances.filter((instance) => instance.enabled);
     if (state.verbs.status === 'idle' && enabled.some((instance) => instance.targets.includes('verb'))) void controller.loadVerbs();
-    if (state.phonetics.status === 'idle' && enabled.some((instance) => pluginById(instance.type).phonetic || readsSyllables(instance))) void controller.loadPhonetics();
+    if (state.phonetics.status === 'idle' && enabled.some((instance) => pluginById(instance.type).phonetic || pluginById(instance.type).needsPhonetics?.(instance.params) || readsSyllables(instance))) void controller.loadPhonetics();
     if (state.scales.status === 'idle' && enabled.some((instance) => pluginById(instance.type).needsScales?.(instance.params))) void controller.loadScales();
   };
 

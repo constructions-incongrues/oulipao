@@ -121,6 +121,8 @@ export interface ConstraintPlugin {
   tracks: readonly Category[];
   /** La contrainte a-t-elle besoin des prononciations ? L'hôte les charge alors à la demande. */
   phonetic?: boolean;
+  /** Ces réglages ont-ils besoin des prononciations, sans que la contrainte soit phonétique ? */
+  needsPhonetics?(values: ParameterValues): boolean;
   /** Ces réglages ont-ils besoin des échelles affectives ? L'hôte les charge alors à la demande. */
   needsScales?(values: ParameterValues): boolean;
   /** Les pistes visées par une instance qu'on vient d'ajouter. */
