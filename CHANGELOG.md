@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.0](https://github.com/constructions-incongrues/oulipao/compare/v0.7.0...v0.8.0) (2026-10-04)
+
+
+### Nouveautés
+
+* boucle de tours ([#105](https://github.com/constructions-incongrues/oulipao/issues/105)) ([60eb3c5](https://github.com/constructions-incongrues/oulipao/commit/60eb3c5c7a7247cb6eb8834278388018f6f6e9f5))
+
+
+### Corrections
+
+* « Copier » emporte l'original, et la page se présente comme un instrument ([#104](https://github.com/constructions-incongrues/oulipao/issues/104)) ([ada090f](https://github.com/constructions-incongrues/oulipao/commit/ada090fd53a625f616f8a8401d5c77cce4cb8991))
+* libellés d'une mise en vers modulée ou verrouillée ([#102](https://github.com/constructions-incongrues/oulipao/issues/102)) ([4af4497](https://github.com/constructions-incongrues/oulipao/commit/4af44975d93088fa94c59e0089514e3f8df72222))
+
 ## [0.7.0](https://github.com/constructions-incongrues/oulipao/compare/v0.6.2...v0.7.0) (2026-10-04)
 
 
