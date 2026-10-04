@@ -6,6 +6,7 @@ import { runChain, type ChainStep, type StageWord, type StepReport } from '../..
 import { describeReading, lineSyllables, PHONETICS_LOADING, pronounce, type VerseWord } from '../../domain/phonetics/lookup.ts';
 import { FORM_LABELS, layoutForm } from '../../domain/forms/form.ts';
 import { rhymeSchemePlugin, schemeOf } from '../../domain/rhyme/rhyme-scheme.ts';
+import { edgePlugin } from '../../domain/edge/plugin.ts';
 import { schemeLetters } from '../../domain/rhyme/scheme.ts';
 import type { TaggedWord } from '../../domain/tagged-word.ts';
 import { tokenize } from '../../domain/tokenizer.ts';
@@ -70,6 +71,8 @@ export interface TracksView {
   missing?: number;
   /** Les paramètres modulés dont une valeur a été repliée, par instance : la mention dit « modulo ». */
   folded: Readonly<Record<string, readonly string[]>>;
+  /** Le nombre de vers du texte saisi (lignes non vides) : une mise en page par vers en demande deux. */
+  verses: number;
 }
 
 /**
@@ -278,6 +281,7 @@ export function buildView(
     ],
     folded: Object.fromEntries(active.flatMap((instance, k) => (chain.modulation[k]!.folded.length ? [[instance.id, chain.modulation[k]!.folded]] : []))),
     tracks: tagged.map((word) => word.category),
+    verses: text.split('\n').filter((line) => line.trim()).length,
     result: segments.map((segment) => segment.text).join(''),
     segments,
     empty: !segments.some((segment) => segment.index !== undefined),
@@ -338,11 +342,22 @@ function stepSentence(instance: Instance, view: TracksView, lookup: PluginLookup
   return `${name} : ${counts.join(', ')}.`;
 }
 
+/**
+ * Une mise en page par vers (Bord, donc Haï-kaïsation) sur un texte d'un seul vers ne garde presque
+ * rien : la phrase d'état le dit, sauf si une étape avant elle a mis le texte en vers.
+ */
+function verseWarning(instance: Instance, view: TracksView): string {
+  if (instance.type !== edgePlugin.id || view.verses > 1) return '';
+  const at = view.stages.findIndex((stage) => stage.id === instance.id);
+  if (view.stages.slice(1, at).some((stage) => stage.words.some((word) => word.newline))) return '';
+  return ' Le texte n’a qu’un vers : collez un poème, ou mettez-le d’abord en vers.';
+}
+
 /** La phrase qui résume l'état du texte, affichée et annoncée après chaque geste. */
 export function summarize(mixer: MixerState, view: TracksView, lookup: PluginLookup = pluginById): string {
   const enabled = enabledInstances(mixer);
   const rule = enabled.length
-    ? enabled.map((instance) => capitalized(stepSentence(instance, view, lookup))).join(' ')
+    ? enabled.map((instance) => capitalized(stepSentence(instance, view, lookup)) + verseWarning(instance, view)).join(' ')
     : !mixer.instances.length
       ? 'Aucune contrainte : texte d’origine.'
       : `${mixer.instances.length > 1 ? 'Contraintes coupées' : 'Contrainte coupée'} : texte d’origine.`;

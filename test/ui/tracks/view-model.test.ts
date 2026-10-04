@@ -230,3 +230,17 @@ test('résumé d’un retrait et d’une mise en page : seulement ce qui a eu li
   const flat = { text: 'Le chat.', tagged: tag('Le chat.') };
   assert.match(summarize(both, buildView(flat, both, m)), /Mise en vers tous les 2 mots : aucun changement\./);
 });
+
+test('Bord sur un texte d’un seul vers : la phrase d’état le dit, sauf après une mise en vers', () => {
+  const prose = { text: 'Le chat dort sur le mur.', tagged: tag('Le chat dort sur le mur.', { chat: 'noun', mur: 'noun' }) };
+  const edged = reduce(reduce(seededState, { type: 'remove-instance', id: 's7-1' }), { type: 'add-instance', plugin: 'edge' });
+  const warning = /Le texte n’a qu’un vers : collez un poème, ou mettez-le d’abord en vers\.$/;
+  assert.match(summarize(edged, buildView(prose, edged, m)), warning);
+  // Deux vers : rien à dire.
+  const poem = { text: 'Le chat dort.\nSur le mur.', tagged: tag('Le chat dort.\nSur le mur.', { chat: 'noun', mur: 'noun' }) };
+  assert.doesNotMatch(summarize(edged, buildView(poem, edged, m)), warning);
+  // Une mise en vers avant le Bord : le texte qu'il reçoit a plusieurs vers.
+  const lined = reduce(reduce(edged, { type: 'add-instance', plugin: 'lineation' }), { type: 'move-instance', id: 'lineation-1', position: 0 });
+  const relaid = reduce(lined, { type: 'set-param', id: 'lineation-1', key: 'n', value: 2 });
+  assert.doesNotMatch(summarize(relaid, buildView(prose, relaid, m)), warning);
+});

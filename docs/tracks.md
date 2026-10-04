@@ -21,7 +21,9 @@ Page : `tracks.html` (script assemblé `dist/tracks.js`, par `npm run build`). L
   « Dupliquer », « Retirer ». Une mise en page (Bord, Mise en vers) agit sur tout le texte : à
   la place des pastilles, « Tout le texte ». À l'ouverture, la chaîne est vide : le texte passe
   tel quel. Sous le titre « Contraintes », une phrase d'état (annoncée aux lecteurs d'écran)
-  dit ce que la chaîne a fait au texte : « S+7 sur les noms : 19 noms remplacés sur 20. ».
+  dit ce que la chaîne a fait au texte : « S+7 sur les noms : 19 noms remplacés sur 20. ». Un
+  Bord (donc Haï-kaïsation) sur un texte d'un seul vers ajoute « Le texte n'a qu'un vers :
+  collez un poème, ou mettez-le d'abord en vers. », sauf si une mise en vers le précède.
 - **Navigateur de contraintes** : sous le rack, la touche « Ajouter une contrainte » le déplie.
   D'abord les **recettes**, par leur nom de l'Oulipo (Haï-kaïsation, Liponymie, Monovocalisme…),
   chacune avec sa règle en une phrase et le lien vers sa fiche oulipo.net ; une recette branche
@@ -39,7 +41,8 @@ Page : `tracks.html` (script assemblé `dist/tracks.js`, par `npm run build`). L
   la piste et le mot d'origine (« Noms : cuisine → cuissot »), ou dit pourquoi un mot est laissé
   tel quel. Chaque mot se clique ; seuls les mots remplacés reçoivent le focus clavier. À
   l'affichage, une espace insécable (fine avant ; ! ?) colle la ponctuation française à son mot :
-  aucune ligne ne commence par « ; ». La copie garde le texte tel quel. Collée en haut de l'écran au
+  aucune ligne ne commence par « ; ». La copie garde le texte tel quel. Hors état collé, la bande
+  prend la hauteur de son texte : c'est la page qui défile, pas la bande. Collée en haut de l'écran au
   téléphone, la bande ne garde que son texte : ses touches reviennent quand on remonte.
 - **Grille de pas** : un pas percé dit aussi l'issue du mot, sans couleur nouvelle : poinçon
   plein, le mot a changé ; réduit de moitié, il est inchangé ; barré d'un trait d'encre, il est
@@ -126,7 +129,9 @@ Preact ; les composants (`components/`, `app.ts`) sont des fonctions de cet éta
   - **Sa place** : un panneau replié juste sous la bande du texte résultant. Il ne reste pas
     collé avec elle. Son en-tête donne le compte et les jours depuis la dernière garde
     (« dernier texte aujourd'hui », « hier », « il y a 3 jours »), comptés en jours de
-    calendrier.
+    calendrier. Ouvert, il montre chaque entrée repliée sur une ligne : sa date, ses premiers
+    mots et sa règle (« Antirime, rime suffisante ×2 ») ; une entrée se déplie pour son texte,
+    son ascendance et ses gestes. Un carnet plein ne repousse donc pas l'instrument.
   - **Copier** une entrée met dans le presse-papiers un bloc à coller dans un mail :
     l'original, une ligne vide, le résultat (retouché s'il l'a été), une ligne vide, puis la
     mention (« — S+7 sur les noms (Oulipao) »).

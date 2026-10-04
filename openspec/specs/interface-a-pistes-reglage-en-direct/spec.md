@@ -120,7 +120,7 @@ The system SHALL process the text entirely in the browser, with no network reque
 - **THEN** aucune requête ne contient le texte
 
 ### Requirement: Texte résultant toujours visible
-The system SHALL keep the resulting text on screen while the page scrolls: once its band would leave the top of the screen, it SHALL stay pinned at the top in a compact form showing at most four lines (three below 768 px), the rest scrolling inside the band, with the copy button still reachable.
+The system SHALL keep the resulting text on screen while the page scrolls: once its band would leave the top of the screen, it SHALL stay pinned at the top in a compact form showing at most four lines (three below 768 px), the rest scrolling inside the band, with the copy button still reachable on screens 768 px wide or more. While not pinned, the band SHALL take the height of its text and SHALL NOT scroll on its own.
 
 #### Scenario: Régler la grille
 - **GIVEN** un texte de 44 mots mis en pistes sur un écran de 1280 × 900
@@ -131,6 +131,11 @@ The system SHALL keep the resulting text on screen while the page scrolls: once 
 - **GIVEN** une fenêtre de 375 px de large
 - **WHEN** la page défile
 - **THEN** la bande collée montre trois lignes au plus et la page ne défile pas à l'horizontale
+
+#### Scenario: Poème long en haut de page
+- **GIVEN** un poème de 30 vers mis en pistes, la page en haut
+- **WHEN** l'utilisateur fait tourner la molette au-dessus de la bande
+- **THEN** c'est la page qui défile, pas la bande
 
 ### Requirement: Ordre de la page
 The system SHALL present, from top to bottom: the resulting text, the notebook panel, the source text, the filter chain, the step grid with its track strips, then the inspector. The notebook panel SHALL NOT be pinned with the resulting text.
@@ -316,3 +321,16 @@ The system SHALL mark « Mettre en pistes » as the main key of the source panel
 - **GIVEN** la saisie dépliée
 - **WHEN** l'utilisateur la regarde
 - **THEN** « Mettre en pistes » a un contour de 2 px et « Essayer avec un exemple » un contour de 1 px
+
+### Requirement: Texte d'un seul vers sous une mise en page par vers
+The system SHALL add to the status sentence « Le texte n'a qu'un vers : collez un poème, ou mettez-le d'abord en vers. » when a Bord instance acts on a text of a single line and no step before it has put the text into lines.
+
+#### Scenario: Haï-kaïsation sur de la prose
+- **GIVEN** l'extrait de Proust, d'un seul paragraphe
+- **WHEN** on branche Haï-kaïsation
+- **THEN** la phrase d'état dit « Haï-kaïsation : 117 mots retirés. Le texte n'a qu'un vers : collez un poème, ou mettez-le d'abord en vers. »
+
+#### Scenario: Après une mise en vers
+- **GIVEN** le même extrait, une mise en vers tous les 8 mots puis un Bord
+- **WHEN** la phrase d'état s'affiche
+- **THEN** elle ne parle pas d'un seul vers
