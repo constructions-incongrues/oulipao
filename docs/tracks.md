@@ -25,20 +25,23 @@ Page : `tracks.html` (script assemblé `dist/tracks.js`, par `npm run build`). L
   une ou plusieurs instances. Celles qui demandent un réglage (la voyelle gardée, la piste
   interdite) déplient un choix : « Brancher » ou « Annuler » (Échap). Puis les **moteurs** : un
   bouton par type, qui ajoute une instance aux réglages et pistes par défaut. Tout ajout va en fin
-  de chaîne ; une copie aussi. L'Éclipse (un texte suivi de son S+7) n'a pas de recette : le S+7
+  de chaîne ; une copie aussi. Après un ajout, le navigateur se replie et la première contrainte
+  ajoutée vient au milieu de l'écran, le focus sur son premier réglage. L'Éclipse (un texte suivi de son S+7) n'a pas de recette : le S+7
   donne la seconde partie, mais la sortie ne sait pas encore juxtaposer les deux.
 - **Texte résultant** : ce qu'on lit et qu'on copie, une fois les filtres appliqués et les
   pistes coupées. Un mot remplacé est souligné de la couleur de sa piste ; son infobulle nomme
   la piste et le mot d'origine (« Noms : cuisine → cuissot »), ou dit pourquoi un mot est laissé
-  tel quel. Chaque mot se clique ; seuls les mots remplacés reçoivent le focus clavier.
+  tel quel. Chaque mot se clique ; seuls les mots remplacés reçoivent le focus clavier. À
+  l'affichage, une espace insécable (fine avant ; ! ?) colle la ponctuation française à son mot :
+  aucune ligne ne commence par « ; ». La copie garde le texte tel quel.
 - **Inspecteur** : sous le texte résultant, fermé tant qu'aucun mot n'est choisi (une phrase
   invite à cliquer). Un tableau : une ligne « Origine », puis une ligne par filtre actif dans
-  l'ordre de la chaîne ; le mot choisi au centre, six voisins de chaque côté (deux sous 768 px),
-  chaque mot dans sa colonne ; « · » pour un mot retiré, « ↵ » devant un mot que l'étape a mis à
+  l'ordre de la chaîne ; les mots de la page de pas du mot choisi, chacun dans la colonne qu'il a
+  dans la grille (la tranche des étapes a la largeur de celle des pistes) ; « · » pour un mot retiré, « ↵ » devant un mot que l'étape a mis à
   la ligne (dit « à la ligne » au lecteur d'écran). À l'ouverture, le focus y passe :
   ← → changent de mot (y compris les mots absents du texte résultant), Échap ferme. Le choix
-  survit aux réglages ; un nouvel étiquetage le ferme. Une fenêtre trop large défile dans
-  l'inspecteur, jamais la page.
+  survit aux réglages ; un nouvel étiquetage le ferme. Un mot trop long pour sa colonne est
+  tronqué, comme dans la grille.
 
 ## La chaîne
 
@@ -60,7 +63,7 @@ L'étiquetage a lieu une fois par texte. Ensuite chaque geste rejoue deux foncti
    La recette Éclipse branche un S+7 et pose cette forme.
 
 `buildView` (`view-model.ts`) enchaîne les trois et prépare les bandes de l'inspecteur ;
-`inspectorWindow` en découpe la fenêtre autour du mot choisi ; `createTracksController` (`controller.ts`)
+`inspectorWindow` en découpe la page de pas du mot choisi ; `createTracksController` (`controller.ts`)
 tient l'état de la page (saisie, attente, erreur, table de mixage, vue) et ne connaît pas
 Preact ; les composants (`components/`, `app.ts`) sont des fonctions de cet état.
 

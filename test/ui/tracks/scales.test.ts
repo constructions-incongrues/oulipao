@@ -58,7 +58,7 @@ test('Premier V+n : d’abord la raison du chargement, puis le recalcul ; la ban
   assert.equal(controller.state.view!.result, "L'école dort.");
   await controller.loadScales(); // déjà là : rien de plus
   assert.equal(asked, 1);
-  const window = inspectorWindow(controller.state.view!, 1, 1);
+  const window = inspectorWindow(controller.state.view!, 1, 0, 2);
   const band = window.bands.find((candidate) => candidate.id === 's7-1')!;
   assert.equal(band.label, 'V+1 sur les noms');
   assert.deepEqual(band.cells[1], { text: 'école', newline: false, detail: 'valence 10 → 20' });

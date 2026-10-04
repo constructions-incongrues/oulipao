@@ -127,3 +127,11 @@ The system SHALL show the chain above the step grid, one line per instance, all 
 - **GIVEN** un S+7 et un lipogramme
 - **WHEN** la chaîne s'affiche sur un écran de 1280 px
 - **THEN** les deux lignes ont la même largeur et leurs pistes visées commencent à la même abscisse
+
+### Requirement: Retour à la chaîne après un ajout
+The system SHALL collapse the constraint browser after a recipe or an engine is added, SHALL bring the first added constraint into view, and SHALL move the focus to its first setting.
+
+#### Scenario: Moteur ajouté depuis le catalogue ouvert
+- **GIVEN** le navigateur de contraintes déplié et une chaîne vide
+- **WHEN** l'utilisateur clique « + S+7 »
+- **THEN** le navigateur se replie, la ligne du S+7 est visible et le focus est sur son réglage « Décalage »

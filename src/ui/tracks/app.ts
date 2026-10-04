@@ -175,7 +175,8 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
       (selected === undefined
         ? html`<p class="inspector-hint">Cliquez un mot pour voir ce que chaque contrainte en a fait.</p>`
         : html`<${Inspector}
-            window=${inspectorWindow(view, selected, 6, instancePlugin)}
+            window=${inspectorWindow(view, selected, state.page * state.perPage, (state.page + 1) * state.perPage - 1, instancePlugin)}
+            perPage=${state.perPage}
             word=${words[selected]}
             step=${steps[selected]?.state}
             locks=${inspectorLocks(mixer, selected, view.tracks[selected]!)}
