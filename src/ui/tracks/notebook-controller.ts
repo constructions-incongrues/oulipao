@@ -1,6 +1,6 @@
 import { tokenize } from '../../domain/tokenizer.ts';
 import type { NotebookStorage } from '../../ports/notebook-storage.ts';
-import type { TracksState } from './controller.ts';
+import type { ErrorText, TracksState } from './controller.ts';
 import { pluginById } from './mixer-state.ts';
 import { addEntry, editEntry, entryClipboard, exportFileName, mergeEntries, parseNotebook, removeEntry, serializeNotebook, type NotebookEntry } from './notebook.ts';
 import type { Session, TracksView } from './view-model.ts';
@@ -109,7 +109,10 @@ export function reopenProblem(entry: NotebookEntry): string | undefined {
   return undefined;
 }
 
-export const cannotReopen = (reason: string) => `Ce texte ne peut pas être rouvert : ${reason}.`;
+/** L'erreur d'un geste du carnet : « Suppression impossible : » puis la raison. */
+export const notebookFailure = (lead: string, reason: string): ErrorText => ({ lead, detail: `${reason}.` });
+
+export const cannotReopen = (reason: string) => notebookFailure('Ce texte ne peut pas être rouvert :', reason);
 
 /** Les gestes du carnet : garder, rouvrir, supprimer, exporter, importer, copier, retoucher. */
 export function createNotebookController(host: NotebookHost, notebook: NotebookDependencies): NotebookController {
@@ -145,16 +148,16 @@ export function createNotebookController(host: NotebookHost, notebook: NotebookD
       try {
         const entries = addEntry(latest(), entry);
         write(entries);
-        host.update({ notebook: entries, copyMessage: state.notebookPersistent ? 'Gardé.' : SESSION_KEPT, unsaved: false });
+        host.update({ notebook: entries, notebookError: undefined, copyMessage: state.notebookPersistent ? 'Gardé.' : SESSION_KEPT, unsaved: false });
       } catch (error) {
-        host.update({ copyMessage: `Impossible de garder : ${messageOf(error)}` });
+        host.update({ notebookError: notebookFailure('Impossible de garder :', messageOf(error)) });
       }
     },
     async reopen(id) {
       const entry = host.state.notebook.find((candidate) => candidate.id === id);
       if (!entry) return;
       const problem = reopenProblem(entry);
-      if (problem) return host.update({ notebookMessage: cannotReopen(problem) });
+      if (problem) return host.update({ notebookMessage: '', notebookError: cannotReopen(problem) });
       if (host.state.unsaved && !notebook.confirm('Le texte en cours n’est pas gardé. Rouvrir quand même ?')) return;
       await host.restore(entry);
     },
@@ -163,9 +166,9 @@ export function createNotebookController(host: NotebookHost, notebook: NotebookD
       try {
         const entries = removeEntry(latest(), id);
         write(entries);
-        host.update({ notebook: entries, notebookMessage: '' });
+        host.update({ notebook: entries, notebookMessage: '', notebookError: undefined });
       } catch (error) {
-        host.update({ notebookMessage: `Suppression impossible : ${messageOf(error)}` });
+        host.update({ notebookError: notebookFailure('Suppression impossible :', messageOf(error)) });
       }
     },
     exportNotebook() {
@@ -173,33 +176,33 @@ export function createNotebookController(host: NotebookHost, notebook: NotebookD
     },
     importNotebook(text) {
       const merged = mergeEntries(latest(), text);
-      if (merged.error) return host.update({ notebookMessage: `Import refusé : ${merged.error}` });
+      if (merged.error) return host.update({ notebookMessage: '', notebookError: notebookFailure('Import refusé :', merged.error.replace(/\.$/, '')) });
       try {
         write(merged.entries);
       } catch (error) {
-        return host.update({ notebookMessage: `Import impossible : ${messageOf(error)}` });
+        return host.update({ notebookError: notebookFailure('Import impossible :', messageOf(error)) });
       }
       const counts = [count(merged.added, 'texte ajouté', 'textes ajoutés'), count(merged.present, 'déjà présent', 'déjà présents')];
       if (merged.rejected) counts.push(count(merged.rejected, 'illisible', 'illisibles'));
-      host.update({ notebook: merged.entries, notebookMessage: `Import : ${counts.join(', ')}.` });
+      host.update({ notebook: merged.entries, notebookMessage: `Import : ${counts.join(', ')}.`, notebookError: undefined });
     },
     async copyEntry(id) {
       const entry = host.state.notebook.find((candidate) => candidate.id === id);
       if (!entry) return;
       try {
         await host.copy(entryClipboard(entry));
-        host.update({ notebookMessage: 'Copié.' });
+        host.update({ notebookMessage: 'Copié.', notebookError: undefined });
       } catch (error) {
-        host.update({ notebookMessage: `Copie impossible : ${messageOf(error)}` });
+        host.update({ notebookError: notebookFailure('Copie impossible :', messageOf(error)) });
       }
     },
     editEntry(id, text) {
       try {
         const entries = editEntry(latest(), id, text);
         write(entries);
-        host.update({ notebook: entries, notebookMessage: '' });
+        host.update({ notebook: entries, notebookMessage: '', notebookError: undefined });
       } catch (error) {
-        host.update({ notebookMessage: `Retouche impossible : ${messageOf(error)}` });
+        host.update({ notebookError: notebookFailure('Retouche impossible :', messageOf(error)) });
       }
     },
     syncNotebook() {

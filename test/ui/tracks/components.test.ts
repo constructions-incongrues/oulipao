@@ -241,7 +241,7 @@ test('Result : mots remplacés soulignés à la couleur de leur piste, mots cliq
 
 test('Source : définition et exemple au premier contact, avancement du modèle, saisie repliée', () => {
   const calls: string[] = [];
-  const model = (patch: Partial<ModelState>): ModelState => ({ status: 'ready', loaded: 0, total: 0, error: '', ...patch });
+  const model = (patch: Partial<ModelState>): ModelState => ({ status: 'ready', loaded: 0, total: 0, ...patch });
   const props: SourceProps = {
     input: '', words: 0, editing: true, started: false, tagging: false, message: '', model: model({ status: 'loading', loaded: 42e6, total: 111e6 }),
     onInput: (text) => calls.push(`input:${text}`), onEdit: () => calls.push('edit'), onRun: () => calls.push('run'),
@@ -263,9 +263,9 @@ test('Source : définition et exemple au premier contact, avancement du modèle,
   assert.match(before, /depuis jsDelivr et Hugging Face, qui voient alors votre adresse\. Votre texte, lui, reste dans ce navigateur\./);
   assert.match(before, /<button type="button" class="run">Mettre en pistes<\/button>/); // le premier clic vaut accord
   click(waiting, byClass('load'));
-  const failed = html`<${Source} ...${{ ...props, model: model({ status: 'error', error: 'Échec : hors ligne. Vous pouvez relancer.' }) }} />`;
+  const failed = html`<${Source} ...${{ ...props, model: model({ status: 'error', error: { lead: 'Le chargement du modèle a échoué.', detail: 'hors ligne.' } }) }} />`;
   assert.match(renderToString(failed), /<button type="button" class="run">Mettre en pistes/); // relancer en mettant en pistes
-  assert.match(renderToString(failed), /role="alert">Échec : hors ligne\. Vous pouvez relancer\. <button type="button" class="load">Relancer/);
+  assert.match(renderToString(failed), /class="error" role="alert">\s*<strong>Le chargement du modèle a échoué\.<\/strong> hors ligne\. <button type="button" class="load">Relancer/);
   click(failed, byClass('load'));
   const ready = render({ model: model({}), started: true, message: 'Collez d’abord un texte.' });
   assert.doesNotMatch(ready, /class="example"|progress/);

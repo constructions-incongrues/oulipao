@@ -9,6 +9,7 @@ import { tagText } from '../../domain/tagging.ts';
 import type { MonitoringPreferencesStorage } from '../../ports/monitoring-preferences.ts';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
 import type { PhoneticsRepository } from '../../ports/phonetics.ts';
+import { StalledError } from '../../ports/stalled.ts';
 import type { Speech, Voice } from '../../ports/speech.ts';
 import type { Tagger } from '../../ports/tagger.ts';
 import type { VerbRepository } from '../../ports/verbs.ts';
@@ -43,6 +44,20 @@ export interface TracksDependencies {
 
 export type { NotebookDependencies } from './notebook-controller.ts';
 
+/** Un message d'erreur : une tête courte (en rouge et en gras), puis le détail (à l'encre). */
+export interface ErrorText {
+  lead: string;
+  detail: string;
+}
+
+/** L'erreur d'un chargement : arrêté faute de données, ou échoué. `what` : « du modèle », « des verbes »… */
+export function loadingError(error: unknown, what: string): ErrorText {
+  if (error instanceof StalledError) {
+    return { lead: `Le chargement ${error.resource} ne progresse plus.`, detail: `Rien reçu depuis ${error.seconds} secondes : la connexion est peut-être coupée.` };
+  }
+  return { lead: `Le chargement ${what} a échoué.`, detail: `${messageOf(error)}.` };
+}
+
 /** Le chargement du modèle et du dictionnaire. */
 export interface ModelState {
   /** `waiting` : pas encore demandé ; rien ne part vers les tiers avant le premier clic. */
@@ -50,13 +65,14 @@ export interface ModelState {
   /** Octets reçus et attendus ; `total` vaut 0 tant que la taille n'est pas connue. */
   loaded: number;
   total: number;
-  error: string;
+  /** Présente quand le chargement a échoué. */
+  error?: ErrorText;
 }
 
 /** Le chargement d'une textbank demandée à la volée. */
 export interface Loading {
   status: 'idle' | 'loading' | 'ready' | 'error';
-  error: string;
+  error?: ErrorText;
 }
 
 export interface TracksState {
@@ -80,8 +96,10 @@ export interface TracksState {
   copyMessage: string;
   /** Les textes gardés, du plus récent au plus ancien. */
   notebook: NotebookEntry[];
-  /** Message du carnet : entrées illisibles, import, réouverture impossible. */
+  /** Avis du carnet, discret : entrées illisibles conservées, import réussi, copie. */
   notebookMessage: string;
+  /** Échec dans le carnet, annoncé : garder, rouvrir, supprimer, importer, retoucher, copier. */
+  notebookError?: ErrorText;
   /** Le carnet survit-il à la fermeture de l'onglet ? `false` : stockage refusé, carnet de séance. */
   notebookPersistent: boolean;
   /** Un texte en pistes a changé, par un geste, depuis la dernière garde ou réouverture. */
@@ -173,6 +191,13 @@ export interface TracksController {
   setVoice(voice: string): void;
 }
 
+/**
+ * La barre d'espace sert-elle à l'écoute ? Oui hors d'un champ, une fois un texte en pistes, quand
+ * une voix française existe — sur une touche focalisée aussi (spec `monitoring-vocal`). Sans voix,
+ * elle garde son effet ordinaire : elle active la touche qui a le focus.
+ */
+export const claimsSpace = (state: Pick<TracksState, 'view' | 'voices'>, inField: boolean) => !inField && state.view !== undefined && state.voices.length > 0;
+
 /** Un texte d'exemple, écrit pour Oulipao. */
 export const EXAMPLE_TEXT =
   "Le matin où la vieille horloge du village s'arrêta, personne ne le remarqua vraiment. Le boulanger ouvrit sa boutique à l'heure habituelle, les enfants coururent vers l'école, et le chat du notaire dormit au soleil sur le mur de la mairie.";
@@ -187,7 +212,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     editing: true,
     tagging: false,
     inputMessage: '',
-    model: { status: 'waiting', loaded: 0, total: 0, error: '' },
+    model: { status: 'waiting', loaded: 0, total: 0 },
     mixer: initialState,
     stale: false,
     changed: new Set(),
@@ -195,8 +220,8 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     copyMessage: '',
     ...initialNotebook(notebook),
     unsaved: false,
-    verbs: { status: 'idle', error: '' },
-    phonetics: { status: 'idle', error: '' },
+    verbs: { status: 'idle' },
+    phonetics: { status: 'idle' },
     perPage: 16,
     page: 0,
     pinned: false,
@@ -260,22 +285,57 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     notebook,
   );
 
+  /** L'essai le plus récent, fini quelle qu'en soit l'issue, rend le bouton « Mettre en pistes ». */
+  const settle = (run: number) => {
+    if (run === runs && state.tagging) update({ tagging: false });
+  };
+
+  /** Étiquette un texte et le met en pistes ; `run` numérote l'essai, un plus récent l'emporte. */
+  const runAs = async (run: number, text: string) => {
+    controller.stop();
+    update({ tagging: true, inputMessage: '', copyMessage: '' });
+    await controller.preload();
+    if (run !== runs || state.model.status !== 'ready') return; // relayé par un essai plus récent, ou modèle absent
+    try {
+      const tagged = await tagText(dependencies.tagger, text);
+      if (run !== runs) return;
+      session = { text, tagged };
+      // Nouvel étiquetage, nouvelles positions : les pas se rouvrent, les verrous tombent, l'inspecteur se ferme.
+      const mixer = reduce(state.mixer, { type: 'reset-steps' });
+      const view = buildView(session, mixer, morphology!, undefined, verbs, phonetics);
+      update({ tagging: false, editing: false, stale: state.input !== text, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, unsaved: true, listened: false });
+      wantResources(mixer);
+    } catch (error) {
+      if (run === runs) update({ tagging: false, inputMessage: `Échec de l’étiquetage : ${messageOf(error)}. Vous pouvez relancer.` });
+    }
+  };
+
   /** Rouvre un texte gardé : son texte d'origine, son étiquetage et sa table, sans réétiqueter. */
   const restore = async (entry: NotebookEntry) => {
     const run = ++runs; // une mise en pistes en cours ne doit pas l'écraser
+    try {
+      await restoreAs(run, entry);
+    } finally {
+      settle(run);
+    }
+  };
+
+  const restoreAs = async (run: number, entry: NotebookEntry) => {
     controller.stop();
-    update({ notebookMessage: '', inputMessage: '', listened: false });
+    update({ notebookMessage: '', notebookError: undefined, inputMessage: '', listened: false });
     await controller.preload();
     if (run !== runs || !morphology) return;
     const mixer = MixerStateSchema.parse(entry.mixer);
+    // Un texte gardé avant la normalisation peut être décomposé : texte et mots étiquetés passent en NFC.
+    const source: Session = { text: entry.source.text.normalize('NFC'), tagged: entry.source.tagged.map((word) => ({ ...word, word: word.word.normalize('NFC') })) };
     let view: TracksView;
     try {
       // On reconstruit avant de toucher à la table : un échec la laisse telle quelle.
-      view = buildView(entry.source, mixer, morphology, undefined, verbs, phonetics);
+      view = buildView(source, mixer, morphology, undefined, verbs, phonetics);
     } catch (error) {
-      return update({ notebookMessage: cannotReopen(messageOf(error)) });
+      return update({ notebookError: cannotReopen(messageOf(error)) });
     }
-    session = entry.source;
+    session = source;
     update({ input: session.text, tagging: false, editing: false, stale: false, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, copyMessage: '', unsaved: false });
     wantResources(mixer);
   };
@@ -287,7 +347,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     preload() {
       if (state.model.status === 'ready') return Promise.resolve();
       return (loading ??= (async () => {
-        setModel({ status: 'loading', loaded: 0, total: 0, error: '' });
+        setModel({ status: 'loading', loaded: 0, total: 0, error: undefined });
         try {
           const [, loaded] = await Promise.all([
             dependencies.preload((bytes, total) => setModel({ loaded: bytes, total })),
@@ -296,13 +356,15 @@ export function createTracksController(dependencies: TracksDependencies, onChang
           morphology = loaded;
           setModel({ status: 'ready' });
         } catch (error) {
-          setModel({ status: 'error', error: `Échec : ${messageOf(error)}. Vous pouvez relancer.` });
+          setModel({ status: 'error', error: loadingError(error, 'du modèle') });
         } finally {
           loading = undefined;
         }
       })());
     },
-    setInput(text) {
+    setInput(raw) {
+      // Un accent décomposé (« e » + accent combinant, fréquent depuis macOS) vaut la lettre précomposée.
+      const text = raw.normalize('NFC');
       update({ input: text, stale: session !== undefined && text !== session.text });
     },
     edit() {
@@ -312,22 +374,10 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       const text = state.input;
       if (!text.trim()) return update({ inputMessage: 'Collez d’abord un texte.' });
       const run = ++runs;
-      controller.stop();
-      update({ tagging: true, inputMessage: '', copyMessage: '' });
-      await controller.preload();
-      if (run !== runs) return; // un essai plus récent a pris le relais
-      if (state.model.status !== 'ready') return update({ tagging: false });
       try {
-        const tagged = await tagText(dependencies.tagger, text);
-        if (run !== runs) return;
-        session = { text, tagged };
-        // Nouvel étiquetage, nouvelles positions : les pas se rouvrent, les verrous tombent, l'inspecteur se ferme.
-        const mixer = reduce(state.mixer, { type: 'reset-steps' });
-        const view = buildView(session, mixer, morphology!, undefined, verbs, phonetics);
-        update({ tagging: false, editing: false, stale: state.input !== text, mixer, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, unsaved: true, listened: false });
-        wantResources(mixer);
-      } catch (error) {
-        if (run === runs) update({ tagging: false, inputMessage: `Échec de l’étiquetage : ${messageOf(error)}. Vous pouvez relancer.` });
+        await runAs(run, text);
+      } finally {
+        settle(run);
       }
     },
     example() {
@@ -336,24 +386,24 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     },
     async loadVerbs() {
       if (!dependencies.loadVerbs || state.verbs.status === 'loading' || state.verbs.status === 'ready') return;
-      update({ verbs: { status: 'loading', error: '' } });
+      update({ verbs: { status: 'loading' } });
       try {
         verbs = await dependencies.loadVerbs();
-        update({ verbs: { status: 'ready', error: '' } });
+        update({ verbs: { status: 'ready' } });
         rebuild({});
       } catch (error) {
-        update({ verbs: { status: 'error', error: `Échec du chargement des verbes : ${messageOf(error)}.` } });
+        update({ verbs: { status: 'error', error: loadingError(error, 'des verbes') } });
       }
     },
     async loadPhonetics() {
       if (!dependencies.loadPhonetics || state.phonetics.status === 'loading' || state.phonetics.status === 'ready') return;
-      update({ phonetics: { status: 'loading', error: '' } });
+      update({ phonetics: { status: 'loading' } });
       try {
         phonetics = await dependencies.loadPhonetics();
-        update({ phonetics: { status: 'ready', error: '' } });
+        update({ phonetics: { status: 'ready' } });
         rebuild({});
       } catch (error) {
-        update({ phonetics: { status: 'error', error: `Échec du chargement des prononciations : ${messageOf(error)}.` } });
+        update({ phonetics: { status: 'error', error: loadingError(error, 'des prononciations') } });
       }
     },
     dispatch(action) {
@@ -371,7 +421,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     },
     shortcut(key, inField) {
       if (inField || !state.view) return false;
-      if (key === ' ') return controller.toggle(), true;
+      if (key === ' ') return claimsSpace(state, inField) && (controller.toggle(), true);
       const delta = ({ ArrowLeft: -1, ArrowRight: 1 } as Record<string, number>)[key];
       // Inspecteur fermé : une flèche l'ouvre sur le premier mot de la page affichée.
       if (delta && state.selected === undefined) controller.select(Math.min(state.page * state.perPage, state.view.tracks.length - 1));

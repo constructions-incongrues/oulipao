@@ -21,19 +21,19 @@
 
 ## 3. Messages et chargements
 
-- [ ] 3.1 (ui) Composant `ErrorMessage` `{ lead, detail }` (role=alert, filet, tête en strong, touche optionnelle) dans `src/ui/tracks/components/` ; tests de rendu
-- [ ] 3.2 (ui) Passer au composant les erreurs du modèle, des verbes, des prononciations et les échecs du carnet (rouvrir, garder, supprimer, importer) ; les avis restent en `.notebook-message[role=status]` ; tests : role=alert pour les échecs, role=status pour les avis
-- [ ] 3.3 (adapters) `fetchTextSource` : lecture par flux, minuteur d'inactivité de 30 s réarmé à chaque morceau, `StalledError` nommant la ressource ; tests avec une source qui cale et une source lente mais vivante
-- [ ] 3.4 (adapters) Préchargement du modèle : minuteur réarmé à chaque rappel de progression de Transformers.js, même `StalledError` ; test avec un classifieur factice qui cesse de progresser
-- [ ] 3.5 (ui) Message de chargement calé : tête « Le chargement <du modèle | du dictionnaire | des verbes | des prononciations> ne progresse plus. », détail « Rien reçu depuis 30 secondes : la connexion est peut-être coupée. », touche « Relancer » ; tests des quatre ressources
-- [ ] 3.6 (ui) Lignes d'état « Chargement des verbes… » et « Chargement des prononciations… » (role=status) à l'emplacement de leur erreur ; tests chargement, succès, échec
-- [ ] 3.7 (ui) `run` et `reopen` remettent `tagging: false` pour l'essai le plus récent, quelle qu'en soit l'issue ; test de la course run → reopen → échec du préchargement
+- [x] 3.1 (ui) Composant `ErrorMessage` `{ lead, detail }` (role=alert, filet, tête en strong, touche optionnelle) dans `src/ui/tracks/components/` ; tests de rendu
+- [x] 3.2 (ui) Passer au composant les erreurs du modèle, des verbes, des prononciations et les échecs du carnet (rouvrir, garder, supprimer, importer) ; les avis restent en `.notebook-message[role=status]` ; tests : role=alert pour les échecs, role=status pour les avis
+- [x] 3.3 (adapters) `fetchTextSource` : lecture par flux, minuteur d'inactivité de 30 s réarmé à chaque morceau, `StalledError` nommant la ressource ; tests avec une source qui cale et une source lente mais vivante
+- [x] 3.4 (adapters) Préchargement du modèle : minuteur réarmé à chaque rappel de progression de Transformers.js, même `StalledError` ; test avec un classifieur factice qui cesse de progresser
+- [x] 3.5 (ui) Message de chargement calé : tête « Le chargement <du modèle | du dictionnaire | des verbes | des prononciations> ne progresse plus. », détail « Rien reçu depuis 30 secondes : la connexion est peut-être coupée. », touche « Relancer » ; tests des quatre ressources
+- [x] 3.6 (ui) Lignes d'état « Chargement des verbes… » et « Chargement des prononciations… » (role=status) à l'emplacement de leur erreur ; tests chargement, succès, échec
+- [x] 3.7 (ui) `run` et `reopen` remettent `tagging: false` pour l'essai le plus récent, quelle qu'en soit l'issue ; test de la course run → reopen → échec du préchargement
 
 ## 4. Saisie et écoute
 
-- [ ] 4.1 (ui) Normaliser en NFC dans `setInput` et à la réouverture ; test : « été » décomposé et précomposé donnent le même texte résultant avec un S+7
-- [ ] 4.2 (ui) `aria-keyshortcuts="Space"` sur la touche Écouter, sérigraphie « ESPACE » (`.silk`) sous la touche, masquée sous 768 px, `title` retiré ; test de l'attribut et de l'étiquette dans `test/ui/tracks/transport.test.ts`
-- [ ] 4.3 (ui) Sans voix française, ne plus avaler la barre d'espace : sortir de `main.ts` une fonction testée qui décide si l'événement est intercepté ; tests : avec voix sur une touche (intercepté, spec `monitoring-vocal`), sans voix (non intercepté), dans un champ (non intercepté)
+- [x] 4.1 (ui) Normaliser en NFC dans `setInput` et à la réouverture ; test : « été » décomposé et précomposé donnent le même texte résultant avec un S+7
+- [x] 4.2 (ui) `aria-keyshortcuts="Space"` sur la touche Écouter, sérigraphie « ESPACE » (`.silk`) sous la touche, masquée sous 768 px, `title` retiré ; test de l'attribut et de l'étiquette dans `test/ui/tracks/transport.test.ts`
+- [x] 4.3 (ui) Sans voix française, ne plus avaler la barre d'espace : sortir de `main.ts` une fonction testée qui décide si l'événement est intercepté ; tests : avec voix sur une touche (intercepté, spec `monitoring-vocal`), sans voix (non intercepté), dans un champ (non intercepté)
 
 ## 5. Système de design
 
