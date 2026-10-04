@@ -7,6 +7,7 @@ import { elides, realizeDeterminer } from './elision.ts';
 import { substituteNoun, type NounChoice, type NounHints } from './substitution.ts';
 import { adjectiveChain, findPredicate, isImpersonal, LINKING_PREPOSITIONS, SUBJECT_PRONOUNS, subjectPronoun, TextView } from './syntax.ts';
 import { S7OptionsSchema, type ConcreteGender, type ConcreteNumber, type OutputWord, type S7OptionsInput, type S7Result, type Substitution } from './types.ts';
+import { apostropheOf, matchCase } from '../text-case.ts';
 
 /** Ce qu'on change à un mot du texte : sa forme, et ce qui le sépare du mot précédent. */
 interface Override {
@@ -26,11 +27,6 @@ interface NounGroup {
 }
 
 /** Reporte la majuscule initiale du mot d'origine sur le mot nouveau. */
-function matchCase(original: string, replacement: string): string {
-  const first = original[0]!;
-  const capitalized = first !== first.toLowerCase();
-  return capitalized ? replacement[0]!.toUpperCase() + replacement.slice(1) : replacement;
-}
 
 /**
  * Choisit le remplaçant d'un nom, d'après ce que la phrase dit de son genre et de son nombre ;
@@ -84,7 +80,7 @@ export function rewriteNouns(
     throw new Error('les mots étiquetés ne correspondent pas au découpage du texte');
   }
   const view = new TextView(text, tokens, tagged);
-  const apostrophe = text.includes('’') ? '’' : "'";
+  const apostrophe = apostropheOf(text);
   const overrides = new Map<number, Override>();
   const claimed = new Set<number>();
   const wordAt = (i: number) => overrides.get(i)?.word ?? tokens[i]!.word;

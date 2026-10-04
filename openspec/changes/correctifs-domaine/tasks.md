@@ -29,11 +29,11 @@
 
 ## 5. Copies regroupées (PR `refactor:`)
 
-- [ ] 5.1 (domain) Comparer ligne à ligne les cinq `matchCase`, les cinq choix d'apostrophe et les quatre closures `elides` ; noter dans la PR celles qui sont identiques et celles qui diffèrent
-- [ ] 5.2 (domain) Extraire les copies identiques dans `src/domain/text-case.ts` et `src/domain/s7/elision.ts`, avec un test du contrat de chaque fonction partagée ; laisser en place, commentées, celles qui diffèrent ; banc de référence inchangé
-- [ ] 5.3 (domain) Créer `src/domain/reasons.ts` (« pas bouché », « absent du dictionnaire ») et y faire pointer `s7`, `rhyme`, `verb`, `edge`, `track-sort`, `lipogram` et `tautogram` ; plus aucun import de `s7/plugin.ts` depuis `edge` ni `track-sort` (vérifié par recherche)
-- [ ] 5.4 Mettre à jour DEBT-02 dans `docs/arc42/11-risques-et-dette-technique.md` (liste de composés lexicalisés, découpage selon le dictionnaire toujours ouvert)
+- [x] 5.1 (domain) Comparer ligne à ligne les cinq `matchCase`, les cinq choix d'apostrophe et les quatre closures `elides` ; noter dans la PR celles qui sont identiques et celles qui diffèrent
+- [x] 5.2 (domain) Extraire les copies identiques dans `src/domain/text-case.ts` et `src/domain/s7/elision.ts`, avec un test du contrat de chaque fonction partagée ; laisser en place, commentées, celles qui diffèrent ; banc de référence inchangé
+- [x] 5.3 (domain) Créer `src/domain/reasons.ts` (« pas bouché », « absent du dictionnaire ») et y faire pointer `s7`, `rhyme`, `verb`, `edge`, `track-sort`, `lipogram` et `tautogram` ; plus aucun import de `s7/plugin.ts` depuis `edge` ni `track-sort` (vérifié par recherche)
+- [x] 5.4 Mettre à jour DEBT-02 dans `docs/arc42/11-risques-et-dette-technique.md` (liste de composés lexicalisés, découpage selon le dictionnaire toujours ouvert)
 
 ## 6. Vérification d'ensemble
 
-- [ ] 6.1 `npm run typecheck` et `npm test` verts, couverture ≥ 90 % en lignes, branches et fonctions
+- [x] 6.1 `npm run typecheck` et `npm test` verts, couverture ≥ 90 % en lignes, branches et fonctions

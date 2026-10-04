@@ -1,11 +1,11 @@
 import { knownForm } from '../known.ts';
-import { UNKNOWN } from '../verb.ts';
+import { UNKNOWN } from '../reasons.ts';
 import { z } from 'zod';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
 import { definePlugin, FULL_SCOPE, type ParameterValues, type WordMark } from '../plugin.ts';
 import { matchCase, removeWord } from '../removal.ts';
 import { keepNoun, rewriteNouns } from '../s7/engine.ts';
-import { elides } from '../s7/elision.ts';
+import { elidesWith } from '../s7/elision.ts';
 import type { OutputWord } from '../s7/types.ts';
 import type { TaggedWord } from '../tagged-word.ts';
 import { tokenize } from '../tokenizer.ts';
@@ -14,6 +14,7 @@ import { elide, lettersOf, restoreArticle } from '../letters.ts';
 import { neighbourVerb, rewriteVerbs } from '../verb.ts';
 import { functionWordWithout } from './function-words.ts';
 import { containsLetter, neighbourAdjective, neighbourAdverb, neighbourNoun } from './neighbour.ts';
+import { apostropheOf } from '../text-case.ts';
 
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
 const MAX_LETTERS = 40;
@@ -130,7 +131,7 @@ export const lipogramPlugin = definePlugin({
     const letter = bannedLetters(letters, mode) + banned;
     const skip = new Set(scope.skip);
     const tokens = tokenize(text);
-    const apostrophe = text.includes('’') ? '’' : "'";
+    const apostrophe = apostropheOf(text);
 
     // 1. Les noms, avec leur groupe : déterminant, adjectifs, attribut, pronom de reprise.
     const nouns = rewriteNouns(
@@ -178,7 +179,7 @@ export const lipogramPlugin = definePlugin({
           (word, previous, repository) => neighbourVerb(word, previous, letter, repository),
           verbs,
           apostrophe,
-          (word) => elides(word, { blocksElision: (form) => !!verbs?.blocksElision(form) || morphology.blocksElision(form) }),
+          elidesWith(morphology, verbs),
         ),
       );
     }

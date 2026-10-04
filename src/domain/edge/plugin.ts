@@ -4,7 +4,7 @@ import { linesOf } from '../lines.ts';
 import { plainWords } from '../mixing.ts';
 import { definePlugin, FULL_SCOPE, type ParameterValues, type WordMark } from '../plugin.ts';
 import { removeWord } from '../removal.ts';
-import { CLOSED } from '../s7/plugin.ts';
+import { CLOSED } from '../reasons.ts';
 
 const ParamsSchema = z.object({
   mode: z.enum(['ends', 'head-tail', 'inside']).default('ends'),

@@ -1,15 +1,16 @@
 import { knownForm } from '../known.ts';
-import { UNKNOWN } from '../verb.ts';
+import { UNKNOWN } from '../reasons.ts';
 import { z } from 'zod';
 import { bare, elide, lettersOf, restoreArticle } from '../letters.ts';
 import { nthAdjective, nthAdverb, nthNoun } from '../neighbours.ts';
 import { definePlugin, FULL_SCOPE, type ParameterValues, type WordMark } from '../plugin.ts';
 import { matchCase } from '../removal.ts';
-import { elides } from '../s7/elision.ts';
+import { elidesWith } from '../s7/elision.ts';
 import { keepNoun, rewriteNouns } from '../s7/engine.ts';
 import { tokenize } from '../tokenizer.ts';
 import { nthVerb, rewriteVerbs } from '../verb.ts';
 import { assignLetters } from './cycle.ts';
+import { apostropheOf } from '../text-case.ts';
 
 const MAX_LETTERS = 40;
 
@@ -61,7 +62,7 @@ export const tautogramPlugin = definePlugin({
       return letter !== undefined && !startsWith(letter)(form);
     };
     const tokens = tokenize(text);
-    const apostrophe = text.includes('’') ? '’' : "'";
+    const apostrophe = apostropheOf(text);
 
     // 1. Les noms, avec leur groupe : déterminant, adjectifs, attribut, pronom de reprise.
     const nouns = rewriteNouns(
@@ -106,7 +107,7 @@ export const tautogramPlugin = definePlugin({
         (word, previous, repository, index) => nthVerb(word, previous, 1, startsWith(assigned.get(index)!), repository, noNeighbour(assigned.get(index)!), undefined, swapInitial(assigned.get(index)!)),
         verbs,
         apostrophe,
-        (word) => elides(word, { blocksElision: (form) => !!verbs?.blocksElision(form) || morphology.blocksElision(form) }),
+        elidesWith(morphology, verbs),
       ),
     );
 
