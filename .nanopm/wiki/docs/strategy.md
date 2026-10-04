@@ -38,7 +38,7 @@ Si le fondateur construit l'instrument dont il a envie de jouer, au moins 2 autr
 
 - **Not mesurer la réussite au nombre de textes du fondateur** parce que les textes sont le sous-produit de l'instrument — revisit when le fondateur dit revenir pour écrire plutôt que pour jouer.
 - **Not un outil à résultat** (une fonction « rendre joyeux » mise en avant) parce que l'instrument est le pari — revisit when la seule personne qui revient d'elle-même le fait pour ce seul réglage (voir la réfutation ci-dessous).
-- **Not le partage en un clic** parce que l'adresse suffit pour ouvrir l'instrument et le bloc du carnet pour montrer une prise — revisit when quelqu'un renonce à montrer une prise faute de pouvoir la copier.
+- **Not le partage du texte seul en un clic** (image, aperçu enrichi) parce que l'adresse suffit pour ouvrir l'instrument et le bloc du carnet pour montrer une prise — revisit when quelqu'un renonce à montrer une prise faute de pouvoir la copier. Le lien qui porte une entrée du carnet avec sa chaîne est permis depuis le 2026-10-04 (PRD `prds/lien-partageable.md`) : il ouvre l'instrument réglé, prêt à rejouer.
 - **Not le filtrage des mots crus** parce qu'ils font partie du rire — revisit when une prise n'est pas montrée, ou est mal reçue, à cause d'un mot.
 - **Not un format de plugin publié ni un bac à sable tiers** parce que personne d'autre n'écrit de plugin — revisit when quelqu'un veut en écrire un.
 - **Not les comptes ni la sauvegarde sur un serveur** parce que le texte reste à l'auteur — revisit when une prise est perdue faute de sauvegarde locale.

@@ -60,7 +60,7 @@ Strategy: l'instrument dont le fondateur a envie de jouer ; au moins 2 autres pe
 - **Sortie libre et structure en vers (E3)** — 7 contraintes ; seule évolution qui casse l'alignement mot à mot. — revisit when une prise demande de déplacer ou de dupliquer un vers.
 - **Textbanks sémantiques (E5) et lexique tiré d'un texte** — antonymes, lexiques thématiques, vocabulaire d'un texte collé (`lexique-tire-d-un-texte`, hypothèse). — revisit when trois notes de carnet disent « j'aurais voulu d'autres mots ».
 - **Nouvelles fiches du séquenceur** (euclide, polymétrie, conditions, automation…). — revisit when le fondateur veut en jouer et que le puzzle est en ligne.
-- **Partage en un clic** (hors puzzles). — revisit when quelqu'un renonce à montrer une prise faute de pouvoir la copier.
+- **Partage du texte seul en un clic** (image, aperçu enrichi ; hors puzzles). — revisit when quelqu'un renonce à montrer une prise faute de pouvoir la copier. Le lien qui porte une entrée avec sa chaîne est construit (PR #95, 2026-10-04).
 - **Format de plugin publié et bac à sable pour plugins tiers.** — revisit when quelqu'un d'autre veut écrire un plugin.
 
 ---
