@@ -11,6 +11,7 @@ import type { TaggedWord } from '../../domain/tagged-word.ts';
 import { tokenize } from '../../domain/tokenizer.ts';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
 import type { PhoneticsRepository } from '../../ports/phonetics.ts';
+import type { ScaleRepository } from '../../ports/scales.ts';
 import type { VerbRepository } from '../../ports/verbs.ts';
 import { pluginById } from './mixer-state.ts';
 import { gateStatement, modulatedLabel, modulatorStatement } from './modulation-statement.ts';
@@ -210,10 +211,11 @@ export function buildView(
   lookup: PluginLookup = pluginById,
   verbs?: VerbRepository,
   phonetics?: PhoneticsRepository,
+  scales?: ScaleRepository,
 ): TracksView {
   const { text, tagged } = session;
   const steps = activeSteps(mixer, lookup);
-  const chain = runChain(text, tagged, steps, { morphology, verbs, phonetics });
+  const chain = runChain(text, tagged, steps, { morphology, verbs, phonetics, scales });
   const active = mixer.instances.filter((instance) => chain.steps.some((step) => step.id === instance.id));
   const marks = new Map<number, Mark>();
   for (const { index, original, replacement, removed, relaid, reason } of chain.marks.values()) {
@@ -392,6 +394,8 @@ export interface InspectorCell {
   newline: boolean;
   /** Ce que le modulateur a donné à ce mot à cette étape : « +4 », « porte fermée », « pas de voisin ». */
   modulation?: string;
+  /** Ce que l'étape précise sur ce mot remplacé : « valence 12 → 31 ». */
+  detail?: string;
 }
 
 const NOTES: Record<NonNullable<WordModulation['note']>, string> = { 'no-neighbour': 'pas de voisin', loading: PHONETICS_LOADING };
@@ -427,7 +431,8 @@ export function inspectorWindow(view: TracksView, index: number, radius: number,
       label,
       cells: columns.map((column) => {
         const text = modulationText(modulation?.get(column.index), plugins(id));
-        return { text: words[column.index]!.output || '·', newline: words[column.index]!.newline, ...(text && { modulation: text }) };
+        const { output, newline, detail } = words[column.index]!;
+        return { text: output || '·', newline, ...(text && { modulation: text }), ...(detail && { detail }) };
       }),
     })),
   };

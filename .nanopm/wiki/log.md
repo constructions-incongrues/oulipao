@@ -44,3 +44,4 @@
 ## [2026-10-04] ingest | pm-prd: wrote docs/prds/monitoring-vocal.md
 ## [2026-10-04] ingest | pm-prd: wrote docs/prds/modulateur.md
 ## [2026-10-04] ingest | pm-prd: wrote docs/prds/iterer-et-figer.md
+## [2026-10-04] ingest | pm-prd: wrote docs/prds/v-n-du-mineur-au-majeur.md

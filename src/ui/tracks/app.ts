@@ -28,7 +28,7 @@ export interface AppProps {
   state: TracksState;
   controller: Pick<
     TracksController,
-    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'iterate' | 'freeze' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook' | 'copyEntry' | 'editEntry' | 'toggle' | 'setTempo' | 'setVoice'
+    'setInput' | 'edit' | 'run' | 'example' | 'preload' | 'loadVerbs' | 'loadPhonetics' | 'loadScales' | 'dispatch' | 'select' | 'step' | 'closeInspector' | 'copy' | 'showPage' | 'keep' | 'iterate' | 'freeze' | 'reopen' | 'remove' | 'exportNotebook' | 'importNotebook' | 'copyEntry' | 'editEntry' | 'toggle' | 'setTempo' | 'setVoice'
   >;
   /** Bascule le thème clair ou sombre ; posé par le montage, qui seul touche au document. */
   onTheme?: () => void;
@@ -143,6 +143,7 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
       <p class="summary" role="status" aria-live="polite">${view ? summarize(mixer, view) : ''}</p>
       <${Fetching} loading=${state.verbs} label="Chargement des verbes…" onRetry=${() => void controller.loadVerbs()} />
       <${Fetching} loading=${state.phonetics} label="Chargement des prononciations…" onRetry=${() => void controller.loadPhonetics()} />
+      <${Fetching} loading=${state.scales} label="Chargement des échelles…" onRetry=${() => void controller.loadScales()} />
       <${Chain} instances=${mixer.instances} plugins=${installedPlugins} recipes=${recipes} lookup=${pluginById} dispatch=${controller.dispatch} />
       ${view &&
       html`<${Transport}

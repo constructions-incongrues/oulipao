@@ -194,8 +194,10 @@
   .lock-field { display: inline-flex; gap: var(--space-1); align-items: center; margin-left: var(--space-2); }
   .lock-field input { width: 3.5rem; }
   .lock-note { margin-left: var(--space-2); color: var(--ink); }
-  /* Une valeur modulée : sous le mot, en Martian Mono, à l'encre secondaire (le verrou est à l'encre). */
-  .inspector td .mod { display: block; font: var(--size-small) var(--font-mono); color: var(--muted); }
+  /* Une valeur modulée, ou la note d'une échelle : sous le mot, en Martian Mono, à l'encre secondaire (le verrou est à l'encre). */
+  .inspector td .mod, .inspector td .detail { display: block; font: var(--size-small) var(--font-mono); color: var(--muted); }
+  /* La note passe à la ligne (« valence » / « 12 → 31 ») pour ne pas élargir la colonne du mot. */
+  .inspector td .detail { white-space: normal; }
   .modulator, .mod-settings, .gate { display: inline-flex; flex-wrap: wrap; gap: var(--space-1); align-items: center; }
   .mod-settings, .gate { font-size: var(--size-small); }
   .mod-settings summary, .gate summary { cursor: pointer; }

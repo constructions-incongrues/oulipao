@@ -32,7 +32,7 @@ const click = (node: unknown, predicate: Parameters<typeof find>[1]) => (find(no
 test('Control : un champ entier borné ou une liste, d’après la déclaration du plugin', () => {
   const calls: unknown[] = [];
   const onParam = (key: string, value: unknown) => calls.push(`${key}=${value}`);
-  const [offset, mode] = s7Plugin.parameters as [Parameter, Parameter];
+  const [offset, , mode] = s7Plugin.parameters as [Parameter, Parameter, Parameter];
   const integer = html`<${Control} parameter=${offset} value=${7} onParam=${onParam} />`;
   assert.match(renderToString(integer), /<input type="number" step="1" min="-99" max="99" value="7"/);
   const input = find(integer, (e) => e.type === 'input').props['onInput'] as (event: Event) => void;

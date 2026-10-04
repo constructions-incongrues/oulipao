@@ -2,6 +2,7 @@
 // depuis dist/ : les données sont un cran au-dessus.
 import { loadMorphology } from '../adapters/morphology/in-memory-morphology.ts';
 import { loadPhonetics } from '../adapters/morphology/in-memory-phonetics.ts';
+import { loadScales } from '../adapters/morphology/in-memory-scales.ts';
 import { loadVerbs } from '../adapters/morphology/in-memory-verbs.ts';
 import { watchProgress } from '../adapters/loading/inactivity.ts';
 import { createCamembertClassifier } from '../adapters/taggers/camembert-model.ts';
@@ -11,6 +12,7 @@ import { LexiconLookupTagger } from '../adapters/taggers/lexicon-lookup-tagger.t
 import { fetchTextSource } from '../adapters/text-sources/fetch-text-source.ts';
 import type { MorphologyRepository } from '../ports/morphology.ts';
 import type { PhoneticsRepository } from '../ports/phonetics.ts';
+import type { ScaleRepository } from '../ports/scales.ts';
 import type { Tagger } from '../ports/tagger.ts';
 import type { VerbRepository } from '../ports/verbs.ts';
 
@@ -75,6 +77,19 @@ export function createPhoneticsLoader(base: string | URL): () => Promise<Phoneti
   return () =>
     (phonetics ??= loadPhonetics(fetchTextSource(new URL(`../data/phonetique-oulipao.tsv?v=${PHONETICS_VERSION}`, base), { resource: 'des prononciations' })).catch((error: unknown) => {
       phonetics = undefined;
+      throw error;
+    }));
+}
+
+/** Version du fichier des échelles, ajoutée à son adresse. À changer à chaque `npm run build:scales`. */
+export const SCALES_VERSION = '2026-10-04-v-n';
+
+/** Les échelles affectives, chargées seulement quand un S+n prend un autre ordre que le dictionnaire ; un échec n'est pas gardé. */
+export function createScalesLoader(base: string | URL): () => Promise<ScaleRepository> {
+  let scales: Promise<ScaleRepository> | undefined;
+  return () =>
+    (scales ??= loadScales(fetchTextSource(new URL(`../data/echelles-oulipao.tsv?v=${SCALES_VERSION}`, base))).catch((error: unknown) => {
+      scales = undefined;
       throw error;
     }));
 }
