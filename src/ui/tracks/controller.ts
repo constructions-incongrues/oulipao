@@ -10,7 +10,7 @@ import type { VerbRepository } from '../../ports/verbs.ts';
 import { initialState, pluginById, reduce } from './mixer-state.ts';
 import { addEntry, editEntry, entryClipboard, exportFileName, mergeEntries, parseNotebook, removeEntry, serializeNotebook, type NotebookEntry } from './notebook.ts';
 import { MixerStateSchema, type MixerAction, type MixerState } from './types.ts';
-import { buildView, changedWords, pageOf, ruleMention, stepsPerPage, withListening, type Session, type TracksView } from './view-model.ts';
+import { buildView, changedWords, pageOf, readsSyllables, ruleMention, stepsPerPage, withListening, type Session, type TracksView } from './view-model.ts';
 
 /** Ce dont la page a besoin de l'extérieur. */
 export interface TracksDependencies {
@@ -257,11 +257,11 @@ export function createTracksController(dependencies: TracksDependencies, onChang
   const wantResources = (mixer: MixerState) => {
     const enabled = mixer.instances.filter((instance) => instance.enabled);
     if (state.verbs.status === 'idle' && enabled.some((instance) => instance.targets.includes('verb'))) void controller.loadVerbs();
-    if (state.phonetics.status === 'idle' && enabled.some((instance) => pluginById(instance.type).phonetic)) void controller.loadPhonetics();
+    if (state.phonetics.status === 'idle' && enabled.some((instance) => pluginById(instance.type).phonetic || readsSyllables(instance))) void controller.loadPhonetics();
   };
 
   /** La mention de la chaîne, avec « réglé en écoutant » si l'écoute a tourné. */
-  const mention = (view: TracksView) => withListening(ruleMention(state.mixer, view.audible), state.listened);
+  const mention = (view: TracksView) => withListening(ruleMention(state.mixer, view.audible, undefined, view.folded), state.listened);
 
   /**
    * L'écoute : à chaque pas, elle relit l'état (vue, page, tempo, voix), dit les mots du pas ou se

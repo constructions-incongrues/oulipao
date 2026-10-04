@@ -42,3 +42,4 @@
 ## [2026-10-03] ingest | pm-prd: wrote docs/prds/carnet-de-textes-gardes.md
 ## [2026-10-03] ingest | pm-prd: wrote docs/prds/parametre-texte-libre.md
 ## [2026-10-04] ingest | pm-prd: wrote docs/prds/monitoring-vocal.md
+## [2026-10-04] ingest | pm-prd: wrote docs/prds/modulateur.md

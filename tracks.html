@@ -191,6 +191,13 @@
   .lock-field { display: inline-flex; gap: var(--space-1); align-items: center; margin-left: var(--space-2); }
   .lock-field input { width: 3.5rem; }
   .lock-note { margin-left: var(--space-2); color: var(--ink); }
+  /* Une valeur modulée : sous le mot, en Martian Mono, à l'encre secondaire (le verrou est à l'encre). */
+  .inspector td .mod { display: block; font: var(--size-small) var(--font-mono); color: var(--muted); }
+  .modulator, .mod-settings, .gate { display: inline-flex; flex-wrap: wrap; gap: var(--space-1); align-items: center; }
+  .mod-settings, .gate { font-size: var(--size-small); }
+  .mod-settings summary, .gate summary { cursor: pointer; }
+  .mod-settings input[type="number"], .gate input[type="number"] { width: 3.5rem; }
+  input[type="text"].param-text.mod-letter { width: 2.5rem; }
   .inspector td { padding: var(--space-1) var(--space-2); border-bottom: var(--rule) solid var(--line); text-align: center; white-space: nowrap; }
   .inspector td.chosen { background: var(--paper); font-weight: 600; }
   .inspector-help { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; color: var(--muted); font-size: var(--size-small); }

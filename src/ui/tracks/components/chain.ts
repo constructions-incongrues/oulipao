@@ -4,7 +4,11 @@ import type { ConstraintPlugin } from '../../../domain/plugin.ts';
 import { TRACK_NAMES, type Instance, type MixerAction } from '../types.ts';
 import type { Recipe } from '../recipes.ts';
 import { Browser } from './browser.ts';
+import { GateSchema, ModulatorSchema } from '../../../domain/modulation/schema.ts';
+import { gateStatement, modulatedLabel, modulatorStatement } from '../modulation-statement.ts';
 import { Control } from './control.ts';
+import { GateField } from './gate-field.ts';
+import { ModulatorField } from './modulator-field.ts';
 import { Shape } from './shape.ts';
 
 export interface ChainProps {
@@ -33,10 +37,24 @@ export function dropPosition(ids: readonly string[], dragged: string, target: st
 const DRAG_MARKS = ['dragging', 'drop-before', 'drop-after'];
 const clearMarks = (row: Element) => row.closest('.slots')?.querySelectorAll('.slot').forEach((slot) => slot.classList.remove(...DRAG_MARKS));
 
+/** L'aide d'une instance : celle de son type, ou la règle de ses modulateurs et de sa porte, qui la remplace. */
+function help(instance: Instance, plugin: ConstraintPlugin): string {
+  const { modulators = {}, gate, targets, params } = instance;
+  const context = { earlier: false, folded: false };
+  const rules = [
+    ...Object.entries(modulators).map(([key, modulator]) => modulatorStatement(plugin, key, modulator, targets, context)),
+    ...(gate ? [gateStatement(gate, targets, context)] : []),
+  ];
+  if (!rules.length) return plugin.help(params, new Set(targets));
+  const sentence = rules.join(' ; ');
+  return `${sentence[0]!.toUpperCase()}${sentence.slice(1)}.`;
+}
+
 /** Une ligne de la chaîne : poignée, numéro, nom, réglages, pistes visées, marche, gestes. */
 function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance; position: number; ids: readonly string[]; plugin: ConstraintPlugin; dispatch: ChainProps['dispatch'] }): VNode {
-  const { id, targets, enabled, params } = instance;
-  const name = plugin.nameOf?.(params) ?? plugin.name;
+  const { id, targets, enabled, params, modulators = {}, gate } = instance;
+  // Un paramètre principal modulé donne son nom à l'instance : « S+lettres ».
+  const name = modulators[Object.keys(modulators)[0] ?? ''] ? modulatedLabel(plugin, params, modulators).split(',')[0]! : (plugin.nameOf?.(params) ?? plugin.name);
   const rank = position + 1;
   const last = ids.length - 1;
   // Glisser-déposer natif : seule la poignée rend la ligne déplaçable, les champs restent utilisables.
@@ -79,8 +97,20 @@ function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance
       <span class="param">
         ${plugin.parameters.map(
           (parameter) => html`<label class="silk">${parameter.label}<${Control} parameter=${parameter} value=${params[parameter.key]}
-            onParam=${(key: string, value: number | string) => dispatch({ type: 'set-param', id, key, value })} /></label>`,
+            onParam=${(key: string, value: number | string) => dispatch({ type: 'set-param', id, key, value })} /></label>
+            ${parameter.kind === 'integer' && parameter.lockable &&
+            html`<${ModulatorField} label=${parameter.label} modulator=${modulators[parameter.key]} onModulator=${(modulator: unknown) => {
+              if (modulator === undefined) return dispatch({ type: 'clear-modulator', id, key: parameter.key });
+              const parsed = ModulatorSchema.safeParse(modulator);
+              if (parsed.success) dispatch({ type: 'set-modulator', id, key: parameter.key, modulator: parsed.data });
+            }} />`}`,
         )}
+        ${plugin.targetable !== false &&
+        html`<${GateField} gate=${gate} onGate=${(next: unknown) => {
+          if (next === undefined) return dispatch({ type: 'clear-gate', id });
+          const parsed = GateSchema.safeParse(next);
+          if (parsed.success) dispatch({ type: 'set-gate', id, gate: parsed.data });
+        }} />`}
       </span>
       ${plugin.targetable === false
         ? // Une mise en page agit sur tout le texte : pas de pistes à choisir.
@@ -104,7 +134,7 @@ function Row({ instance, position, ids, plugin, dispatch }: { instance: Instance
         <button type="button" class="key duplicate" onClick=${() => dispatch({ type: 'duplicate-instance', id })}>Dupliquer</button>
         <button type="button" class="key remove" onClick=${() => dispatch({ type: 'remove-instance', id })}>Retirer</button>
       </span>
-      <p class="help">${enabled ? plugin.help(params, new Set(targets)) : 'Contrainte coupée : le texte passe tel quel.'}</p>
+      <p class="help">${enabled ? help(instance, plugin) : 'Contrainte coupée : le texte passe tel quel.'}</p>
     </li>
   ` as VNode;
 }
