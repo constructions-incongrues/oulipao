@@ -1,9 +1,9 @@
 # Oulipao
 
-Ouvroir de Littérature Potentielle Assistée par Ordinateur. Collez un texte français : Oulipao
-le range en pistes (noms, verbes, adjectifs, adverbes, mots-outils) et y branche des
-contraintes de l'Oulipo, S+7, lipogramme, Haï-kaïsation, rimes embrassées, sonnet monorime…, que l'on règle en direct comme les
-effets d'une table de mixage.
+Ouvroir de Littérature Potentielle Assistée par Ordinateur : un instrument pour jouer de la
+littérature potentielle. Collez un texte français : Oulipao le range en pistes (noms, verbes,
+adjectifs, adverbes, mots-outils) et y branche des contraintes de l'Oulipo, S+7, lipogramme,
+Haï-kaïsation, rimes embrassées, sonnet monorime…, que l'on règle et enchaîne en direct.
 
 Tout tourne dans le navigateur : le texte ne part nulle part.
 

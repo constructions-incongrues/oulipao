@@ -142,6 +142,11 @@ export interface ConstraintPlugin {
   acts(values: ParameterValues): boolean;
   /** Le titre court du réglage en cours : « S+3 ». */
   title(values: ParameterValues): string;
+  /**
+   * Le réglage en clair quand son paramètre principal est modulé par `source` (« rang », « lettres »),
+   * si le libellé ordinaire y écrirait une valeur qui ne vaut plus.
+   */
+  modulatedLabel?(values: ParameterValues, source: string): string;
   /** Le réglage en clair, pour le résumé et la mention : « S+3, parmi tous les noms ». */
   label(values: ParameterValues): string;
   /** L'effet du réglage en une phrase, sur les pistes visées (par défaut, celles du type). */

@@ -196,9 +196,15 @@ test('inspecteur : un champ de verrou par paramètre verrouillable, pour les ins
   assert.deepEqual(inspectorLocks(both, 5, 'verb'), []);
   // Contrainte coupée : pas de verrou à poser.
   assert.deepEqual(inspectorLocks(reduce(locked, { type: 'toggle-instance', id: 's7-1' }), 4, 'noun'), []);
-  // Bord et Mise en vers visent toutes les pistes mais ne lisent pas les verrous : aucun champ.
+  // Bord et Mise en vers coupée par mots visent toutes les pistes mais ne lisent pas les verrous : aucun champ.
   const layout = [{ type: 'add-instance', plugin: 'edge' }, { type: 'add-instance', plugin: 'lineation' }] as const;
-  assert.deepEqual(inspectorLocks(layout.reduce(reduce, locked), 4, 'noun').map((entry) => entry.id), ['s7-1']);
+  const laid = layout.reduce(reduce, locked);
+  assert.deepEqual(inspectorLocks(laid, 4, 'noun').map((entry) => entry.id), ['s7-1']);
+  // Coupée par syllabes, la Mise en vers prend un verrou : la mesure du vers que ce mot ouvre.
+  const measured = reduce(laid, { type: 'set-param', id: 'lineation-1', key: 'cut', value: 'syllables' });
+  assert.deepEqual(inspectorLocks(measured, 4, 'noun').map((entry) => entry.id), ['s7-1', 'lineation-1']);
+  const lockedVerse = reduce(measured, { type: 'set-lock', id: 'lineation-1', index: 4, key: 'syllables', value: 4 });
+  assert.equal(inspectorLocks(lockedVerse, 4, 'noun')[1]!.note, 'Vers de 4 syllabes sur ce mot');
 });
 
 test('S+7 sur les verbes : mention par instance, verbes servis à la chaîne, auxiliaire compté parmi les laissés', () => {

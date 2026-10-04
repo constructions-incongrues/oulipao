@@ -112,9 +112,24 @@ test('Mise en vers : tous les n syllabes, sans couper de mot', () => {
   assert.equal(lineationPlugin.needsPhonetics?.({}), false);
 });
 
+test('Mise en vers : chaque vers sa mesure, par une suite ou par mot', () => {
+  const text = 'Le chat dort sur le mur noir le matin';
+  // « 1 2 », en boucle : un vers d'une syllabe, un de deux…
+  assert.equal(run(lineationPlugin, text, { cut: 'measures', measures: '1 2' }).text, 'Le\nchat dort\nsur\nle mur\nnoir\nle\nmatin');
+  // Une suite sans nombre valable prend la mesure « Syllabes par vers ».
+  assert.equal(run(lineationPlugin, 'Le chat dort', { cut: 'measures', measures: '0 ,', syllables: 2 }).text, 'Le chat\ndort');
+  // La valeur propre du premier mot d'un vers (modulée ou verrouillée) en donne la mesure.
+  const scope = { skip: [], overrides: [{ index: 3, values: { syllables: 1 } }] };
+  assert.equal(run(lineationPlugin, text, { cut: 'syllables', syllables: 3 }, CATEGORIES, scope).text, 'Le chat dort\nsur\nle mur noir\nle matin');
+  assert.equal(run(lineationPlugin, '', { cut: 'syllables' }).text, '');
+  assert.equal(lineationPlugin.needsPhonetics?.({ cut: 'measures' }), true);
+  assert.equal(lineationPlugin.label({ cut: 'measures', measures: '5, 7, 5' }), 'mise en vers selon 5-7-5');
+  assert.match(lineationPlugin.help({ cut: 'measures' }), /5-7-5 syllabes, en boucle/);
+});
+
 test('Mise en vers : déclaration, titre, aide', () => {
   assert.equal(lineationPlugin.targetable, false);
-  assert.deepEqual(lineationPlugin.defaults, { cut: 'every', n: 6, syllables: 8, number: 1234567 });
+  assert.deepEqual(lineationPlugin.defaults, { cut: 'every', n: 6, syllables: 8, measures: '5 7 5', number: 1234567 });
   assert.equal(lineationPlugin.label({ cut: 'syllables', syllables: 12 }), 'mise en vers tous les 12 syllabes');
   assert.match(lineationPlugin.help({ cut: 'syllables' }), /au-delà de 8 syllabes/);
   assert.equal(lineationPlugin.label({ n: 3 }), 'mise en vers tous les 3 mots');

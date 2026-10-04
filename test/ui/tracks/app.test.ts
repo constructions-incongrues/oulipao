@@ -99,7 +99,7 @@ test('chaque réglage de la page passe par le contrôleur', async () => {
   ]);
   click(app(), byClass('copy'));
   await tick();
-  assert.deepEqual(copied, ['dort.\n\n— pistes coupées : noms, adjectifs, adverbes, autres (Oulipao)']);
+  assert.deepEqual(copied, ['La vieille ferme dort.\n\ndort.\n\n— pistes coupées : noms, adjectifs, adverbes, autres (Oulipao)']);
   assert.match(renderToString(app()), /Copié\./);
 });
 

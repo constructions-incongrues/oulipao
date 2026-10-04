@@ -76,7 +76,7 @@ test('Liponymie, Inventaire, La rien que la toute la : un tri par piste', () => 
 test('Bord et Mise en vers : Haï-kaïsation, Intérieur, Poème de bandit, Juliennes du jour', () => {
   assert.deepEqual(add('hai-kaisation').instances[0]!.params, { mode: 'ends', n: 1 });
   assert.deepEqual(add('interieur').instances[0]!.params, { mode: 'inside', n: 1 });
-  assert.deepEqual(add('bandit').instances[0]!.params, { cut: 'every', n: 6, syllables: 8, number: 1234567 });
+  assert.deepEqual(add('bandit').instances[0]!.params, { cut: 'every', n: 6, syllables: 8, measures: '5 7 5', number: 1234567 });
   assert.equal(add('juliennes').instances[0]!.params['number'], 2461317);
   assert.equal(julianDay(new Date(2000, 0, 1)), 2451545);
 });

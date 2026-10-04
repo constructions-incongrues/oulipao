@@ -89,7 +89,8 @@ test('copie d’un rondel : treize vers en trois strophes, sans marque de copie'
   await controller.run();
   controller.dispatch({ type: 'set-form', form: 'rondel' });
   await controller.copy();
-  const [poem] = copied.split('\n\n— ');
+  assert.ok(copied.startsWith(`${TEN}\n\n`)); // l'original d'abord
+  const [poem] = copied.slice(TEN.length + 2).split('\n\n— ');
   assert.equal(poem!.split('\n\n').map((stanza) => stanza.split('\n').length).join('/'), '4/4/5');
   assert.doesNotMatch(copied, /Refrain|copie du vers/);
   assert.match(copied, /— rondel \(Oulipao\)$/);

@@ -1,6 +1,6 @@
 import { CATEGORIES, type Category } from '../../domain/categories.ts';
 import { audibleCategories, mixSegments, type MixedSegment } from '../../domain/mixing.ts';
-import type { ConstraintPlugin, ParameterValues } from '../../domain/plugin.ts';
+import { visibleParameters, type ConstraintPlugin, type ParameterValues } from '../../domain/plugin.ts';
 import type { WordModulation } from '../../domain/modulation/apply.ts';
 import { runChain, type ChainStep, type StageWord, type StepReport } from '../../domain/plugin-chain.ts';
 import { describeReading, lineSyllables, PHONETICS_LOADING, pronounce, type VerseWord } from '../../domain/phonetics/lookup.ts';
@@ -508,7 +508,8 @@ export function inspectorLocks(mixer: MixerState, index: number, track: Category
     .filter((instance) => instance.targets.includes(track))
     .flatMap((instance) => {
       const plugin = lookup(instance.type);
-      const fields = plugin.parameters.flatMap((parameter) =>
+      // Un paramètre caché par les réglages (la mesure d'une Mise en vers coupée par mots) n'a pas de verrou.
+      const fields = visibleParameters(plugin, instance.params).flatMap((parameter) =>
         parameter.kind === 'integer' && parameter.lockable
           ? [{
               key: parameter.key,

@@ -228,7 +228,7 @@ test('boucle : « Garder » au tour 5 ajoute une seule entrée, marquée, de fil
   assert.deepEqual(controller.state.lineage, { parent: id, ancestor: 'La ferme.', passes: Array(5).fill('S+7 sur les noms') });
 });
 
-test('boucle : au tour 0, « Garder » ne fait rien et « Copier » copie l’original ; au tour 3, le tour et sa mention', async () => {
+test('boucle : au tour 0, « Garder » ne fait rien et « Copier » copie l’original ; au tour 3, comme l’entrée qu’il deviendrait', async () => {
   const { controller, copied } = await setup();
   await controller.loop();
   controller.showTour(0);
@@ -238,7 +238,8 @@ test('boucle : au tour 0, « Garder » ne fait rien et « Copier » copie l’or
   await controller.copy();
   controller.showTour(1);
   assert.equal(controller.keep(), 't2');
-  assert.deepEqual(copied, ['La ferme.', "L'hôtel.\n\n— S+7 sur les noms ×3 (Oulipao)"]);
+  // Comme l'entrée qu'il deviendrait : l'ancêtre, le tour d'avant, puis le tour et sa mention.
+  assert.deepEqual(copied, ['La ferme.', "La ferme.\n\nLe chat.\n\nL'hôtel.\n\n— S+7 sur les noms ×3 (Oulipao)"]);
 });
 
 test('boucle : le nombre de tours raccourcit sans recalcul, et s’allonge en reprenant', async () => {

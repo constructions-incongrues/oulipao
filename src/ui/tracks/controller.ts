@@ -19,7 +19,7 @@ import { findRepeat } from '../../domain/loop.ts';
 import { tokenize } from '../../domain/tokenizer.ts';
 import { computeTour, loopFinished, replacedIn, type LoopState, type TourResources } from './loop.ts';
 import { initialState, pluginById, reduce } from './mixer-state.ts';
-import type { Lineage, NotebookEntry } from './notebook.ts';
+import { takeClipboard, type Lineage, type NotebookEntry } from './notebook.ts';
 import { cannotReopen, createNotebookController, initialNotebook, memoryNotebook, messageOf, reopenProblem, type NotebookDependencies } from './notebook-controller.ts';
 import type { SharedEntry } from './share-link.ts';
 import { MixerStateSchema, type MixerAction, type MixerState } from './types.ts';
@@ -728,7 +728,16 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       const view = state.view;
       if (!view || state.stale || view.empty) return;
       const shown = shownTour();
-      const text = state.loop?.shown === 0 ? state.loop.tours[0]!.text : shown ? shown.tour.text + shown.mention : view.result + mention(view);
+      const said = shown ? shown.mention : mention(view);
+      // Sans mention, rien n'a changé : le texte seul. L'éclipse porte déjà l'original. Sinon l'original voyage
+      // avec le résultat, comme depuis le carnet ; pour un tour de la boucle, comme l'entrée qu'il deviendrait.
+      const travels = said !== '' && state.mixer.form !== 'eclipse';
+      const text =
+        state.loop?.shown === 0
+          ? state.loop.tours[0]!.text
+          : shown
+            ? travels ? takeClipboard(shown.tour.session.text, shown.tour.text, said, state.lineage?.ancestor ?? shown.loop.tours[0]!.text) : shown.tour.text + said
+            : travels && session ? takeClipboard(session.text, view.result, said, state.lineage?.ancestor) : view.result + said;
       try {
         await dependencies.copy(text);
         update({ copyMessage: 'Copié.' });

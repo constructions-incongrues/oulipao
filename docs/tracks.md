@@ -91,7 +91,9 @@ Preact ; les composants (`components/`, `app.ts`) sont des fonctions de cet éta
 - **L'inspecteur montre ce que la chaîne a fait, pas ce qu'on entend** : un mot d'une piste
   muette y figure à toutes les étapes. Un adjectif peut changer à une étape qui ne le vise pas :
   c'est le réaccord au nom remplacé.
-- **La copie dit d'où vient le texte.** Le texte copié est suivi, après une ligne vide, de ce qui
+- **La copie dit d'où vient le texte.** Comme depuis le carnet, l'original vient d'abord (précédé
+  de l'ancêtre après une itération), puis une ligne vide ; l'éclipse, qui le contient déjà, ne le
+  répète pas. Le texte copié est suivi, après une ligne vide, de ce qui
   l'a changé, filtre par filtre dans l'ordre de la chaîne : « — S+2 sur les adjectifs · S+7 sur
   les noms · lipogramme en a (Oulipao) », avec « · pistes coupées : … » s'il y en a. Les pistes
   d'un filtre sont nommées, sauf quand il vise toutes celles que son type sait traiter. Rien

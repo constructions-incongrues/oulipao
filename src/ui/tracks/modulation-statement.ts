@@ -140,6 +140,7 @@ export function modulatedLabel(plugin: ConstraintPlugin, params: ParameterValues
   const title = plugin.title(params);
   const signed = /^(\p{Lu})[+−]\d+$/u.exec(title);
   if (signed) return label.replace(title, `${signed[1]}+${sourceName(modulator.source)}`);
+  if (plugin.modulatedLabel) return plugin.modulatedLabel(params, sourceName(modulator.source));
   const parameter = plugin.parameters.find((candidate) => candidate.key === key)!;
   return `${plugin.label({ ...params, [key]: plugin.defaults[key]! })}, ${parameter.label.toLowerCase()} : ${sourceName(modulator.source)}`;
 }

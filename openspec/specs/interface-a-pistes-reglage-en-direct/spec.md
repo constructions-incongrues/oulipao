@@ -58,12 +58,22 @@ The system SHALL remove from the resulting text the words of a muted track, tigh
 - **THEN** le texte résultant ne contient que les verbes et la ponctuation
 
 ### Requirement: Copie du résultat
-The system SHALL place the resulting text in the clipboard when the copy button is used.
+The system SHALL place the resulting text in the clipboard when the copy button is used, preceded by the original text when the result differs from it, as a notebook entry is copied.
 
 #### Scenario: Copie
-- **GIVEN** un texte résultant affiché
+- **GIVEN** un texte résultant affiché, transformé par la chaîne
 - **WHEN** le bouton de copie est actionné
-- **THEN** le presse-papiers contient exactement ce texte
+- **THEN** le presse-papiers contient l'original, une ligne vide, le texte résultant et sa mention
+
+#### Scenario: Copie du texte d'origine
+- **GIVEN** un texte résultant identique à l'original (filtres coupés ou sans effet)
+- **WHEN** le bouton de copie est actionné
+- **THEN** le presse-papiers contient ce texte seul, sans mention
+
+#### Scenario: Copie d'une éclipse
+- **GIVEN** la forme éclipse, dont le résultat contient déjà l'original
+- **WHEN** le bouton de copie est actionné
+- **THEN** l'original n'est pas répété
 
 ### Requirement: États d'attente et d'échec
 The system SHALL say so while the tagging model, the dictionary, the verbs or the phonetic textbank are loading, SHALL say so when loading fails, and SHALL remain usable for a new attempt. A load that receives no data for 30 seconds SHALL stop and SHALL be reported as stalled, naming what was loading, with a control to retry. Whatever the outcome of the latest attempt to put a text on tracks or to reopen a kept text, the « Mettre en pistes » control SHALL become available again once that attempt ends.
