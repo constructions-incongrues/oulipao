@@ -101,9 +101,20 @@ test('Mise en vers : selon un nombre, en boucle, zéros sautés', () => {
   assert.equal(zeros, 'a\nb c\nd\ne');
 });
 
+test('Mise en vers : tous les n syllabes, sans couper de mot', () => {
+  // Sans les prononciations, elles sont devinées : chaque mot ici en a une.
+  assert.equal(run(lineationPlugin, 'Le chat dort sur le mur noir.', { cut: 'syllables', syllables: 3 }).text, 'Le chat dort\nsur le mur\nnoir.');
+  // Un vers qui dépasse s'arrête après le mot qui l'y fait passer ; un mot élidé reste avec le sien.
+  assert.equal(run(lineationPlugin, 'Le matin tranquille et l’horloge', { cut: 'syllables', syllables: 2 }).text, 'Le matin\ntranquille\net l’horloge');
+  assert.equal(lineationPlugin.needsPhonetics?.({ cut: 'syllables' }), true);
+  assert.equal(lineationPlugin.needsPhonetics?.({}), false);
+});
+
 test('Mise en vers : déclaration, titre, aide', () => {
   assert.equal(lineationPlugin.targetable, false);
-  assert.deepEqual(lineationPlugin.defaults, { cut: 'every', n: 6, number: 1234567 });
+  assert.deepEqual(lineationPlugin.defaults, { cut: 'every', n: 6, syllables: 8, number: 1234567 });
+  assert.equal(lineationPlugin.label({ cut: 'syllables', syllables: 12 }), 'mise en vers tous les 12 syllabes');
+  assert.match(lineationPlugin.help({ cut: 'syllables' }), /8 syllabes/);
   assert.equal(lineationPlugin.label({ n: 3 }), 'mise en vers tous les 3 mots');
   assert.equal(lineationPlugin.label({ cut: 'punctuation' }), 'mise en vers aux ponctuations');
   assert.equal(lineationPlugin.label({ cut: 'number', number: 2461317 }), 'mise en vers selon 2461317');
