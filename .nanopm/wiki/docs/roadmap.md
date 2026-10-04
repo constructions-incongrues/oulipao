@@ -66,7 +66,7 @@ Note : planification sur un concept produit en brouillon (`product.md` n'a pas s
 - **Sortie libre et structure en vers (E3)** — 7 contraintes ; seule évolution qui casse l'alignement mot à mot. — revisit when un texte gardé demande de déplacer ou de dupliquer un vers.
 - **Textbanks sémantiques (E5)** — antonymes, définitions, lexiques thématiques. — revisit when le fondateur veut un S+7 sur un dictionnaire thématique ou une traduction antonymique.
 - **Nouvelles fiches du séquenceur** (euclide, polymétrie, conditions, automation…). — revisit when le carnet contient au moins 3 textes et que la garde est levée.
-- **Partage en un clic.** — revisit when quelqu'un renonce à montrer un texte faute de pouvoir le copier.
+- **Partage du texte seul en un clic (image, aperçu enrichi).** — revisit when quelqu'un renonce à montrer un texte faute de pouvoir le copier. Le lien qui porte une entrée avec sa chaîne n'est plus ici : il est construit (changement OpenSpec `lien-partageable`, 2026-10-04).
 - **Format de plugin publié et bac à sable pour plugins tiers.** — revisit when quelqu'un d'autre veut écrire un plugin.
 
 ---

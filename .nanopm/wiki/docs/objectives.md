@@ -51,7 +51,7 @@ Pas de nouvelle contrainte la semaine qui suit une semaine sans séance d'écrit
 ## What's NOT an objective this period
 
 - **Une nouvelle contrainte quand la garde est déclenchée.** Tentant parce que chaque contrainte coûte peu à construire avec les agents. Revisit when : une séance d'écriture a eu lieu dans la semaine.
-- **Partage en un clic (lien, image).** Tentant parce que le premier texte a circulé. Mais le copier-coller a suffi à miasmes. Revisit when : quelqu'un renonce à montrer un texte faute de pouvoir le copier facilement.
+- **Partage du texte seul en un clic (image, aperçu enrichi).** Tentant parce que le premier texte a circulé. Mais le copier-coller a suffi à miasmes. Revisit when : quelqu'un renonce à montrer un texte faute de pouvoir le copier facilement. Le lien qui porte une entrée du carnet avec sa chaîne est permis depuis le 2026-10-04 : il sert KR3 et KR4, ce que le copier-coller ne fait pas.
 - **Format de plugin publié, bac à sable pour plugins tiers.** Tentant parce que c'est la vision d'écosystème. Revisit when : quelqu'un d'autre que le fondateur veut écrire un plugin.
 - **Filtrer les mots crus du lexique.** Tentant parce que le hasard en produit et que les textes circulent. Mais ils font partie du rire. Revisit when : un texte n'est pas montré, ou est mal reçu, à cause d'un mot.
 - **Comptes, sauvegarde sur serveur, autres langues.** Revisit when : le fondateur perd un texte faute de sauvegarde locale.

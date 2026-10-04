@@ -23,6 +23,10 @@ export interface NotebookProps {
   onCopy: (id: string) => void;
   /** Enregistre la retouche d'une entrée. */
   onEdit: (id: string, text: string) => void;
+  /** Copie un lien qui porte l'entrée entière. */
+  onShare: (id: string) => void;
+  /** Le lien d'une entrée, affiché à copier quand le presse-papiers l'a refusé. */
+  sharedLink?: string;
 }
 
 /** L'avertissement d'un carnet de séance, quand le navigateur refuse le stockage. */
@@ -35,7 +39,7 @@ export const keptCount = (n: number) => (n === 0 ? 'Aucun texte gardé' : `${n} 
 export const keptDate = (iso: string) => new Date(iso).toLocaleString('fr-FR', { dateStyle: 'medium', timeStyle: 'short' });
 
 /** La mention d'une entrée sans son tiret d'en-tête : « S+7 sur les noms (Oulipao) ». */
-const bareMention = (mention: string) => mention.trim().replace(/^—\s*/, '');
+export const bareMention = (mention: string) => mention.trim().replace(/^—\s*/, '');
 
 /** Ferme le `<details>` qui contient l'élément : la retouche se replie une fois enregistrée ou annulée. */
 const closeDetails = (element: Element) => {
@@ -65,10 +69,10 @@ function Retouch({ entry, onEdit }: { entry: NotebookEntry; onEdit: NotebookProp
 
 /**
  * Le carnet : un panneau replié sous le texte résultant, dont l'en-tête donne le compte et les jours
- * depuis la dernière garde ; déplié, les textes gardés à relire, copier, retoucher, rouvrir ou
- * supprimer, et le fichier pour les emporter.
+ * depuis la dernière garde ; déplié, les textes gardés à relire, copier, partager, retoucher, rouvrir
+ * ou supprimer, et le fichier pour les emporter.
  */
-export function Notebook({ entries, message, error, persistent = true, today, onReopen, onRemove, onExport, onImport, onCopy, onEdit }: NotebookProps): VNode {
+export function Notebook({ entries, message, error, persistent = true, today, onReopen, onRemove, onExport, onImport, onCopy, onEdit, onShare, sharedLink }: NotebookProps): VNode {
   const onFile = async (event: Event) => {
     const input = event.currentTarget as HTMLInputElement;
     const file = input.files?.[0];
@@ -91,6 +95,8 @@ export function Notebook({ entries, message, error, persistent = true, today, on
       </div>
       ${error && html`<${ErrorMessage} error=${error} />`}
       <p class="notebook-message" role="status" aria-live="polite">${message}</p>
+      ${sharedLink &&
+      html`<input class="shared-link" type="text" readonly aria-label="Lien à copier" value=${sharedLink} autoFocus onFocus=${(event: Event) => (event.currentTarget as HTMLInputElement).select()} />`}
       ${entries.length > 0 &&
       html`<ol class="notebook-entries">
         ${entries.map((entry) => {
@@ -105,6 +111,7 @@ export function Notebook({ entries, message, error, persistent = true, today, on
             html`<p class="kept-mention">${[entry.mention && bareMention(entry.mention), entry.edited !== undefined && 'retouché'].filter(Boolean).join(' · ')}</p>`}
             <div class="kept-actions">
               <button type="button" class="key copy-entry" aria-label=${`Copier le texte du ${date}`} onClick=${() => onCopy(entry.id)}>Copier</button>
+              <button type="button" class="key share-entry" aria-label=${`Partager le texte du ${date}`} onClick=${() => onShare(entry.id)}>Partager</button>
               <button type="button" class="key reopen" aria-label=${`Rouvrir le texte du ${date}`} onClick=${() => onReopen(entry.id)}>Rouvrir</button>
               <button type="button" class="key remove" aria-label=${`Supprimer le texte du ${date}`} onClick=${() => onRemove(entry.id)}>Supprimer</button>
             </div>

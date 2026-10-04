@@ -38,7 +38,7 @@ Un carnet qui range chaque texte avec son original, son résultat et sa chaîne,
 ## What We're Saying No To
 
 - **Not une nouvelle contrainte quand la garde est déclenchée** parce que la construction a déjà mangé l'écriture le premier jour — revisit when une séance d'écriture a eu lieu dans la semaine.
-- **Not le partage en un clic** parce que le copier-coller a suffi au premier texte montré — revisit when quelqu'un renonce à montrer un texte faute de pouvoir le copier.
+- **Not le partage du texte seul en un clic** (image, aperçu enrichi) parce que le copier-coller a suffi au premier texte montré — revisit when quelqu'un renonce à montrer un texte faute de pouvoir le copier. Le lien qui porte une entrée du carnet avec sa chaîne est permis depuis le 2026-10-04 : le copier-coller perd la recette, et la recette sert KR3, KR4 et « la contrainte est explicite » (PRD `prds/lien-partageable.md`).
 - **Not le filtrage des mots crus** parce qu'ils font partie du rire — revisit when un texte n'est pas montré, ou est mal reçu, à cause d'un mot.
 - **Not un format de plugin publié ni un bac à sable tiers** parce que personne d'autre n'écrit de plugin — revisit when quelqu'un veut en écrire un.
 - **Not les comptes ni la sauvegarde sur un serveur** parce que le texte reste à l'auteur — revisit when le fondateur perd un texte faute de sauvegarde locale.
