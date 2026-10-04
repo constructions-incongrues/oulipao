@@ -13,6 +13,8 @@ import { Transport } from './components/transport.ts';
 import type { TracksController, TracksState } from './controller.ts';
 import { installedPlugins, pluginById, recipes } from './mixer-state.ts';
 import { gridSteps, inspectorLocks, inspectorWindow, summarize } from './view-model.ts';
+import { modulatedLabel } from './modulation-statement.ts';
+import type { Instance } from './types.ts';
 import { versionLink } from '../version.ts';
 import type { Form } from '../../domain/forms/form.ts';
 
@@ -38,6 +40,12 @@ export interface AppProps {
  * descend), le carnet replié, la saisie, la chaîne de contraintes, la grille des pistes, puis
  * l'inspecteur.
  */
+/** Le nom court d'une instance sous les pistes : « S+7 », ou « S+lettres » quand son paramètre principal est modulé. */
+function reminderName(instance: Instance): string {
+  const plugin = pluginById(instance.type);
+  return Object.keys(instance.modulators ?? {}).length ? modulatedLabel(plugin, instance.params, instance.modulators).split(',')[0]! : plugin.title(instance.params);
+}
+
 export function App({ state, controller, onTheme = () => {}, version, today = new Date() }: AppProps): VNode {
   const { mixer, view, stale } = state;
   const release = versionLink(version);
@@ -53,7 +61,7 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
     CATEGORIES.map((category) => [
       category,
       mixer.instances.flatMap((instance, position) =>
-        instance.targets.includes(category) ? [`${position + 1}. ${pluginById(instance.type).title(instance.params)}${instance.enabled ? '' : ' (coupé)'}`] : [],
+        instance.targets.includes(category) ? [`${position + 1}. ${reminderName(instance)}${instance.enabled ? '' : ' (coupé)'}`] : [],
       ),
     ]),
   ) as Record<Category, string[]>;
