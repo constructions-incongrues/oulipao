@@ -53,4 +53,15 @@
 ## [2026-10-04] ingest | pm-objectives: wrote docs/objectives.md
 ## [2026-10-04] ingest | pm-prd: wrote docs/prds/lien-partageable.md
 ## [2026-10-04] ingest | pm-prd: wrote docs/prds/lettrisme-discrepance-ciselure.md
+## [2026-10-04] ingest | pm-product: wrote docs/product.md
+## [2026-10-04] ingest | pm-personas: wrote docs/personas.md
+## [2026-10-04] ingest | reversal: bascule du fondateur — « textes qu'il a envie de relire » remplacé par l'envie de jouer (pari de l'instrument)
+## [2026-10-04] ingest | reversal: Dev-joueuse Jade retirée ; persona secondaire = le proche qui reçoit un lien
+## [2026-10-04] ingest | reversal: miasmes n'est plus public non ciblé, rattaché au persona secondaire
+## [2026-10-04] ingest | personas du 4 octobre
+## [2026-10-04] query | synthèse pour pm-challenge-me
+## [2026-10-04] ingest | pm-challenge-me: wrote docs/challenges.md
+## [2026-10-04] ingest | pm-strategy: wrote docs/strategy.md
+## [2026-10-04] ingest | pm-roadmap: wrote docs/roadmap.md
+## [2026-10-04] ingest | pm-opportunities: matched entities/opportunities/interface-ne-bloque-pas-la-lecture.md
 ## [2026-10-04] ingest | pm-prd: wrote docs/prds/boucle-de-tours.md

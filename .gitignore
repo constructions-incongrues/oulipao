@@ -3,3 +3,6 @@ node_modules/
 data/brut/
 dist/
 _site/
+
+# Archives brutes de nanopm : messages privés, verbatim, gardés hors du dépôt public
+.nanopm/raw/
