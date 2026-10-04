@@ -6,7 +6,7 @@
   "adverb",
   "other"
  ],
- "entries": 527934,
+ "entries": 524672,
  "sample": [
   {
    "form": "açaï",
@@ -333,7 +333,7 @@
     "divorce",
     "divorces"
    ],
-   "ending": 120
+   "ending": 116
   },
   {
    "form": "annellerons",
@@ -712,7 +712,7 @@
     "birman",
     "birmans"
    ],
-   "rhyming": 5034,
+   "rhyming": 5032,
    "rhymingHead": [
     "abêtissement",
     "abêtissements",
@@ -995,7 +995,7 @@
     "chakra",
     "chakras"
    ],
-   "rhyming": 3698,
+   "rhyming": 3656,
    "rhymingHead": [
     "aa",
     "aérostat",
@@ -1222,7 +1222,7 @@
     "conservation",
     "conservations"
    ],
-   "rhyming": 9082,
+   "rhyming": 9080,
    "rhymingHead": [
     "aération",
     "aérations",
@@ -1253,7 +1253,7 @@
     "contrefilet",
     "contrefilets"
    ],
-   "rhyming": 1519,
+   "rhyming": 1489,
    "rhymingHead": [
     "abcès",
     "ableret",
@@ -1266,7 +1266,7 @@
     "acquêts",
     "adret"
    ],
-   "ending": 317
+   "ending": 315
   },
   {
    "form": "corédiger",
@@ -1383,7 +1383,7 @@
     "curiethérapie",
     "curiethérapies"
    ],
-   "rhyming": 9912,
+   "rhyming": 9730,
    "rhymingHead": [
     "aï",
     "aïoli",
@@ -1396,7 +1396,7 @@
     "aéropathie",
     "aérophagie"
    ],
-   "ending": 489
+   "ending": 487
   },
   {
    "form": "débourbez",
@@ -3058,7 +3058,7 @@
     "lunaison",
     "lunaisons"
    ],
-   "rhyming": 9082,
+   "rhyming": 9080,
    "rhymingHead": [
     "aération",
     "aérations",
@@ -3311,7 +3311,7 @@
     "narration",
     "narrations"
    ],
-   "rhyming": 9082,
+   "rhyming": 9080,
    "rhymingHead": [
     "aération",
     "aérations",
@@ -4376,7 +4376,7 @@
     "romaji",
     "romajis"
    ],
-   "rhyming": 9912,
+   "rhyming": 9730,
    "rhymingHead": [
     "aï",
     "aïoli",
@@ -4389,7 +4389,7 @@
     "aéropathie",
     "aérophagie"
    ],
-   "ending": 1314
+   "ending": 1308
   },
   {
    "form": "rustiqueriez",
@@ -4843,7 +4843,7 @@
     "toron",
     "torons"
    ],
-   "rhyming": 9082,
+   "rhyming": 9080,
    "rhymingHead": [
     "aération",
     "aérations",
@@ -5161,152 +5161,170 @@
    "ending": 2650
   },
   {
-   "form": "ébranlés",
-   "category": "adjective",
-   "readings": [
-    {
-     "ipa": "e.bʁɑ̃.le",
-     "guessed": false
-    },
-    {
-     "ipa": "e.bʁɑ̃.le",
-     "guessed": false
-    }
-   ],
-   "inCategory": [
-    "e.bʁɑ̃.le"
-   ],
-   "homophones": [],
-   "rhyming": 29788,
-   "rhymingHead": [
-    "aîné",
-    "aînée",
-    "aînées",
-    "aînés",
-    "aérée",
-    "aérées",
-    "aérés",
-    "aéroporté",
-    "aéroportée",
-    "aéroportées"
-   ],
-   "ending": 2650
-  },
-  {
-   "form": "dilués",
-   "category": "adjective",
-   "readings": [
-    {
-     "ipa": "di.lɥe",
-     "guessed": false
-    },
-    {
-     "ipa": "di.lɥe",
-     "guessed": false
-    }
-   ],
-   "inCategory": [
-    "di.lɥe"
-   ],
-   "homophones": [],
-   "rhyming": 29788,
-   "rhymingHead": [
-    "aîné",
-    "aînée",
-    "aînées",
-    "aînés",
-    "aérée",
-    "aérées",
-    "aérés",
-    "aéroporté",
-    "aéroportée",
-    "aéroportées"
-   ],
-   "ending": 289
-  },
-  {
-   "form": "efféminés",
+   "form": "Cornouailles",
    "category": "noun",
    "readings": [
     {
-     "ipa": "e.fe.mi.ne",
+     "ipa": "kɔ.ʁnu.aj",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "kɔ.ʁnu.aj"
+   ],
+   "homophones": [],
+   "rhyming": 287,
+   "rhymingHead": [
+    "açaï",
+    "açaïs",
+    "écaille",
+    "écailles",
+    "accordailles",
+    "aiguail",
+    "aiguails",
+    "ails",
+    "antiquaille",
+    "antiquailles"
+   ],
+   "ending": 287
+  },
+  {
+   "form": "luftwaffe",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "ly.ftwaf",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ly.ftwaf"
+   ],
+   "homophones": [],
+   "rhyming": 316,
+   "rhymingHead": [
+    "aérographe",
+    "aérographes",
+    "accélérographe",
+    "accélérographes",
+    "échographe",
+    "échographes",
+    "agrafe",
+    "agrafes",
+    "élaphe",
+    "élaphes"
+   ],
+   "ending": 316
+  },
+  {
+   "form": "déviant",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "de.vjɑ̃",
      "guessed": false
     },
     {
-     "ipa": "e.fe.mi.ne",
+     "ipa": "de.vjɑ̃",
      "guessed": false
     },
     {
-     "ipa": "e.fe.mi.ne",
+     "ipa": "de.vjɑ̃",
      "guessed": false
     }
    ],
    "inCategory": [
-    "e.fe.mi.ne"
+    "de.vjɑ̃"
    ],
-   "homophones": [],
-   "rhyming": 9383,
+   "homophones": [
+    "déviants"
+   ],
+   "rhyming": 5032,
    "rhymingHead": [
-    "aînée",
-    "aînées",
-    "aîné",
-    "aînés",
-    "aéroélasticité",
-    "aérostier",
-    "aérostiers",
-    "abée",
-    "abées",
-    "abatée"
+    "abêtissement",
+    "abêtissements",
+    "ébahissement",
+    "ébahissements",
+    "abaissement",
+    "abaissements",
+    "abandonnement",
+    "abandonnements",
+    "abasourdissement",
+    "abasourdissements"
    ],
-   "ending": 442
+   "ending": 250
   },
   {
-   "form": "acclamés",
+   "form": "diaphysaire",
    "category": "adjective",
    "readings": [
     {
-     "ipa": "a.kla.me",
-     "guessed": false
-    },
-    {
-     "ipa": "a.kla.me",
-     "guessed": false
+     "ipa": "di.a.fi.zɛʁ",
+     "guessed": true
     }
    ],
    "inCategory": [
-    "a.kla.me"
+    "di.a.fi.zɛʁ"
    ],
    "homophones": [],
-   "rhyming": 29788,
+   "rhyming": 2663,
    "rhymingHead": [
-    "aîné",
-    "aînée",
-    "aînées",
-    "aînés",
-    "aérée",
-    "aérées",
-    "aérés",
-    "aéroporté",
-    "aéroportée",
-    "aéroportées"
+    "aérifère",
+    "aéroportuaire",
+    "aéroportuaires",
+    "abécédaire",
+    "abécédaires",
+    "abarticulaire",
+    "abarticulaires",
+    "abdicataire",
+    "abeillère",
+    "acère"
    ],
-   "ending": 965
+   "ending": 2663
   },
   {
-   "form": "classifiés",
+   "form": "norique",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "nɔ.ʁik",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "nɔ.ʁik"
+   ],
+   "homophones": [],
+   "rhyming": 1646,
+   "rhymingHead": [
+    "aéraulique",
+    "aérobic",
+    "aérobics",
+    "aérodynamique",
+    "aéronautique",
+    "aéronautiques",
+    "aérotechnique",
+    "abandonnique",
+    "abandonniques",
+    "académique"
+   ],
+   "ending": 1646
+  },
+  {
+   "form": "remariés",
    "category": "adjective",
    "readings": [
     {
-     "ipa": "kla.si.fje",
+     "ipa": "ʁə.ma.ʁje",
      "guessed": false
     },
     {
-     "ipa": "kla.si.fje",
+     "ipa": "ʁə.ma.ʁje",
      "guessed": false
     }
    ],
    "inCategory": [
-    "kla.si.fje"
+    "ʁə.ma.ʁje"
    ],
    "homophones": [],
    "rhyming": 29788,
@@ -5325,267 +5343,165 @@
    "ending": 3006
   },
   {
-   "form": "cinématiques",
+   "form": "gluconate",
    "category": "noun",
    "readings": [
     {
-     "ipa": "si.ne.ma.tik",
-     "guessed": true
-    },
-    {
-     "ipa": "si.ne.ma.tik",
+     "ipa": "gly.kɔ.nat",
      "guessed": true
     }
    ],
    "inCategory": [
-    "si.ne.ma.tik"
+    "gly.kɔ.nat"
+   ],
+   "homophones": [],
+   "rhyming": 894,
+   "rhymingHead": [
+    "écarlate",
+    "acétate",
+    "acétates",
+    "acrobate",
+    "acrobates",
+    "aculéate",
+    "aculéates",
+    "agérate",
+    "agérates",
+    "agate"
+   ],
+   "ending": 894
+  },
+  {
+   "form": "astiqué",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "as.ti.ke",
+     "guessed": false
+    },
+    {
+     "ipa": "as.ti.ke",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "as.ti.ke"
+   ],
+   "homophones": [],
+   "rhyming": 29788,
+   "rhymingHead": [
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
+   ],
+   "ending": 930
+  },
+  {
+   "form": "bondon",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "bɔ̃.dɔ̃",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "bɔ̃.dɔ̃"
+   ],
+   "homophones": [],
+   "rhyming": 9080,
+   "rhymingHead": [
+    "aération",
+    "aérations",
+    "aérodistorsion",
+    "aérostation",
+    "aérostations",
+    "abandon",
+    "abandons",
+    "ébauchons",
+    "abdication",
+    "abdications"
+   ],
+   "ending": 131
+  },
+  {
+   "form": "précancéreuses",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "pʁe.kɑ̃.se.ʁøz",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "pʁe.kɑ̃.se.ʁøz"
    ],
    "homophones": [
-    "cinématique"
+    "précancéreuse"
    ],
-   "rhyming": 1648,
+   "rhyming": 2050,
    "rhymingHead": [
+    "ébouleuse",
+    "ébouleuses",
+    "abrutisseuse",
+    "abrutisseuses",
+    "écailleuse",
+    "écailleuses",
+    "acéteuse",
+    "acéteuses",
+    "accrocheuse",
+    "accrocheuses"
+   ],
+   "ending": 2050
+  },
+  {
+   "form": "néoténiques",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "ne.ɔ.te.nik",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ne.ɔ.te.nik"
+   ],
+   "homophones": [],
+   "rhyming": 6436,
+   "rhymingHead": [
+    "ïambique",
     "aéraulique",
-    "aérobic",
-    "aérobics",
+    "aérobique",
+    "aérobiques",
     "aérodynamique",
+    "aérodynamiques",
     "aéronautique",
     "aéronautiques",
-    "aérotechnique",
-    "abandonnique",
-    "abandonniques",
-    "académique"
+    "aérostatique",
+    "aérostatiques"
    ],
-   "ending": 1648
+   "ending": 6436
   },
   {
-   "form": "dravidienne",
+   "form": "macroglossie",
    "category": "noun",
    "readings": [
     {
-     "ipa": "dʁa.vi.di.ɛn",
-     "guessed": true
-    },
-    {
-     "ipa": "dʁa.vi.di.ɛn",
+     "ipa": "ma.kʁɔ.glɔ.si",
      "guessed": true
     }
    ],
    "inCategory": [
-    "dʁa.vi.di.ɛn"
+    "ma.kʁɔ.glɔ.si"
    ],
    "homophones": [],
-   "rhyming": 2059,
-   "rhymingHead": [
-    "ébène",
-    "abdomen",
-    "abdomens",
-    "acétaminophène",
-    "acétaminophènes",
-    "acétylène",
-    "achaine",
-    "achaines",
-    "achène",
-    "achènes"
-   ],
-   "ending": 2059
-  },
-  {
-   "form": "décastère",
-   "category": "noun",
-   "readings": [
-    {
-     "ipa": "de.ka.stɛʁ",
-     "guessed": true
-    }
-   ],
-   "inCategory": [
-    "de.ka.stɛʁ"
-   ],
-   "homophones": [],
-   "rhyming": 3940,
-   "rhymingHead": [
-    "aérostière",
-    "aérostières",
-    "abécédaire",
-    "abécédaires",
-    "abandonnataire",
-    "abandonnataires",
-    "aber",
-    "abers",
-    "écaillère",
-    "écaillères"
-   ],
-   "ending": 3940
-  },
-  {
-   "form": "sifflés",
-   "category": "adjective",
-   "readings": [
-    {
-     "ipa": "si.fle",
-     "guessed": false
-    },
-    {
-     "ipa": "si.fle",
-     "guessed": false
-    }
-   ],
-   "inCategory": [
-    "si.fle"
-   ],
-   "homophones": [],
-   "rhyming": 29788,
-   "rhymingHead": [
-    "aîné",
-    "aînée",
-    "aînées",
-    "aînés",
-    "aérée",
-    "aérées",
-    "aérés",
-    "aéroporté",
-    "aéroportée",
-    "aéroportées"
-   ],
-   "ending": 2650
-  },
-  {
-   "form": "démarcatif",
-   "category": "adjective",
-   "readings": [
-    {
-     "ipa": "de.ma.ʁka.tif",
-     "guessed": true
-    }
-   ],
-   "inCategory": [
-    "de.ma.ʁka.tif"
-   ],
-   "homophones": [],
-   "rhyming": 1182,
-   "rhymingHead": [
-    "ablatif",
-    "ablatifs",
-    "abolitif",
-    "abolitifs",
-    "abortif",
-    "abortifs",
-    "abrasif",
-    "abrasifs",
-    "abréviatifs",
-    "abrogatif"
-   ],
-   "ending": 1182
-  },
-  {
-   "form": "commotionné",
-   "category": "adjective",
-   "readings": [
-    {
-     "ipa": "kɔ.mɔ.sjɔ.ne",
-     "guessed": false
-    },
-    {
-     "ipa": "kɔ.mɔ.sjɔ.ne",
-     "guessed": false
-    }
-   ],
-   "inCategory": [
-    "kɔ.mɔ.sjɔ.ne"
-   ],
-   "homophones": [],
-   "rhyming": 29788,
-   "rhymingHead": [
-    "aîné",
-    "aînée",
-    "aînées",
-    "aînés",
-    "aérée",
-    "aérées",
-    "aérés",
-    "aéroporté",
-    "aéroportée",
-    "aéroportées"
-   ],
-   "ending": 3302
-  },
-  {
-   "form": "centaurées",
-   "category": "noun",
-   "readings": [
-    {
-     "ipa": "sɑ̃.to.ʁe",
-     "guessed": true
-    }
-   ],
-   "inCategory": [
-    "sɑ̃.to.ʁe"
-   ],
-   "homophones": [
-    "centaurée"
-   ],
-   "rhyming": 9383,
-   "rhymingHead": [
-    "aînée",
-    "aînées",
-    "aîné",
-    "aînés",
-    "aéroélasticité",
-    "aérostier",
-    "aérostiers",
-    "abée",
-    "abées",
-    "abatée"
-   ],
-   "ending": 530
-  },
-  {
-   "form": "désaliéné",
-   "category": "adjective",
-   "readings": [
-    {
-     "ipa": "de.za.lje.ne",
-     "guessed": false
-    },
-    {
-     "ipa": "de.za.lje.ne",
-     "guessed": false
-    }
-   ],
-   "inCategory": [
-    "de.za.lje.ne"
-   ],
-   "homophones": [],
-   "rhyming": 29788,
-   "rhymingHead": [
-    "aîné",
-    "aînée",
-    "aînées",
-    "aînés",
-    "aérée",
-    "aérées",
-    "aérés",
-    "aéroporté",
-    "aéroportée",
-    "aéroportées"
-   ],
-   "ending": 3302
-  },
-  {
-   "form": "chorologie",
-   "category": "noun",
-   "readings": [
-    {
-     "ipa": "ʃɔ.ʁɔ.lɔ.ʒi",
-     "guessed": true
-    }
-   ],
-   "inCategory": [
-    "ʃɔ.ʁɔ.lɔ.ʒi"
-   ],
-   "homophones": [],
-   "rhyming": 9912,
+   "rhyming": 9730,
    "rhymingHead": [
     "aï",
     "aïoli",
@@ -5598,317 +5514,51 @@
     "aéropathie",
     "aérophagie"
    ],
-   "ending": 1314
+   "ending": 558
   },
   {
-   "form": "ecclésiaste",
+   "form": "lumpenproletariat",
    "category": "noun",
    "readings": [
     {
-     "ipa": "ɛ.kle.zi.ast",
+     "ipa": "lœ̃.pɑ̃.pʁɔ.lə.ta.ʁi.a",
      "guessed": true
     }
    ],
    "inCategory": [
-    "ɛ.kle.zi.ast"
+    "lœ̃.pɑ̃.pʁɔ.lə.ta.ʁi.a"
    ],
    "homophones": [],
-   "rhyming": 127,
+   "rhyming": 3656,
    "rhymingHead": [
-    "aminoplaste",
-    "aminoplastes",
-    "amyloplaste",
-    "amyloplastes",
-    "épiblaste",
-    "épiblastes",
-    "éraste",
-    "érastes",
-    "ballast",
-    "ballasts"
+    "aa",
+    "aérostat",
+    "aérostats",
+    "aas",
+    "êta",
+    "êtas",
+    "abaca",
+    "abacas",
+    "abat",
+    "ébat"
    ],
-   "ending": 2738
+   "ending": 191
   },
   {
-   "form": "RMIste",
-   "category": "noun",
-   "readings": [
-    {
-     "ipa": "ʁmist",
-     "guessed": true
-    }
-   ],
-   "inCategory": [
-    "ʁmist"
-   ],
-   "homophones": [],
-   "rhyming": 2444,
-   "rhymingHead": [
-    "aéromodéliste",
-    "aéromodélistes",
-    "ébéniste",
-    "ébénistes",
-    "abolitionniste",
-    "absolutiste",
-    "absolutistes",
-    "abstentionniste",
-    "abstentionnistes",
-    "académiste"
-   ],
-   "ending": 2738
-  },
-  {
-   "form": "dégommée",
+   "form": "treillissé",
    "category": "adjective",
    "readings": [
     {
-     "ipa": "de.gɔ.me",
+     "ipa": "tʁe.ji.se",
      "guessed": false
     },
     {
-     "ipa": "de.gɔ.me",
+     "ipa": "tʁe.ji.se",
      "guessed": false
     }
    ],
    "inCategory": [
-    "de.gɔ.me"
-   ],
-   "homophones": [],
-   "rhyming": 29788,
-   "rhymingHead": [
-    "aîné",
-    "aînée",
-    "aînées",
-    "aînés",
-    "aérée",
-    "aérées",
-    "aérés",
-    "aéroporté",
-    "aéroportée",
-    "aéroportées"
-   ],
-   "ending": 965
-  },
-  {
-   "form": "rétinoblastomes",
-   "category": "noun",
-   "readings": [
-    {
-     "ipa": "ʁe.ti.nɔ.bla.stɔm",
-     "guessed": true
-    }
-   ],
-   "inCategory": [
-    "ʁe.ti.nɔ.bla.stɔm"
-   ],
-   "homophones": [],
-   "rhyming": 702,
-   "rhymingHead": [
-    "aérium",
-    "aériums",
-    "économe",
-    "économes",
-    "actinium",
-    "actiniums",
-    "addendum",
-    "addendums",
-    "agronome",
-    "album"
-   ],
-   "ending": 702
-  },
-  {
-   "form": "supratemporale",
-   "category": "adjective",
-   "readings": [
-    {
-     "ipa": "sy.pʁa.tɑ̃.pɔ.ʁal",
-     "guessed": true
-    }
-   ],
-   "inCategory": [
-    "sy.pʁa.tɑ̃.pɔ.ʁal"
-   ],
-   "homophones": [],
-   "rhyming": 3118,
-   "rhymingHead": [
-    "aéronaval",
-    "aéronavale",
-    "aéronavales",
-    "aéronavals",
-    "aéropostal",
-    "aéropostale",
-    "aéropostales",
-    "aérospatial",
-    "aérospatiale",
-    "aérospatiales"
-   ],
-   "ending": 3118
-  },
-  {
-   "form": "scissionnisme",
-   "category": "noun",
-   "readings": [
-    {
-     "ipa": "ssi.si.ɔ.nism",
-     "guessed": true
-    }
-   ],
-   "inCategory": [
-    "ssi.si.ɔ.nism"
-   ],
-   "homophones": [],
-   "rhyming": 2934,
-   "rhymingHead": [
-    "aérodynamisme",
-    "aérodynamismes",
-    "aéromodélisme",
-    "aéromodélismes",
-    "abolitionnisme",
-    "abolitionnismes",
-    "absentéisme",
-    "absentéismes",
-    "absinthisme",
-    "absinthismes"
-   ],
-   "ending": 3008
-  },
-  {
-   "form": "matinier",
-   "category": "adjective",
-   "readings": [
-    {
-     "ipa": "ma.ti.ni.e",
-     "guessed": true
-    }
-   ],
-   "inCategory": [
-    "ma.ti.ni.e"
-   ],
-   "homophones": [],
-   "rhyming": 29788,
-   "rhymingHead": [
-    "aîné",
-    "aînée",
-    "aînées",
-    "aînés",
-    "aérée",
-    "aérées",
-    "aérés",
-    "aéroporté",
-    "aéroportée",
-    "aéroportées"
-   ],
-   "ending": 260
-  },
-  {
-   "form": "opsines",
-   "category": "noun",
-   "readings": [
-    {
-     "ipa": "ɔ.psin",
-     "guessed": true
-    }
-   ],
-   "inCategory": [
-    "ɔ.psin"
-   ],
-   "homophones": [
-    "opsine"
-   ],
-   "rhyming": 2072,
-   "rhymingHead": [
-    "aérodyne",
-    "aérodynes",
-    "abiétine",
-    "abricotine",
-    "absinthine",
-    "absinthines",
-    "acétylcholine",
-    "acétylcholines",
-    "échevine",
-    "échevines"
-   ],
-   "ending": 2072
-  },
-  {
-   "form": "italo-turque",
-   "category": "noun",
-   "readings": [
-    {
-     "ipa": "i.ta.lɔ.tyʁk",
-     "guessed": true
-    },
-    {
-     "ipa": "i.ta.lɔ.tyʁk",
-     "guessed": true
-    }
-   ],
-   "inCategory": [
-    "i.ta.lɔ.tyʁk"
-   ],
-   "homophones": [],
-   "rhyming": 19,
-   "rhymingHead": [
-    "turque",
-    "turcs",
-    "turques",
-    "russo-turque",
-    "italo-turque",
-    "russo-turques",
-    "franco-turc",
-    "franco-turque",
-    "russo-turc",
-    "franco-turques"
-   ],
-   "ending": 151
-  },
-  {
-   "form": "beuglés",
-   "category": "adjective",
-   "readings": [
-    {
-     "ipa": "bø.gle",
-     "guessed": false
-    },
-    {
-     "ipa": "bø.gle",
-     "guessed": false
-    }
-   ],
-   "inCategory": [
-    "bø.gle"
-   ],
-   "homophones": [],
-   "rhyming": 29788,
-   "rhymingHead": [
-    "aîné",
-    "aînée",
-    "aînées",
-    "aînés",
-    "aérée",
-    "aérées",
-    "aérés",
-    "aéroporté",
-    "aéroportée",
-    "aéroportées"
-   ],
-   "ending": 2650
-  },
-  {
-   "form": "fascée",
-   "category": "adjective",
-   "readings": [
-    {
-     "ipa": "fa.se",
-     "guessed": false
-    },
-    {
-     "ipa": "fa.se",
-     "guessed": false
-    }
-   ],
-   "inCategory": [
-    "fa.se"
+    "tʁe.ji.se"
    ],
    "homophones": [],
    "rhyming": 29788,
@@ -5927,48 +5577,166 @@
    "ending": 2040
   },
   {
-   "form": "quadragésimaux",
+   "form": "rosies",
    "category": "adjective",
    "readings": [
     {
-     "ipa": "ka.dʁa.ʒe.zi.mo",
+     "ipa": "ʁo.zi",
+     "guessed": false
+    },
+    {
+     "ipa": "ʁo.zi",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "ʁo.zi"
+   ],
+   "homophones": [],
+   "rhyming": 2306,
+   "rhymingHead": [
+    "aérobie",
+    "aérobies",
+    "abêtis",
+    "ébahie",
+    "ébahies",
+    "abasourdi",
+    "abasourdie",
+    "abasourdies",
+    "abasourdis",
+    "ébaubi"
+   ],
+   "ending": 55
+  },
+  {
+   "form": "cheminotes",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "ʃə.mi.nɔt",
      "guessed": true
     }
    ],
    "inCategory": [
-    "ka.dʁa.ʒe.zi.mo"
+    "ʃə.mi.nɔt"
    ],
    "homophones": [],
-   "rhyming": 1136,
+   "rhyming": 553,
    "rhymingHead": [
-    "aéropostaux",
-    "aérospatiaux",
-    "abdominaux",
-    "aboraux",
-    "abricot",
-    "absidiaux",
-    "abyssaux",
-    "accro",
-    "accros",
-    "échevinaux"
+    "échalote",
+    "échalotes",
+    "actinote",
+    "aliquote",
+    "amniote",
+    "amniotes",
+    "anecdote",
+    "anecdotes",
+    "antidote",
+    "antidotes"
    ],
-   "ending": 61
+   "ending": 553
   },
   {
-   "form": "calaminée",
+   "form": "grandiloquences",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "gʁɑ̃.di.lɔ.kɑ̃s",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "gʁɑ̃.di.lɔ.kɑ̃s"
+   ],
+   "homophones": [
+    "grandiloquence"
+   ],
+   "rhyming": 1365,
+   "rhymingHead": [
+    "aberrance",
+    "abondance",
+    "abondances",
+    "absence",
+    "absences",
+    "abstinence",
+    "abstinences",
+    "accointance",
+    "accointances",
+    "accoutumance"
+   ],
+   "ending": 1365
+  },
+  {
+   "form": "ébullioscopes",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "e.by.li.ɔ.skɔp",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "e.by.li.ɔ.skɔp"
+   ],
+   "homophones": [],
+   "rhyming": 278,
+   "rhymingHead": [
+    "aéroscope",
+    "aéroscopes",
+    "échoppe",
+    "échoppes",
+    "écope",
+    "écopes",
+    "électrocardioscope",
+    "électrocardioscopes",
+    "électroscope",
+    "électroscopes"
+   ],
+   "ending": 278
+  },
+  {
+   "form": "trigémellaire",
    "category": "adjective",
    "readings": [
     {
-     "ipa": "ka.la.mi.ne",
+     "ipa": "tʁi.ʒe.mɛ.lɛʁ",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "tʁi.ʒe.mɛ.lɛʁ"
+   ],
+   "homophones": [],
+   "rhyming": 2663,
+   "rhymingHead": [
+    "aérifère",
+    "aéroportuaire",
+    "aéroportuaires",
+    "abécédaire",
+    "abécédaires",
+    "abarticulaire",
+    "abarticulaires",
+    "abdicataire",
+    "abeillère",
+    "acère"
+   ],
+   "ending": 2663
+  },
+  {
+   "form": "upérisé",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "y.pe.ʁi.ze",
      "guessed": false
     },
     {
-     "ipa": "ka.la.mi.ne",
+     "ipa": "y.pe.ʁi.ze",
      "guessed": false
     }
    ],
    "inCategory": [
-    "ka.la.mi.ne"
+    "y.pe.ʁi.ze"
    ],
    "homophones": [],
    "rhyming": 29788,
@@ -5984,54 +5752,264 @@
     "aéroportée",
     "aéroportées"
    ],
-   "ending": 3302
+   "ending": 3853
   },
   {
-   "form": "opto-électronique",
+   "form": "multiconducteurs",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "my.lti.kɔ̃.dy.ktøʁ",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "my.lti.kɔ̃.dy.ktøʁ"
+   ],
+   "homophones": [],
+   "rhyming": 655,
+   "rhymingHead": [
+    "intérieure",
+    "législateur",
+    "observateur",
+    "conservateur",
+    "protecteur",
+    "producteur",
+    "générateur",
+    "ultérieur",
+    "détenteur",
+    "réformateur"
+   ],
+   "ending": 655
+  },
+  {
+   "form": "petiotes",
    "category": "noun",
    "readings": [
     {
-     "ipa": "ɔ.ptɔ.e.lɛ.ktʁɔ.nik",
+     "ipa": "pə.tjɔt",
+     "guessed": false
+    },
+    {
+     "ipa": "pə.tjɔt",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "pə.tjɔt"
+   ],
+   "homophones": [],
+   "rhyming": 553,
+   "rhymingHead": [
+    "échalote",
+    "échalotes",
+    "actinote",
+    "aliquote",
+    "amniote",
+    "amniotes",
+    "anecdote",
+    "anecdotes",
+    "antidote",
+    "antidotes"
+   ],
+   "ending": 553
+  },
+  {
+   "form": "livresquement",
+   "category": "adverb",
+   "readings": [
+    {
+     "ipa": "li.vʁɛ.skəm",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "li.vʁɛ.skəm"
+   ],
+   "homophones": [],
+   "rhyming": 458,
+   "rhymingHead": [
+    "hautement",
+    "hâtivement",
+    "graphiquement",
+    "nominalement",
+    "structurellement",
+    "inférieurement",
+    "inviolablement",
+    "poétiquement",
+    "préférablement",
+    "médiatement"
+   ],
+   "ending": 458
+  },
+  {
+   "form": "chaplinesques",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "ʃa.pli.nɛsk",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ʃa.pli.nɛsk"
+   ],
+   "homophones": [
+    "chaplinesque"
+   ],
+   "rhyming": 127,
+   "rhymingHead": [
+    "abracadabrantesque",
+    "éléphantesque",
+    "animalesque",
+    "animalesques",
+    "arabesque",
+    "aristophanesque",
+    "barbaresque",
+    "barbaresques",
+    "burlesque",
+    "burlesques"
+   ],
+   "ending": 151
+  },
+  {
+   "form": "gueulardes",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "gø.laʁd",
      "guessed": true
     },
     {
-     "ipa": "ɔ.ptɔ.e.lɛ.ktʁɔ.nik",
+     "ipa": "gø.laʁd",
      "guessed": true
     }
    ],
    "inCategory": [
-    "ɔ.ptɔ.e.lɛ.ktʁɔ.nik"
+    "gø.laʁd"
    ],
    "homophones": [],
-   "rhyming": 1648,
+   "rhyming": 411,
    "rhymingHead": [
-    "aéraulique",
-    "aérobic",
-    "aérobics",
-    "aérodynamique",
-    "aéronautique",
-    "aéronautiques",
-    "aérotechnique",
-    "abandonnique",
-    "abandonniques",
-    "académique"
+    "écharde",
+    "échardes",
+    "anacarde",
+    "anacardes",
+    "épicarde",
+    "épicardes",
+    "bambocharde",
+    "bambochardes",
+    "bénarde",
+    "banlieusarde"
    ],
-   "ending": 1648
+   "ending": 528
   },
   {
-   "form": "macro-instruction",
+   "form": "quatre-vingt-quatrième",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "ka.tʁvɛ̃.gka.tʁi.ɛm",
+     "guessed": true
+    },
+    {
+     "ipa": "ka.tʁvɛ̃.gka.tʁi.ɛm",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ka.tʁvɛ̃.gka.tʁi.ɛm"
+   ],
+   "homophones": [],
+   "rhyming": 267,
+   "rhymingHead": [
+    "abstème",
+    "abstèmes",
+    "énième",
+    "antépénultième",
+    "antisystème",
+    "antisystèmes",
+    "blême",
+    "blêmes",
+    "bohème",
+    "bohèmes"
+   ],
+   "ending": 267
+  },
+  {
+   "form": "casse-gueule",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "ka.sgøl",
+     "guessed": true
+    },
+    {
+     "ipa": "ka.sgøl",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ka.sgøl"
+   ],
+   "homophones": [],
+   "rhyming": 13,
+   "rhymingHead": [
+    "peul",
+    "peule",
+    "peules",
+    "peuls",
+    "veule",
+    "veules",
+    "bégueules",
+    "peuhl",
+    "peuhls",
+    "peuhle"
+   ],
+   "ending": 13
+  },
+  {
+   "form": "piézo-électriques",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "pi.e.zɔ.e.lɛ.ktʁik",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "pi.e.zɔ.e.lɛ.ktʁik"
+   ],
+   "homophones": [],
+   "rhyming": 6436,
+   "rhymingHead": [
+    "ïambique",
+    "aéraulique",
+    "aérobique",
+    "aérobiques",
+    "aérodynamique",
+    "aérodynamiques",
+    "aéronautique",
+    "aéronautiques",
+    "aérostatique",
+    "aérostatiques"
+   ],
+   "ending": 6436
+  },
+  {
+   "form": "micro-instructions",
    "category": "noun",
    "readings": [
     {
-     "ipa": "ma.kʁɔ.ɛ̃.stʁy.kti.ɔ̃",
+     "ipa": "mi.kʁɔ.ɛ̃.stʁy.kti.ɔ̃",
      "guessed": true
     }
    ],
    "inCategory": [
-    "ma.kʁɔ.ɛ̃.stʁy.kti.ɔ̃"
+    "mi.kʁɔ.ɛ̃.stʁy.kti.ɔ̃"
    ],
    "homophones": [],
-   "rhyming": 9082,
+   "rhyming": 9080,
    "rhymingHead": [
     "aération",
     "aérations",
@@ -6047,128 +6025,164 @@
    "ending": 2861
   },
   {
-   "form": "guaïfénésine",
+   "form": "hakamas",
    "category": "noun",
    "readings": [
     {
-     "ipa": "gy.a.i.fe.ne.zin",
+     "ipa": "a.ka.ma",
      "guessed": true
     }
    ],
    "inCategory": [
-    "gy.a.i.fe.ne.zin"
+    "a.ka.ma"
    ],
    "homophones": [],
-   "rhyming": 2072,
+   "rhyming": 3656,
    "rhymingHead": [
-    "aérodyne",
-    "aérodynes",
-    "abiétine",
-    "abricotine",
-    "absinthine",
-    "absinthines",
-    "acétylcholine",
-    "acétylcholines",
-    "échevine",
-    "échevines"
+    "aa",
+    "aérostat",
+    "aérostats",
+    "aas",
+    "êta",
+    "êtas",
+    "abaca",
+    "abacas",
+    "abat",
+    "ébat"
    ],
-   "ending": 2072
+   "ending": 206
   },
   {
-   "form": "cellulars",
+   "form": "chahadas",
    "category": "noun",
    "readings": [
     {
-     "ipa": "sɛ.ly.laʁ",
+     "ipa": "ʃa.a.da",
      "guessed": true
     }
    ],
    "inCategory": [
-    "sɛ.ly.laʁ"
+    "ʃa.a.da"
+   ],
+   "homophones": [
+    "chahada"
+   ],
+   "rhyming": 3656,
+   "rhymingHead": [
+    "aa",
+    "aérostat",
+    "aérostats",
+    "aas",
+    "êta",
+    "êtas",
+    "abaca",
+    "abacas",
+    "abat",
+    "ébat"
+   ],
+   "ending": 195
+  },
+  {
+   "form": "homo cepranensis",
+   "category": "noun",
+   "readings": [
+    {
+     "ipa": "ɔ.mɔ.sɛ.pʁa.nɑ̃.si",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ɔ.mɔ.sɛ.pʁa.nɑ̃.si"
    ],
    "homophones": [],
-   "rhyming": 1823,
+   "rhyming": 9730,
    "rhymingHead": [
-    "aérogare",
-    "aérogares",
-    "ébarboir",
-    "ébarboirs",
-    "abattoir",
-    "abattoirs",
-    "ébauchoir",
-    "ébauchoirs",
-    "ébranchoir",
-    "ébranchoirs"
+    "aï",
+    "aïoli",
+    "aïolis",
+    "aérocolie",
+    "aérogastrie",
+    "aérologie",
+    "aérologies",
+    "aéromancie",
+    "aéropathie",
+    "aérophagie"
    ],
-   "ending": 1823
+   "ending": 558
   },
   {
-   "form": "alf₃",
+   "form": "carbochimies",
    "category": "noun",
    "readings": [
     {
-     "ipa": "alf",
+     "ipa": "ka.ʁbɔ.ʃi.mi",
      "guessed": true
     }
    ],
    "inCategory": [
-    "alf"
+    "ka.ʁbɔ.ʃi.mi"
+   ],
+   "homophones": [
+    "carbochimie"
+   ],
+   "rhyming": 9730,
+   "rhymingHead": [
+    "aï",
+    "aïoli",
+    "aïolis",
+    "aérocolie",
+    "aérogastrie",
+    "aérologie",
+    "aérologies",
+    "aéromancie",
+    "aéropathie",
+    "aérophagie"
+   ],
+   "ending": 925
+  },
+  {
+   "form": "désaciéré",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "de.za.sje.ʁe",
+     "guessed": false
+    },
+    {
+     "ipa": "de.za.sje.ʁe",
+     "guessed": false
+    }
+   ],
+   "inCategory": [
+    "de.za.sje.ʁe"
    ],
    "homophones": [],
-   "rhyming": 12,
+   "rhyming": 29788,
    "rhymingHead": [
-    "boxcalf",
-    "box-calf",
-    "alf₂",
-    "AlF₂",
-    "alf₃",
-    "AlF₃",
-    "al₂f₆",
-    "Al₂F₆",
-    "na₃alf₆",
-    "Na₃AlF₆"
+    "aîné",
+    "aînée",
+    "aînées",
+    "aînés",
+    "aérée",
+    "aérées",
+    "aérés",
+    "aéroporté",
+    "aéroportée",
+    "aéroportées"
    ],
-   "ending": 52
+   "ending": 2672
   },
   {
-   "form": "NO₂",
+   "form": "incurabilités",
    "category": "noun",
    "readings": [
     {
-     "ipa": "nɔ",
+     "ipa": "ɛ̃.ky.ʁa.bi.li.te",
      "guessed": true
     }
    ],
    "inCategory": [
-    "nɔ"
-   ],
-   "homophones": [],
-   "rhyming": 2428,
-   "rhymingHead": [
-    "allégretto",
-    "allégrettos",
-    "allegretto",
-    "asticots",
-    "bépo",
-    "cæcaux",
-    "carbonaro",
-    "carbonaros",
-    "carolo",
-    "carolos"
-   ],
-   "ending": 356
-  },
-  {
-   "form": "bissexualités",
-   "category": "noun",
-   "readings": [
-    {
-     "ipa": "bi.sə.ksy.a.li.te",
-     "guessed": true
-    }
-   ],
-   "inCategory": [
-    "bi.sə.ksy.a.li.te"
+    "ɛ̃.ky.ʁa.bi.li.te"
    ],
    "homophones": [],
    "rhyming": 9383,
@@ -6187,248 +6201,108 @@
    "ending": 3677
   },
   {
-   "form": "décartonnés",
-   "category": "adjective",
-   "readings": [
-    {
-     "ipa": "de.kaʁ.tɔ.ne",
-     "guessed": false
-    },
-    {
-     "ipa": "de.kaʁ.tɔ.ne",
-     "guessed": false
-    }
-   ],
-   "inCategory": [
-    "de.kaʁ.tɔ.ne"
-   ],
-   "homophones": [],
-   "rhyming": 29788,
-   "rhymingHead": [
-    "aîné",
-    "aînée",
-    "aînées",
-    "aînés",
-    "aérée",
-    "aérées",
-    "aérés",
-    "aéroporté",
-    "aéroportée",
-    "aéroportées"
-   ],
-   "ending": 3302
-  },
-  {
-   "form": "hachichés",
-   "category": "adjective",
-   "readings": [
-    {
-     "ipa": "a.ʃi.ʃe",
-     "guessed": true
-    }
-   ],
-   "inCategory": [
-    "a.ʃi.ʃe"
-   ],
-   "homophones": [],
-   "rhyming": 29788,
-   "rhymingHead": [
-    "aîné",
-    "aînée",
-    "aînées",
-    "aînés",
-    "aérée",
-    "aérées",
-    "aérés",
-    "aéroporté",
-    "aéroportée",
-    "aéroportées"
-   ],
-   "ending": 870
-  },
-  {
-   "form": "oganessons",
+   "form": "photocatalyses",
    "category": "noun",
    "readings": [
     {
-     "ipa": "ɔ.ga.nɛ.sɔ̃",
-     "guessed": true
-    }
-   ],
-   "inCategory": [
-    "ɔ.ga.nɛ.sɔ̃"
-   ],
-   "homophones": [],
-   "rhyming": 9082,
-   "rhymingHead": [
-    "aération",
-    "aérations",
-    "aérodistorsion",
-    "aérostation",
-    "aérostations",
-    "abandon",
-    "abandons",
-    "ébauchons",
-    "abdication",
-    "abdications"
-   ],
-   "ending": 195
-  },
-  {
-   "form": "réabordées",
-   "category": "adjective",
-   "readings": [
-    {
-     "ipa": "ʁe.a.bɔʁ.de",
+     "ipa": "fo.to.ka.ta.liz",
      "guessed": false
     },
     {
-     "ipa": "ʁe.a.bɔʁ.de",
+     "ipa": "fo.to.ka.ta.liz",
      "guessed": false
     }
    ],
    "inCategory": [
-    "ʁe.a.bɔʁ.de"
+    "fo.to.ka.ta.liz"
    ],
    "homophones": [],
-   "rhyming": 29788,
+   "rhyming": 373,
    "rhymingHead": [
-    "aîné",
-    "aînée",
-    "aînées",
-    "aînés",
-    "aérée",
-    "aérées",
-    "aérés",
-    "aéroporté",
-    "aéroportée",
-    "aéroportées"
+    "accise",
+    "accises",
+    "église",
+    "églises",
+    "électrodialyse",
+    "électrodialyses",
+    "électrolyse",
+    "alise",
+    "alises",
+    "altise"
    ],
-   "ending": 1155
+   "ending": 373
   },
   {
-   "form": "yottawattheure",
+   "form": "skiffeuses",
    "category": "noun",
    "readings": [
     {
-     "ipa": "i.ɔ.ta.wa.tøʁ",
+     "ipa": "ski.føz",
      "guessed": true
     }
    ],
    "inCategory": [
-    "i.ɔ.ta.wa.tøʁ"
+    "ski.føz"
    ],
    "homophones": [],
-   "rhyming": 2281,
+   "rhyming": 3003,
    "rhymingHead": [
-    "caseyeur",
-    "caseyeurs",
-    "lustreur",
-    "pourfendeur",
-    "pourfendeurs",
-    "skippers",
-    "législateur",
-    "hauteurs",
-    "observateur",
-    "conservateur"
+    "ébarbeuse",
+    "ébarbeuses",
+    "abatteuse",
+    "abatteuses",
+    "aboyeuse",
+    "aboyeuses",
+    "abrutisseuse",
+    "abrutisseuses",
+    "abuseuse",
+    "abuseuses"
    ],
-   "ending": 2281
+   "ending": 3003
   },
   {
-   "form": "régénérerai",
+   "form": "équisinguliers",
+   "category": "adjective",
+   "readings": [
+    {
+     "ipa": "e.ki.zɛ̃.gy.li.ɛʁ",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "e.ki.zɛ̃.gy.li.ɛʁ"
+   ],
+   "homophones": [],
+   "rhyming": 2663,
+   "rhymingHead": [
+    "aérifère",
+    "aéroportuaire",
+    "aéroportuaires",
+    "abécédaire",
+    "abécédaires",
+    "abarticulaire",
+    "abarticulaires",
+    "abdicataire",
+    "abeillère",
+    "acère"
+   ],
+   "ending": 2663
+  },
+  {
+   "form": "collisionnés",
    "category": "verb",
    "readings": [
     {
-     "ipa": "ʁe.ʒe.ne.ʁə.ʁɛ",
+     "ipa": "kɔ.li.zi.ɔ.ne",
      "guessed": true
-    }
-   ],
-   "inCategory": [
-    "ʁe.ʒe.ne.ʁə.ʁɛ"
-   ],
-   "homophones": [],
-   "rhyming": 51529,
-   "rhymingHead": [
-    "aéraient",
-    "aérais",
-    "aérait",
-    "aèreraient",
-    "aèrerais",
-    "aèrerait",
-    "aérosolisaient",
-    "aérosolisais",
-    "aérosolisait",
-    "aérosoliseraient"
-   ],
-   "ending": 28583
-  },
-  {
-   "form": "cavacherons",
-   "category": "verb",
-   "readings": [
+    },
     {
-     "ipa": "ka.va.ʃə.ʁɔ̃",
+     "ipa": "kɔ.li.zi.ɔ.ne",
      "guessed": true
     }
    ],
    "inCategory": [
-    "ka.va.ʃə.ʁɔ̃"
-   ],
-   "homophones": [],
-   "rhyming": 50175,
-   "rhymingHead": [
-    "aérassions",
-    "aèrerions",
-    "aèrerons",
-    "aèreront",
-    "aérions",
-    "aérons",
-    "aérosolisassions",
-    "aérosoliserions",
-    "aérosoliserons",
-    "aérosoliseront"
-   ],
-   "ending": 17961
-  },
-  {
-   "form": "déflaqueraient",
-   "category": "verb",
-   "readings": [
-    {
-     "ipa": "de.fla.kə.ʁɛ",
-     "guessed": true
-    }
-   ],
-   "inCategory": [
-    "de.fla.kə.ʁɛ"
-   ],
-   "homophones": [],
-   "rhyming": 51529,
-   "rhymingHead": [
-    "aéraient",
-    "aérais",
-    "aérait",
-    "aèreraient",
-    "aèrerais",
-    "aèrerait",
-    "aérosolisaient",
-    "aérosolisais",
-    "aérosolisait",
-    "aérosoliseraient"
-   ],
-   "ending": 28583
-  },
-  {
-   "form": "ingérerez",
-   "category": "verb",
-   "readings": [
-    {
-     "ipa": "ɛ̃.ʒe.ʁə.ʁe",
-     "guessed": true
-    }
-   ],
-   "inCategory": [
-    "ɛ̃.ʒe.ʁə.ʁe"
+    "kɔ.li.zi.ɔ.ne"
    ],
    "homophones": [],
    "rhyming": 92169,
@@ -6444,35 +6318,123 @@
     "aèreriez",
     "aérer"
    ],
-   "ending": 21124
+   "ending": 5692
   },
   {
-   "form": "salonguai",
+   "form": "colletaille",
    "category": "verb",
    "readings": [
     {
-     "ipa": "sa.lɔ̃.gy.ɛ",
+     "ipa": "kɔ.lə.taj",
      "guessed": true
     }
    ],
    "inCategory": [
-    "sa.lɔ̃.gy.ɛ"
+    "kɔ.lə.taj"
    ],
    "homophones": [],
-   "rhyming": 51529,
+   "rhyming": 198,
    "rhymingHead": [
-    "aéraient",
-    "aérais",
-    "aérait",
-    "aèreraient",
-    "aèrerais",
-    "aèrerait",
-    "aérosolisaient",
-    "aérosolisais",
-    "aérosolisait",
-    "aérosoliseraient"
+    "égaillent",
+    "égailles",
+    "égaille",
+    "aillent",
+    "ailles",
+    "aille",
+    "émaillent",
+    "émailles",
+    "émaille",
+    "équivaillent"
    ],
-   "ending": 70
+   "ending": 198
+  },
+  {
+   "form": "désoufflée",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "de.zu.fle",
+     "guessed": true
+    },
+    {
+     "ipa": "de.zu.fle",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "de.zu.fle"
+   ],
+   "homophones": [],
+   "rhyming": 92169,
+   "rhymingHead": [
+    "aérées",
+    "aérée",
+    "aérai",
+    "aérassiez",
+    "aérés",
+    "aéré",
+    "aèrerai",
+    "aèrerez",
+    "aèreriez",
+    "aérer"
+   ],
+   "ending": 4421
+  },
+  {
+   "form": "matounâtes",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "ma.tu.nat",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "ma.tu.nat"
+   ],
+   "homophones": [],
+   "rhyming": 7732,
+   "rhymingHead": [
+    "aérâtes",
+    "aérosolisâtes",
+    "abéchâtes",
+    "abaissâtes",
+    "abîmâtes",
+    "abandonnâtes",
+    "abéquâtes",
+    "ébarbâtes",
+    "abattent",
+    "ébattent"
+   ],
+   "ending": 7732
+  },
+  {
+   "form": "sous-rémunèrent",
+   "category": "verb",
+   "readings": [
+    {
+     "ipa": "su.ʁe.my.nɛʁ",
+     "guessed": true
+    }
+   ],
+   "inCategory": [
+    "su.ʁe.my.nɛʁ"
+   ],
+   "homophones": [],
+   "rhyming": 7945,
+   "rhymingHead": [
+    "aérèrent",
+    "aèrent",
+    "aères",
+    "aère",
+    "aérosolisèrent",
+    "abéchèrent",
+    "abaissèrent",
+    "abîmèrent",
+    "abandonnèrent",
+    "abéquèrent"
+   ],
+   "ending": 7945
   }
  ]
 }

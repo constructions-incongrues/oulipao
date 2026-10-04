@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { deriveLexicon, readingsOf } from '../../src/adapters/lexicon/grammalecte.ts';
+import { deriveLexicon, isChemicalFormula, readingsOf } from '../../src/adapters/lexicon/grammalecte.ts';
 
 // Lignes au format du lexique Grammalecte : 20 colonnes, forme en 3e, lemme en 4e, étiquettes en 5e.
 const row = (form: string, lemma: string, tags: string) =>
@@ -29,4 +29,21 @@ test('deriveLexicon : fusionne les lectures, trie, compte', () => {
   ]);
   assert.deepEqual(entries, ['Marthe\to', 'est\tvn', 'ferme\tnva']);
   assert.deepEqual(stats, { forms: 3, ambiguous: 2, nounRowsWithGender: 3, nounLemmasWithGender: 2 });
+});
+
+test('isChemicalFormula : formules écartées, sigles et unités gardés', () => {
+  assert.equal(isChemicalFormula('AgBF₄', 'chim'), true);
+  assert.equal(isChemicalFormula('CO₂', ''), true);
+  assert.equal(isChemicalFormula('NaCl', 'phys chim'), true);
+  assert.equal(isChemicalFormula('CO2', 'chim'), true);
+  assert.equal(isChemicalFormula('RMN', 'phys chim'), false);
+  assert.equal(isChemicalFormula('GHz', 'phys'), false);
+  assert.equal(isChemicalFormula('azote', 'chim'), false);
+});
+
+test('deriveLexicon : sans formule chimique', () => {
+  const chem = (form: string, domains: string) =>
+    ['0', '1', form, form, 'nom mas inv', 'x', 'x', 'cc', domains, ...Array<string>(11).fill('x')].join('\t');
+  const { entries } = deriveLexicon([chem('BeSO₃', 'chim'), chem('NaCl', 'chim'), chem('RMN', 'phys chim')]);
+  assert.deepEqual(entries, ['RMN\tn']);
 });
