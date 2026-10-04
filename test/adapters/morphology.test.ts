@@ -28,6 +28,7 @@ test('morphologyRowsOf : ignore ce qui n’est ni nom, ni adjectif, ni adverbe, 
   assert.deepEqual(morphologyRowsOf(row('Marthe', 'Marthe', 'prn fem inv')), []);
   assert.deepEqual(morphologyRowsOf('# commentaire'), []);
   assert.deepEqual(morphologyRowsOf(row('Flexion', 'Lemme', 'Étiquettes')), []);
+  assert.deepEqual(morphologyRowsOf(row('BeSO₃', 'BeSO₃', 'nom mas inv')), []);
 });
 
 test('deriveMorphology : sans doublon', () => {
