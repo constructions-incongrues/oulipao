@@ -4,6 +4,7 @@ import { html } from 'htm/preact';
 import { renderToString } from 'preact-render-to-string';
 import { GateSchema, ModulatorSchema, type Gate, type Modulator } from '../../../src/domain/modulation/schema.ts';
 import { PHONETICS_LOADING } from '../../../src/domain/phonetics/lookup.ts';
+import { lineationPlugin } from '../../../src/domain/lineation/plugin.ts';
 import { homophonyPlugin } from '../../../src/domain/rhyme/homophony.ts';
 import { rnPlugin } from '../../../src/domain/rhyme/rn.ts';
 import { s7Plugin } from '../../../src/domain/s7/plugin.ts';
@@ -131,6 +132,8 @@ test('libellé : S+lettres, R+rang avec sa rime, homophonies au rang modulé ; s
   assert.equal(modulatedLabel(s7Plugin, { ...s7Plugin.defaults, mode: 'same-gender' }, { offset: letters }), 'S+lettres, parmi les noms du même genre');
   assert.equal(modulatedLabel(rnPlugin, rnPlugin.defaults, { offset: mod({ kind: 'rank' }) }), 'R+rang, rime suffisante');
   assert.equal(modulatedLabel(homophonyPlugin, { offset: 3 }, { offset: mod({ kind: 'letter', letter: 'a' }) }), 'homophonies, rang : « a »');
+  // La Mise en vers modulée ne garde pas la mesure fixe dans son libellé.
+  assert.equal(modulatedLabel(lineationPlugin, { cut: 'syllables', syllables: 8 }, { syllables: mod({ kind: 'rank' }) }), 'mise en vers en syllabes : rang');
   assert.equal(modulatedLabel(s7Plugin, s7Plugin.defaults), 'S+7');
   assert.equal(modulatedLabel(lipogramPlugin, lipogramPlugin.defaults, { offset: letters }), lipogramPlugin.label(lipogramPlugin.defaults));
   assert.deepEqual(['letters', 'syllables', 'vowels', 'rank', 'line', 'pattern', 'ramp'].map((kind) => sourceName(mod(kind === 'pattern' ? { kind, values: [1] } : kind === 'ramp' ? { kind, from: 1, to: 2 } : { kind }).source)),

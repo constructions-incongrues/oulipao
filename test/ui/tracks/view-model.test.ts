@@ -203,6 +203,8 @@ test('inspecteur : un champ de verrou par paramètre verrouillable, pour les ins
   // Coupée par syllabes, la Mise en vers prend un verrou : la mesure du vers que ce mot ouvre.
   const measured = reduce(laid, { type: 'set-param', id: 'lineation-1', key: 'cut', value: 'syllables' });
   assert.deepEqual(inspectorLocks(measured, 4, 'noun').map((entry) => entry.id), ['s7-1', 'lineation-1']);
+  const lockedVerse = reduce(measured, { type: 'set-lock', id: 'lineation-1', index: 4, key: 'syllables', value: 4 });
+  assert.equal(inspectorLocks(lockedVerse, 4, 'noun')[1]!.note, 'Vers de 4 syllabes sur ce mot');
 });
 
 test('S+7 sur les verbes : mention par instance, verbes servis à la chaîne, auxiliaire compté parmi les laissés', () => {
