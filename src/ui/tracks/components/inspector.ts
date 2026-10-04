@@ -17,6 +17,8 @@ export interface InspectorProps {
   pronunciation?: string;
   /** Les colonnes d'une page de pas : une page courte se complète de cases vides, comme la grille. */
   perPage?: number;
+  /** La lignée du mot sur les tours de la boucle, du tour 0 au dernier atteint ; absente sans boucle. */
+  lineage?: readonly string[];
 }
 
 const STEP_STATES: Record<GridStep['state'], string> = {
@@ -51,11 +53,13 @@ function LockInput({ id, field, onLock }: { id: string; field: LockField; onLock
  * L'inspecteur : la page de pas du mot choisi, une ligne par étape de la chaîne, de l'origine à la
  * dernière contrainte ; chaque mot garde la colonne qu'il a dans la grille.
  */
-export function Inspector({ window, word, onClose, step, locks = [], onLock = () => {}, pronunciation, perPage = window.columns.length }: InspectorProps): VNode {
+export function Inspector({ window, word, onClose, step, locks = [], onLock = () => {}, pronunciation, perPage = window.columns.length, lineage }: InspectorProps): VNode {
   const padding = Array.from({ length: Math.max(0, perPage - window.columns.length) }, () => html`<td class="pad"></td>`);
   return html`
     <section class="inspector" tabindex="0" aria-label="Inspecteur">
       ${pronunciation && html`<p class="pronunciation"><span class="silk">Prononciation</span> ${pronunciation}</p>`}
+      ${lineage &&
+      html`<p class="lineage" aria-live="polite"><span class="silk">Lignée</span> ${lineage.map((form, tour) => html`${tour ? ' → ' : ''}<span class="lineage-step">${form}<sub class="num">${tour}</sub></span>`)}</p>`}
       <table>
         <caption>« ${word} » à chaque étape de la chaîne${step ? html` · <span class="step-state">${STEP_STATES[step]}</span>` : ''}</caption>
         <colgroup><col class="strip" /></colgroup>

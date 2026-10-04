@@ -5,7 +5,6 @@
 //                └─ createListeningController (listening-controller.ts : écoute, tempo, voix)
 //
 // Les deux contrôleurs lisent et changent l'état par la façade (`host`) ; seule elle le tient.
-import { tagText } from '../../domain/tagging.ts';
 import type { MonitoringPreferencesStorage, VoiceSource } from '../../ports/monitoring-preferences.ts';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
 import type { PhoneticsRepository } from '../../ports/phonetics.ts';
@@ -16,6 +15,9 @@ import type { Tagger } from '../../ports/tagger.ts';
 import type { VerbRepository } from '../../ports/verbs.ts';
 import { EXAMPLES } from './examples.ts';
 import { createListeningController, initialListening } from './listening-controller.ts';
+import { findRepeat } from '../../domain/loop.ts';
+import { tokenize } from '../../domain/tokenizer.ts';
+import { computeTour, loopFinished, replacedIn, type LoopState, type TourResources } from './loop.ts';
 import { initialState, pluginById, reduce } from './mixer-state.ts';
 import { takeClipboard, type Lineage, type NotebookEntry } from './notebook.ts';
 import { cannotReopen, createNotebookController, initialNotebook, memoryNotebook, messageOf, reopenProblem, type NotebookDependencies } from './notebook-controller.ts';
@@ -44,6 +46,8 @@ export interface TracksDependencies {
   preferences?: MonitoringPreferencesStorage;
   /** Attend un blanc, en millisecondes ; remplacé dans les tests. */
   sleep?: (ms: number) => Promise<void>;
+  /** Laisse l'écran se repeindre avant le tour suivant de la boucle ; remplacé dans les tests. */
+  nextFrame?: () => Promise<void>;
   /** L'entrée portée par le lien qui a ouvert la page ; rien : la page s'ouvre sans lien d'Oulipao. */
   arrival?: Promise<SharedEntry | 'unreadable' | undefined>;
 }
@@ -153,7 +157,17 @@ export interface TracksState {
   voice?: string;
   /** Les voix françaises du système ; aucune : pas d'écoute. */
   voices: Voice[];
+  /** Le nombre de tours que lance « Boucler », de 2 à 12. */
+  loopTours: number;
+  /** La boucle de tours en cours ; aucune : le papier montre le résultat en cours. */
+  loop?: LoopState;
+  /** Le mot que dit l'écoute dans un tour autre que le tour 1, compté dans le texte de ce tour. */
+  spoken?: number;
 }
+
+/** Les bornes du nombre de tours d'une boucle. */
+export const LOOP_MIN = 2;
+export const LOOP_MAX = 12; // ponytail: plafond qui tient une boucle à ~45 s sur 533 mots ; à relever si l'étiquetage passe dans un worker
 
 export interface TracksController {
   readonly state: TracksState;
@@ -191,6 +205,14 @@ export interface TracksController {
   iterate(): Promise<void>;
   /** Garde le texte en cours s'il ne l'est pas, puis met en pistes son résultat, chaîne et forme vidées. */
   freeze(): Promise<void>;
+  /** Garde le tour 1 s'il ne l'est pas, puis calcule les tours suivants ; relancée, reprend où elle s'était arrêtée. */
+  loop(): Promise<void>;
+  /** Arrête la boucle une fois le tour en cours fini. */
+  stopLoop(): void;
+  /** Montre un tour déjà calculé sur le papier ; le curseur cesse de suivre le calcul. */
+  showTour(tour: number): void;
+  /** Règle le nombre de tours ; une boucle en cours s'allonge ou se raccourcit. */
+  setLoopTours(tours: number): void;
   /** Rouvre un texte gardé : son texte d'origine, son étiquetage et sa table, sans réétiqueter. */
   reopen(id: string): Promise<void>;
   /** Supprime un texte gardé, après confirmation. */
@@ -266,6 +288,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     listened: false,
     discrepant: false,
     ...initialListening(listeningDependencies),
+    loopTours: 4,
   };
   let session: Session | undefined;
   let morphology: MorphologyRepository | undefined;
@@ -276,12 +299,29 @@ export function createTracksController(dependencies: TracksDependencies, onChang
   let runs = 0;
   // L'entrée gardée ou rouverte en dernier : « Itérer » et « Figer » la reprennent comme parent si rien n'a changé depuis.
   let lastKept: string | undefined;
+  // Le numéro de la boucle en cours : l'abandonner le change, et un tour en calcul n'est plus publié.
+  let loopRun = 0;
+  let stopRequested = false;
+  // Le curseur se pose : après ce repos, les mots changés du tour montré s'éclairent (pas pendant un glissé).
+  let rest: ReturnType<typeof setTimeout> | undefined;
+  const REST = 150;
+  const nextFrame =
+    dependencies.nextFrame ??
+    (() =>
+      new Promise<void>((resolve) => {
+        // Une image, puis la main rendue : l'avancement se peint avant l'étiquetage qui bloque. Onglet
+        // caché, les images s'arrêtent : le délai de secours fait avancer la boucle quand même.
+        if (typeof requestAnimationFrame === 'function') requestAnimationFrame(() => setTimeout(resolve, 0));
+        setTimeout(resolve, 50);
+      }));
 
   const update = (patch: Partial<TracksState>) => {
     state = { ...state, ...patch };
     onChange(state);
   };
   const setModel = (patch: Partial<ModelState>) => update({ model: { ...state.model, ...patch } });
+  /** L'étiqueteur et les données déjà chargées, pour calculer un tour. */
+  const resources = (): TourResources => ({ tagger: dependencies.tagger, morphology: morphology!, verbs, phonetics, scales });
 
   /** Rejoue la vue après un geste ; les mots qui ont changé s'éclairent. */
   const rebuild = (patch: Partial<TracksState>) => {
@@ -289,7 +329,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     if (!session || !morphology) return update(patch);
     const view = buildView(session, mixer, morphology, undefined, verbs, phonetics, scales);
     const changed = changedWords(state.view, view);
-    update({ ...patch, view, changed, generation: state.generation + 1, copyMessage: '' });
+    update({ ...patch, view, changed, generation: state.generation + 1, copyMessage: patch.copyMessage ?? '' });
     wantResources(mixer);
   };
 
@@ -325,17 +365,17 @@ export function createTracksController(dependencies: TracksDependencies, onChang
   /** Étiquette et met en pistes ; `run` numérote l'essai, un plus récent l'emporte. */
   const tagAs = async (run: number, text: string, mixer: MixerState, lineage?: Lineage) => {
     controller.stop();
-    update({ tagging: true, inputMessage: '', copyMessage: '' });
+    const abandoned = abandonLoop('nouvelle mise en pistes');
+    update({ tagging: true, inputMessage: '', copyMessage: abandoned }); // la raison d'un abandon reste lisible
     await controller.preload();
     if (run !== runs || state.model.status !== 'ready') return; // relayé par un essai plus récent, ou modèle absent
     try {
-      const tagged = await tagText(dependencies.tagger, text);
+      const tour = await computeTour(text, mixer, resources());
       if (run !== runs) return;
-      session = { text, tagged };
+      session = tour.session;
       if (!lineage) lastKept = undefined;
       // Nouvel étiquetage, nouvelles positions : les pas se rouvrent, les verrous tombent, l'inspecteur se ferme.
-      const next = reduce(mixer, { type: 'reset-steps' });
-      const view = buildView(session, next, morphology!, undefined, verbs, phonetics, scales);
+      const { mixer: next, view } = tour;
       update({ tagging: false, editing: false, stale: state.input !== text, mixer: next, view, changed: new Set(), generation: state.generation + 1, selected: undefined, page: 0, unsaved: true, listened: false, discrepant: false, lineage });
       wantResources(next);
     } catch (error) {
@@ -343,12 +383,48 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     }
   };
 
+  /**
+   * Abandonne la boucle : les tours calculés sont oubliés, un tour en calcul ne sera pas publié, et
+   * le message de la bande dit pourquoi. Rend ce message ; rien sans boucle.
+   */
+  const abandonLoop = (reason: string) => {
+    if (!state.loop) return '';
+    loopRun++;
+    const message = `Boucle abandonnée : ${reason}. Le tour 1 est au carnet.`;
+    update({ loop: undefined, spoken: undefined, copyMessage: message });
+    return message;
+  };
+
+  /** Le corps de la mention d'une passe de la table en cours, sur la vue donnée. */
+  const passOf = (mixer: MixerState, view: TracksView) => ruleBody(ruleMention(mixer, view.audible, undefined, view.folded));
+
+  /** Le tour montré, s'il est un tour k ≥ 2 de la boucle : son numéro, ses passes précédentes et sa mention. */
+  const shownTour = () => {
+    const loop = state.loop;
+    if (!loop || loop.shown < 2 || loop.emptyAt === loop.shown) return undefined;
+    const tour = loop.tours[loop.shown]!;
+    const first = loop.tours[1]!;
+    const pass = passOf(first.mixer!, first.view!);
+    const passes = [...(state.lineage?.passes ?? []), ...Array<string>(pass ? loop.shown - 1 : 0).fill(pass)];
+    const mention = withListening(composeMention(passes, passOf(tour.mixer!, tour.view!)), state.listened, state.discrepant);
+    return { loop, tour, passes, mention };
+  };
+
+  /**
+   * Garde le texte en cours s'il ne l'a pas été depuis sa mise en pistes, sa réouverture ou le dernier
+   * geste ; sinon reprend l'entrée gardée en dernier. Rend son identifiant ; rien si la garde échoue.
+   */
+  const ensureKept = () => {
+    const reuse = !state.unsaved && lastKept !== undefined && state.notebook.some((entry) => entry.id === lastKept);
+    return reuse ? lastKept : controller.keep();
+  };
+
   /** « Itérer » (la même table) ou « Figer » (chaîne et forme vidées, toutes les pistes audibles). */
   const nextGeneration = async (keepChain: boolean) => {
     const view = state.view;
     if (!view || !session || state.stale || view.empty || state.tagging) return;
-    const reuse = !state.unsaved && lastKept !== undefined && state.notebook.some((entry) => entry.id === lastKept);
-    const parent = reuse ? lastKept : controller.keep();
+    abandonLoop(keepChain ? '« Itérer »' : '« Figer »');
+    const parent = ensureKept();
     if (!parent) return; // la garde a échoué : son message est affiché, rien ne bouge
     const pass = ruleBody(ruleMention(state.mixer, view.audible, undefined, view.folded));
     const lineage: Lineage = {
@@ -359,6 +435,36 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     const mixer = keepChain ? state.mixer : initialState;
     update({ input: view.result });
     await tagInto(view.result, mixer, lineage);
+  };
+
+  /** Calcule les tours manquants, un par un, en laissant l'écran se repeindre entre deux. */
+  const runLoop = async () => {
+    const run = ++loopRun;
+    stopRequested = false;
+    const base = state.loop!.tours[1]!.mixer!;
+    update({ loop: { ...state.loop!, status: 'computing', error: undefined } });
+    while (state.loop && !loopFinished(state.loop)) {
+      const k = state.loop.tours.length;
+      update({ loop: { ...state.loop, progress: k } });
+      await nextFrame();
+      if (run !== loopRun || !state.loop) return;
+      if (stopRequested) return update({ loop: { ...state.loop, status: 'stopped', progress: undefined } });
+      let computed;
+      try {
+        computed = await computeTour(state.loop.tours[k - 1]!.text, base, resources());
+      } catch (error) {
+        if (run === loopRun && state.loop) update({ loop: { ...state.loop, status: 'failed', progress: undefined, error: { lead: `Tour ${k} impossible :`, detail: `${messageOf(error)}. Boucler relance.` } } });
+        return;
+      }
+      if (run !== loopRun || !state.loop) return; // abandonnée pendant l'étiquetage : rien n'est publié
+      const text = computed.view.result;
+      const tours = [...state.loop.tours, { text, ...computed }];
+      const emptied = tokenize(text).length === 0;
+      const repeat = emptied ? undefined : findRepeat(tours.map((tour) => tour.text));
+      const follow = state.loop.follow;
+      update({ loop: { ...state.loop, tours, shown: follow ? k : state.loop.shown, progress: undefined, repeat, ...(emptied && { emptyAt: k }) }, ...(follow && { changed: replacedIn(computed.view), generation: state.generation + 1 }) });
+    }
+    if (run === loopRun && state.loop) update({ loop: { ...state.loop, status: stopRequested ? 'stopped' : 'done', progress: undefined } });
   };
 
   const host = {
@@ -400,6 +506,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
 
   const restoreAs = async (run: number, entry: NotebookEntry) => {
     controller.stop();
+    abandonLoop('un texte a été rouvert');
     update({ notebookMessage: '', notebookError: undefined, inputMessage: '', listened: false, discrepant: false });
     await controller.preload();
     if (run !== runs || !morphology) return;
@@ -444,6 +551,7 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     setInput(raw) {
       // Un accent décomposé (« e » + accent combinant, fréquent depuis macOS) vaut la lettre précomposée.
       const text = raw.normalize('NFC');
+      if (session && text !== session.text) abandonLoop('le texte a changé');
       update({ input: text, stale: session !== undefined && text !== session.text });
     },
     edit() {
@@ -491,8 +599,9 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       }
     },
     dispatch(action) {
+      const abandoned = abandonLoop('la table a changé');
       // Seul un geste rend le travail « non gardé » : le chargement d'une textbank ne compte pas.
-      rebuild({ mixer: reduce(state.mixer, action), unsaved: session !== undefined });
+      rebuild({ mixer: reduce(state.mixer, action), unsaved: session !== undefined, copyMessage: abandoned });
     },
     select(index) {
       // La grille montre la page du mot choisi.
@@ -536,7 +645,58 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     setTempo: listening.setTempo,
     setVoice: listening.setVoice,
     setSource: listening.setSource,
-    keep: notebookController.keep,
+    keep() {
+      if (state.loop?.shown === 0) return undefined; // le texte d'origine est déjà à la saisie
+      const shown = shownTour();
+      if (!shown) return state.loop && state.loop.shown !== 1 ? undefined : notebookController.keep();
+      const { loop, tour, passes, mention } = shown;
+      return notebookController.keepTour({
+        result: tour.text,
+        mention,
+        source: tour.session,
+        mixer: tour.mixer!,
+        lineage: { parent: loop.firstKept, ancestor: state.lineage?.ancestor ?? loop.tours[0]!.text, passes },
+        loop: { tours: loop.target, shown: loop.shown },
+      });
+    },
+    async loop() {
+      const view = state.view;
+      if (!view || !session || state.stale || view.empty || state.tagging || state.loop?.status === 'computing') return;
+      if (!state.loop) {
+        const firstKept = ensureKept();
+        if (!firstKept) return; // la garde a échoué : son message est affiché, rien ne bouge
+        const origin = { text: session.text, session };
+        update({ loop: { tours: [origin, { text: view.result, session, mixer: state.mixer, view }], target: state.loopTours, shown: 1, follow: true, status: 'computing', firstKept } });
+      } else if (loopFinished(state.loop)) return;
+      await runLoop();
+    },
+    stopLoop() {
+      if (state.loop?.status === 'computing') stopRequested = true;
+    },
+    showTour(tour) {
+      const loop = state.loop;
+      if (!loop || !Number.isInteger(tour) || tour < 0 || tour >= loop.tours.length) return;
+      update({ loop: { ...loop, shown: tour, follow: false } });
+      clearTimeout(rest);
+      rest = setTimeout(() => {
+        const view = state.loop?.shown === tour && tour >= 2 ? state.loop.tours[tour]!.view : undefined;
+        if (view) update({ changed: replacedIn(view), generation: state.generation + 1 });
+      }, REST);
+    },
+    setLoopTours(tours) {
+      if (!Number.isInteger(tours) || tours < LOOP_MIN || tours > LOOP_MAX) return;
+      update({ loopTours: tours });
+      const loop = state.loop;
+      if (!loop || loop.status === 'computing') return loop && update({ loop: { ...loop, target: tours } });
+      if (tours < loop.tours.length - 1) {
+        // Moins de tours : on garde les premiers, déjà calculés ; rien à recalculer.
+        const kept = loop.tours.slice(0, tours + 1);
+        const emptyAt = loop.emptyAt !== undefined && loop.emptyAt <= tours ? loop.emptyAt : undefined;
+        return update({ loop: { ...loop, tours: kept, target: tours, shown: Math.min(loop.shown, tours), repeat: findRepeat(kept.map((tour) => tour.text)), emptyAt, status: 'done' } });
+      }
+      update({ loop: { ...loop, target: tours } });
+      if (!loopFinished(state.loop!)) void runLoop();
+    },
     iterate: () => nextGeneration(true),
     freeze: () => nextGeneration(false),
     reopen: notebookController.reopen,
@@ -567,11 +727,19 @@ export function createTracksController(dependencies: TracksDependencies, onChang
     async copy() {
       const view = state.view;
       if (!view || state.stale || view.empty) return;
+      const shown = shownTour();
+      const said = shown ? shown.mention : mention(view);
+      // Sans mention, rien n'a changé : le texte seul. L'éclipse porte déjà l'original. Sinon l'original voyage
+      // avec le résultat, comme depuis le carnet ; pour un tour de la boucle, comme l'entrée qu'il deviendrait.
+      const travels = said !== '' && state.mixer.form !== 'eclipse';
+      const text =
+        state.loop?.shown === 0
+          ? state.loop.tours[0]!.text
+          : shown
+            ? travels ? takeClipboard(shown.tour.session.text, shown.tour.text, said, state.lineage?.ancestor ?? shown.loop.tours[0]!.text) : shown.tour.text + said
+            : travels && session ? takeClipboard(session.text, view.result, said, state.lineage?.ancestor) : view.result + said;
       try {
-        const said = mention(view);
-        // Sans mention, rien n'a changé : le texte seul. L'éclipse porte déjà l'original. Sinon l'original voyage
-        // avec le résultat, comme depuis le carnet.
-        await dependencies.copy(said && session && state.mixer.form !== 'eclipse' ? takeClipboard(session.text, view.result, said, state.lineage?.ancestor) : view.result + said);
+        await dependencies.copy(text);
         update({ copyMessage: 'Copié.' });
       } catch (error) {
         update({ copyMessage: `Copie impossible : ${messageOf(error)}` });

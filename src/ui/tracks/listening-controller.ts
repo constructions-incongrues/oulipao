@@ -1,4 +1,5 @@
 import { originalWordsAtStep, wordsAtStep } from '../../domain/monitoring.ts';
+import { tokenize } from '../../domain/tokenizer.ts';
 import { DEFAULT_PREFERENCES, MonitoringPreferencesSchema, tempoTiming, type MonitoringPreferencesStorage, type VoiceSource } from '../../ports/monitoring-preferences.ts';
 import type { Speech } from '../../ports/speech.ts';
 import type { TracksState } from './controller.ts';
@@ -41,18 +42,38 @@ export function createListeningController(host: ListeningHost, { speech, prefere
 
   /**
    * À chaque pas, l'écoute relit l'état (vue, page, tempo, voix), dit les mots du pas ou se tait,
-   * attend un blanc, puis passe au suivant, en boucle sur la page affichée. Un réglage changé
-   * s'entend donc au pas suivant, sans revenir au début.
+   * attend un blanc, puis passe au suivant : elle lit tout le texte, la grille suit sa page, et elle
+   * reprend au début après le dernier mot. Une page choisie à la main la fait repartir de son premier
+   * pas. Un réglage changé s'entend donc au pas suivant, sans revenir au début.
    */
   const listen = async (token: number) => {
     let at = host.state.page * host.state.perPage;
+    // La page que l'écoute a montrée elle-même : une autre page est un choix de l'utilisateur.
+    let own = host.state.page;
     while (token === playback) {
       const { state } = host;
+      const loop = state.loop;
+      if (loop && loop.shown !== 1) {
+        // Un autre tour que le tour 1 : la voix lit son texte mot à mot, sans pas de la grille, à la même place.
+        const words = tokenize(loop.tours[loop.shown]!.text);
+        if (!words.length) return controller.stop();
+        if (at >= words.length) at = 0;
+        host.update({ playhead: undefined, spoken: at });
+        const { rate, gap } = tempoTiming(state.tempo);
+        await speech!.speak([words[at]!.word], { rate, voice: state.voice });
+        if (token !== playback) return;
+        await sleep(gap);
+        at++;
+        continue;
+      }
+      if (state.spoken !== undefined) host.update({ spoken: undefined });
+      const total = state.view?.tracks.length ?? 0;
+      if (!total) return controller.stop();
       const first = state.page * state.perPage;
-      const end = Math.min(first + state.perPage, state.view?.tracks.length ?? 0);
-      if (end <= first) return controller.stop();
-      if (at < first || at >= end) at = first; // fin de page, ou page changée : premier pas de la page
-      host.update({ playhead: at });
+      if (state.page !== own && (at < first || at >= first + state.perPage)) at = first; // page choisie à la main
+      if (at >= total) at = 0; // après le dernier mot, le début
+      own = Math.floor(at / state.perPage);
+      host.update({ playhead: at, ...(own !== state.page && { page: own }) });
       const { rate, gap } = tempoTiming(host.state.tempo);
       const view = host.state.view!;
       // La discrépance : la voix dit l'original pendant que la page montre le résultat.
@@ -81,7 +102,7 @@ export function createListeningController(host: ListeningHost, { speech, prefere
       if (!host.state.playing) return;
       playback++;
       speech!.cancel();
-      host.update({ playing: false, playhead: undefined });
+      host.update({ playing: false, playhead: undefined, spoken: undefined });
     },
     toggle() {
       if (host.state.playing) controller.stop();

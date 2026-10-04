@@ -5,6 +5,7 @@ import type { MixedSegment } from '../../../domain/mixing.ts';
 import { FORM_LABELS, FormSchema, type Form } from '../../../domain/forms/form.ts';
 import { TRACK_NAMES } from '../types.ts';
 import type { Mark } from '../view-model.ts';
+import { tokenize } from '../../../domain/tokenizer.ts';
 
 export interface ResultProps {
   segments: MixedSegment[];
@@ -41,6 +42,22 @@ export interface ResultProps {
   /** La forme à refrain posée sur le texte, et son choix ; sans `onForm`, pas de choix affiché. */
   form?: Form;
   onForm?: (form: Form) => void;
+  /** Lance la boucle de tours ; sans lui, pas de touche « Boucler ». */
+  onLoop?: () => void;
+  /** Une boucle se calcule : « Boucler » attend. */
+  looping?: boolean;
+  /** Le libellé de « Garder », qui nomme le tour montré ; désactivée, la touche dit pourquoi. */
+  keepLabel?: string;
+  keepDisabled?: boolean;
+  keepTitle?: string;
+  /** Faux : les mots ne s'ouvrent pas dans l'inspecteur (un tour autre que le tour en cours). */
+  interactive?: boolean;
+  /** Ce que dit le papier quand il ne reste aucun mot. */
+  emptyText?: string;
+  /** Le mot que dit l'écoute, compté dans le texte affiché : il est marqué à l'encre. */
+  spoken?: number;
+  /** La rangée de la boucle, sous le texte. */
+  loopRow?: VNode | false;
 }
 
 /** Le compte de syllabes d'une ligne, en bout de ligne. */
@@ -62,8 +79,11 @@ function between(raw: string, syllables: readonly (number | undefined)[] | undef
 }
 
 /** Le texte résultant, en tête de page et collé en haut de l'écran quand on descend, et sa copie. */
-export function Result({ segments, empty, marks, tracks, selected, onSelect, changed, generation, audibleCount, stale, pinned = false, copyMessage, onCopy, onKeep, onIterate, onFreeze, busy = false, syllables, form = 'none', onForm }: ResultProps): VNode {
+export function Result({ segments, empty, marks, tracks, selected, onSelect, changed, generation, audibleCount, stale, pinned = false, copyMessage, onCopy, onKeep, onIterate, onFreeze, busy = false, syllables, form = 'none', onForm, onLoop, looping = false, keepLabel = 'Garder', keepDisabled = false, keepTitle, interactive = true, emptyText = 'Toutes les pistes sont coupées.', spoken, loopRow }: ResultProps): VNode {
   const line = { at: 0 };
+  // Le mot dit par l'écoute : le morceau qui contient le début de ce mot dans le texte affiché.
+  const spokenAt = spoken === undefined ? undefined : tokenize(segments.map((segment) => segment.text).join(''))[spoken]?.start;
+  let offset = 0;
   let refrain: number | undefined;
   /** L'annonce d'un refrain, pour les lecteurs d'écran, au premier morceau de chaque vers recopié. */
   const announce = (copyOf: number | undefined) => {
@@ -76,9 +96,11 @@ export function Result({ segments, empty, marks, tracks, selected, onSelect, cha
       <div class="result-header">
         <h2 class="silk">Texte résultant</h2>
         <button type="button" class="key copy" disabled=${empty || stale} onClick=${onCopy}>Copier</button>
-        ${onKeep && html`<button type="button" class="key keep" disabled=${empty || stale} onClick=${onKeep}>Garder</button>`}
+        ${onKeep && html`<button type="button" class="key keep" disabled=${empty || stale || keepDisabled} title=${keepTitle} onClick=${onKeep}>${keepLabel}</button>`}
         ${onIterate &&
         html`<button type="button" class="key iterate" disabled=${empty || stale || busy} title="Garder ce texte, puis lui appliquer de nouveau la même chaîne" onClick=${onIterate}>Itérer</button>`}
+        ${onLoop &&
+        html`<button type="button" class="key loop" disabled=${empty || stale || busy || looping} title="Garder ce texte, puis rejouer la chaîne sur son résultat, tour après tour" onClick=${onLoop}>Boucler</button>`}
         ${onFreeze &&
         html`<button type="button" class="key freeze" disabled=${empty || stale || busy} title="Garder ce texte, puis en faire un texte de départ, sans chaîne" onClick=${onFreeze}>Figer</button>`}
         <span class="copy-message" role="status" aria-live="polite">${copyMessage}</span>
@@ -88,9 +110,11 @@ export function Result({ segments, empty, marks, tracks, selected, onSelect, cha
         </select></label>`}
       </div>
       ${empty
-        ? html`<p class="result-empty">Toutes les pistes sont coupées.</p>`
+        ? html`<p class="result-empty">${emptyText}</p>`
         : html`<div class="result-scroll"><p class="result-text">${segments.map((segment) => {
             const { index, text, copyOf } = segment;
+            const start = offset;
+            offset += text.length;
             if (index === undefined) {
               if (text.includes('\n')) refrain = undefined;
               return copyOf === undefined ? between(text, syllables, line) : html`${announce(copyOf)}<span class="copy">${frenchSpacing(text)}</span>`;
@@ -104,14 +128,16 @@ export function Result({ segments, empty, marks, tracks, selected, onSelect, cha
               : mark?.state === 'kept'
                 ? `${TRACK_NAMES[track]} : laissé tel quel, ${mark.reason}`
                 : undefined;
-            const classes = ['word', copyOf !== undefined ? 'copy' : '', replaced ? `replaced ${track}` : '', changed.has(index) ? 'changed' : '', index === selected ? 'selected' : ''].join(' ').replace(/\s+/g, ' ').trim();
+            const said = spokenAt !== undefined && spokenAt >= start && spokenAt < offset;
+            const classes = ['word', copyOf !== undefined ? 'copy' : '', replaced ? `replaced ${track}` : '', changed.has(index) ? 'changed' : '', index === selected && interactive ? 'selected' : '', said ? 'spoken' : ''].join(' ').replace(/\s+/g, ' ').trim();
             // Seuls les mots changés prennent le focus : deux cents arrêts de tabulation n'aideraient personne.
             // La clé change à chaque geste : l'éclat se rejoue sur un mot qui change encore.
             return html`${announce(copyOf)}<span key=${`${index}-${copyOf ?? 0}-${changed.has(index) ? generation : 0}`} class=${classes}
-              tabindex=${replaced ? 0 : undefined} title=${title}
-              onClick=${() => onSelect(index)}
-              onKeyDown=${(event: KeyboardEvent) => event.key === 'Enter' && onSelect(index)}>${text}</span>`;
+              tabindex=${replaced && interactive ? 0 : undefined} title=${title}
+              onClick=${interactive ? () => onSelect(index) : undefined}
+              onKeyDown=${interactive ? (event: KeyboardEvent) => event.key === 'Enter' && onSelect(index) : undefined}>${text}</span>`;
           })}${syllables && count(syllables[line.at])}</p></div>`}
+      ${loopRow}
       ${!empty && audibleCount < 5 && html`<p class="notice">Pistes coupées : le texte est rendu tel quel, sans réparer la phrase.</p>`}
     </section>
   ` as VNode;

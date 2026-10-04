@@ -1,7 +1,7 @@
 # monitoring-vocal Specification
 
 ## Purpose
-Entendre le texte résultant mot à mot, avec la voix française du système, pendant qu'on règle les pistes. Une tête de lecture parcourt la page visible de la grille et dit, à chaque pas, ce que la chaîne a mis à la place du mot.
+Entendre le texte résultant mot à mot, avec la voix française du système, pendant qu'on règle les pistes. Une tête de lecture parcourt le texte pas à pas, la grille suivant sa page, et dit à chaque pas ce que la chaîne a mis à la place du mot.
 
 ## Requirements
 
@@ -24,17 +24,22 @@ The system SHALL offer a play/stop control in the console once a text has been p
 - **THEN** une espace est saisie et la lecture ne change pas d'état
 
 ### Requirement: Boucle sur la page visible
-The system SHALL move the playhead through the steps of the visible grid page in order, one step at a time, and SHALL loop back to the first step of that page after the last one. When the visible page changes during playback, the playhead SHALL resume at the first step of the new page.
+The system SHALL move the playhead through every step of the text in order, one step at a time, and SHALL show the grid page that holds the step being played. After the last step of the text, it SHALL loop back to the first step and its page. When the user picks another grid page during playback, the playhead SHALL resume at the first step of that page.
 
-#### Scenario: Retour au premier pas
+#### Scenario: Page suivante
 - **GIVEN** une page qui montre les pas 1 à 8, lecture en cours
 - **WHEN** la tête a dit le pas 8
-- **THEN** elle passe au pas 1
+- **THEN** elle dit le pas 9, et la grille montre la page 9 à 16
+
+#### Scenario: Retour au premier pas
+- **GIVEN** un texte de 40 mots, lecture en cours
+- **WHEN** la tête a dit le pas 40
+- **THEN** elle passe au pas 1, et la grille montre sa page
 
 #### Scenario: Changement de page
 - **GIVEN** la tête sur le pas 5 de la page 1 à 8
-- **WHEN** l'utilisateur passe à la page 9 à 16
-- **THEN** la tête dit ensuite le pas 9
+- **WHEN** l'utilisateur passe à la page 17 à 24
+- **THEN** la tête dit ensuite le pas 17
 
 ### Requirement: Ce que dit un pas
 The system SHALL compute what a step says when the playhead reaches it, from the current state: all the words the resulting text puts in place of the step's original word, in order. A closed step SHALL say its word as the resulting text shows it (no filter touches it). A step SHALL say nothing when its track is not audible (muted, or another track is solo) or when its word is removed from the resulting text. Words that a refrain copies elsewhere SHALL be said only at their original step. A silent step SHALL last as long as the gap between two steps. A change of setting during playback SHALL be heard from the next step on, without restarting the loop.

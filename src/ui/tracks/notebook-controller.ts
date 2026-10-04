@@ -54,6 +54,8 @@ export interface NotebookHost {
 export interface NotebookController {
   /** Garde le texte résultant ; rend l'identifiant gardé, rien en cas d'échec. */
   keep(): string | undefined;
+  /** Garde un tour de la boucle, tel qu'il est donné ; rend l'identifiant gardé, rien en cas d'échec. */
+  keepTour(tour: Omit<NotebookEntry, 'id' | 'keptAt'>): string | undefined;
   reopen(id: string): Promise<void>;
   remove(id: string): void;
   exportNotebook(): void;
@@ -141,31 +143,33 @@ export function createNotebookController(host: NotebookHost, notebook: NotebookD
   };
   const write = (entries: readonly NotebookEntry[]) => notebook.storage.write(serializeNotebook(entries, unreadable));
 
+  /** Ajoute une entrée au carnet et l'écrit ; rend son identifiant, rien en cas d'échec. */
+  const add = (content: Omit<NotebookEntry, 'id' | 'keptAt'>, patch: Partial<TracksState>) => {
+    const entry: NotebookEntry = { id: notebook.newId(), keptAt: notebook.now().toISOString(), ...content };
+    try {
+      const entries = addEntry(latest(), entry);
+      write(entries);
+      host.update({ notebook: entries, notebookError: undefined, copyMessage: host.state.notebookPersistent ? 'Gardé.' : SESSION_KEPT, ...patch });
+      return entry.id;
+    } catch (error) {
+      host.update({ notebookError: notebookFailure('Impossible de garder :', messageOf(error)) });
+      return undefined;
+    }
+  };
+
   return {
     keep() {
       const { state } = host;
       const view = state.view;
       const session = host.session();
       if (!view || !session || state.stale || view.empty) return undefined;
-      const entry: NotebookEntry = {
-        id: notebook.newId(),
-        keptAt: notebook.now().toISOString(),
-        result: view.result,
-        mention: host.mention(view),
-        source: session,
-        mixer: state.mixer,
-        ...(state.lineage && { lineage: state.lineage }),
-      };
-      try {
-        const entries = addEntry(latest(), entry);
-        write(entries);
-        host.update({ notebook: entries, notebookError: undefined, copyMessage: state.notebookPersistent ? 'Gardé.' : SESSION_KEPT, unsaved: false });
-        host.onKept(entry.id);
-        return entry.id;
-      } catch (error) {
-        host.update({ notebookError: notebookFailure('Impossible de garder :', messageOf(error)) });
-        return undefined;
-      }
+      const id = add({ result: view.result, mention: host.mention(view), source: session, mixer: state.mixer, ...(state.lineage && { lineage: state.lineage }) }, { unsaved: false });
+      if (id) host.onKept(id);
+      return id;
+    },
+    keepTour(tour) {
+      // Un tour de la boucle n'est pas le texte en cours : il ne devient ni le parent d'« Itérer », ni « gardé ».
+      return add(tour, {});
     },
     async reopen(id) {
       const entry = host.state.notebook.find((candidate) => candidate.id === id);

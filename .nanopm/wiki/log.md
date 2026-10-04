@@ -64,3 +64,4 @@
 ## [2026-10-04] ingest | pm-strategy: wrote docs/strategy.md
 ## [2026-10-04] ingest | pm-roadmap: wrote docs/roadmap.md
 ## [2026-10-04] ingest | pm-opportunities: matched entities/opportunities/interface-ne-bloque-pas-la-lecture.md
+## [2026-10-04] ingest | pm-prd: wrote docs/prds/boucle-de-tours.md
