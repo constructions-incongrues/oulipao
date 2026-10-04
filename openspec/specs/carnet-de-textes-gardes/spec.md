@@ -25,7 +25,7 @@ The system SHALL offer a « Garder » control next to the copy control, enabled 
 - **THEN** le carnet compte toujours 2 entrées
 
 ### Requirement: Lire le carnet
-The system SHALL show the notebook as a collapsible panel, collapsed by default, whose header states the total number of entries and, when there is at least one entry, how long ago the most recent one was kept in calendar days (« dernier texte aujourd'hui », « hier », « il y a N jours »). Opened, it SHALL list every kept entry from most recent to oldest, each with its date, its resulting text (the retouched text when there is one, marked « retouché ») and its chain mention. An empty notebook SHALL say so.
+The system SHALL show the notebook as a collapsible panel, collapsed by default, whose header states the total number of entries and, when there is at least one entry, how long ago the most recent one was kept in calendar days (« dernier texte aujourd'hui », « hier », « il y a N jours »). Opened, it SHALL list every kept entry from most recent to oldest, each with its date, its resulting text (the retouched text when there is one, marked « retouché ») and its chain mention. An entry that has a lineage SHALL show, before its resulting text, the ancestor's text then the parent's text (its own source text), each labelled. An empty notebook SHALL say so.
 
 #### Scenario: Trois textes gardés
 - **GIVEN** trois textes gardés les 4, 6 et 9 octobre, et la page ouverte le 12 octobre
@@ -42,6 +42,12 @@ The system SHALL show the notebook as a collapsible panel, collapsed by default,
 - **GIVEN** aucun texte gardé
 - **WHEN** l'utilisateur ouvre la page des pistes
 - **THEN** l'en-tête du carnet indique qu'aucun texte n'est encore gardé, sans nombre de jours
+
+#### Scenario: Texte de deuxième génération
+- **GIVEN** une entrée C itérée depuis B, elle-même itérée depuis A
+- **WHEN** le panneau du carnet est déplié
+- **THEN** l'entrée de C montre « Ancêtre » suivi du texte de A, « Parent » suivi du texte de B, puis le résultat de C et sa mention
+- **AND** une entrée sans filiation ne montre ni ancêtre ni parent
 
 ### Requirement: Persistance locale
 The system SHALL keep the notebook in the browser across reloads and SHALL NOT send any kept text over the network. Stored data SHALL be validated when read; an invalid entry SHALL be left out and reported, without hiding the valid entries. If storage is unavailable or full, keeping SHALL fail with an error message and the resulting text SHALL stay on screen.
@@ -117,7 +123,7 @@ The system SHALL export the whole notebook as a JSON file named `oulipao-carnet-
 - **THEN** un message d'erreur le refuse et le carnet est inchangé
 
 ### Requirement: Copier une entrée d'un bloc
-The system SHALL let the user copy an entry in one block: the source text, a blank line, the result (retouched when there is one), then the chain mention as the copy control appends it. A status message SHALL confirm the copy or report its failure.
+The system SHALL let the user copy an entry in one block: the source text, a blank line, the result (retouched when there is one), then the chain mention as the copy control appends it. For an entry that has a lineage, the block SHALL start with the ancestor's text and a blank line, before the source text. A status message SHALL confirm the copy or report its failure.
 
 #### Scenario: Copier pour un mail
 - **GIVEN** une entrée dont l'original est « La ferme. », le résultat « L'oncle. » et la chaîne un S+7 sur les noms
@@ -128,6 +134,11 @@ The system SHALL let the user copy an entry in one block: the source text, a bla
 - **GIVEN** la même entrée retouchée en « L'oncle dort. »
 - **WHEN** l'utilisateur la copie
 - **THEN** le presse-papiers contient « L'oncle dort. » à la place de « L'oncle. »
+
+#### Scenario: Copier une deuxième génération
+- **GIVEN** une entrée d'ancêtre « La ferme. », de parent « L'oncle. » et de résultat « Le village. », itérée deux fois par un S+7 sur les noms
+- **WHEN** l'utilisateur la copie
+- **THEN** le presse-papiers contient « La ferme. », une ligne vide, « L'oncle. », une ligne vide, « Le village. », une ligne vide, puis « — S+7 sur les noms ×2 (Oulipao) »
 
 ### Requirement: Retoucher le résultat d'une entrée
 The system SHALL let the user edit the result of an entry and save or cancel the edit. A saved edit SHALL be stored beside the produced result, persisted and exported with the entry; an edit equal to the produced result, or emptied, SHALL remove the retouch. Entries without a retouch, including those kept or exported before this change, SHALL remain valid.

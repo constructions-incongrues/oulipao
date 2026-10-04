@@ -40,7 +40,7 @@ const STATE_LABELS: Record<GridStep['state'], string> = {
 
 /** Le nom accessible d'un pas : piste, mot, état, et ses verrous. */
 function stepLabel(step: GridStep): string {
-  const locks = step.locks.map((lock) => `verrou ${lock.value}`).join(', ');
+  const locks = [...step.locks.map((lock) => `verrou ${lock.value}`), ...(step.modulated ?? []).map((value) => `modulé ${value}`)].join(', ');
   return `${TRACK_NAMES[step.track]}, ${step.word} : ${STATE_LABELS[step.state]}${locks ? `, ${locks}` : ''}`;
 }
 

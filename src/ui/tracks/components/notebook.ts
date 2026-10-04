@@ -92,6 +92,9 @@ export function Notebook({ entries, message, persistent = true, today, onReopen,
           const date = keptDate(entry.keptAt);
           return html`<li class="notebook-entry" key=${entry.id}>
             <time class="kept-at" datetime=${entry.keptAt}>${date}</time>
+            ${entry.lineage &&
+            html`<p class="kept-origin"><span class="silk">Ancêtre</span> ${entry.lineage.ancestor}</p>
+              <p class="kept-origin"><span class="silk">Parent</span> ${entry.source.text}</p>`}
             <p class="kept-text">${entry.edited ?? entry.result}</p>
             ${(entry.mention || entry.edited !== undefined) &&
             html`<p class="kept-mention">${[entry.mention && bareMention(entry.mention), entry.edited !== undefined && 'retouché'].filter(Boolean).join(' · ')}</p>`}
