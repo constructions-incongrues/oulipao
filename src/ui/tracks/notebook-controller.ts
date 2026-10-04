@@ -3,6 +3,7 @@ import type { NotebookStorage } from '../../ports/notebook-storage.ts';
 import type { ErrorText, TracksState } from './controller.ts';
 import { pluginById } from './mixer-state.ts';
 import { addEntry, editEntry, entryClipboard, exportFileName, mergeEntries, parseNotebook, removeEntry, serializeNotebook, type NotebookEntry } from './notebook.ts';
+import { encodeEntry, LONG_LINK } from './share-link.ts';
 import type { Session, TracksView } from './view-model.ts';
 
 /** Ce dont le carnet a besoin de l'extérieur. */
@@ -16,7 +17,11 @@ export interface NotebookDependencies {
   download: (name: string, text: string) => void;
   /** Le stockage survit-il à la fermeture de l'onglet ? `false` : carnet de séance. Absent : oui. */
   persistent?: boolean;
+  /** L'adresse de la page, sans fragment, que prolonge un lien partagé ; absente : celle du site. */
+  shareBase?: string;
 }
+
+const SITE = 'https://oulipao.incongru.org/';
 
 /** Un carnet en mémoire : pour les pages et les tests qui n'en branchent pas. */
 export const memoryNotebook = (): NotebookDependencies => {
@@ -54,6 +59,8 @@ export interface NotebookController {
   exportNotebook(): void;
   importNotebook(text: string): void;
   copyEntry(id: string): Promise<void>;
+  /** Copie un lien qui porte l'entrée entière ; presse-papiers refusé : le lien s'affiche à copier. */
+  shareEntry(id: string): Promise<void>;
   editEntry(id: string, text: string): void;
   /** Relit le carnet gardé : un autre onglet vient de l'écrire. */
   syncNotebook(): void;
@@ -201,6 +208,23 @@ export function createNotebookController(host: NotebookHost, notebook: NotebookD
         host.update({ notebookMessage: 'Copié.', notebookError: undefined });
       } catch (error) {
         host.update({ notebookError: notebookFailure('Copie impossible :', messageOf(error)) });
+      }
+    },
+    async shareEntry(id) {
+      const entry = host.state.notebook.find((candidate) => candidate.id === id);
+      if (!entry) return;
+      let link: string;
+      try {
+        link = `${notebook.shareBase ?? SITE}#${await encodeEntry(entry)}`;
+      } catch (error) {
+        return host.update({ notebookError: notebookFailure('Partage impossible :', messageOf(error)) });
+      }
+      const long = link.length > LONG_LINK;
+      try {
+        await host.copy(link);
+        host.update({ sharedLink: undefined, notebookMessage: long ? 'Lien copié ; il est long, certaines messageries le coupent.' : 'Lien copié.', notebookError: undefined });
+      } catch {
+        host.update({ sharedLink: link, notebookMessage: long ? 'Copiez ce lien ; il est long, certaines messageries le coupent.' : 'Copiez ce lien.', notebookError: undefined });
       }
     },
     editEntry(id, text) {

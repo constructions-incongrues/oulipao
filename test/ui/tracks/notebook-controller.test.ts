@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import { SEED } from '../../support/chain.ts';
 import { createTracksController, type NotebookDependencies, type TracksDependencies } from '../../../src/ui/tracks/controller.ts';
 import { serializeNotebook } from '../../../src/ui/tracks/notebook.ts';
+import { decodeFragment } from '../../../src/ui/tracks/share-link.ts';
 import { morphology, tag, verbs } from '../../support/morphology.ts';
 
 /** Un carnet factice : un stockage en mémoire, une horloge et des identifiants prévisibles. */
@@ -235,6 +236,49 @@ test('copier une entrée d’un bloc : l’original, le résultat, la chaîne ; 
   const denied = setup(stored, { copy: async () => { throw new Error('refusé'); } }).controller;
   await denied.copyEntry('t1');
   assert.deepEqual(denied.state.notebookError, { lead: 'Copie impossible :', detail: 'refusé.' });
+});
+
+test('partager une entrée : un lien du site qui porte l’entrée, et un message', async () => {
+  const copied: string[] = [];
+  const { controller } = setup(fakeNotebook(null, { shareBase: 'https://exemple.test/' }).notebook, { copy: async (text) => void copied.push(text) });
+  controller.setInput('La ferme.');
+  await controller.run();
+  controller.keep();
+  await controller.shareEntry('inconnu');
+  assert.deepEqual(copied, []);
+  await controller.shareEntry('t1');
+  const link = String(copied[0]);
+  assert.match(link, /^https:\/\/exemple\.test\/#v1\./);
+  const { id: _, keptAt: __, ...shared } = controller.state.notebook[0]!;
+  assert.deepEqual(await decodeFragment(link.slice(link.indexOf('#'))), shared);
+  assert.equal(controller.state.notebookMessage, 'Lien copié.');
+  assert.equal(controller.state.sharedLink, undefined);
+});
+
+test('partager sans presse-papiers : le lien s’affiche à copier ; sans adresse, celle du site', async () => {
+  const { controller } = setup(fakeNotebook().notebook, { copy: async () => { throw new Error('refusé'); } });
+  controller.setInput('La ferme.');
+  await controller.run();
+  controller.keep();
+  await controller.shareEntry('t1');
+  assert.match(controller.state.sharedLink!, /^https:\/\/oulipao\.incongru\.org\/#v1\./);
+  assert.equal(controller.state.notebookMessage, 'Copiez ce lien.');
+  assert.equal(controller.state.notebookError, undefined);
+});
+
+test('partager un lien très long : copié, avec un avertissement', async () => {
+  const long = 'https://exemple.test/' + 'x'.repeat(8_000);
+  const copied: string[] = [];
+  const { controller } = setup(fakeNotebook(null, { shareBase: long }).notebook, { copy: async (text) => void copied.push(text) });
+  controller.setInput('La ferme.');
+  await controller.run();
+  controller.keep();
+  await controller.shareEntry('t1');
+  assert.equal(copied.length, 1);
+  assert.equal(controller.state.notebookMessage, 'Lien copié ; il est long, certaines messageries le coupent.');
+  const denied = setup(fakeNotebook(serializeNotebook(controller.state.notebook), { shareBase: long }).notebook, { copy: async () => { throw new Error('refusé'); } }).controller;
+  await denied.shareEntry('t1');
+  assert.equal(denied.state.notebookMessage, 'Copiez ce lien ; il est long, certaines messageries le coupent.');
 });
 
 test('rouvrir après un geste non gardé : confirmation, et un refus ne change rien', async () => {
