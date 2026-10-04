@@ -1,3 +1,5 @@
+import { knownForm } from '../known.ts';
+import { UNKNOWN } from '../verb.ts';
 import { z } from 'zod';
 import type { MorphologyRepository } from '../../ports/morphology.ts';
 import { definePlugin, FULL_SCOPE, type ParameterValues, type WordMark } from '../plugin.ts';
@@ -54,6 +56,12 @@ type Fate = { replacement: string } | { removed: true } | { reason: string };
 
 /** Ce que devient un mot qui contient la lettre, selon sa piste (les verbes ont leur propre passe). */
 function fateOf(output: string, category: Exclude<TaggedWord['category'], 'verb'>, letter: string, morphology: MorphologyRepository): Fate {
+  const fate = searchFate(output, category, letter, morphology);
+  // Sans voisin : un nom ou un adjectif absent du dictionnaire est dit tel quel.
+  return 'reason' in fate && !knownForm(output, category, morphology) ? { reason: UNKNOWN } : fate;
+}
+
+function searchFate(output: string, category: Exclude<TaggedWord['category'], 'verb'>, letter: string, morphology: MorphologyRepository): Fate {
   switch (category) {
     case 'noun':
       // Les noms ont été remplacés avant, avec leur groupe ; il reste ceux qui n'ont pas de voisin.

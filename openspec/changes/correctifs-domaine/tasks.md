@@ -11,13 +11,13 @@
 
 ## 3. Raisons, découpage, insécables (PR `fix:`)
 
-- [ ] 3.1 (domain) Le S+n marque « pas bouché » un adjectif dont le pas est bouché (rappel de `shiftAdjectives`) ; test dans `test/domain/s7/plugin.test.ts`
-- [ ] 3.2 (domain) Le lipogramme donne « absent du dictionnaire » à un mot inconnu de la morphologie ; test dans `test/domain/lipogram/plugin.test.ts`
-- [ ] 3.3 (domain) Le tautogramme donne « absent du dictionnaire » à un mot inconnu, et le mot suivant prend la lettre d'après ; test dans `test/domain/tautogram/plugin.test.ts`
-- [ ] 3.4 (domain) `tokenizer.ts` : liste `LEXICALISED` (« rendez-vous », « on-dit », « chez-soi », « chez-moi », « m'as-tu-vu ») testée avant la règle des clitiques, et U+02BC dans les classes d'apostrophe ; tests : « rendez-vous », « dit-il », « donne-le », « lʼarbre », « QU'IL », chaîne vide, blancs seuls
-- [ ] 3.5 (domain) Espaces insécables conservées dans `mixing.ts`, `lineation/plugin.ts` et `removal.ts` ; tests : retrait devant « ! » avec U+202F, piste coupée devant « : » avec U+00A0, mise en vers
-- [ ] 3.6 Refiger le banc (`node scripts/chain-golden.ts > test/support/chain-golden.json`) : le diff ne montre que les cas visés par les specs (dé après un retrait, raisons, insécables) ; noter les écarts dans la PR
-- [ ] 3.7 (ui) Le refus de rouvrir une entrée dont l'étiquetage ne correspond plus au découpage dit comment la récupérer (copier le texte, le remettre en pistes) ; test du message
+- [x] 3.1 (domain) Le S+n marque « pas bouché » un adjectif dont le pas est bouché (rappel de `shiftAdjectives`) ; test dans `test/domain/s7/plugin.test.ts`
+- [x] 3.2 (domain) Le lipogramme donne « absent du dictionnaire » à un mot inconnu de la morphologie ; test dans `test/domain/lipogram/plugin.test.ts`
+- [x] 3.3 (domain) Le tautogramme donne « absent du dictionnaire » à un mot inconnu, et le mot suivant prend la lettre d'après ; test dans `test/domain/tautogram/plugin.test.ts`
+- [x] 3.4 (domain) `tokenizer.ts` : liste `LEXICALISED` (« rendez-vous », « on-dit », « chez-soi », « chez-moi », « m'as-tu-vu ») testée avant la règle des clitiques, et U+02BC dans les classes d'apostrophe ; tests : « rendez-vous », « dit-il », « donne-le », « lʼarbre », « QU'IL », chaîne vide, blancs seuls
+- [x] 3.5 (domain) Espaces insécables conservées dans `mixing.ts`, `lineation/plugin.ts` et `removal.ts` ; tests : retrait devant « ! » avec U+202F, piste coupée devant « : » avec U+00A0, mise en vers
+- [x] 3.6 Refiger le banc (`node scripts/chain-golden.ts > test/support/chain-golden.json`) : le diff ne montre que les cas visés par les specs (dé après un retrait, raisons, insécables) ; noter les écarts dans la PR
+- [x] 3.7 (ui) Le refus de rouvrir une entrée dont l'étiquetage ne correspond plus au découpage dit comment la récupérer (copier le texte, le remettre en pistes) ; test du message
 
 ## 4. Coûts linéaires (PR `perf:`)
 

@@ -127,6 +127,8 @@ export const s7Plugin = definePlugin({
     }
     const apostrophe = text.includes('’') ? '’' : "'";
     if (targets.has('adjective')) {
+      // Comme les verbes : un adjectif bouché porte sa raison.
+      for (const index of skip) if (tagged[index]?.category === 'adjective') marks.push({ index, original: tagged[index]!.word, reason: CLOSED });
       marks.push(...shiftAdjectives(words, tagged, (index) => (skip.has(index) ? undefined : offsetAt(index)), apostrophe, morphology));
     }
     if (targets.has('verb')) {

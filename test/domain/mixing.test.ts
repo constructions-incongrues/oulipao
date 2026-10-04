@@ -79,3 +79,10 @@ test('mixSegments : chaque mot entendu garde sa position, même après le resser
   const removed = words.map((w, i) => (i < 2 ? { ...w, output: '', gap: '' } : w));
   assert.equal(mixSegments(removed, tag(text), audibleCategories(tracks()), tail, true).map((s) => s.text).join(''), 'ferme, grise.');
 });
+
+test('une piste coupée ne change pas l’espace insécable devant « : »', () => {
+  const text = 'Il dort : le chat reste.';
+  const muted = mix(text, { verb: { muted: true } }, { dort: 'verb', reste: 'verb' });
+  assert.ok(muted.includes(' :'), JSON.stringify(muted));
+  assert.ok(!muted.includes(' :'));
+});

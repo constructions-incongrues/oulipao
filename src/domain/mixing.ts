@@ -69,7 +69,8 @@ export function mixSegments(
   out += tail;
   if (silenced) {
     out = out
-      .replace(/[^\S\n]+/g, ' ') // un seul espace entre deux mots
+      // Un seul espace entre deux mots ; une espace insécable du texte d'origine reste insécable.
+      .replace(/[^\S\n]+/g, (run) => run.match(/[\u00A0\u202F]/)?.[0] ?? ' ')
       .replace(/ ?,(?: ?,)+/g, ',') // virgules qui se suivent
       .replace(/,(?= ?[.!?…;:])/g, '') // virgule devenue inutile avant une ponctuation forte
       .replace(/([.!?…;:]) ?,/g, '$1') // ou juste après

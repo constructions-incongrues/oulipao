@@ -181,7 +181,7 @@ test('une entrée aux réglages hors bornes, désalignée ou aux verrous perdus 
   assert.match(reopenProblem(withS7({ type: 'disparu' }))!, /plugin inconnu/);
   assert.equal(reopenProblem(withS7({ locks: [{ index: 99, key: 'offset', value: 3 }] })), 'un verrou vise un mot absent du texte');
   assert.match(reopenProblem(withS7({ locks: [{ index: 0, key: 'offset', value: 500 }] }))!, /./);
-  assert.equal(reopenProblem({ ...entry, source: { ...entry.source, tagged: entry.source.tagged.slice(1) } }), 'l’étiquetage gardé ne correspond plus au texte');
+  assert.equal(reopenProblem({ ...entry, source: { ...entry.source, tagged: entry.source.tagged.slice(1) } }), 'l’étiquetage gardé ne correspond plus au découpage des mots ; copiez le texte et remettez-le en pistes');
   assert.equal(reopenProblem({ ...entry, mixer: { ...entry.mixer, closed: [99] } }), 'un pas bouché vise un mot absent du texte');
 });
 
@@ -224,4 +224,15 @@ test('une reconstruction qui échoue à la réouverture laisse la table telle qu
   await controller.reopen(controller.state.notebook[0]!.id);
   assert.deepEqual(controller.state.notebookError, { lead: 'Ce texte ne peut pas être rouvert :', detail: 'dictionnaire abîmé.' });
   assert.equal(controller.state.view, before);
+});
+
+test('un texte gardé avant le découpage de « rendez-vous » se refuse en disant comment le récupérer', async () => {
+  const entry = await keptEntry();
+  // Gardé quand « rendez-vous » faisait deux mots : son étiquetage en compte un de trop.
+  const old: NotebookEntry = {
+    ...entry,
+    source: { text: 'Le rendez-vous.', tagged: [{ word: 'Le', category: 'other' }, { word: 'rendez', category: 'verb' }, { word: 'vous', category: 'other' }] },
+    mixer: { ...entry.mixer, instances: entry.mixer.instances.map((instance) => ({ ...instance, locks: [] })), closed: [] },
+  };
+  assert.match(reopenProblem(old)!, /copiez le texte et remettez-le en pistes/);
 });

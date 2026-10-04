@@ -109,3 +109,15 @@ test('Mise en vers : déclaration, titre, aide', () => {
   assert.match(lineationPlugin.help({ cut: 'number', number: 12 }), /chiffres de 12/);
   assert.throws(() => lineationPlugin.parse({ number: 10_000_000 }));
 });
+
+test('espaces insécables : un retrait ou une mise en vers garde l’espace choisie devant « ! » et « : »', () => {
+  const fine = ' ';
+  const normal = ' ';
+  // retrait de l'adjectif devant « ! » : l'espace fine reste
+  assert.equal(run(trackSortPlugin, `Quel chat noir${fine}!`, { mode: 'remove' }, ['adjective']).text, `Quel chat${fine}!`);
+  // sans insécable, l'espace ordinaire de toujours
+  assert.equal(run(trackSortPlugin, 'Quel chat noir !', { mode: 'remove' }, ['adjective']).text, 'Quel chat !');
+  // mise en vers à chaque ponctuation : « : » garde son espace insécable en fin de vers
+  const lines = run(lineationPlugin, `Le chat dort${normal}: le matin est noir.`, { cut: 'punctuation' }).text;
+  assert.ok(lines.startsWith(`Le chat dort${normal}:\n`), JSON.stringify(lines));
+});
