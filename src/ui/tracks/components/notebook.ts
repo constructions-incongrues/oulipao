@@ -35,7 +35,14 @@ export const keptCount = (n: number) => (n === 0 ? 'Aucun texte gardé' : `${n} 
 export const keptDate = (iso: string) => new Date(iso).toLocaleString('fr-FR', { dateStyle: 'medium', timeStyle: 'short' });
 
 /** La mention d'une entrée sans son tiret d'en-tête : « S+7 sur les noms (Oulipao) ». */
-const bareMention = (mention: string) => mention.trim().replace(/^—\s*/, '');
+const bareMention = (mention: string) => {
+  const bare = mention.trim().replace(/^—\s*/, '');
+  // Une ligne à elle seule dans le carnet : elle commence par une majuscule, comme la phrase d'état.
+  return bare.charAt(0).toUpperCase() + bare.slice(1);
+};
+
+/** Les premiers mots d'un texte gardé, pour la ligne de l'entrée repliée. */
+const preview = (text: string) => text.trim().split('\n')[0]!;
 
 /** Ferme le `<details>` qui contient l'élément : la retouche se replie une fois enregistrée ou annulée. */
 const closeDetails = (element: Element) => {
@@ -95,8 +102,10 @@ export function Notebook({ entries, message, error, persistent = true, today, on
       html`<ol class="notebook-entries">
         ${entries.map((entry) => {
           const date = keptDate(entry.keptAt);
-          return html`<li class="notebook-entry" key=${entry.id}>
-            <time class="kept-at" datetime=${entry.keptAt}>${date}</time>
+          // Repliée, l'entrée tient sur une ligne : un carnet ouvert ne repousse pas l'instrument.
+          return html`<li class="notebook-entry" key=${entry.id}><details class="kept">
+            <summary class="kept-summary"><time class="kept-at" datetime=${entry.keptAt}>${date}</time><span class="kept-preview">${preview(entry.edited ?? entry.result)}</span>${entry.mention &&
+              html`<span class="kept-rule">${bareMention(entry.mention).replace(/ \(Oulipao\)$/, '')}</span>`}</summary>
             ${entry.lineage &&
             html`<p class="kept-origin"><span class="silk">Ancêtre</span> ${entry.lineage.ancestor}</p>
               <p class="kept-origin"><span class="silk">Parent</span> ${entry.source.text}</p>`}
@@ -109,7 +118,7 @@ export function Notebook({ entries, message, error, persistent = true, today, on
               <button type="button" class="key remove" aria-label=${`Supprimer le texte du ${date}`} onClick=${() => onRemove(entry.id)}>Supprimer</button>
             </div>
             <${Retouch} entry=${entry} onEdit=${onEdit} />
-          </li>`;
+          </details></li>`;
         })}
       </ol>`}
     </details>

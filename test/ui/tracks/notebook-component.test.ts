@@ -45,6 +45,13 @@ test('Carnet : un panneau replié dont l’en-tête donne le compte et les jours
   assert.match(out, /^<details class="notebook"><summary class="notebook-summary"><span class="silk">Carnet<\/span><span class="notebook-count">2 textes gardés · dernier texte il y a 3 jours<\/span><\/summary>/);
   assert.match(out, /<p class="kept-text">Texte c retouché\.<\/p><p class="kept-mention">S\+7 sur les noms \(Oulipao\) · retouché<\/p>.*<p class="kept-text">Texte a\.<\/p><div class="kept-actions">/s);
   assert.match(out, /<textarea name="text" rows="6" aria-label="Texte retouché">Texte c retouché\.<\/textarea>/);
+  // Chaque entrée est repliée sur une ligne : sa date et ses premiers mots.
+  assert.match(out, /<li class="notebook-entry"><details class="kept"><summary class="kept-summary"><time class="kept-at" datetime="[^"]+">[^<]+<\/time><span class="kept-preview">Texte c retouché\.<\/span><span class="kept-rule">S\+7 sur les noms<\/span><\/summary>/);
+  // La mention commence par une majuscule, comme une phrase.
+  const lower = renderToString(html`<${Notebook} ...${{ ...props, entries: [{ ...entry('b', '2026-10-04T20:00:00.000Z'), mention: '\n\n— lipogramme en e (Oulipao)' }] }} />`);
+  assert.match(lower, /<p class="kept-mention">Lipogramme en e \(Oulipao\)<\/p>/);
+  // Repliée, l'entrée dit aussi ce qui a fait le texte : deux entrées d'un même poème se distinguent.
+  assert.match(lower, /<span class="kept-preview">Texte b\.<\/span><span class="kept-rule">Lipogramme en e<\/span><\/summary>/);
   assert.match(out, /role="status" aria-live="polite">Import : 1 texte ajouté/);
   assert.match(out, /Le carnet vit dans ce navigateur/);
   const buttons = elements(notebook).filter((e) => e.type === 'button' && e.props['type'] === 'button');
