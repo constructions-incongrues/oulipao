@@ -242,7 +242,7 @@ test('copier : le texte résultant et sa mention (D11) ; message à côté du bo
   controller.setInput('La ferme.');
   await controller.run();
   await controller.copy();
-  assert.deepEqual(copied, ["L'oncle.\n\n— S+7 sur les noms (Oulipao)"]);
+  assert.deepEqual(copied, ["La ferme.\n\nL'oncle.\n\n— S+7 sur les noms (Oulipao)"]); // l'original voyage avec le résultat
   assert.equal(controller.state.copyMessage, 'Copié.');
   controller.dispatch({ type: 'set-param', id: 's7-1', key: 'offset', value: 2 });
   assert.equal(controller.state.copyMessage, ''); // le texte a changé depuis la copie
@@ -395,4 +395,15 @@ test('Sans chargeur de verbes : rien n’est demandé', async () => {
   const { controller } = setup();
   await controller.loadVerbs();
   assert.equal(controller.state.verbs.status, 'idle');
+});
+
+test('copier après itération : l’ancêtre, l’original de la passe, le résultat et la mention, comme depuis le carnet', async () => {
+  const { controller, copied } = setup();
+  controller.setInput('La ferme.');
+  await controller.run();
+  await controller.iterate();
+  await controller.copy();
+  const kept = controller.state.view!;
+  assert.match(copied[0]!, /^La ferme\.\n\nL'oncle\.\n\n/); // l'ancêtre, puis la source de la passe
+  assert.ok(copied[0]!.includes(`\n\n${kept.result}\n\n— `));
 });

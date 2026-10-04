@@ -17,7 +17,7 @@ import type { VerbRepository } from '../../ports/verbs.ts';
 import { EXAMPLES } from './examples.ts';
 import { createListeningController, initialListening } from './listening-controller.ts';
 import { initialState, pluginById, reduce } from './mixer-state.ts';
-import type { Lineage, NotebookEntry } from './notebook.ts';
+import { takeClipboard, type Lineage, type NotebookEntry } from './notebook.ts';
 import { cannotReopen, createNotebookController, initialNotebook, memoryNotebook, messageOf, reopenProblem, type NotebookDependencies } from './notebook-controller.ts';
 import type { SharedEntry } from './share-link.ts';
 import { MixerStateSchema, type MixerAction, type MixerState } from './types.ts';
@@ -568,7 +568,10 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       const view = state.view;
       if (!view || state.stale || view.empty) return;
       try {
-        await dependencies.copy(view.result + mention(view));
+        const said = mention(view);
+        // Sans mention, rien n'a changé : le texte seul. L'éclipse porte déjà l'original. Sinon l'original voyage
+        // avec le résultat, comme depuis le carnet.
+        await dependencies.copy(said && session && state.mixer.form !== 'eclipse' ? takeClipboard(session.text, view.result, said, state.lineage?.ancestor) : view.result + said);
         update({ copyMessage: 'Copié.' });
       } catch (error) {
         update({ copyMessage: `Copie impossible : ${messageOf(error)}` });
