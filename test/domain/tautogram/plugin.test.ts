@@ -96,3 +96,11 @@ test('article rétabli : « l’ » devant un adjectif ou un adverbe nouveau à 
   assert.equal(run("L'enceinte maison.", 'r', ['adjective']).text, 'La rapide maison.');
   assert.equal(run('Elle voit l’ici.', 'v', ['adverb']).text, 'Elle voit le vite.');
 });
+
+test('un mot absent du dictionnaire est dit tel, et le mot suivant prend la lettre d’après', () => {
+  const text = 'La zorglubette et la vieille ferme.';
+  const result = run(text, 'pv', ['noun'], { zorglubette: 'noun' });
+  assert.deepEqual(result.marks.find((mark) => mark.index === 1), { index: 1, original: 'zorglubette', reason: 'absent du dictionnaire' });
+  // « ferme », le nom suivant, prend la seconde lettre (« v »)
+  assert.match(result.words[5]!.output, /^v/i);
+});

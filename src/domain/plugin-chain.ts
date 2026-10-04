@@ -116,7 +116,7 @@ function scopeOf(
   modulated: ReadonlyMap<number, ParameterValues> = new Map(),
   gated: ReadonlySet<number> = new Set(),
 ): WordScope {
-  const scope: WordScope = { skip: [], overrides: [] };
+  const scope: WordScope = { skip: [], overrides: [], origin: [...origin] };
   origin.forEach((index, k) => {
     if (closed.has(index) || gated.has(k)) scope.skip.push(k);
     const values = { ...modulated.get(k), ...locks.get(index) };

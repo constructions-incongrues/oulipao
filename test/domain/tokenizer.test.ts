@@ -18,3 +18,19 @@ test('tokenize : positions dans le texte', () => {
   assert.deepEqual(tokenize(text).map((t) => text.slice(t.start, t.end)), ['dit', 'il']);
   assert.deepEqual(tokenize('… 42 !'), []);
 });
+
+test('tokenize : les composés lexicalisés restent entiers, les clitiques se coupent toujours', () => {
+  assert.deepEqual(words('Le rendez-vous est pris, viens chez-moi.'), ['Le', 'rendez-vous', 'est', 'pris', 'viens', 'chez-moi']);
+  assert.deepEqual(words('Un on-dit, un m’as-tu-vu, Rendez-Vous.'), ['Un', 'on-dit', 'un', 'm’as-tu-vu', 'Rendez-Vous']);
+  assert.deepEqual(words('Viens, dit-il ; donne-le.'), ['Viens', 'dit', 'il', 'donne', 'le']);
+});
+
+test('tokenize : l’apostrophe modificative vaut l’apostrophe ; élision en capitales', () => {
+  assert.deepEqual(words('lʼarbre et l’arbre'), ['lʼ', 'arbre', 'et', 'l’', 'arbre']);
+  assert.deepEqual(words("QU'IL VIENNE"), ["QU'", 'IL', 'VIENNE']);
+});
+
+test('tokenize : texte vide ou blancs seuls', () => {
+  assert.deepEqual(tokenize(''), []);
+  assert.deepEqual(tokenize('  \n\t '), []);
+});

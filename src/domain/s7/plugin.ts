@@ -152,7 +152,8 @@ export const s7Plugin = definePlugin({
     const morphology = settings.order !== 'alphabetical' ? rankedMorphology(resources.morphology, scales!, settings.order) : resources.morphology;
     // Un verrou se complète des réglages de l'instance et passe par la même validation.
     const locked = new Map(scope.overrides.map(({ index, values: own }) => [index, params({ ...values, ...own }).offset]));
-    const offsetAt = (index: number) => locked.get(index) ?? (settings.draw === 'dice' ? dieRoll(settings.seed, index) : settings.offset);
+    // Le dé se tire sur la position d'origine du mot : couper ou rallumer une étape en amont ne le relance pas.
+    const offsetAt = (index: number) => locked.get(index) ?? (settings.draw === 'dice' ? dieRoll(settings.seed, scope.origin?.[index] ?? index) : settings.offset);
     let words;
     let tail;
     const marks: WordMark[] = [];
@@ -169,6 +170,8 @@ export const s7Plugin = definePlugin({
     }
     const apostrophe = text.includes('’') ? '’' : "'";
     if (targets.has('adjective')) {
+      // Comme les verbes : un adjectif bouché porte sa raison.
+      for (const index of skip) if (tagged[index]?.category === 'adjective') marks.push({ index, original: tagged[index]!.word, reason: CLOSED });
       marks.push(...shiftAdjectives(words, tagged, (index) => (skip.has(index) ? undefined : offsetAt(index)), apostrophe, morphology));
     }
     // Les échelles ne notent pas les verbes : un S+n ordonné les laisse.

@@ -107,7 +107,7 @@ export function reopenProblem(entry: NotebookEntry): string | undefined {
   } catch (error) {
     return messageOf(error);
   }
-  if (tokenize(entry.source.text).length !== entry.source.tagged.length) return 'l’étiquetage gardé ne correspond plus au texte';
+  if (tokenize(entry.source.text).length !== entry.source.tagged.length) return 'l’étiquetage gardé ne correspond plus au découpage des mots ; copiez le texte et remettez-le en pistes';
   if ((entry.mixer.closed ?? []).some((index) => index >= entry.source.tagged.length)) return 'un pas bouché vise un mot absent du texte';
   return undefined;
 }

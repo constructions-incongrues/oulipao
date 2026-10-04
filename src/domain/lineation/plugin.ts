@@ -22,8 +22,9 @@ function broken(gap: string): string {
   const at = core.search(OPENING);
   const before = at < 0 ? core : core.slice(0, at).trim();
   const after = at < 0 ? '' : core.slice(at);
-  // « ; : ! ? » gardent leur espace avant eux.
-  return `${/^[;:!?]/.test(before) ? ` ${before}` : before}\n${after === '«' ? '« ' : after}`;
+  // « ; : ! ? » gardent leur espace avant eux, insécable si le texte d'origine l'était.
+  const space = gap.match(/[\u00A0\u202F]/)?.[0] ?? ' ';
+  return `${/^[;:!?]/.test(before) ? `${space}${before}` : before}\n${after === '«' ? '« ' : after}`;
 }
 
 /** Les positions (parmi les mots comptés) qui ouvrent une ligne. */

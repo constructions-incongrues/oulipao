@@ -78,6 +78,11 @@ export type WordMark = z.infer<typeof WordMarkSchema>;
 export const WordScopeSchema = z.object({
   skip: z.array(z.number().int().nonnegative()),
   overrides: z.array(z.object({ index: z.number().int().nonnegative(), values: ParameterValuesSchema })),
+  /**
+   * La position d'origine de chaque mot reçu, quand la chaîne a retiré, dédoublé ou fondu des mots en
+   * amont ; absente : les positions reçues sont celles d'origine (un plugin appelé seul).
+   */
+  origin: z.array(z.number().int().nonnegative()).optional(),
 });
 export type WordScope = z.infer<typeof WordScopeSchema>;
 

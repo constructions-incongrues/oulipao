@@ -1,3 +1,5 @@
+import { knownForm } from '../known.ts';
+import { UNKNOWN } from '../verb.ts';
 import { z } from 'zod';
 import { bare, elide, lettersOf, restoreArticle } from '../letters.ts';
 import { nthAdjective, nthAdverb, nthNoun } from '../neighbours.ts';
@@ -90,7 +92,7 @@ export const tautogramPlugin = definePlugin({
       } else if (category === 'adverb') {
         replacement = nthAdverb(word.output, 1, startsWith(letter), morphology, undefined, swapInitial(letter));
       }
-      if (replacement === undefined) return marks.push({ index, original, reason: noNeighbour(letter) });
+      if (replacement === undefined) return marks.push({ index, original, reason: knownForm(word.output, category, morphology) ? noNeighbour(letter) : UNKNOWN });
       word.output = matchCase(word.output, replacement);
       marks.push({ index, original, replacement: word.output });
     });

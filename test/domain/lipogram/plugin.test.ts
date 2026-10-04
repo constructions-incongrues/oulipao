@@ -113,9 +113,9 @@ test('une autre lettre ; un texte sans la lettre reste tel quel', () => {
 });
 
 test('les noms passent par la même réécriture que le S+7', () => {
-  // un nom sans voisin garde son groupe ; un nom inconnu aussi
+  // un nom sans voisin garde son groupe ; un nom inconnu aussi, et la raison dit qu'il est inconnu
   const unknown = run('La zorglubette dort.', 'e', { zorglubette: 'noun' });
-  assert.deepEqual(unknown.marks.find((mark) => mark.index === 1), { index: 1, original: 'zorglubette', reason: 'aucun voisin sans la lettre' });
+  assert.deepEqual(unknown.marks.find((mark) => mark.index === 1), { index: 1, original: 'zorglubette', reason: 'absent du dictionnaire' });
   // le S+7 n'a pas changé de comportement
   const text = 'La vieille ferme du village dort.';
   assert.equal(applyS7(text, tag(text), { offset: 1 }, m).text, 'Le vieux fermoir de la ville dort.');

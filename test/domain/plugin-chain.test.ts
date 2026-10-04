@@ -6,6 +6,7 @@ import { definePlugin, WordMarkSchema, type ConstraintPlugin } from '../../src/d
 import { runChain, type ChainStep } from '../../src/domain/plugin-chain.ts';
 import { lipogramPlugin } from '../../src/domain/lipogram/plugin.ts';
 import { s7Plugin } from '../../src/domain/s7/plugin.ts';
+import { trackSortPlugin } from '../../src/domain/track-sort/plugin.ts';
 import { morphology, tag, verbs } from '../support/morphology.ts';
 
 const resources = { morphology: morphology() };
@@ -131,10 +132,11 @@ test('portée par mot : pas bouchés et verrous traduits en positions du texte r
   const locks = new Map([[3, { offset: 1 }]]);
   // « du » devient « de la » au premier pas : relu en deux mots, tous deux sautés.
   runChain(text, tag(text), [step(expand, {}), { ...step(recorder, {}), closed: new Set([2]), locks }], resources);
-  assert.deepEqual(received.at(-1), { skip: [2, 3], overrides: [{ index: 4, values: { offset: 1 } }] });
+  // La position d'origine de chaque mot relu suit : « de » et « la » viennent tous deux de « du » (2).
+  assert.deepEqual(received.at(-1), { skip: [2, 3], overrides: [{ index: 4, values: { offset: 1 } }], origin: [0, 1, 2, 2, 3] });
   // Sans pas bouché ni verrou : une portée vide.
   runChain(text, tag(text), [step(recorder, {})], resources);
-  assert.deepEqual(received.at(-1), { skip: [], overrides: [] });
+  assert.deepEqual(received.at(-1), { skip: [], overrides: [], origin: [0, 1, 2, 3] });
 });
 
 test('S+7 sur les verbes puis lipogramme en e : un verbe sans « e », au même temps', () => {
@@ -198,4 +200,16 @@ test('remis en ligne : compté, sans effacer un remplacement ; l’étape note l
   // Remis en ligne une seconde fois : le saut n'est plus nouveau.
   const twice = runChain(text, tag(text), [step(lineByLine, {}), { ...step(lineByLine, {}), id: 'encore' }], resources);
   assert.deepEqual(twice.stages[1]!.map((word) => word.newline), [false, false, false]);
+});
+
+test('S+dé après un retrait en amont : chaque nom garde sa face de dé, l’étape amont coupée ou non', () => {
+  const text = 'Ici le chat voit vite le cheval et la ferme.';
+  const dice = { draw: 'dice', seed: 2461318 };
+  const sort = { ...step(trackSortPlugin, { mode: 'remove' }), targets: new Set(['adverb'] as const) };
+  const alone = runChain(text, tag(text), [step(s7Plugin, dice)], resources);
+  const after = runChain(text, tag(text), [sort, step(s7Plugin, dice)], resources);
+  const nouns = tag(text).flatMap((word, index) => (word.category === 'noun' ? [index] : []));
+  assert.ok(nouns.length >= 3);
+  // Les adverbes « Ici » et « vite », retirés en amont, décaleraient les positions des noms suivants.
+  for (const index of nouns) assert.equal(after.words[index]!.output, alone.words[index]!.output, tag(text)[index]!.word);
 });

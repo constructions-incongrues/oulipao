@@ -16,6 +16,10 @@ const strength = (mark: string) => (STRONG.test(mark) ? 3 : MIDDLE.test(mark) ? 
 export const matchCase = (original: string, replacement: string) =>
   original[0] !== original[0]!.toLowerCase() ? replacement[0]!.toUpperCase() + replacement.slice(1) : replacement;
 
+/** Les espaces insécables du français : fine (devant « ; ! ? ») et normale (devant « : »). */
+export const NARROW_NBSP = '\u202F';
+export const NBSP = '\u00A0';
+
 /**
  * Fond deux blancs qui se suivent, celui d'un mot retiré puis celui du mot d'après : les sauts de
  * ligne restent (le plus long des deux), une suite de ponctuation se réduit à son signe le plus
@@ -37,8 +41,10 @@ export function mergeGaps(removed: string, next: string, first = false): string 
   const runs = chars.join('').match(/[.!?…]+|[;:,]/g) ?? [];
   const top = Math.max(0, ...runs.map((run) => strength(run[0]!)));
   const kept = first ? '' : (runs.find((run) => strength(run[0]!) === top) ?? '');
-  // « ; : ! ? » prennent une espace avant eux ; la virgule et le point, non.
-  const punctuation = /^[;:!?]/.test(kept) ? ` ${kept}` : kept;
+  // « ; : ! ? » prennent une espace avant eux ; la virgule et le point, non. Une espace insécable
+  // (fine U+202F ou normale U+00A0) du texte d'origine reste celle qu'il avait choisie.
+  const space = chars.find((char) => char === NARROW_NBSP || char === NBSP) ?? ' ';
+  const punctuation = /^[;:!?]/.test(kept) ? `${space}${kept}` : kept;
   // En tête de texte, ni ponctuation ni blanc avant le premier mot.
   const separator = first || !chars.some((char) => /\s/.test(char)) ? '' : lines ? '\n'.repeat(lines) : ' ';
   // Le guillemet français ouvrant prend une espace après lui.

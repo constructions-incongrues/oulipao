@@ -77,6 +77,8 @@ test('portée par mot : un adjectif au pas bouché reste tel quel', () => {
   const apply = (skip: number[]) => s7Plugin.apply(text, tagged, { offset: 1 }, { morphology: m }, new Set(['adjective']), { skip, overrides: [] });
   assert.notEqual(apply([]).words[1]!.output, 'petit');
   assert.equal(apply([1]).words[1]!.output, 'petit');
+  // et l'inspecteur dit pourquoi, comme pour un nom ou un verbe bouché
+  assert.deepEqual(apply([1]).marks.find((mark) => mark.index === 1), { index: 1, original: 'petit', reason: 'pas bouché' });
 });
 
 test('S+7 sur les verbes : au même temps et à la même personne, le pronom suit', () => {
