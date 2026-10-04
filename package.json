@@ -5,9 +5,12 @@
   "type": "module",
   "description": "Ouvroir de Littérature Potentielle Assistée par Ordinateur — essai technique : étiquetage grammatical du français dans le navigateur",
   "license": "MIT",
+  "engines": {
+    "node": ">=22.18"
+  },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "esbuild page=src/ui/page.ts tracks=src/ui/tracks/main.ts --bundle --format=esm --target=es2022 --outdir=dist --sourcemap --define:__OULIPAO_VERSION__=\\\"$npm_package_version\\\"",
+    "build": "esbuild page=src/ui/page.ts tracks=src/ui/tracks/main.ts --bundle --format=esm --target=es2022 --outdir=dist --minify --sourcemap --define:__OULIPAO_VERSION__=\\\"$npm_package_version\\\"",
     "build:site": "node scripts/build-site.ts",
     "test": "node --expose-gc --test --experimental-test-coverage --test-coverage-lines=90 --test-coverage-branches=90 --test-coverage-functions=90 --test-coverage-exclude='test/**' --test-coverage-exclude='vendor/**' --test-coverage-exclude='src/adapters/taggers/camembert-model.ts' --test-coverage-exclude='src/ui/page.ts' --test-coverage-exclude='src/ui/tracks/main.ts' 'test/**/*.test.ts'",
     "check:palette": "node scripts/check-palette.ts",
