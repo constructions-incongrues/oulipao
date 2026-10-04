@@ -25,6 +25,11 @@
   --size-read: 22px;
   --size-read-compact: 17px;
   --size-mark: 44px;
+  /* Les valeurs et les mots de la grille, puis le petit écran (sous 768 px) */
+  --size-value: 11px;
+  --size-grid-word: 14px;
+  --size-read-narrow: 19px;
+  --size-mark-narrow: 34px;
   --measure: 62ch;
 
   /* Espacements : multiples de 4 px */

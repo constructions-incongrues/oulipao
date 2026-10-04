@@ -3,14 +3,18 @@
 import { html } from 'htm/preact';
 import { render } from 'preact';
 import { createSpeechSynthesis } from '../../adapters/speech/speech-synthesis.ts';
-import { createLocalStorageNotebook } from '../../adapters/storage/local-storage-notebook.ts';
+import { createLocalStorageNotebook, NOTEBOOK_KEY } from '../../adapters/storage/local-storage-notebook.ts';
 import { createLocalStoragePreferences } from '../../adapters/storage/local-storage-preferences.ts';
+import { safeStorage } from '../../adapters/storage/safe-storage.ts';
 import { createMorphologyLoader, createNeuralTagging, createPhoneticsLoader, createScalesLoader, createVerbsLoader } from '../composition.ts';
 import { App } from './app.ts';
-import { createTracksController, type TracksState } from './controller.ts';
+import { downloadText } from './download.ts';
+import { claimsSpace, createTracksController, type TracksState } from './controller.ts';
 import { nextTheme, type Theme } from './components/theme-toggle.ts';
 
 const root = document.getElementById('app')!;
+// Cookies bloqués : lire `localStorage` lève ; la page démarre alors avec un carnet de séance.
+const { storage, persistent } = safeStorage(() => localStorage);
 const { tagger, preload } = createNeuralTagging();
 // À l'ouverture de l'inspecteur, le focus y passe, pour que les flèches et Échap répondent.
 let inspecting = false;
@@ -34,24 +38,34 @@ const controller = createTracksController(
     copy: (text) => navigator.clipboard.writeText(text),
     // La voix du système : sans synthèse vocale dans le navigateur, pas d'écoute.
     ...('speechSynthesis' in window && { speech: createSpeechSynthesis(speechSynthesis, SpeechSynthesisUtterance) }),
-    preferences: createLocalStoragePreferences(localStorage),
+    preferences: createLocalStoragePreferences(storage),
     notebook: {
-      storage: createLocalStorageNotebook(localStorage),
+      storage: createLocalStorageNotebook(storage),
+      persistent,
       now: () => new Date(),
       newId: () => crypto.randomUUID(),
       confirm: (message) => window.confirm(message),
       // Un fichier proposé à l'enregistrement : rien ne quitte la machine.
-      download: (name, text) => {
-        const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
-        const link = Object.assign(document.createElement('a'), { href: url, download: name });
-        link.click();
-        URL.revokeObjectURL(url);
-      },
+      download: (name, text) =>
+        downloadText(
+          {
+            createObjectURL: (blob) => URL.createObjectURL(blob),
+            revokeObjectURL: (url) => URL.revokeObjectURL(url),
+            link: (href, download) => Object.assign(document.createElement('a'), { href, download }),
+          },
+          name,
+          text,
+        ),
     },
   },
   draw,
 );
 draw(controller.state);
+
+// Un autre onglet a écrit le carnet : celui-ci le relit (clé du carnet, ou stockage vidé).
+addEventListener('storage', (event) => {
+  if (event.key === NOTEBOOK_KEY || event.key === null) controller.syncNotebook();
+});
 
 // Les raccourcis de l'inspecteur et de l'écoute répondent où que soit le focus, sauf dans un champ de saisie.
 const inField = (target: EventTarget | null) =>
@@ -60,9 +74,10 @@ document.addEventListener('keydown', (event) => {
   if (event.altKey || event.ctrlKey || event.metaKey) return;
   if (controller.shortcut(event.key, inField(event.target))) event.preventDefault();
 });
-// Sur un bouton qui a le focus, la barre d'espace l'activerait au relâché : elle sert à l'écoute.
+// Sur un bouton qui a le focus, la barre d'espace l'activerait au relâché : elle sert à l'écoute,
+// sauf sans voix française, où elle garde son effet ordinaire.
 document.addEventListener('keyup', (event) => {
-  if (event.key === ' ' && controller.state.view && !inField(event.target)) event.preventDefault();
+  if (event.key === ' ' && claimsSpace(controller.state, inField(event.target))) event.preventDefault();
 });
 // L'écoute se tait quand l'onglet est masqué ou la page quittée, et ne reprend pas seule.
 document.addEventListener('visibilitychange', () => document.hidden && controller.stop());

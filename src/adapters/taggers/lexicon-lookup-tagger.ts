@@ -40,7 +40,13 @@ export class LexiconLookupTagger implements Tagger {
   }
 
   #load(): Promise<Map<string, string>> {
-    return (this.#lexicon ??= this.#source().then(parseLexicon));
+    // Un échec n'est pas gardé : le prochain étiquetage redemande le lexique.
+    return (this.#lexicon ??= this.#source()
+      .then(parseLexicon)
+      .catch((error: unknown) => {
+        this.#lexicon = undefined;
+        throw error;
+      }));
   }
 
   // Codes possibles d'une forme, ou undefined si elle est inconnue du lexique.

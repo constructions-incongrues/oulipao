@@ -17,11 +17,11 @@ const c = entry('c', '2026-10-09T22:00:00.000Z');
 
 test('aller-retour : un carnet sérialisé se relit à l’identique, du plus récent au plus ancien', () => {
   const read = parseNotebook(serializeNotebook([a, c, b]));
-  assert.deepEqual(read, { entries: [c, b, a], rejected: 0 });
+  assert.deepEqual(read, { entries: [c, b, a], rejected: 0, unreadable: [] });
 });
 
 test('pas encore de carnet : vide, sans erreur', () => {
-  assert.deepEqual(parseNotebook(null), { entries: [], rejected: 0 });
+  assert.deepEqual(parseNotebook(null), { entries: [], rejected: 0, unreadable: [] });
 });
 
 test('une entrée abîmée est comptée et laissée de côté, les autres restent', () => {
@@ -29,11 +29,21 @@ test('une entrée abîmée est comptée et laissée de côté, les autres resten
   const read = parseNotebook(JSON.stringify({ version: 1, entries: [a, undated, c] }));
   assert.deepEqual(read.entries, [c, a]);
   assert.equal(read.rejected, 1);
+  assert.deepEqual(read.unreadable, [undated]);
   assert.equal(read.error, undefined);
 });
 
+test('les entrées illisibles se réécrivent telles quelles, après les lisibles', () => {
+  const broken = { id: 'cassée', venue: 'd’une version future' };
+  const raw = serializeNotebook([a, c], [broken]);
+  assert.deepEqual(JSON.parse(raw).entries.at(-1), broken);
+  const reread = parseNotebook(raw);
+  assert.deepEqual(reread.entries, [c, a]);
+  assert.deepEqual(reread.unreadable, [broken]);
+});
+
 test('un texte qui n’est pas un carnet : vide, avec une erreur', () => {
-  assert.deepEqual(parseNotebook('{pas du json'), { entries: [], rejected: 0, error: 'Le carnet est illisible.' });
+  assert.deepEqual(parseNotebook('{pas du json'), { entries: [], rejected: 0, unreadable: [], error: 'Le carnet est illisible.' });
   assert.match(parseNotebook('{"chat":1}').error!, /pas un carnet/);
   assert.match(parseNotebook('{"version":2,"entries":[]}').error!, /pas un carnet/);
 });

@@ -72,10 +72,10 @@ test('Échec des échelles : l’erreur reste, le texte aussi, la relance les ch
   await controller.run();
   s1(controller);
   await tick();
-  assert.deepEqual(controller.state.scales, { status: 'error', error: 'Échec du chargement des échelles : 404.' });
+  assert.deepEqual(controller.state.scales, { status: 'error', error: { lead: 'Le chargement des échelles a échoué.', detail: '404.' } });
   assert.equal(controller.state.view!.result, 'La ferme dort.');
   const out = renderToString(html`<${App} state=${controller.state} controller=${controller} version="0.2.0" />`);
-  assert.match(out, /<p class="loading error" role="alert">Échec du chargement des échelles : 404\. <button type="button" class="load">Relancer<\/button><\/p>/);
+  assert.match(out, /<p class="error" role="alert">\s*<strong>Le chargement des échelles a échoué\.<\/strong> 404\. <button type="button" class="load">Relancer<\/button>/);
   const retry = find(App({ state: controller.state, controller, version: '0.2.0' }), (node) => node.props['class'] === 'load');
   (retry.props['onClick'] as () => void)();
   await tick();

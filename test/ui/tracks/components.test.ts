@@ -4,7 +4,7 @@ import { html } from 'htm/preact';
 import { renderToString } from 'preact-render-to-string';
 import { CATEGORIES } from '../../../src/domain/categories.ts';
 import type { ModelState } from '../../../src/ui/tracks/controller.ts';
-import { Control } from '../../../src/ui/tracks/components/control.ts';
+import { Control, TEXT_DELAY } from '../../../src/ui/tracks/components/control.ts';
 import { lipogramPlugin } from '../../../src/domain/lipogram/plugin.ts';
 import { StepGrid, type StepGridProps } from '../../../src/ui/tracks/components/step-grid.ts';
 import { Chain, dropPosition } from '../../../src/ui/tracks/components/chain.ts';
@@ -45,15 +45,33 @@ test('Control : un champ entier borné ou une liste, d’après la déclaration 
   (find(html`<${Control} parameter=${mode} value="reagree" />`, (e) => e.type === 'select').props['onChange'] as (event: Event) => void)(inputEvent('reagree'));
 });
 
-test('Control : un paramètre texte devient un champ de saisie, réglé à chaque frappe', () => {
+test('Control : un paramètre texte devient un champ de saisie, réglé au repos de la saisie', () => {
   const calls: unknown[] = [];
   const [letters] = lipogramPlugin.parameters as [Parameter];
-  const field = html`<${Control} parameter=${letters} value="e" onParam=${(key: string, value: unknown) => calls.push(`${key}=${value}`)} />`;
+  // Une horloge à la main : `flush` fait partir l'envoi en attente, comme si 150 ms s'étaient écoulées.
+  let due: (() => void) | undefined;
+  const delays: number[] = [];
+  const schedule = (callback: () => void, ms: number) => {
+    due = callback;
+    delays.push(ms);
+    return () => void (due = undefined);
+  };
+  const flush = () => (due?.(), (due = undefined));
+  const field = html`<${Control} parameter=${letters} value="e" schedule=${schedule} onParam=${(key: string, value: unknown) => calls.push(`${key}=${value}`)} />`;
   assert.match(renderToString(field), /<input type="text" class="param-text" maxlength="40" placeholder="e" spellcheck="false" value="e"/);
   const input = find(field, (e) => e.type === 'input').props['onInput'] as (event: Event) => void;
-  for (const value of ['Lu', 'Lucie', '']) input(inputEvent(value));
-  assert.deepEqual(calls, ['letters=Lu', 'letters=Lucie', 'letters=']);
-  (find(html`<${Control} parameter=${letters} value="e" />`, (e) => e.type === 'input').props['onInput'] as (event: Event) => void)(inputEvent('a'));
+  // Une rafale de frappes dans le même champ : un seul envoi, la dernière valeur.
+  const target = { value: '' };
+  for (const value of ['L', 'Lu', 'Luc']) input({ currentTarget: Object.assign(target, { value }) } as unknown as Event);
+  assert.deepEqual(calls, []);
+  flush();
+  assert.deepEqual(calls, ['letters=Luc']);
+  input({ currentTarget: Object.assign(target, { value: '' }) } as unknown as Event);
+  flush();
+  assert.deepEqual(calls, ['letters=Luc', 'letters=']);
+  assert.ok(delays.every((ms) => ms === TEXT_DELAY));
+  (find(html`<${Control} parameter=${letters} value="e" schedule=${schedule} />`, (e) => e.type === 'input').props['onInput'] as (event: Event) => void)(inputEvent('a'));
+  flush(); // sans gestionnaire : rien ne part, rien ne casse
   // dans sa tranche, le champ porte le libellé du paramètre
   assert.match(renderToString(html`<label class="silk">${letters.label}<${Control} parameter=${letters} value="e" /></label>`), /<label class="silk">Lettres<input type="text"/);
 });
@@ -241,7 +259,7 @@ test('Result : mots remplacés soulignés à la couleur de leur piste, mots cliq
 
 test('Source : définition et exemple au premier contact, avancement du modèle, saisie repliée', () => {
   const calls: string[] = [];
-  const model = (patch: Partial<ModelState>): ModelState => ({ status: 'ready', loaded: 0, total: 0, error: '', ...patch });
+  const model = (patch: Partial<ModelState>): ModelState => ({ status: 'ready', loaded: 0, total: 0, ...patch });
   const props: SourceProps = {
     input: '', words: 0, editing: true, started: false, tagging: false, message: '', model: model({ status: 'loading', loaded: 42e6, total: 111e6 }),
     onInput: (text) => calls.push(`input:${text}`), onEdit: () => calls.push('edit'), onRun: () => calls.push('run'),
@@ -263,9 +281,9 @@ test('Source : définition et exemple au premier contact, avancement du modèle,
   assert.match(before, /depuis jsDelivr et Hugging Face, qui voient alors votre adresse\. Votre texte, lui, reste dans ce navigateur\./);
   assert.match(before, /<button type="button" class="run">Mettre en pistes<\/button>/); // le premier clic vaut accord
   click(waiting, byClass('load'));
-  const failed = html`<${Source} ...${{ ...props, model: model({ status: 'error', error: 'Échec : hors ligne. Vous pouvez relancer.' }) }} />`;
+  const failed = html`<${Source} ...${{ ...props, model: model({ status: 'error', error: { lead: 'Le chargement du modèle a échoué.', detail: 'hors ligne.' } }) }} />`;
   assert.match(renderToString(failed), /<button type="button" class="run">Mettre en pistes/); // relancer en mettant en pistes
-  assert.match(renderToString(failed), /role="alert">Échec : hors ligne\. Vous pouvez relancer\. <button type="button" class="load">Relancer/);
+  assert.match(renderToString(failed), /class="error" role="alert">\s*<strong>Le chargement du modèle a échoué\.<\/strong> hors ligne\. <button type="button" class="load">Relancer/);
   click(failed, byClass('load'));
   const ready = render({ model: model({}), started: true, message: 'Collez d’abord un texte.' });
   assert.doesNotMatch(ready, /class="example"|progress/);

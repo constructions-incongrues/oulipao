@@ -28,7 +28,8 @@ test('Transport : écouter, tempo, voix ; enfoncé pendant l’écoute ; les ges
   const { all, calls } = props({ voice: 'fr-2' });
   const node = html`<${Transport} ...${all} />`;
   const out = renderToString(node);
-  assert.match(out, /<section class="transport" aria-label="Écoute"><button type="button" class="key play" aria-pressed="false" title="Barre d'espace">Écouter<\/button>/);
+  assert.match(out, /<section class="transport" aria-label="Écoute"><span class="play-key"><button type="button" class="key play" aria-pressed="false" aria-keyshortcuts="Space">Écouter<\/button><span class="silk shortcut" aria-hidden="true">Espace<\/span><\/span>/);
+  assert.doesNotMatch(out, /title=/);
   assert.match(out, /<option value="fr-2" selected>Thomas<\/option>/);
   assert.match(out, /type="number" step="1" min="1" max="5" value="3"/);
   assert.match(renderToString(html`<${Transport} ...${props({ playing: true }).all} />`), /aria-pressed="true"[^>]*>Arrêter<\/button>/);
@@ -43,6 +44,7 @@ test('Transport : écouter, tempo, voix ; enfoncé pendant l’écoute ; les ges
 test('Transport : sans voix française, bouton désactivé et message, ni tempo ni voix', () => {
   const out = renderToString(html`<${Transport} ...${props({ voices: [] }).all} />`);
   assert.match(out, /class="key play" aria-pressed="false" disabled/);
+  assert.doesNotMatch(out, /aria-keyshortcuts|class="silk shortcut"/); // pas de raccourci sans voix
   assert.match(out, /Aucune voix française n’est installée sur ce système : l’écoute est impossible\./);
   assert.doesNotMatch(out, /<select|type="number"/);
 });

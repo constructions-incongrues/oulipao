@@ -86,7 +86,7 @@ test('stockage plein : la garde échoue avec un message, le texte reste affiché
   controller.setInput('La ferme.');
   await controller.run();
   controller.keep();
-  assert.equal(controller.state.copyMessage, 'Impossible de garder : quota dépassé');
+  assert.deepEqual(controller.state.notebookError, { lead: 'Impossible de garder :', detail: 'quota dépassé.' });
   assert.deepEqual(controller.state.notebook, []);
   assert.equal(controller.state.view!.result, "L'oncle.");
 });
@@ -102,9 +102,9 @@ test('à l’ouverture : le carnet stocké se relit, une entrée abîmée est si
   stored.entries.push({ id: 'cassée' });
   const reread = setup(fakeNotebook(JSON.stringify(stored)).notebook).controller;
   assert.deepEqual(reread.state.notebook.map((entry) => entry.id), ['t2', 't1']);
-  assert.equal(reread.state.notebookMessage, '1 texte illisible laissé de côté.');
+  assert.equal(reread.state.notebookMessage, '1 texte illisible par cette version, conservé : il reste dans l’export du carnet.');
   stored.entries.push({ id: 'cassée aussi' });
-  assert.equal(setup(fakeNotebook(JSON.stringify(stored)).notebook).controller.state.notebookMessage, '2 textes illisibles laissés de côté.');
+  assert.equal(setup(fakeNotebook(JSON.stringify(stored)).notebook).controller.state.notebookMessage, '2 textes illisibles par cette version, conservés : ils restent dans l’export du carnet.');
   assert.equal(setup(fakeNotebook('{abîmé').notebook).controller.state.notebookMessage, 'Le carnet est illisible.');
   assert.equal(setup(fakeNotebook().notebook).controller.state.notebookMessage, '');
 });
@@ -142,7 +142,7 @@ test('rouvrir une entrée dont une contrainte n’existe plus : un message, l’
   stored.entries[0].mixer.instances[0].type = 'disparu';
   const later = setup(fakeNotebook(JSON.stringify(stored)).notebook).controller;
   await later.reopen('t1');
-  assert.match(later.state.notebookMessage, /ne peut pas être rouvert : plugin inconnu : disparu/);
+  assert.deepEqual(later.state.notebookError, { lead: 'Ce texte ne peut pas être rouvert :', detail: 'plugin inconnu : disparu.' });
   assert.equal(later.state.view, undefined);
   assert.equal(later.state.notebook.length, 1);
 });
@@ -179,7 +179,7 @@ test('supprimer : après confirmation seulement', async () => {
   assert.deepEqual(declined.written, []);
   const broken = setup(fakeNotebook(fake.written.at(-1)!, { storage: { read: () => fake.written.at(-1)!, write: () => { throw new Error('verrouillé'); } } }).notebook).controller;
   broken.remove('t3');
-  assert.equal(broken.state.notebookMessage, 'Suppression impossible : verrouillé');
+  assert.deepEqual(broken.state.notebookError, { lead: 'Suppression impossible :', detail: 'verrouillé.' });
   assert.equal(broken.state.notebook.length, 2);
 });
 
@@ -203,10 +203,10 @@ test('exporter puis importer : aller-retour, doublons comptés, mauvais fichier 
   assert.equal(empty.state.notebookMessage, 'Import : 1 texte ajouté, 4 déjà présents, 1 illisible.');
   empty.importNotebook('{"chat":1}');
   assert.equal(empty.state.notebook.length, 5);
-  assert.equal(empty.state.notebookMessage, 'Import refusé : Ce n’est pas un carnet d’Oulipao.');
+  assert.deepEqual(empty.state.notebookError, { lead: 'Import refusé :', detail: 'Ce n’est pas un carnet d’Oulipao.' });
   const full = setup(fakeNotebook(null, { storage: { read: () => null, write: () => { throw new Error('plein'); } } }).notebook).controller;
   full.importNotebook(serializeNotebook([]));
-  assert.equal(full.state.notebookMessage, 'Import impossible : plein');
+  assert.deepEqual(full.state.notebookError, { lead: 'Import impossible :', detail: 'plein.' });
 });
 
 test('sans carnet branché : un carnet en mémoire', async () => {
@@ -234,7 +234,7 @@ test('copier une entrée d’un bloc : l’original, le résultat, la chaîne ; 
   const stored = fakeNotebook(serializeNotebook(controller.state.notebook)).notebook;
   const denied = setup(stored, { copy: async () => { throw new Error('refusé'); } }).controller;
   await denied.copyEntry('t1');
-  assert.equal(denied.state.notebookMessage, 'Copie impossible : refusé');
+  assert.deepEqual(denied.state.notebookError, { lead: 'Copie impossible :', detail: 'refusé.' });
 });
 
 test('rouvrir après un geste non gardé : confirmation, et un refus ne change rien', async () => {
@@ -305,7 +305,7 @@ test('retoucher une entrée : écrite, relue, et la réouverture redonne le rés
   assert.equal(later.state.view!.result, "L'oncle.");
   const broken = setup(fakeNotebook(fake.written.at(-1)!, { storage: { read: () => fake.written.at(-1)!, write: () => { throw new Error('plein'); } } }).notebook).controller;
   broken.editEntry('t1', 'autre');
-  assert.equal(broken.state.notebookMessage, 'Retouche impossible : plein');
+  assert.deepEqual(broken.state.notebookError, { lead: 'Retouche impossible :', detail: 'plein.' });
   assert.equal(broken.state.notebook[0]!.edited, "L'oncle dort.");
 });
 

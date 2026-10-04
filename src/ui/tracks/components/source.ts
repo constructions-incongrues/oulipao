@@ -1,6 +1,7 @@
 import { html } from 'htm/preact';
 import type { VNode } from 'preact';
 import type { ModelState } from '../controller.ts';
+import { ErrorMessage } from './error-message.ts';
 
 export interface SourceProps {
   input: string;
@@ -36,7 +37,7 @@ function Loading({ model, onLoad }: Pick<SourceProps, 'model' | 'onLoad'>): VNod
         ${`${model.total ? `Chargement du modèle : ${megabytes(model.loaded)} / ${megabytes(model.total)} Mo` : 'Chargement du modèle…'} — une seule fois, puis gardé par votre navigateur.`}
       </p>` as VNode;
     case 'error':
-      return html`<p class="loading error" role="alert">${model.error} <button type="button" class="load" onClick=${onLoad}>Relancer</button></p>` as VNode;
+      return html`<${ErrorMessage} error=${model.error!} onRetry=${onLoad} />` as VNode;
     case 'ready':
       return null;
   }

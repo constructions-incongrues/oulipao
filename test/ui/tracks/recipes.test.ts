@@ -10,8 +10,9 @@ const add = (recipe: string, choice?: string, state = initialState) =>
   MixerStateSchema.parse(reduce(state, { type: 'add-recipe', recipe, choice, today: TODAY } as MixerAction));
 const summary = (state: ReturnType<typeof add>) => state.instances.map((i) => `${i.id} ${JSON.stringify(i.params)} ${i.targets.join(',')}`);
 
-test('les quinze recettes tiennent toutes, par ordre alphabétique', () => {
-  assert.equal(recipes.length, 15);
+test('les recettes tiennent toutes, par ordre alphabétique', () => {
+  // Aucune recette n'est tombée en route : validRecipes en écarte une sans rien dire.
+  assert.equal(recipes.length, RECIPES.length);
   assert.deepEqual(recipes, RECIPES);
   const names = recipes.map((recipe) => recipe.name);
   assert.deepEqual(names, [...names].sort((a, b) => a.localeCompare(b, 'fr')));
