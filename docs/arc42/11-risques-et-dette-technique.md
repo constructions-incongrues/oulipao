@@ -46,7 +46,7 @@ le tableau du toolkit.*
 | RISK-04 | Le texte est perdu quand l'onglet se ferme | Données | Haute | Moyen | Haute | Accepté |
 | RISK-05 | Ajouter une contrainte oblige à toucher plusieurs briques | Architecture | Moyenne | Moyen | Moyenne | Ouvert |
 | RISK-06 | Fautes d'accord hors du voisinage, et erreurs d'étiquetage propagées | Architecture | Haute | Bas | Moyenne | Accepté |
-| RISK-08 | Le réglage en direct est proche de la limite de 100 ms | Architecture | Moyenne | Moyen | Moyenne | Ouvert |
+| RISK-08 | Le réglage en direct est proche de la limite de 100 ms | Architecture | Basse | Moyen | Basse | Atténué |
 | RISK-09 | Usage au clavier et affichage à 375 px non revérifiés | Architecture | Moyenne | Moyen | Moyenne | Ouvert |
 | RISK-10 | Des rimes fausses : prononciations devinées, justesse pas encore relue | Données | Moyenne | Moyen | Moyenne | Ouvert |
 | RISK-02 | Code tiers chargé sans vérification d'intégrité | Sécurité | Basse | Moyen | Basse | Atténué |
@@ -137,11 +137,11 @@ lexicale : les filtres de rime ont demandé un port (I-06) et deux adaptateurs, 
 |----------|--------|
 | **Type** | Architecture |
 | **Description** | Sous Node, avec trois contraintes enchaînées, le texte de référence 2 prend 69 ms au 95e percentile, avec un maximum de 91 ms, contre 7 ms pour les deux autres textes. Rien n'a été mesuré dans un navigateur, ni sur un texte plus long ou une chaîne plus longue. |
-| **Probabilité** | Moyenne : un navigateur, un téléphone ou un texte de 400 mots peut faire passer le seuil. |
+| **Probabilité** | Basse depuis le 2026-10-04 (chaînes du banc sous 7 ms sous Node) ; elle était moyenne : un navigateur, un téléphone ou un texte de 400 mots peut faire passer le seuil. |
 | **Impact** | Moyen : le réglage cesse de paraître immédiat, ce qui est la promesse de la métaphore de la table. |
-| **Priorité** | Moyenne |
-| **Mitigation** | Prévue : mesurer dans le navigateur, et chercher pourquoi le texte 2 est neuf fois plus lent. Une recherche du lipogramme dans les infinitifs est le premier suspect. |
-| **Statut** | Ouvert |
+| **Priorité** | Basse |
+| **Mitigation** | Faite (changement `correctifs-domaine`, 2026-10-04) : le suspect était bien la recherche du voisin, et d'abord celle des verbes, qui faisait le tour des infinitifs. Le lipogramme ne visite plus que les formes qui évitent ses lettres (calculées une fois par jeu de lettres, sur des formes nues calculées une fois par dictionnaire), et la chaîne relit les textes en temps linéaire. Banc de référence (`node scripts/chain-golden.ts --time`, Node, p95) : lipogramme en « e » sur le texte 2, 240 → 6 ms ; lettres permises, 444 → 7 ms ; toutes les chaînes du banc sous 7 ms. Prix : environ 0,7 s à la première utilisation du lipogramme dans une session, puis environ 0,1 s par nouveau jeu de lettres. Une chaîne de mise en page sur 40 000 mots passe de 6,2 s à 0,2 s. Reste : mesurer dans le navigateur et sur un téléphone. |
+| **Statut** | Atténué : reste à mesurer dans un navigateur et sur un téléphone. |
 
 **Contexte :** objectif 3 de la section 1.2 ; section 6.3.
 
