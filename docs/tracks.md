@@ -34,8 +34,8 @@ Page : `tracks.html` (script assemblé `dist/tracks.js`, par `npm run build`). L
   choix (« Monovocalisme (a) »), dans la chaîne (le moteur en dessous), la phrase d'état, les
   tranches, l'inspecteur et la mention copiée ; un réglage, des pistes, un modulateur ou une
   porte changés le font tomber. Après un ajout, le navigateur se replie et la première contrainte
-  ajoutée vient au milieu de l'écran, le focus sur son premier réglage. L'Éclipse (un texte suivi de son S+7) n'a pas de recette : le S+7
-  donne la seconde partie, mais la sortie ne sait pas encore juxtaposer les deux.
+  ajoutée vient au milieu de l'écran, le focus sur son premier réglage. La recette Éclipse branche un S+7 et pose la forme
+  éclipse (voir plus bas).
 - **Texte résultant** : ce qu'on lit et qu'on copie, une fois les filtres appliqués et les
   pistes coupées. Un mot remplacé est souligné de la couleur de sa piste ; son infobulle nomme
   la piste et le mot d'origine (« Noms : cuisine → cuissot »), ou dit pourquoi un mot est laissé
@@ -111,8 +111,12 @@ Preact ; les composants (`components/`, `app.ts`) sont des fonctions de cet éta
 
 ## La page
 
-- **Premier contact** : la définition du S+7, la saisie, le bouton « Essayer avec un exemple »,
-  et le chargement du modèle, lancé dès l'ouverture avec sa barre en Mo (`preload`, fourni par
+- **Premier contact** : tant qu'aucun texte résultant n'existe et qu'aucune arrivée par lien
+  n'est affichée, une phrase d'accueil au-dessus de la saisie (« Un instrument pour jouer de la
+  littérature potentielle : collez un texte, ajoutez une contrainte, écoutez ce qu'elle en
+  fait. ») ; elle ne revient plus de la visite. Puis la saisie, le bouton « Essayer avec un
+  exemple », qui branche un S+7 sur les noms quand aucune contrainte n'est en marche, et le
+  chargement du modèle, lancé dès l'ouverture avec sa barre en Mo (`preload`, fourni par
   `composition.ts`). Si le navigateur demande d'économiser les données, un bouton « Charger le
   modèle (141 Mo) » attend un clic. Un échec se relance : le chargement raté n'est pas gardé.
 - **Après la mise en pistes** : la saisie se replie en « Texte : N mots · Modifier » ; le texte

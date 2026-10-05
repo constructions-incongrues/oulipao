@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { SEED } from '../../support/chain.ts';
 import { html } from 'htm/preact';
 import { renderToString } from 'preact-render-to-string';
 import { TEXT_DELAY } from '../../../src/ui/tracks/components/control.ts';
 import { App, SOURCE_URL } from '../../../src/ui/tracks/app.ts';
+import { WELCOME } from '../../../src/ui/tracks/components/source.ts';
+import { SEED, seededState } from '../../support/chain.ts';
 import { CHANGELOG_URL } from '../../../src/ui/version.ts';
 import { createTracksController } from '../../../src/ui/tracks/controller.ts';
 import type { MixerAction } from '../../../src/ui/tracks/types.ts';
@@ -141,6 +142,45 @@ test('premier contact : l’exemple et le chargement du modèle passent par le c
   assert.equal(waiting.state.model.status, 'ready');
 });
 
+test('phrase d’accueil : sur la page vide et pendant le chargement, plus après la première mise en pistes', async () => {
+  const { controller, app } = setup();
+  const welcome = () => elements(app()).filter(byClass('welcome'));
+  assert.equal(welcome().length, 1);
+  assert.equal(WELCOME, 'Un instrument pour jouer de la littérature potentielle : collez un texte, ajoutez une contrainte, écoutez ce qu’elle en fait.');
+  const out = renderToString(app());
+  assert.ok(out.indexOf('class="welcome"') < out.indexOf('<textarea id="input"'));
+  let release = () => {};
+  const loading = createTracksController({
+    tagger: { name: 'factice', tag: (text) => tag(text) },
+    loadMorphology: async () => morphology(),
+    preload: () => new Promise<void>((resolve) => (release = resolve)),
+    copy: async () => {},
+  });
+  const pending = loading.preload();
+  assert.equal(loading.state.model.status, 'loading');
+  assert.match(renderToString(html`<${App} state=${loading.state} controller=${loading} version="0.2.0" />`), /class="welcome"/);
+  release();
+  await pending;
+  click(app(), byClass('example'));
+  await tick();
+  assert.equal(welcome().length, 0);
+  controller.edit(); // la saisie rouverte ne la ramène pas
+  assert.equal(welcome().length, 0);
+});
+
+test('phrase d’accueil : absente pendant une arrivée par lien', async () => {
+  const arriving = createTracksController({
+    tagger: { name: 'factice', tag: (text) => tag(text) },
+    loadMorphology: async () => morphology(),
+    preload: async () => {},
+    copy: async () => {},
+    arrival: Promise.resolve({ result: 'L’oncle.', mention: '\n\n— S+7 sur les noms (Oulipao)', source: { text: 'La ferme.', tagged: tag('La ferme.') }, mixer: seededState }),
+  });
+  await tick();
+  assert.ok(arriving.state.arrival);
+  assert.doesNotMatch(renderToString(html`<${App} state=${arriving.state} controller=${arriving} version="0.2.0" />`), /class="welcome"/);
+});
+
 test('le lipogramme se met en marche dans la page, après le S+7, puis passe devant', async () => {
   const { controller, app, copied } = setup();
   controller.setInput('La vieille ferme du village dort.');
@@ -262,4 +302,19 @@ test('carnet : replié sous le texte résultant ; « Garder » range le texte, �
     currentTarget: { files: [{ text: async () => '{"chat":1}' }], value: '' },
   } as unknown as Event);
   assert.match(renderToString(app()), /Import refusé/);
+});
+
+test('App : l’invite « Brancher une contrainte » tant qu’aucune contrainte n’est en marche', async () => {
+  const { controller, app } = setup();
+  controller.setInput('La ferme.');
+  await controller.run();
+  const idle = () => elements(app()).some((element) => element.props['class'] === 'idle');
+  assert.equal(idle(), false); // le S+7 des tests est en marche
+  controller.dispatch({ type: 'toggle-instance', id: 's7-1' });
+  assert.equal(idle(), true); // toutes coupées : rien ne joue
+  controller.dispatch({ type: 'remove-instance', id: 's7-1' });
+  controller.dispatch({ type: 'remove-instance', id: 'lipogram-1' });
+  assert.equal(idle(), true); // chaîne vide
+  controller.dispatch({ type: 'add-instance', plugin: 's7' });
+  assert.equal(idle(), false);
 });

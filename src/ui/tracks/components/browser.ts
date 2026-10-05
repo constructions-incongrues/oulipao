@@ -45,6 +45,22 @@ function added(from: Element | undefined, add: () => void) {
   });
 }
 
+/**
+ * « Brancher une contrainte », depuis la bande : ouvre le navigateur, l'amène au milieu de l'écran
+ * (la bande collée couvre le haut), d'un coup si l'on a demandé moins d'animations, et y met le focus.
+ */
+export function openBrowser(from: Element): void {
+  const doc = from.ownerDocument;
+  const browser = doc.querySelector<HTMLDetailsElement>('.chain details.browser');
+  if (!browser) return;
+  browser.open = true;
+  const still = doc.defaultView?.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+  // Le catalogue ouvert dépasse l'écran : c'est sa première touche, celle qui prend le focus, qu'on centre.
+  const first = browser.querySelector<HTMLElement>('button, select, input, a') ?? browser;
+  first.scrollIntoView({ block: 'center', behavior: still ? 'auto' : 'smooth' });
+  first.focus({ preventScroll: true });
+}
+
 /** Une recette : sa touche, sa règle, sa fiche ; si elle demande un réglage, le choix se déplie sous elle. */
 function RecipeRow({ recipe, dispatch, now }: { recipe: Recipe; dispatch: BrowserProps['dispatch']; now: () => Date }): VNode {
   const add = (choice?: string) => dispatch({ type: 'add-recipe', recipe: recipe.id, choice, today: isoDay(now()) });

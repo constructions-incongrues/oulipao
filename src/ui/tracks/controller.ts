@@ -178,7 +178,10 @@ export interface TracksController {
   edit(): void;
   /** Étiquette le texte saisi et affiche le texte résultant. */
   run(): Promise<void>;
-  /** Place l'exemple suivant dans la saisie et le met en pistes, avec la même table ; après le dernier, revient au premier. */
+  /**
+   * Place l'exemple suivant dans la saisie et le met en pistes, avec la même table ; après le dernier,
+   * revient au premier. Sans contrainte en marche, branche d'abord un S+7 sur les noms.
+   */
   example(): Promise<void>;
   /** Charge les verbes ; relance après un échec. Le texte résultant se recalcule à leur arrivée. */
   loadVerbs(): Promise<void>;
@@ -561,6 +564,8 @@ export function createTracksController(dependencies: TracksDependencies, onChang
       return tagInto(state.input, state.mixer);
     },
     example() {
+      // Un exemple doit jouer : sans contrainte en marche, il branche un S+7 sur les noms.
+      if (!state.mixer.instances.some((instance) => instance.enabled)) controller.dispatch({ type: 'add-instance', plugin: 's7' });
       controller.setInput(EXAMPLES[state.examplesShown % EXAMPLES.length]!.text);
       update({ examplesShown: state.examplesShown + 1 });
       return controller.run();
