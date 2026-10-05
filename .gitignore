@@ -6,3 +6,6 @@ _site/
 
 # Archives brutes de nanopm : messages privés, verbatim, gardés hors du dépôt public
 .nanopm/raw/
+
+# Index de recherche local de nanopm : régénéré, propre à chaque machine
+.nanopm/search.db
