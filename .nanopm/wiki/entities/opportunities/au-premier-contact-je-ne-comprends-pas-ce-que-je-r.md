@@ -15,7 +15,7 @@ Une personne qui reçoit le lien trouve la page « austère et abscons » tout e
 
 ## What we know
 **Première impression de la page**
-- "Un peu austère et abscons mais intrigant évidemment" — Laureline Meizel, message, 2026-10-04
+- "Un peu austère et abscons mais intrigant évidemment" — Proche D, message, 2026-10-04
 - Le lien lui avait été envoyé la veille avec « C'est comme un séquenceur mais pas pour la musique, pour le texte », avant que l'image de l'instrument soit retenue.
 
 ## Open / superseded

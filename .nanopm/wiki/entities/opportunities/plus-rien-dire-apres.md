@@ -19,8 +19,8 @@ Première critique extérieure : le texte réécrit fait rire, puis lasse, parce
 
 ## What we know
 **L'absurde seul ne retient pas**
-- "ça réécrit le texte ton bidule / c'est rigolo / mais ça veut plus rien dire après 😅" — Rozie, messagerie, 2026-10-04
-- "« je meublerai sur ta tombée » hihi" — Rozie, messagerie, 2026-10-04, sur un texte du fondateur passé au S+« e » et à l'éclipse
+- "ça réécrit le texte ton bidule / c'est rigolo / mais ça veut plus rien dire après 😅" — Proche B, messagerie, 2026-10-04
+- "« je meublerai sur ta tombée » hihi" — Proche B, messagerie, 2026-10-04, sur un texte du fondateur passé au S+« e » et à l'éclipse
 
 Le vers qui garde une ombre du sens d'origine fait mouche là où l'absurde complet lasse.
 

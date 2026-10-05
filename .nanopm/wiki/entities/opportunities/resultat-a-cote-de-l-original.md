@@ -16,13 +16,13 @@ La première personne extérieure a joint, entre parenthèses, le poème d'origi
 
 ## What we know
 **L'écart est le ressort**
-- "(Indus larmes joie salive de fauve / Ton doux cliquetis me murmure des poèmes antiques […])" — original joint par miasmes, Gmail, 2026-10-03
-- "C'est drôle!" — mail de miasmes, Gmail, 2026-10-03
-- "On dirait un texte de rap conscient ^^" — mail de miasmes, Gmail, 2026-10-03
+- "(Indus larmes joie salive de fauve / Ton doux cliquetis me murmure des poèmes antiques […])" — original joint par Proche A, Gmail, 2026-10-03
+- "C'est drôle!" — mail de Proche A, Gmail, 2026-10-03
+- "On dirait un texte de rap conscient ^^" — mail de Proche A, Gmail, 2026-10-03
 
 **Peur de perdre l'original**
-Le fondateur répond par le séquenceur : couper la piste rend la source. Le texte envoyé à Rozie ne contenait pas l'original : copié sous le résultat, qui ne joint que la chaîne ; la copie depuis le carnet, elle, met l'original au-dessus.
-- "oui mais les contraintes une fois qu'elles sont activées on retrouve plus le texte initial ?" — Rozie, messagerie, 2026-10-04
+Le fondateur répond par le séquenceur : couper la piste rend la source. Le texte envoyé à Proche B ne contenait pas l'original : copié sous le résultat, qui ne joint que la chaîne ; la copie depuis le carnet, elle, met l'original au-dessus.
+- "oui mais les contraintes une fois qu'elles sont activées on retrouve plus le texte initial ?" — Proche B, messagerie, 2026-10-04
 
 **Question ouverte**
 Un texte gardé par une autre personne compte-t-il pour O2 ? Le carnet doit-il garder l'original à côté du résultat ?

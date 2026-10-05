@@ -16,17 +16,17 @@ Note : planification sur un concept produit en brouillon (`product.md` n'a pas s
 
 ## Problem Statement
 
-Le fondateur sort de chaque séance sans trace : le résultat s'affiche, se copie (bouton « Copier »), puis disparaît avec l'onglet, sans l'original ni la chaîne qui l'a produit. Les objectifs se mesurent pourtant tous aux textes gardés (O2), et la garde « parts égales » se lit aux dates des séances : sans carnet, rien ne se mesure, et le test de la stratégie du 18 octobre n'a pas d'instrument. Le seul texte montré à ce jour l'a été à la main : miasmes l'a copié dans un mail et a recollé l'original en dessous, parce que le comique tient à l'écart entre les deux (`feedback.md`).
+Le fondateur sort de chaque séance sans trace : le résultat s'affiche, se copie (bouton « Copier »), puis disparaît avec l'onglet, sans l'original ni la chaîne qui l'a produit. Les objectifs se mesurent pourtant tous aux textes gardés (O2), et la garde « parts égales » se lit aux dates des séances : sans carnet, rien ne se mesure, et le test de la stratégie du 18 octobre n'a pas d'instrument. Le seul texte montré à ce jour l'a été à la main : Proche A l'a copié dans un mail et a recollé l'original en dessous, parce que le comique tient à l'écart entre les deux (`feedback.md`).
 
-> « C'est drôle! » — mail de miasmes, sous le texte transformé suivi de l'original entre parenthèses
-> « On dirait un texte de rap conscient ^^ » — mail de miasmes
+> « C'est drôle! » — mail de Proche A, sous le texte transformé suivi de l'original entre parenthèses
+> « On dirait un texte de rap conscient ^^ » — mail de Proche A
 
 ---
 
 ## User Stories
 
 - En tant que fondateur, je veux garder d'un geste le résultat qui me plaît, avec son original et sa chaîne, pour retrouver le lendemain ce que j'ai fait et compter mes séances sans tenir de liste à côté.
-- En tant que fondateur, je veux copier d'un bloc l'original et le résultat d'un texte gardé, pour l'envoyer comme miasmes l'a fait, sans recoller l'original à la main.
+- En tant que fondateur, je veux copier d'un bloc l'original et le résultat d'un texte gardé, pour l'envoyer comme Proche A l'a fait, sans recoller l'original à la main.
 - En tant que fondateur, je veux rejouer la chaîne d'un texte gardé dans l'instrument, pour repartir d'une trouvaille au lieu de la reconstruire réglage par réglage.
 
 ---
@@ -65,7 +65,7 @@ Si le fondateur, après la mise en ligne du carnet le 11 octobre 2026, a gardé 
 - Exporter tout le carnet dans un fichier, et réimporter ce fichier (sauvegarde, autre navigateur).
 
 ### Out of scope (v1)
-- Saisie des textes d'autrui (un texte reçu par mail, comme celui de miasmes) — les textes reçus sont notés dans `feedback.md` et comptés à la main pour O2 / KR1 et KR3 ; revisit when un deuxième texte reçu arrive et que le compte à la main devient pénible.
+- Saisie des textes d'autrui (un texte reçu par mail, comme celui de Proche A) — les textes reçus sont notés dans `feedback.md` et comptés à la main pour O2 / KR1 et KR3 ; revisit when un deuxième texte reçu arrive et que le compte à la main devient pénible.
 - Partage en un clic (lien, image) — revisit when quelqu'un renonce à montrer un texte faute de pouvoir le copier.
 - Synchronisation entre appareils, comptes, serveur — revisit when le fondateur perd un texte malgré l'export.
 

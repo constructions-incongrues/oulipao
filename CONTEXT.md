@@ -7,7 +7,7 @@
    [auto from product.md] Un instrument pour jouer de la littérature potentielle : on charge un texte français, on branche et règle en direct une chaîne de contraintes oulipiennes sur ses pistes, on garde les prises au carnet. En ligne sur https://oulipao.incongru.org (v0.6.2).
 
 2. Who is the primary user? (job title, company size, situation)
-   [auto from personas.md] Le fondateur, qui joue de l'instrument et le construit ; les textes sont le sous-produit. Secondaire : le proche qui reçoit un lien ou un puzzle (miasmes, Rozie), pour le lien et le puzzle seulement. Anti-persona : celui qui veut que l'IA écrive à sa place.
+   [auto from personas.md] Le fondateur, qui joue de l'instrument et le construit ; les textes sont le sous-produit. Secondaire : le proche qui reçoit un lien ou un puzzle (Proche A, Proche B), pour le lien et le puzzle seulement. Anti-persona : celui qui veut que l'IA écrive à sa place.
 
 3. What is the single most important thing users do with it today?
    [auto from feedback.md] Coller un texte, enchaîner des contraintes, copier le résultat et l'envoyer dans une messagerie ou par mail.
@@ -19,13 +19,13 @@
    [auto from objectives.md] O1 « Un instrument dont on joue » : une prise par semaine hors débogage, défauts corrigés sous 7 jours, 70 % du catalogue joué. O2 « D'autres en jouent sans relance » : lien nu à 7 personnes, retour spontané, puzzle renvoyé résolu.
 
 6. What are your users doing RIGHT NOW when your product doesn't cover their need?
-   [auto from feedback.md + code] Ils copient le résultat dans une messagerie ; « Copier » sous le résultat n'emporte pas l'original (`controller.ts:571`), et Rozie demande si on retrouve le texte initial. Quand le sens disparaît : « ça veut plus rien dire après 😅 ».
+   [auto from feedback.md + code] Ils copient le résultat dans une messagerie ; « Copier » sous le résultat n'emporte pas l'original (`controller.ts:571`), et Proche B demande si on retrouve le texte initial. Quand le sens disparaît : « ça veut plus rien dire après 😅 ».
 
 7. What have you explicitly decided NOT to build, and why?
    [auto from roadmap.md] Pas d'IA générative, pas de comptes ni de serveur, pas d'autres langues, pas de chaîne par piste, pas de format de plugin publié, pas de partage en un clic hors puzzles.
 
 8. Who are your 3 most important users/customers right now?
-   [auto from personas.md + feedback.md] Le fondateur ; Rozie (critique et demande d'usage) ; miasmes (silencieux depuis le 3 octobre).
+   [auto from personas.md + feedback.md] Le fondateur ; Proche B (critique et demande d'usage) ; Proche A (silencieux depuis le 3 octobre).
 
 9. What is the one metric that matters most to you right now?
    [auto from objectives.md] Prises de jeu par semaine hors débogage (O1 KR1) ; personnes qui ouvrent Oulipao d'elles-mêmes (O2, 0 sur 3).

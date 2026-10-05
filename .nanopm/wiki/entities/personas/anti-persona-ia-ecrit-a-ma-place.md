@@ -27,7 +27,7 @@ Quand une demande optimise pour l'anti-persona, la réponse est non, sans conver
 Jamais pour la génération libre ; seulement si un modèle sert de moyen caché à une règle exacte (ex. étiquetage grammatical) sans produire lui-même le texte. Condition Assumed (proposition de l'assistant), toujours dans personas.md du 2026-10-04.
 
 **L'outil à résultat n'est pas un anti-persona (2026-10-04)**
-« Rendre ce texte joyeux », demandé par Rozie et servi par le V+n : un usage qu'on ne casse pas et qu'on ne met pas en avant (`strategy.md`). L'ajouter comme second anti-persona aurait poussé à brider le V+n ; le fondateur a refusé. Voir [[personas/secondary-proche-qui-recoit-un-lien]] et [[opportunities/changer-l-humeur-d-un-texte]].
+« Rendre ce texte joyeux », demandé par Proche B et servi par le V+n : un usage qu'on ne casse pas et qu'on ne met pas en avant (`strategy.md`). L'ajouter comme second anti-persona aurait poussé à brider le V+n ; le fondateur a refusé. Voir [[personas/secondary-proche-qui-recoit-un-lien]] et [[opportunities/changer-l-humeur-d-un-texte]].
 - "n'est pas un anti-persona : c'est un usage qu'on ne casse pas et qu'on ne met pas en avant" — personas.md, 2026-10-04
 
 **Provenance**

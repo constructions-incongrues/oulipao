@@ -26,12 +26,12 @@ Mode: Affiné depuis la version du 2026-10-03, après le pari de l'instrument
 
 ## Secondary Persona — Le proche qui reçoit un lien
 
-*Un proche du fondateur, pas oulipien, qui reçoit un lien, un texte transformé ou bientôt un puzzle, et joue un moment. Deux personnes réelles à ce jour : miasmes et Rozie.*
+*Un proche du fondateur, pas oulipien, qui reçoit un lien, un texte transformé ou bientôt un puzzle, et joue un moment. Deux personnes réelles à ce jour : Proche A et Proche B.*
 
 - **The moment:** un message arrive avec un lien ou une trouvaille ; il ouvre, essaie, rit ou s'étonne.
-- **Job to be done:** s'amuser quelques minutes et avoir une trouvaille à montrer ou à renvoyer. Ce qui fait rire, c'est le sens qui survit à la contrainte : « On dirait un texte de rap conscient ^^ » — miasmes ; « "je meublerai sur ta tombée" hihi » — Rozie (`feedback.md`).
+- **Job to be done:** s'amuser quelques minutes et avoir une trouvaille à montrer ou à renvoyer. Ce qui fait rire, c'est le sens qui survit à la contrainte : « On dirait un texte de rap conscient ^^ » — Proche A ; « "je meublerai sur ta tombée" hihi » — Proche B (`feedback.md`).
 - **Today's workaround:** rien ; il réagit aux textes que le fondateur lui envoie, sans ouvrir l'outil de lui-même.
-- **The switch:** il revient si le premier essai donne une prise à montrer sans réglage ni explication. L'inquiétude à lever : « on retrouve plus le texte initial ? » — Rozie ; et l'absurde total, « ça veut plus rien dire après 😅 » — Rozie.
+- **The switch:** il revient si le premier essai donne une prise à montrer sans réglage ni explication. L'inquiétude à lever : « on retrouve plus le texte initial ? » — Proche B ; et l'absurde total, « ça veut plus rien dire après 😅 » — Proche B.
 - **Recognize them by:** un bloc de carnet ou un lien renvoyé au fondateur ; un puzzle renvoyé résolu.
 
 Ce persona est visé par le test du lien nu (7 personnes, bilan le 20 octobre) et par le mode puzzle, premier chantier construit pour d'autres joueurs (`objectives.md`, `roadmap.md`). On ne construit pas pour lui le reste de l'instrument.
@@ -51,7 +51,7 @@ Retiré : **Dev-joueuse Jade**, qui portait un format de plugin publié ; la roa
 **Action:** When a request optimizes for the anti-persona, the answer is no without a
 re-prioritization conversation.
 
-L'outil à résultat (« rendre ce texte joyeux », demandé par Rozie et servi par le V+n) n'est pas un anti-persona : c'est un usage qu'on ne casse pas et qu'on ne met pas en avant (`strategy.md`).
+L'outil à résultat (« rendre ce texte joyeux », demandé par Proche B et servi par le V+n) n'est pas un anti-persona : c'est un usage qu'on ne casse pas et qu'on ne met pas en avant (`strategy.md`).
 
 ---
 
@@ -67,7 +67,7 @@ Le fondateur joue de l'instrument, et ne fait pas que le construire : au moins u
 
 **Run: /pm-challenge-me**
 
-`challenges.md` demandait de trancher le statut de Rozie : c'est fait (persona secondaire, pour le lien et le puzzle seulement). Le défi peut maintenant porter sur le pari du jeu.
+`challenges.md` demandait de trancher le statut de Proche B : c'est fait (persona secondaire, pour le lien et le puzzle seulement). Le défi peut maintenant porter sur le pari du jeu.
 
 ---
 

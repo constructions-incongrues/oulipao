@@ -32,7 +32,7 @@ Voici des noms de Gobin, du plus sombre au plus clair :
 
 > dédain · avidité · matons · opium · pâtée · folie · engin · … · magot · disque · récolte · douceur
 
-Le comique tient : une phrase correcte, un sens absurde, et une montée qu'on sent. Ce comique est la raison pour laquelle le fondateur et miasmes gardent leurs textes (`entities/opportunities/hasard-du-lexique.md`).
+Le comique tient : une phrase correcte, un sens absurde, et une montée qu'on sent. Ce comique est la raison pour laquelle le fondateur et Proche A gardent leurs textes (`entities/opportunities/hasard-du-lexique.md`).
 
 ---
 
@@ -153,6 +153,6 @@ A reprend tout ce que le S+7 sait déjà faire : verrou, modulation, dé, « Par
 
 - **appetite-scope :** aucun appétit déclaré, et le problème ne justifie que la valence ; l'intensité, la concrétude (I+n, C+n), le V+dé et l'affichage des notes élargissent la v1. Le fondateur a choisi de tout faire : découper en deux PR (valence d'abord, autres ordres ensuite) garde la livraison courte.
 - **success-measurability :** un seul texte gardé est un seuil d'un événement ; il ne distingue pas un texte gardé pour la montée du V+n d'un simple essai.
-- **persona-fit :** le succès comptait aussi les textes de miasmes, que rien ne relie à une échelle de valence ; la falsification réécrite ne compte plus que le fondateur.
+- **persona-fit :** le succès comptait aussi les textes de Proche A, que rien ne relie à une échelle de valence ; la falsification réécrite ne compte plus que le fondateur.
 - **dependency-feasibility :** les noms aussi peuvent être notés sous une forme fléchie (« matons » chez Gobin) ; le script doit ramener chaque entrée à son lemme par Grammalecte avant la fusion, et compter ce qu'il perd.
 

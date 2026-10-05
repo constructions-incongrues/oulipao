@@ -4,7 +4,7 @@
 
 Le carnet livré dans la PR #48 permet de garder, lire, rouvrir, supprimer, exporter et importer. Le PRD de référence (`.nanopm/wiki/docs/prds/carnet-de-textes-gardes.md`, fusionné par #47) demande cinq choses de plus. Le fondateur garde tout le périmètre du PRD pour la v1 : ces cinq points sont donc dus avant le test du 18 octobre.
 
-Le principal est la copie d'une entrée d'un bloc. C'est le seul signal reçu à ce jour : miasmes a recollé l'original sous le texte transformé, parce que le comique tient à l'écart entre les deux (`feedback.md`).
+Le principal est la copie d'une entrée d'un bloc. C'est le seul signal reçu à ce jour : Proche A a recollé l'original sous le texte transformé, parce que le comique tient à l'écart entre les deux (`feedback.md`).
 
 ## What Changes
 

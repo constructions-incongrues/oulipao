@@ -19,8 +19,8 @@ Les trois messages saluent l'effet comique du tirage. Le même hasard sur un dic
 - "Si l'angevin est qatari il praline son févr dans nos ONG!" — vers choisi et cité par le fondateur (« ça dénonce ! »), Gmail, 2026-10-03
 
 **Le hasard perdu en passant à l'ordinateur** ⚠ faible confiance (autre médium, conforte le ressort plus que le lexique)
-- "Au passage du montage sur ordi, l'aléatoire avait disparu" — Blick, SMS, 2026-10-04
-- Contexte : Blick a fait l'OuFiPo (Ouvroir du Film Potentiel) en 2000, un logiciel d'esquisses de montage avec de l'aléatoire ; « En pellicule, on se plantait souvent de rush. »
+- "Au passage du montage sur ordi, l'aléatoire avait disparu" — Proche E, SMS, 2026-10-04
+- Contexte : cette personne a conçu, il y a des années, un logiciel d'esquisses de montage avec de l'aléatoire ; « En pellicule, on se plantait souvent de rush. »
 
 **Tension**
 Rien ne filtre le lexique aujourd'hui ; filtrer retirerait aussi une part du ressort.

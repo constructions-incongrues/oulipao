@@ -16,7 +16,7 @@ Note : planification sur un concept produit en brouillon (`product.md` n'a pas s
 
 ## Problem Statement
 
-Un texte d'Oulipao circule aujourd'hui en copier-coller. miasmes a envoyé le sien par mail, avec l'original entre parenthèses : « C'est drôle! » (`feedback.md`). Le copier-coller transmet le texte. Il perd la chaîne, ses réglages et la graine, c'est-à-dire tout ce qui fait d'un texte bizarre un objet oulipien, où « la contrainte est explicite » (`strategy.md`).
+Un texte d'Oulipao circule aujourd'hui en copier-coller. Proche A a envoyé le sien par mail, avec l'original entre parenthèses : « C'est drôle! » (`feedback.md`). Le copier-coller transmet le texte. Il perd la chaîne, ses réglages et la graine, c'est-à-dire tout ce qui fait d'un texte bizarre un objet oulipien, où « la contrainte est explicite » (`strategy.md`).
 
 Le destinataire ne peut donc ni voir comment le texte a été fait, ni rejouer la chaîne. Pour essayer, il doit ouvrir l'outil vide, recoller l'original et reconstruire la chaîne d'après la mention, à la main. En pratique, personne ne le fait.
 
@@ -28,9 +28,9 @@ Le modèle économique fait de ce transport le canal de découverte : « Chaque 
 
 ## User Stories
 
-- En tant que fondateur, je veux envoyer à miasmes un lien vers une entrée de mon carnet, pour qu'il voie le texte, l'original et la chaîne qui les relie, et pas seulement le texte.
-- En tant que miasmes, je veux lire d'abord le texte à côté de l'original, puis rejouer la chaîne d'un geste en changeant la graine ou un réglage, pour obtenir ma propre trouvaille sans rien reconstruire.
-- En tant que miasmes, je veux garder ce que j'ai obtenu et renvoyer un lien de la même façon, pour répondre par un texte et pas par un commentaire. (Après la v0.)
+- En tant que fondateur, je veux envoyer à Proche A un lien vers une entrée de mon carnet, pour qu'il voie le texte, l'original et la chaîne qui les relie, et pas seulement le texte.
+- En tant que Proche A, je veux lire d'abord le texte à côté de l'original, puis rejouer la chaîne d'un geste en changeant la graine ou un réglage, pour obtenir ma propre trouvaille sans rien reconstruire.
+- En tant que Proche A, je veux garder ce que j'ai obtenu et renvoyer un lien de la même façon, pour répondre par un texte et pas par un commentaire. (Après la v0.)
 
 ---
 
@@ -38,7 +38,7 @@ Le modèle économique fait de ce transport le canal de découverte : « Chaque 
 
 | Criteria | How Measured | Target |
 |----------|-------------|--------|
-| miasmes rejoue une chaîne reçue par lien | Il le dit, ou il renvoie un texte dont la mention reprend la chaîne envoyée | 1 rejeu dans les 14 jours suivant l'envoi du premier lien |
+| Proche A rejoue une chaîne reçue par lien | Il le dit, ou il renvoie un texte dont la mention reprend la chaîne envoyée | 1 rejeu dans les 14 jours suivant l'envoi du premier lien |
 | Un texte revient par lien sans relance (KR3) | Lien reçu par messagerie ou mail, sans demande préalable du fondateur | Au moins 1 avant le 31 décembre |
 | Un lien rejoué redonne le même texte | Test : entrée gardée → lien → ouverture dans un navigateur vierge → « Rejouer » → résultat identique au `result` gardé | 100 % des recettes livrées le 3 octobre, lexique inchangé |
 | What will be different in commits after this ships? | Review git log 7 days post-ship | Un module de codage d'entrée vers fragment d'URL et inversement (`src/ui/tracks/`, avec test de l'aller-retour) ; un bouton « Partager » sur l'entrée du carnet (`components/notebook.ts`) ; une vue d'arrivée « texte, original, chaîne » avec « Rejouer » ; lecture du fragment au démarrage dans `main.ts` ou `app.ts` ; mise à jour du non-objectif « partage en un clic » dans `strategy.md`, `objectives.md` et `roadmap.md`. Aucun fichier côté serveur. |
@@ -54,13 +54,13 @@ Le modèle économique fait de ce transport le canal de découverte : « Chaque 
 
 *⚠ rewritten by adversarial gate to satisfy 4-element rubric*
 
-Si, dans les 21 jours suivant l'envoi du premier lien, miasmes (seul destinataire extérieur connu ayant déjà renvoyé un texte) ne rejoue pas la chaîne au moins 1 fois et n'envoie aucun texte par lien ou par mail citant la chaîne (0 sur 1 destinataire), alors le pari « un destinataire veut rejouer » est faux. Le persona avait raison : il veut « une trouvaille à montrer, pas un texte à retravailler ».
+Si, dans les 21 jours suivant l'envoi du premier lien, Proche A (seul destinataire extérieur connu ayant déjà renvoyé un texte) ne rejoue pas la chaîne au moins 1 fois et n'envoie aucun texte par lien ou par mail citant la chaîne (0 sur 1 destinataire), alors le pari « un destinataire veut rejouer » est faux. Le persona avait raison : il veut « une trouvaille à montrer, pas un texte à retravailler ».
 
 ---
 
 ## Scope
 
-Appétit : petit lot, une à deux soirées. Le fondateur assume que la fonction sert d'abord miasmes, un public secondaire, parce qu'elle vise KR3 : faire revenir un texte sans relance.
+Appétit : petit lot, une à deux soirées. Le fondateur assume que la fonction sert d'abord Proche A, un public secondaire, parce qu'elle vise KR3 : faire revenir un texte sans relance.
 
 ### In scope (v0)
 - Un bouton **Partager** sur chaque entrée du carnet, qui copie dans le presse-papiers une URL `https://oulipao.incongru.org/#…` contenant l'entrée entière, compressée. La retouche voyage toujours, à côté du résultat produit, comme au carnet.
@@ -70,10 +70,10 @@ Appétit : petit lot, une à deux soirées. Le fondateur assume que la fonction 
 - La **réécriture du non-objectif** « partage en un clic » dans `strategy.md`, `objectives.md` et `roadmap.md` : on refuse le partage du texte seul, on permet celui de l'entrée avec sa chaîne.
 
 ### Out of scope (v0)
-- **Garder l'entrée reçue au carnet et la renvoyer.** On y reviendra après le premier rejeu de miasmes. D'ici là, il répond par mail, comme il l'a déjà fait.
+- **Garder l'entrée reçue au carnet et la renvoyer.** On y reviendra après le premier rejeu de Proche A. D'ici là, il répond par mail, comme il l'a déjà fait.
 - **L'écart signalé** quand le rejeu ne redonne pas le `result` transporté. On y reviendra quand le lexique ou l'étiqueteur changera après l'envoi d'un lien.
 - **Le cas d'une entrée refusée par `reopenProblem`** (contrainte inconnue, verrou hors texte). La v0 affiche l'erreur existante « Ce texte ne peut pas être rouvert ». On y reviendra quand un lien reçu sera refusé.
-- **Remplacer l'original par son propre texte.** Les verrous et les pas bouchés désignent des positions dans l'original ; ils perdent leur sens sur un autre texte. On y reviendra quand miasmes demandera « et avec mon texte ? », ou quand il le fera à la main par copier-coller.
+- **Remplacer l'original par son propre texte.** Les verrous et les pas bouchés désignent des positions dans l'original ; ils perdent leur sens sur un autre texte. On y reviendra quand Proche A demandera « et avec mon texte ? », ou quand il le fera à la main par copier-coller.
 - **Aperçu de lien propre à l'entrée** (titre, extrait). Le fragment `#` n'atteint jamais le serveur, il faudrait un rendu côté serveur. L'aperçu générique de la PR #28 reste. À revoir le jour où un lien est ignoré parce que son aperçu ne dit rien.
 - **Raccourcisseur et image du résultat.** Un raccourcisseur impose un serveur qui stocke les textes, ce qui contredit « le texte reste à l'auteur ». L'image reste un non-objectif. L'URL longue est assumée.
 
@@ -101,7 +101,7 @@ Appétit : petit lot, une à deux soirées. Le fondateur assume que la fonction 
 
 **Option A : l'arrivée montre une page de lecture**, avec le texte, l'original, la chaîne et un bouton « Rejouer ». **Option B : l'arrivée ouvre directement la table rejouée.**
 
-B met le jeu à un clic de moins, mais jette un visiteur à froid dans une table à pistes qu'il n'a jamais vue, et l'écart comique qui fait rire (« Le résultat n'est drôle qu'à côté de l'original ») se perd dans l'interface. A respecte le geste réel de miasmes : il a d'abord ri, puis montré. Le risque de A est qu'il lise, rie, et ne clique jamais sur « Rejouer ». C'est précisément ce que la falsification mesure. **Choix : A.**
+B met le jeu à un clic de moins, mais jette un visiteur à froid dans une table à pistes qu'il n'a jamais vue, et l'écart comique qui fait rire (« Le résultat n'est drôle qu'à côté de l'original ») se perd dans l'interface. A respecte le geste réel de Proche A : il a d'abord ri, puis montré. Le risque de A est qu'il lise, rie, et ne clique jamais sur « Rejouer ». C'est précisément ce que la falsification mesure. **Choix : A.**
 
 ---
 
@@ -110,7 +110,7 @@ B met le jeu à un clic de moins, mais jette un visiteur à froid dans une table
 | Question | Owner | Blocks | By when |
 |----------|-------|--------|---------|
 | Quelle taille d'URL pour un texte réel du carnet, étiquetage compris ? Faut-il retirer l'étiquetage et ré-étiqueter à l'arrivée, au risque de verrous décalés ? | Tristan | Le format v1 du fragment (exigence 1) | Avant le premier commit |
-| La messagerie où se trouve miasmes coupe-t-elle les URL longues ? | Tristan | Le seuil d'avertissement de taille | Au premier envoi |
+| La messagerie où se trouve Proche A coupe-t-elle les URL longues ? | Tristan | Le seuil d'avertissement de taille | Au premier envoi |
 
 **Action :** mesurer d'abord la taille sur une entrée réelle du carnet. Si elle dépasse largement 8 000 caractères, la question de l'étiquetage devient bloquante.
 
@@ -142,8 +142,8 @@ Tranché le 2026-10-04 : v0 réduite ; critères de succès tels quels ; la reto
 *Advisory — surfaced by the /pm-prd review panel. Traitées le 2026-10-04 : appetite-scope (v0 réduite, appétit fixé), persona-fit (ciblage assumé dans le Scope), dependency-feasibility (exigence 6). success-measurability : critères gardés tels quels par le fondateur.*
 
 - **appetite-scope :** aucun appétit n'est fixé. Le périmètre v1 (codage, vue d'arrivée, Rejouer, Garder, filiation, détection d'écart, lecture seule, réécriture de trois documents) dépasse ce que justifient un destinataire et un copier-coller observé. Un lien « Garder » seul testerait déjà le pari.
-- **success-measurability :** le rejeu de miasmes et KR3 reposent sur « il le dit », sans méthode de relevé. De plus, la cible « au moins 1 » est inférieure aux 2 personnes de KR3.
-- **persona-fit :** la fonction sert miasmes, un public secondaire, alors que le persona principal est le fondateur. Ce ciblage est à assumer explicitement, ou le périmètre à réduire à ce que le fondateur utilise lui-même.
+- **success-measurability :** le rejeu de Proche A et KR3 reposent sur « il le dit », sans méthode de relevé. De plus, la cible « au moins 1 » est inférieure aux 2 personnes de KR3.
+- **persona-fit :** la fonction sert Proche A, un public secondaire, alors que le persona principal est le fondateur. Ce ciblage est à assumer explicitement, ou le périmètre à réduire à ce que le fondateur utilise lui-même.
 - **dependency-feasibility :** le lexique et l'étiqueteur se chargent par CDN (jsdelivr, huggingface) avant tout rejeu. Le PRD ne dit pas ce que font « Rejouer » et la comparaison du `result` (exigence 6) quand ils sont absents ou hors ligne.
 
 <!-- nanopm:breakdown:start -->

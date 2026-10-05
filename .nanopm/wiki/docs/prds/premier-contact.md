@@ -18,11 +18,11 @@ Le proche qui reçoit le lien (persona secondaire, `personas.md`) ouvre une page
 
 Trois signaux, faibles (2 à 3 personnes, 3-4 octobre) :
 
-> « Un peu austère et abscons mais intrigant évidemment » — Laureline Meizel, message, 2026-10-04 (le lien lui avait été présenté comme « un séquenceur »)
+> « Un peu austère et abscons mais intrigant évidemment » — Proche D, message, 2026-10-04 (le lien lui avait été présenté comme « un séquenceur »)
 
-> « Je n'ai pas tout de suite repéré où se trouvait le résultat » — Dominique (@moman58), message, 2026-10-04
+> « Je n'ai pas tout de suite repéré où se trouvait le résultat » — Proche C, message, 2026-10-04
 
-> « oui mais les contraintes une fois qu'elles sont activées on retrouve plus le texte initial ? » — Rozie, messagerie, 2026-10-04
+> « oui mais les contraintes une fois qu'elles sont activées on retrouve plus le texte initial ? » — Proche B, messagerie, 2026-10-04
 
 ---
 
