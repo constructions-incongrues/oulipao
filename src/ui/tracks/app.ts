@@ -10,6 +10,7 @@ import { Notebook } from './components/notebook.ts';
 import { Result } from './components/result.ts';
 import { Source } from './components/source.ts';
 import { LoopRow } from './components/tour-cursor.ts';
+import { openBrowser } from './components/browser.ts';
 import { lineageOf, originSegments } from './loop.ts';
 import { exampleOf } from './examples.ts';
 import { StepGrid } from './components/step-grid.ts';
@@ -142,6 +143,7 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
         spoken=${tour ? state.spoken : undefined}
         loopRow=${loop &&
         html`<${LoopRow} loop=${loop} pinned=${state.pinned} onShow=${controller.showTour} onStop=${controller.stopLoop} onTours=${controller.setLoopTours} />`}
+        onBranch=${!mixer.instances.some((instance) => instance.enabled) && openBrowser}
         syllables=${tour ? undefined : view.syllables}
         form=${state.mixer.form ?? 'none'}
         onForm=${(form: Form) => controller.dispatch({ type: 'set-form', form })}

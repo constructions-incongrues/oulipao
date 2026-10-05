@@ -108,6 +108,32 @@ test('les exemples tournent : un par clic, dans l’ordre, puis de nouveau le pr
   assert.equal(controller.state.mixer.tracks.noun.muted, true);
 });
 
+/** Une page sans chaîne : la table de départ, sans le S+7 des autres tests. */
+const bare = () => createTracksController({ tagger: tagger([]), loadMorphology: async () => morphology(), preload: async () => {}, copy: async () => {} });
+const enabled = (controller: ReturnType<typeof bare>) => controller.state.mixer.instances.filter((instance) => instance.enabled).map((instance) => instance.type);
+
+test('l’exemple joue : sans contrainte en marche, il branche un S+7 sur les noms', async () => {
+  const controller = bare();
+  await controller.example();
+  assert.deepEqual(enabled(controller), ['s7']);
+  assert.deepEqual(controller.state.mixer.instances[0]!.targets, ['noun']); // les noms de Proust ne sont pas dans le lexique des tests : le remplacement se vérifie en prévisualisation
+  assert.ok(controller.state.view);
+  await controller.example(); // un S+7 est en marche : rien de plus
+  assert.equal(controller.state.mixer.instances.length, 1);
+});
+
+test('l’exemple garde une chaîne en marche ; des contraintes toutes coupées n’en sont pas une', async () => {
+  const lipogram = bare();
+  lipogram.dispatch({ type: 'add-instance', plugin: 'lipogram' });
+  await lipogram.example();
+  assert.deepEqual(lipogram.state.mixer.instances.map((instance) => instance.type), ['lipogram']);
+  const cut = bare();
+  cut.dispatch({ type: 'add-instance', plugin: 's7' });
+  cut.dispatch({ type: 'toggle-instance', id: 's7-1' });
+  await cut.example();
+  assert.deepEqual(cut.state.mixer.instances.map((instance) => [instance.type, instance.enabled]), [['s7', false], ['s7', true]]);
+});
+
 test('chaque geste met la vue à jour sans réétiqueter ; les mots changés s’éclairent', async () => {
   const calls: string[] = [];
   const { controller } = setup({}, calls);
