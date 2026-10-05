@@ -263,3 +263,18 @@ test('carnet : replié sous le texte résultant ; « Garder » range le texte, �
   } as unknown as Event);
   assert.match(renderToString(app()), /Import refusé/);
 });
+
+test('App : l’invite « Brancher une contrainte » tant qu’aucune contrainte n’est en marche', async () => {
+  const { controller, app } = setup();
+  controller.setInput('La ferme.');
+  await controller.run();
+  const idle = () => elements(app()).some((element) => element.props['class'] === 'idle');
+  assert.equal(idle(), false); // le S+7 des tests est en marche
+  controller.dispatch({ type: 'toggle-instance', id: 's7-1' });
+  assert.equal(idle(), true); // toutes coupées : rien ne joue
+  controller.dispatch({ type: 'remove-instance', id: 's7-1' });
+  controller.dispatch({ type: 'remove-instance', id: 'lipogram-1' });
+  assert.equal(idle(), true); // chaîne vide
+  controller.dispatch({ type: 'add-instance', plugin: 's7' });
+  assert.equal(idle(), false);
+});
