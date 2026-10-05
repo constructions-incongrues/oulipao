@@ -23,7 +23,7 @@ D'après la page produit, un instrument : 15 moteurs, 15 recettes, modulateur, p
 
 ## 2. Who You're Actually Building It For
 
-Déclaré : vous, qui jouez ; le proche, pour le lien et le puzzle seulement. Observé : vous construisez, et le seul proche qui formule un besoin (Rozie) demande un outil à résultat, égayer un texte triste, avec un texte qui garde son sens et son original. Le persona secondaire est taillé pour le puzzle ; le comportement observé ne parle pas de puzzle.
+Déclaré : vous, qui jouez ; le proche, pour le lien et le puzzle seulement. Observé : vous construisez, et le seul proche qui formule un besoin (Proche B) demande un outil à résultat, égayer un texte triste, avec un texte qui garde son sens et son original. Le persona secondaire est taillé pour le puzzle ; le comportement observé ne parle pas de puzzle.
 
 **Action:** Écrire dans CONTEXT.md Q2 lequel des deux usages extérieurs (puzzle ou résultat lisible) compte pour O2, avant le départ du lien nu.
 
@@ -83,13 +83,13 @@ Règle qui en découle, au choix du fondateur : noter chaque prise au carnet ave
 
 ### Challenge 2 — Who You Think You're Serving
 
-**Would Rozie come back on her own for the "make a sad text joyful" job, the only use any outsider has actually asked for, which the plan keeps but refuses to promote?**
+**Would Proche B come back on her own for the "make a sad text joyful" job, the only use any outsider has actually asked for, which the plan keeps but refuses to promote?**
 
-(Rozie reviendrait-elle d'elle-même pour « rendre joyeux un texte triste », le seul usage qu'une personne extérieure ait demandé, que le plan garde sans le mettre en avant ?)
+(Proche B reviendrait-elle d'elle-même pour « rendre joyeux un texte triste », le seul usage qu'une personne extérieure ait demandé, que le plan garde sans le mettre en avant ?)
 
-Le seul usage demandé de l'extérieur est l'outil à résultat que la stratégie désigne comme concurrent, et les deux remarques de Rozie (« on retrouve plus le texte initial ? », « ça veut plus rien dire après ») réclament un résultat lisible, pas un instrument à régler. Le persona secondaire est taillé pour le lien et le puzzle, alors que le comportement observé dit autre chose.
+Le seul usage demandé de l'extérieur est l'outil à résultat que la stratégie désigne comme concurrent, et les deux remarques de Proche B (« on retrouve plus le texte initial ? », « ça veut plus rien dire après ») réclament un résultat lisible, pas un instrument à régler. Le persona secondaire est taillé pour le lien et le puzzle, alors que le comportement observé dit autre chose.
 
-**Action:** Dans le lien nu envoyé à Rozie, ne rien suggérer ; au bilan du 20 octobre, noter si ce qui revient touche à l'humeur ou à autre chose (la règle d'infirmation existe déjà dans `current-work.md`).
+**Action:** Dans le lien nu envoyé à Proche B, ne rien suggérer ; au bilan du 20 octobre, noter si ce qui revient touche à l'humeur ou à autre chose (la règle d'infirmation existe déjà dans `current-work.md`).
 
 ### Challenge 3 — Where Your Effort Is Going
 

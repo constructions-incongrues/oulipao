@@ -2,7 +2,7 @@
 
 ## Why
 
-Un texte d'Oulipao circule aujourd'hui en copier-coller. miasmes a envoyé le sien par mail, avec l'original entre parenthèses. Le copier-coller transmet le texte, mais il perd la chaîne, ses réglages et sa graine. Le destinataire ne peut donc ni voir comment le texte a été fait, ni le rejouer.
+Un texte d'Oulipao circule aujourd'hui en copier-coller. Proche A a envoyé le sien par mail, avec l'original entre parenthèses. Le copier-coller transmet le texte, mais il perd la chaîne, ses réglages et sa graine. Le destinataire ne peut donc ni voir comment le texte a été fait, ni le rejouer.
 
 Une entrée du carnet contient déjà tout ce qu'il faut pour rouvrir un texte à l'identique : seul le transport manque. Ce transport sert KR3 (un texte revient sans relance) et le principe « la contrainte est explicite ». PRD : `.nanopm/wiki/docs/prds/lien-partageable.md`.
 

@@ -30,7 +30,7 @@ Si le fondateur joue de son instrument au moins une fois par semaine hors débog
 
 1. **Le rack joué en direct** : pistes, chaîne d'instances, contournement, modulateur et porte, verrous, écoute vocale, itérer et figer ; chaque geste se défait. — **Why this holds:** les générateurs oulipiens en ligne appliquent une règle à la fois sur un champ de texte ; le jeu en direct repose sur l'étiquetage par pistes et le contrat de plugin, construits et testés (90 % de couverture).
 2. **Un français juste** : réaccord, élision, lipogramme qui compte les accents, phonétique, lexique Grammalecte. Ce qui sort se lit, même quand ça ne veut plus rien dire. — **Why this holds:** le lexique morphologique, les conjugaisons et la phonétique, que personne n'a refaits pour le français dans un navigateur.
-3. **La trace de chaque prise** : le carnet garde l'original, le résultat et la chaîne ; le lien partageable rejoue la prise. Une fois « Copier » corrigé, chaque chemin de sortie emporte l'original. — **Why this holds:** c'est le geste de miasmes, fait par l'outil, sans compte ni serveur ; c'est aussi la preuve qu'une prise vient de quelqu'un d'autre, et la mesure du jeu du fondateur.
+3. **La trace de chaque prise** : le carnet garde l'original, le résultat et la chaîne ; le lien partageable rejoue la prise. Une fois « Copier » corrigé, chaque chemin de sortie emporte l'original. — **Why this holds:** c'est le geste de Proche A, fait par l'outil, sans compte ni serveur ; c'est aussi la preuve qu'une prise vient de quelqu'un d'autre, et la mesure du jeu du fondateur.
 
 ---
 

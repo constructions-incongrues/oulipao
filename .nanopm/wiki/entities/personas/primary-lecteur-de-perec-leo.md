@@ -10,13 +10,13 @@ last_updated: 2026-10-04
 ---
 
 ## Summary
-Profil imaginé, remplacé le 2026-10-03 : Léo n'est plus le persona principal d'Oulipao, ni un persona tout court. Le persona principal est le fondateur ([[personas/fondateur-tristan]]) ; le public réel qu'on avait imaginé en Léo est aujourd'hui le persona secondaire [[personas/secondary-proche-qui-recoit-un-lien]] (miasmes, Rozie). Les affirmations sont conservées sous « Open / superseded ».
+Profil imaginé, remplacé le 2026-10-03 : Léo n'est plus le persona principal d'Oulipao, ni un persona tout court. Le persona principal est le fondateur ([[personas/fondateur-tristan]]) ; le public réel qu'on avait imaginé en Léo est aujourd'hui le persona secondaire [[personas/secondary-proche-qui-recoit-un-lien]] (Proche A, Proche B). Les affirmations sont conservées sous « Open / superseded ».
 
 ## What we know
 _(rien d'actif : toutes les affirmations sont remplacées, voir ci-dessous)_
 
 ## Open / superseded
-**Remplacé le 2026-10-03** comme persona principal par [[personas/fondateur-tristan]] — "je suis le persona" — fondateur, jam /pm-brainstorm, 2026-10-03. Comme public observé, par miasmes ([[personas/miasmes-joue-pour-rire]]) — "Léo n'avait jamais été observé ; miasmes l'a été" — personas.md, 2026-10-03. Depuis le 2026-10-04, ce public est le persona secondaire [[personas/secondary-proche-qui-recoit-un-lien]].
+**Remplacé le 2026-10-03** comme persona principal par [[personas/fondateur-tristan]] — "je suis le persona" — fondateur, jam /pm-brainstorm, 2026-10-03. Comme public observé, par Proche A ([[personas/proche-a-joue-pour-rire]]) — "Léo n'avait jamais été observé ; Proche A l'a été" — personas.md, 2026-10-03. Depuis le 2026-10-04, ce public est le persona secondaire [[personas/secondary-proche-qui-recoit-un-lien]].
 
 **Moment et job (remplacé 2026-10-03)**
 Il tombe sur un texte transformé par Oulipao, partagé par quelqu'un, reconnaît la contrainte et veut essayer sur un texte à lui. Il veut voir ce qu'une contrainte fait à un texte qu'il connaît, sans effort, ressentir le plaisir de la trouvaille et avoir quelque chose de drôle à montrer.
@@ -37,7 +37,7 @@ Un lecteur qui n'a jamais pratiqué de contrainte et ne ressent aucun manque pre
 - "Personne n'utilise Oulipao aujourd'hui ; les deux personas sont des intentions" — personas.md, 2026-10-03
 
 **Signaux de feedback (retirés 2026-10-03)**
-Un ingest précédent avait rattaché à Léo le premier signal d'usage extérieur (« C'est drôle! »). Il vient d'une personne réelle, miasmes, et a été déplacé sur [[personas/miasmes-joue-pour-rire]].
+Un ingest précédent avait rattaché à Léo le premier signal d'usage extérieur (« C'est drôle! »). Il vient d'une personne réelle, Proche A, et a été déplacé sur [[personas/proche-a-joue-pour-rire]].
 
 **Résumé confus (corrigé 2026-10-04)**
 L'ancien résumé disait « il n'est plus le public non ciblé d'Oulipao », ce qui laissait croire à un statut actif. Léo était le persona principal ; il n'est plus rien d'actif.

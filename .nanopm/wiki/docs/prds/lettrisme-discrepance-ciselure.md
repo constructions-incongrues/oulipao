@@ -23,10 +23,10 @@ Le fondateur construit l'instrument dont il a envie de jouer (`strategy.md`). Il
 Le fondateur ne fera pas de poème lettriste à la main (jam du 2026-10-04). Le test passe donc par l'instrument lui-même, et c'est le carnet qui dira si ces techniques ont été jouées.
 
 Deux retours extérieurs bornent le chantier (`feedback.md`) :
-- **L'écart est le ressort.** « C'est drôle! », écrit miasmes en joignant l'original.
-- **La peur de perdre le texte d'origine.** « oui mais les contraintes une fois qu'elles sont activées on retrouve plus le texte initial ? », demande Rozie.
+- **L'écart est le ressort.** « C'est drôle! », écrit Proche A en joignant l'original.
+- **La peur de perdre le texte d'origine.** « oui mais les contraintes une fois qu'elles sont activées on retrouve plus le texte initial ? », demande Proche B.
 
-La discrépance répond à la peur de Rozie, puisque l'original reste dans l'oreille. La Ciselure prend le risque inverse, celui de l'absurde pur qui perd l'attention. Pour le contenir, son premier vers reste intact.
+La discrépance répond à la peur de Proche B, puisque l'original reste dans l'oreille. La Ciselure prend le risque inverse, celui de l'absurde pur qui perd l'attention. Pour le contenir, son premier vers reste intact.
 
 ---
 
@@ -174,7 +174,7 @@ Les paliers 2 et 3 de la Ciselure (syllabe, voyelles) et les sons de l'alphabet 
 
 - **appetite-scope :** aucun appétit déclaré. La v1 réunit deux moteurs, un changement de l'écoute et une mention. L'alphabet augmenté ne répond à aucun retour cité, et la falsification ne le teste pas.
 - **success-measurability :** les seuils (1 ou 2 prises en 21 jours) sont bas et ne se comparent ni à O1 KR1 ni à l'état actuel. « Règle rejouable » n'a pas de méthode. La ligne « commits » décrit des livrables, pas un changement de comportement.
-- **persona-fit :** le seul retour extérieur (Rozie) a peur de perdre l'original, alors que la Ciselure le détruit jusqu'au souffle. Seul le fondateur peut valider le chantier.
+- **persona-fit :** le seul retour extérieur (Proche B) a peur de perdre l'original, alors que la Ciselure le détruit jusqu'au souffle. Seul le fondateur peut valider le chantier.
 - **dependency-feasibility :** l'alignement lettres ↔ sons (option B) et le découpage en phrases n'existent pas dans le code. Ils sont désormais listés dans les dépendances, mais pas chiffrés.
 
 <!-- nanopm:breakdown:start -->

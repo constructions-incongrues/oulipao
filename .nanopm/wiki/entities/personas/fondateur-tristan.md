@@ -52,4 +52,4 @@ Le 4 octobre, la plupart des changements venaient d'audits et de correctifs, et 
 
 **Bascule (remplacé 2026-10-04)** — « Il garde l'outil s'il produit des textes qu'il a envie de relire ; il le lâche si chaque séance demande d'abord du code. » Ce critère contredisait le pari du 4 octobre (les textes sont le sous-produit). Remplacé par l'envie de jouer — "il le lâche si chaque séance commence par du code ou un correctif" — personas.md, 2026-10-04.
 
-**Écart réalité / intention (remplacé 2026-10-04)** — « Le persona visé n'a encore aucun texte gardé ; le seul texte gardé et montré à ce jour vient d'un public non ciblé. » miasmes n'est plus « non ciblé » : il fait partie du persona secondaire [[personas/secondary-proche-qui-recoit-un-lien]].
+**Écart réalité / intention (remplacé 2026-10-04)** — « Le persona visé n'a encore aucun texte gardé ; le seul texte gardé et montré à ce jour vient d'un public non ciblé. » Proche A n'est plus « non ciblé » : il fait partie du persona secondaire [[personas/secondary-proche-qui-recoit-un-lien]].

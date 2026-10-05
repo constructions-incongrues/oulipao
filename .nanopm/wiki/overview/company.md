@@ -12,7 +12,7 @@ Oulipao (« Ouvroir de Littérature Potentielle Assistée par Ordinateur ») est
 _More detail: `.nanopm/wiki/docs/product.md`_
 
 ## Who it's for
-Persona principal : le fondateur, Tristan, développeur et lecteur des oulipiens. Son job : jouer de l'instrument et le construire (brancher, régler, moduler, enchaîner des contraintes, garder ses prises, ajouter la contrainte qui manque dès qu'il l'imagine). Il le lâche si chaque séance commence par du code ou un correctif. Persona secondaire, borné au lien partagé et au futur mode puzzle : le proche non oulipien qui reçoit un lien et joue quelques minutes (deux personnes réelles, miasmes et Rozie) ; on ne construit pas le reste de l'instrument pour lui. Jade, la développeuse de plugins, est retirée. Anti-persona : celui qui veut qu'une IA écrive à sa place. L'outil à résultat (« rendre ce texte joyeux ») est un usage qu'on ne casse pas mais qu'on ne met pas en avant.
+Persona principal : le fondateur, Tristan, développeur et lecteur des oulipiens. Son job : jouer de l'instrument et le construire (brancher, régler, moduler, enchaîner des contraintes, garder ses prises, ajouter la contrainte qui manque dès qu'il l'imagine). Il le lâche si chaque séance commence par du code ou un correctif. Persona secondaire, borné au lien partagé et au futur mode puzzle : le proche non oulipien qui reçoit un lien et joue quelques minutes (deux personnes réelles, Proche A et Proche B) ; on ne construit pas le reste de l'instrument pour lui. Jade, la développeuse de plugins, est retirée. Anti-persona : celui qui veut qu'une IA écrive à sa place. L'outil à résultat (« rendre ce texte joyeux ») est un usage qu'on ne casse pas mais qu'on ne met pas en avant.
 _More detail: `.nanopm/wiki/docs/personas.md`_
 
 ## How we make money
