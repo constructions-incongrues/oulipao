@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.0](https://github.com/constructions-incongrues/oulipao/compare/v0.8.0...v0.9.0) (2026-10-05)
+
+
+### Nouveautés
+
+* brancher une contrainte depuis la bande ([#107](https://github.com/constructions-incongrues/oulipao/issues/107)) ([8b24a87](https://github.com/constructions-incongrues/oulipao/commit/8b24a87a53598d295d01f1e55332e34599b4400b))
+* phrase d'accueil au premier contact ([#110](https://github.com/constructions-incongrues/oulipao/issues/110)) ([90eb54c](https://github.com/constructions-incongrues/oulipao/commit/90eb54c5a83522f0b42d0204cbfe88ce0a49d747))
+
 ## [0.8.0](https://github.com/constructions-incongrues/oulipao/compare/v0.7.0...v0.8.0) (2026-10-04)
 
 
