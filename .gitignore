@@ -6,3 +6,7 @@ _site/
 
 # Archives brutes de nanopm : messages privés, verbatim, gardés hors du dépôt public
 .nanopm/raw/
+
+# État local de nanopm : régénéré, propre à chaque machine
+.nanopm/search.db
+.nanopm/wiki/.last-lint
