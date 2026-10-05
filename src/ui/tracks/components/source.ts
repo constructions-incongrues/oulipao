@@ -14,6 +14,8 @@ export interface SourceProps {
   exampleLabel?: string;
   /** L'exemple que la saisie contient tel quel, à nommer. */
   example?: Example;
+  /** Page vide : la phrase d'accueil dit ce qu'on fait ici. */
+  welcome?: boolean;
   tagging: boolean;
   message: string;
   model: ModelState;
@@ -23,6 +25,9 @@ export interface SourceProps {
   onExample: () => void;
   onLoad: () => void;
 }
+
+/** La phrase d'accueil de la page vide : l'instrument et ses trois gestes. */
+export const WELCOME = 'Un instrument pour jouer de la littérature potentielle : collez un texte, ajoutez une contrainte, écoutez ce qu’elle en fait.';
 
 /** « Marcel Proust, Du côté de chez Swann (1913) ». */
 const credit = ({ author, title, year }: Example) => html`${author}, <cite>${title}</cite> (${year})`;
@@ -62,6 +67,7 @@ export function Source(props: SourceProps): VNode {
   }
   return html`
     <div class="source">
+      ${props.welcome && html`<p class="welcome">${WELCOME}</p>`}
       <label for="input" class="silk">Texte</label>
       <textarea id="input" placeholder="Collez un texte en français…" value=${input}
         onInput=${(event: Event) => props.onInput((event.currentTarget as HTMLTextAreaElement).value)}></textarea>

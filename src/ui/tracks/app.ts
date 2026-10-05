@@ -169,6 +169,7 @@ export function App({ state, controller, onTheme = () => {}, version, today = ne
         editing=${state.editing}
         exampleLabel=${!state.input.trim() || example ? (state.examplesShown ? 'Autre exemple' : 'Essayer avec un exemple') : undefined}
         example=${example}
+        welcome=${!view && !state.arrival}
         tagging=${state.tagging}
         message=${state.inputMessage}
         model=${state.model}
