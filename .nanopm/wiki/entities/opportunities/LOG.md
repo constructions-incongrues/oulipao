@@ -3,3 +3,5 @@
 2026-10-04 | add: changer-l-humeur-d-un-texte (evidence-backed) | /pm-user-feedback
 2026-10-04 | update: resultat-a-cote-de-l-original, hasard-du-lexique, partager-un-resultat | /pm-user-feedback
 2026-10-04 | matched: interface-ne-bloque-pas-la-lecture (evidence-backed) | /pm-opportunities --ingest-candidate
+2026-10-05 | matched: hasard-du-lexique (evidence-backed) | /pm-opportunities --ingest-candidate
+2026-10-05 | created: instrument-dur-a-prendre-en-main (evidence-backed) | /pm-opportunities --ingest-candidate

@@ -65,3 +65,5 @@
 ## [2026-10-04] ingest | pm-roadmap: wrote docs/roadmap.md
 ## [2026-10-04] ingest | pm-opportunities: matched entities/opportunities/interface-ne-bloque-pas-la-lecture.md
 ## [2026-10-04] ingest | pm-prd: wrote docs/prds/boucle-de-tours.md
+## [2026-10-05] ingest | pm-opportunities: matched entities/opportunities/hasard-du-lexique.md
+## [2026-10-05] ingest | pm-opportunities: created entities/opportunities/instrument-dur-a-prendre-en-main.md
