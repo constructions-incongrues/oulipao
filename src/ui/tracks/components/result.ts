@@ -58,6 +58,8 @@ export interface ResultProps {
   spoken?: number;
   /** La rangée de la boucle, sous le texte. */
   loopRow?: VNode | false;
+  /** Aucune contrainte en marche : l'invite dit que le texte est rendu tel quel, et sa touche mène au catalogue. */
+  onBranch?: (from: Element) => void;
 }
 
 /** Le compte de syllabes d'une ligne, en bout de ligne. */
@@ -79,7 +81,7 @@ function between(raw: string, syllables: readonly (number | undefined)[] | undef
 }
 
 /** Le texte résultant, en tête de page et collé en haut de l'écran quand on descend, et sa copie. */
-export function Result({ segments, empty, marks, tracks, selected, onSelect, changed, generation, audibleCount, stale, pinned = false, copyMessage, onCopy, onKeep, onIterate, onFreeze, busy = false, syllables, form = 'none', onForm, onLoop, looping = false, keepLabel = 'Garder', keepDisabled = false, keepTitle, interactive = true, emptyText = 'Toutes les pistes sont coupées.', spoken, loopRow }: ResultProps): VNode {
+export function Result({ segments, empty, marks, tracks, selected, onSelect, changed, generation, audibleCount, stale, pinned = false, copyMessage, onCopy, onKeep, onIterate, onFreeze, busy = false, syllables, form = 'none', onForm, onLoop, looping = false, keepLabel = 'Garder', keepDisabled = false, keepTitle, interactive = true, emptyText = 'Toutes les pistes sont coupées.', spoken, loopRow, onBranch }: ResultProps): VNode {
   const line = { at: 0 };
   // Le mot dit par l'écoute : le morceau qui contient le début de ce mot dans le texte affiché.
   const spokenAt = spoken === undefined ? undefined : tokenize(segments.map((segment) => segment.text).join(''))[spoken]?.start;
@@ -138,6 +140,9 @@ export function Result({ segments, empty, marks, tracks, selected, onSelect, cha
               onKeyDown=${interactive ? (event: KeyboardEvent) => event.key === 'Enter' && onSelect(index) : undefined}>${text}</span>`;
           })}${syllables && count(syllables[line.at])}</p></div>`}
       ${loopRow}
+      ${onBranch &&
+      html`<p class="idle">Aucune contrainte en marche : le texte est rendu tel quel.
+        <button type="button" class="key branch" onClick=${(event: Event) => onBranch(event.currentTarget as Element)}>Brancher une contrainte</button></p>`}
       ${!empty && audibleCount < 5 && html`<p class="notice">Pistes coupées : le texte est rendu tel quel, sans réparer la phrase.</p>`}
     </section>
   ` as VNode;
